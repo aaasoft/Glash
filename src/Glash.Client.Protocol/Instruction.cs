@@ -14,6 +14,7 @@ namespace Glash.Client.Protocol
             },
             CommandInfos = new[]
             {
+                QpCommandInfo.Create(new QpCommands.Register.Request()),
                 QpCommandInfo.Create(new QpCommands.GetAgentList.Request()),
                 QpCommandInfo.Create(new QpCommands.CreateTunnel.Request())
             }

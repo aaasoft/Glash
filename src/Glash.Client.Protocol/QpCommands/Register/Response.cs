@@ -1,14 +1,12 @@
-﻿using Glash.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Glash.Client.Protocol.QpCommands.GetServerInfo
+namespace Glash.Client.Protocol.QpCommands.Register
 {
     public class Response
     {
-        public ServerInfo Data { get; set; }
     }
 }

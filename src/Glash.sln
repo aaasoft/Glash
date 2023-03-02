@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Agent.Protocol", "Glash.Agent.Protocol\Glash.Agent.Protocol.csproj", "{A793DFAA-D001-4404-AB30-F183DE9FD96E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Agent.Protocol", "Glash.Agent.Protocol\Glash.Agent.Protocol.csproj", "{A793DFAA-D001-4404-AB30-F183DE9FD96E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Client.Protocol", "Glash.Client.Protocol\Glash.Client.Protocol.csproj", "{5DB2B061-9256-41D5-A36C-5DA84DCBA83C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.Protocol", "Glash.Client.Protocol\Glash.Client.Protocol.csproj", "{5DB2B061-9256-41D5-A36C-5DA84DCBA83C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protocols", "Protocols", "{0D39275F-6C10-4265-8760-D24305B6D4AA}"
 EndProject
@@ -13,9 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D50839D0-F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Model", "Glash.Model\Glash.Model.csproj", "{6890E21B-5702-44AA-8C2E-01DBDF99AFF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Model", "Glash.Model\Glash.Model.csproj", "{6890E21B-5702-44AA-8C2E-01DBDF99AFF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Core", "Glash.Core\Glash.Core.csproj", "{39643219-9E21-40D2-9678-F5AAE553B2A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Core", "Glash.Core\Glash.Core.csproj", "{39643219-9E21-40D2-9678-F5AAE553B2A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Server.ConsoleApp", "Glash.Server.ConsoleApp\Glash.Server.ConsoleApp.csproj", "{31CE393D-0590-4376-B6BC-04F8E45017D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Agent.ConsoleApp", "Glash.Agent.ConsoleApp\Glash.Agent.ConsoleApp.csproj", "{7371837C-24E7-48DE-97D2-3CC1C8023CAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Client.ConsoleApp", "Glash.Client.ConsoleApp\Glash.Client.ConsoleApp.csproj", "{2E91D787-D1C1-4FE9-BC39-19603636CDC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,18 @@ Global
 		{39643219-9E21-40D2-9678-F5AAE553B2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39643219-9E21-40D2-9678-F5AAE553B2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39643219-9E21-40D2-9678-F5AAE553B2A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31CE393D-0590-4376-B6BC-04F8E45017D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31CE393D-0590-4376-B6BC-04F8E45017D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31CE393D-0590-4376-B6BC-04F8E45017D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31CE393D-0590-4376-B6BC-04F8E45017D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7371837C-24E7-48DE-97D2-3CC1C8023CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7371837C-24E7-48DE-97D2-3CC1C8023CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7371837C-24E7-48DE-97D2-3CC1C8023CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7371837C-24E7-48DE-97D2-3CC1C8023CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E91D787-D1C1-4FE9-BC39-19603636CDC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E91D787-D1C1-4FE9-BC39-19603636CDC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E91D787-D1C1-4FE9-BC39-19603636CDC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E91D787-D1C1-4FE9-BC39-19603636CDC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +66,9 @@ Global
 		{5DB2B061-9256-41D5-A36C-5DA84DCBA83C} = {0D39275F-6C10-4265-8760-D24305B6D4AA}
 		{6890E21B-5702-44AA-8C2E-01DBDF99AFF4} = {D50839D0-F158-4BBF-8969-51FDCCFFACFF}
 		{39643219-9E21-40D2-9678-F5AAE553B2A7} = {D50839D0-F158-4BBF-8969-51FDCCFFACFF}
+		{31CE393D-0590-4376-B6BC-04F8E45017D4} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
+		{7371837C-24E7-48DE-97D2-3CC1C8023CAD} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
+		{2E91D787-D1C1-4FE9-BC39-19603636CDC6} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DB86FF5-9232-4A7E-AFAC-1342B77700E7}

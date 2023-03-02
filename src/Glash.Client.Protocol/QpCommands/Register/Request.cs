@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Glash.Client.Protocol.QpCommands.GetServerInfo
+namespace Glash.Client.Protocol.QpCommands.Register
 {
-    [DisplayName("Get Server Info")]
+    [DisplayName("Register As Client")]
     public class Request : IQpCommandRequest<Response> { }
 }
