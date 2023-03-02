@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="QpNotices\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Quick.Protocol" Version="2.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Glash.Model\Glash.Model.csproj" />
+  </ItemGroup>
+
+</Project>
