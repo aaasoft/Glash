@@ -10,10 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="QpNotices\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Glash.Model\Glash.Model.csproj" />
   </ItemGroup>
 

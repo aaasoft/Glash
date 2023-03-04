@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="QpNotices\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Quick.Protocol" Version="2.2.8" />
   </ItemGroup>
 

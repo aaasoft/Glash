@@ -36,5 +36,10 @@ namespace Glash.Core.Client
         {
             qpClient.Disconnect();
         }
+
+        public void LoadProxyPortInfos(ProxyPortInfo[] items)
+        {
+
+        }
     }
 }
