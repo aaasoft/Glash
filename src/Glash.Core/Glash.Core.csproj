@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Quick.Protocol" Version="2.2.6" />
+    <PackageReference Include="Quick.Protocol" Version="2.2.8" />
   </ItemGroup>
 
   <ItemGroup>

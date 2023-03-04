@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Glash.Core.Server;
+using System.Net;
+using YiQiDong.Agent;
 using YiQiDong.Core;
 using YiQiDong.Core.Utils;
 using YiQiDong.Protocol.V1.Model;
@@ -19,7 +21,6 @@ namespace Glash.Server.ConsoleApp
             AddFunction(new YiQiDong.Core.Functions.AppSettingsConfig(imageFolder, containerFolder, () => ContainerInfo.AutoStart));
         }
 
-        private Quick.Protocol.Tcp.QpTcpServer qpServer;
         private Glash.Core.Server.GlashServer glashServer;
         public override void Start()
         {
@@ -34,18 +35,41 @@ namespace Glash.Server.ConsoleApp
                 Port = Config.Port,
                 Password = Config.Password
             };
-            qpServer = new Quick.Protocol.Tcp.QpTcpServer(qpServerOptions);
-            glashServer = new Glash.Core.Server.GlashServer();
-            glashServer.Init(qpServer);
+            glashServer = new GlashServer();
+            glashServer.HandleServerOptions(qpServerOptions);
+            glashServer.AgentConnected += GlashServer_AgentConnected;
+            glashServer.AgentDisconnected += GlashServer_AgentDisconnected;
+            glashServer.ClientConnected += GlashServer_ClientConnected;
+            glashServer.ClientDisconnected += GlashServer_ClientDisconnected;
+            glashServer.Init();
             glashServer.Start();
+            AgentContext.Instance.LogInfo($"Listening on {Config.IPAddress}:{Config.Port}...");
+        }
+
+        private void GlashServer_AgentConnected(object sender, GlashAgentContext e)
+        {
+            AgentContext.Instance.LogInfo($"Agent connected.Name:{e.AgentInfo.Name},Channel:{e.Channel.ChannelName}");
+        }
+
+        private void GlashServer_AgentDisconnected(object sender, GlashAgentContext e)
+        {
+            AgentContext.Instance.LogInfo($"Agent disconnected.Name:{e.AgentInfo.Name},Channel:{e.Channel.ChannelName}");
+        }
+
+        private void GlashServer_ClientConnected(object sender, GlashClientContext e)
+        {
+            AgentContext.Instance.LogInfo($"Client connected.Channel:{e.Channel.ChannelName}");
+        }
+
+        private void GlashServer_ClientDisconnected(object sender, GlashClientContext e)
+        {
+            AgentContext.Instance.LogInfo($"Client disconnected.Channel:{e.Channel.ChannelName}");
         }
 
         public override void Stop()
         {
             glashServer.Stop();
             glashServer = null;
-            qpServer.Stop();
-            qpServer = null;
             base.Stop();
         }
     }
