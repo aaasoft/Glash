@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Model", "Glash.Model\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Core", "Glash.Core\Glash.Core.csproj", "{39643219-9E21-40D2-9678-F5AAE553B2A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Server.ConsoleApp", "Glash.Server.ConsoleApp\Glash.Server.ConsoleApp.csproj", "{31CE393D-0590-4376-B6BC-04F8E45017D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Server.ConsoleApp", "Glash.Server.ConsoleApp\Glash.Server.ConsoleApp.csproj", "{31CE393D-0590-4376-B6BC-04F8E45017D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Agent.ConsoleApp", "Glash.Agent.ConsoleApp\Glash.Agent.ConsoleApp.csproj", "{7371837C-24E7-48DE-97D2-3CC1C8023CAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Agent.ConsoleApp", "Glash.Agent.ConsoleApp\Glash.Agent.ConsoleApp.csproj", "{7371837C-24E7-48DE-97D2-3CC1C8023CAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Client.ConsoleApp", "Glash.Client.ConsoleApp\Glash.Client.ConsoleApp.csproj", "{2E91D787-D1C1-4FE9-BC39-19603636CDC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.ConsoleApp", "Glash.Client.ConsoleApp\Glash.Client.ConsoleApp.csproj", "{2E91D787-D1C1-4FE9-BC39-19603636CDC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

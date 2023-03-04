@@ -1,27 +1,32 @@
 ﻿using Quick.Protocol;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Core.Agent
 {
-    public class GlashAgent
+    public class GlashAgent : IDisposable
     {
-        private QpClientOptions qpClientOptions;
         private QpClient qpClient;
         private string agentName;
+        public event EventHandler Disconnected;
 
-        public GlashAgent(QpClientOptions qpClientOptions, string agentName)
+        public GlashAgent(string url, string password, string agentName)
         {
-            this.qpClientOptions = qpClientOptions;
-            this.qpClient = qpClientOptions.CreateClient();
+            var qpClientOptions = QpClientOptions.Parse(new Uri(url));
+            qpClientOptions.Password = password;
+            qpClientOptions.InstructionSet = new[]
+            {
+                Glash.Agent.Protocol.Instruction.Instance
+            };
+            qpClient = qpClientOptions.CreateClient();
+            qpClient.Disconnected += QpClient_Disconnected;
             this.agentName = agentName;
         }
 
-        public async Task StartAsync()
+        private void QpClient_Disconnected(object sender, EventArgs e)
+        {
+            Disconnected?.Invoke(this, EventArgs.Empty);
+        }
+
+        public async Task ConnectAsync()
         {
             //Connect
             await qpClient.ConnectAsync();
@@ -32,7 +37,7 @@ namespace Glash.Core.Agent
             });
         }
 
-        public void Stop()
+        public void Dispose()
         {
             qpClient.Disconnect();
         }

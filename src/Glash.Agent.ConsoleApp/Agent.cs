@@ -10,6 +10,9 @@ namespace Glash.Agent.ConsoleApp
 {
     public class Agent : AbstractAgent
     {
+        private CancellationTokenSource cts;
+        private GlashAgent glashAgent;
+
         public ConfigModel Config { get; private set; }
 
         public override void Init(ContainerInfo containerInfo)
@@ -22,37 +25,60 @@ namespace Glash.Agent.ConsoleApp
             AddFunction(new YiQiDong.Core.Functions.AppSettingsConfig(imageFolder, containerFolder, () => ContainerInfo.AutoStart));
         }
 
-        private Glash.Core.Agent.GlashAgent glashAgent;
         public override void Start()
         {
             var appSettingsModel = Quick.Fields.AppSettings.Model.Load();
             Config = appSettingsModel.Convert<ConfigModel>();
 
             base.Start();
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
 
-            var qpClientOptions = QpClientOptions.Parse(new Uri(Config.ServerUrl));
-            qpClientOptions.Password = Config.Password;
-            qpClientOptions.InstructionSet = new[]
-            {
-                Glash.Agent.Protocol.Instruction.Instance
-            };
+            glashAgent = new GlashAgent(Config.ServerUrl, Config.Password, Config.AgentName);
+            glashAgent.Disconnected += GlashAgent_Disconnected;
+            _ = beginConnect(cts.Token);
+        }
 
-            AgentContext.Instance.LogError($"Agent connecting to server[{Config.ServerUrl}]...");
-            glashAgent = new Glash.Core.Agent.GlashAgent(qpClientOptions, Config.AgentName);
-            glashAgent.StartAsync().ContinueWith(t =>
+        private void GlashAgent_Disconnected(object sender, EventArgs e)
+        {
+            AgentContext.Instance.LogError($"Agent disconnected from server[{Config.ServerUrl}].");
+            var currentCts = cts;
+            if (currentCts == null)
+                return;
+            _ = delayToConnect(currentCts.Token);
+        }
+
+        private async Task delayToConnect(CancellationToken token)
+        {
+            try
             {
-                if (t.IsFaulted)
-                {
-                    AgentContext.Instance.LogError($"Agent connect to server[{Config.ServerUrl}] error.Reason:" + ExceptionUtils.GetExceptionMessage(t.Exception.InnerException));
-                    return;
-                }
+                await Task.Delay(5000, token);
+                _ = beginConnect(token);
+            }
+            catch { }
+        }
+
+        private async Task beginConnect(CancellationToken token)
+        {
+            try
+            {
+                AgentContext.Instance.LogInfo($"Agent connecting to server[{Config.ServerUrl}]...");
+                await glashAgent.ConnectAsync();
                 AgentContext.Instance.LogInfo($"Agent connected to server[{Config.ServerUrl}].");
-            });
+            }
+            catch (Exception ex)
+            {
+                AgentContext.Instance.LogError($"Agent connect to server[{Config.ServerUrl}] error.Reason:" + ExceptionUtils.GetExceptionMessage(ex));
+                _ = delayToConnect(token);
+                return;
+            }
         }
 
         public override void Stop()
         {
-            glashAgent.Stop();
+            cts?.Cancel();
+            cts = null;
+            glashAgent.Dispose();
             glashAgent = null;
             base.Stop();
         }
