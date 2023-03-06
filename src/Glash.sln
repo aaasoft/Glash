@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Agent.ConsoleApp", "G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.ConsoleApp", "Glash.Client.ConsoleApp\Glash.Client.ConsoleApp.csproj", "{2E91D787-D1C1-4FE9-BC39-19603636CDC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Server.WebApp", "Glash.Server.WebApp\Glash.Server.WebApp.csproj", "{C6EC36BD-3CB0-4EA4-81E9-8E6E050634E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Server.WebApp", "Glash.Server.WebApp\Glash.Server.WebApp.csproj", "{C6EC36BD-3CB0-4EA4-81E9-8E6E050634E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
