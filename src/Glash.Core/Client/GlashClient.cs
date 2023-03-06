@@ -8,6 +8,8 @@ namespace Glash.Core.Client
     public class GlashClient : IDisposable
     {
         private QpClient qpClient;
+        private Dictionary<string, ProxyContext> proxyContextDict = new Dictionary<string, ProxyContext>();
+
         public event EventHandler Disconnected;
         public event EventHandler<string> LogPushed;
 
@@ -27,7 +29,7 @@ namespace Glash.Core.Client
             qpClient.Disconnected += QpClient_Disconnected;
         }
 
-        private void QpClient_Disconnected(object sender, EventArgs e)
+        private void closeAllTunnel()
         {
             GlashTunnelContext[] tunnels = null;
             lock (tunnelContextDict)
@@ -37,6 +39,11 @@ namespace Glash.Core.Client
             }
             foreach (var tunnel in tunnels)
                 tunnel.Dispose();
+        }
+
+        private void QpClient_Disconnected(object sender, EventArgs e)
+        {
+            closeAllTunnel();
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
@@ -50,10 +57,14 @@ namespace Glash.Core.Client
 
         public void Dispose()
         {
+            closeAllTunnel();
+            foreach (var proxyContext in proxyContextDict.Values)
+                proxyContext.Stop();
+            proxyContextDict.Clear();
             qpClient.Disconnect();
         }
 
-        private Dictionary<string, ProxyContext> proxyPortContextDict = new Dictionary<string, ProxyContext>();
+        
 
         public void EnableProxyPortInfo(ProxyContext context)
         {
@@ -72,9 +83,9 @@ namespace Glash.Core.Client
 
         public void EnableProxyPortInfo(string configId)
         {
-            if (!proxyPortContextDict.ContainsKey(configId))
+            if (!proxyContextDict.ContainsKey(configId))
                 return;
-            var context = proxyPortContextDict[configId];
+            var context = proxyContextDict[configId];
             EnableProxyPortInfo(context);
         }
 
@@ -94,16 +105,16 @@ namespace Glash.Core.Client
 
         public void DisableProxyPortInfo(string configId)
         {
-            if (!proxyPortContextDict.ContainsKey(configId))
+            if (!proxyContextDict.ContainsKey(configId))
                 return;
-            var context = proxyPortContextDict[configId];
+            var context = proxyContextDict[configId];
             DisableProxyPortInfo(context);
         }
 
         public void AddProxyPortInfo(ProxyInfo config)
         {
             var context = new ProxyContext(this, config);
-            proxyPortContextDict[config.Name] = context;
+            proxyContextDict[config.Name] = context;
             if (config.Enable)
                 EnableProxyPortInfo(context);
         }
@@ -116,10 +127,10 @@ namespace Glash.Core.Client
 
         public void RemoveProxyPortInfo(string configId)
         {
-            if (!proxyPortContextDict.ContainsKey(configId))
+            if (!proxyContextDict.ContainsKey(configId))
                 return;
-            var context = proxyPortContextDict[configId];
-            proxyPortContextDict.Remove(configId);
+            var context = proxyContextDict[configId];
+            proxyContextDict.Remove(configId);
             DisableProxyPortInfo(context);
         }
 
