@@ -29,6 +29,14 @@ namespace Glash.Core.Client
 
         private void QpClient_Disconnected(object sender, EventArgs e)
         {
+            GlashTunnelContext[] tunnels = null;
+            lock (tunnelContextDict)
+            {
+                tunnels = tunnelContextDict.Values.ToArray();
+                tunnelContextDict.Clear();
+            }
+            foreach (var tunnel in tunnels)
+                tunnel.Dispose();
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 

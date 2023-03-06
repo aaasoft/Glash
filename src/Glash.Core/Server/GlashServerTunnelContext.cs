@@ -1,4 +1,5 @@
 ﻿using Glash.Model;
+using NJsonSchema.Annotations;
 using Quick.Protocol;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,15 @@ using System.Threading.Tasks;
 
 namespace Glash.Core.Server
 {
-    public class GlashServerTunnelContext
+    public class GlashServerTunnelContext : IDisposable
     {
-        private TunnelInfo tunnelInfo;
-        private GlashClientContext client;
-        private GlashAgentContext agent;
+        public TunnelInfo TunnelInfo { get; private set; }
+        public GlashClientContext Client { get; private set; }
+        public GlashAgentContext Agent { get; private set; }
+        public DateTime CreateTime { get; private set; }
+        public long UploadBytes { get; private set; }
+        public long DownloadBytes { get; private set; }
+
         private Action<Exception> errorHandler;
 
         public GlashServerTunnelContext(
@@ -22,13 +27,14 @@ namespace Glash.Core.Server
             GlashAgentContext agent,
             Action<Exception> errorHandler)
         {
-            this.tunnelInfo = tunnelInfo;
-            this.client = client;
-            this.agent = agent;
+            this.TunnelInfo = tunnelInfo;
+            this.Client = client;
+            this.Agent = agent;
             this.errorHandler = errorHandler;
+            CreateTime = DateTime.Now;
         }
 
-        private void OnError(Exception ex)
+        public void OnError(Exception ex)
         {
             errorHandler?.Invoke(ex);
         }
@@ -39,7 +45,7 @@ namespace Glash.Core.Server
             {
                 channel.SendNoticePackage(new G.D()
                 {
-                    TunnelId = tunnelInfo.Id,
+                    TunnelId = TunnelInfo.Id,
                     Data = data
                 });
             }
@@ -51,32 +57,39 @@ namespace Glash.Core.Server
 
         public void PushDataToClient(byte[] data)
         {
-            PushData(client.Channel, data);
+            PushData(Client.Channel, data);
+            DownloadBytes = data.Length;
         }
 
         public void PushDataToAgent(byte[] data)
         {
-            PushData(agent.Channel, data);
+            PushData(Agent.Channel, data);
+            UploadBytes += data.Length;
         }
 
         public void SendTunnelClosedNotice(QpChannel channel)
         {
-            channel.SendNoticePackage(new Model.TunnelClosed() { TunnelId = tunnelInfo.Id });
+            channel.SendNoticePackage(new Model.TunnelClosed() { TunnelId = TunnelInfo.Id });
         }
-        
+
         public void SendTunnelClosedNoticeToClient()
         {
-            SendTunnelClosedNotice(client.Channel);
+            SendTunnelClosedNotice(Client.Channel);
         }
 
         public void SendTunnelClosedNoticeToAgent()
         {
-            SendTunnelClosedNotice(agent.Channel);
+            SendTunnelClosedNotice(Agent.Channel);
         }
 
         public void StartAgentTunnel()
         {
-            agent.StartTunnelAsync(tunnelInfo.Id).Wait();
+            Agent.StartTunnelAsync(TunnelInfo.Id).Wait();
+        }
+
+        public void Dispose()
+        {
+
         }
     }
 }

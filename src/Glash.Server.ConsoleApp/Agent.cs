@@ -50,12 +50,12 @@ namespace Glash.Server.ConsoleApp
 
         private void GlashServer_AgentConnected(object sender, GlashAgentContext e)
         {
-            AgentContext.Instance.LogInfo($"Agent connected.Name:{e.AgentInfo.Name},Channel:{e.Channel.ChannelName}");
+            AgentContext.Instance.LogInfo($"Agent connected.Name:{e.Name},Channel:{e.Channel.ChannelName}");
         }
 
         private void GlashServer_AgentDisconnected(object sender, GlashAgentContext e)
         {
-            AgentContext.Instance.LogInfo($"Agent disconnected.Name:{e.AgentInfo.Name},Channel:{e.Channel.ChannelName}");
+            AgentContext.Instance.LogInfo($"Agent disconnected.Name:{e.Name},Channel:{e.Channel.ChannelName}");
         }
 
         private void GlashServer_ClientConnected(object sender, GlashClientContext e)

@@ -1,18 +1,18 @@
 ﻿using Quick.Protocol;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Core.Server
 {
     public class GlashClientContext
     {
+        public string Name { get; private set; }
         public QpChannel Channel { get; private set; }
-        public GlashClientContext(QpChannel channel)
+        public DateTime CreateTime { get; private set; }
+
+        public GlashClientContext(string name, QpChannel channel)
         {
-            this.Channel = channel;
+            Name = name;
+            Channel = channel;
+            CreateTime = DateTime.Now;
         }
     }
 }

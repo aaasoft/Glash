@@ -10,12 +10,14 @@ namespace Glash.Core.Server
 {
     public class GlashAgentContext : IDisposable
     {
-        public Model.AgentInfo AgentInfo { get; private set; }
+        public string Name { get; private set; }
         public QpChannel Channel { get; private set; }
-        public GlashAgentContext(Model.AgentInfo agentInfo, QpChannel channel)
+        public DateTime CreateTime { get; private set; }
+        public GlashAgentContext(string name, QpChannel channel)
         {
-            this.AgentInfo = agentInfo;
-            this.Channel = channel;
+            Name = name;
+            Channel = channel;
+            CreateTime = DateTime.Now;
         }
 
         public void Dispose()

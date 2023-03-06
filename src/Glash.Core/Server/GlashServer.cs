@@ -19,6 +19,10 @@ namespace Glash.Core.Server
         private Dictionary<int, GlashServerTunnelContext> serverTunnelContextDict = new Dictionary<int, GlashServerTunnelContext>();
         private int nextTunnelId = -1;
 
+        public GlashAgentContext[] Agents { get; private set; } = new GlashAgentContext[0];
+        public GlashClientContext[] Clients { get; private set; } = new GlashClientContext[0];
+        public GlashServerTunnelContext[] Tunnels { get; private set; } = new GlashServerTunnelContext[0];
+
         public event EventHandler<string> LogPushed;
         public event EventHandler<GlashClientContext> ClientConnected;
         public event EventHandler<GlashAgentContext> AgentConnected;
@@ -90,12 +94,9 @@ namespace Glash.Core.Server
             {
                 if (agentDict.ContainsKey(key))
                     throw new ApplicationException($"Agent [{key}] already registered.");
-                agent = new GlashAgentContext(new Model.AgentInfo()
-                {
-                    Name = key,
-                    ConnectionInfo = channel.ChannelName
-                }, channel);
+                agent = new GlashAgentContext(key, channel);
                 agentDict[key] = agent;
+                Agents = agentDict.Values.ToArray();
             }
             channel.Tag = agent;
             channel.Disconnected += (s, e) =>
@@ -108,6 +109,12 @@ namespace Glash.Core.Server
                     context = agentDict[key];
                     context.Dispose();
                     agentDict.Remove(key);
+                    Agents = agentDict.Values.ToArray();
+                }
+                foreach (var tunnel in Tunnels)
+                {
+                    if (tunnel.Agent.Name == key)
+                        tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
                 }
                 AgentDisconnected?.Invoke(this, context);
             };
@@ -126,8 +133,9 @@ namespace Glash.Core.Server
             {
                 if (clientDict.ContainsKey(key))
                     throw new ApplicationException($"Client [{key}] already registered.");
-                client = new GlashClientContext(channel);
+                client = new GlashClientContext(key, channel);
                 clientDict[key] = client;
+                Clients = clientDict.Values.ToArray();
             }
             channel.Tag = client;
             channel.Disconnected += (s, e) =>
@@ -139,6 +147,12 @@ namespace Glash.Core.Server
                         return;
                     context = clientDict[key];
                     clientDict.Remove(key);
+                    Clients = clientDict.Values.ToArray();
+                }
+                foreach (var tunnel in Tunnels)
+                {
+                    if (tunnel.Client.Name == key)
+                        tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
                 }
                 ClientDisconnected?.Invoke(this, context);
             };
@@ -150,13 +164,9 @@ namespace Glash.Core.Server
             QpChannel channel,
             Glash.Client.Protocol.QpCommands.GetAgentList.Request request)
         {
-            GlashAgentContext[] glashAgentContexts = null;
-            lock (agentDict)
-                glashAgentContexts = agentDict.Values.ToArray();
-
             return new Glash.Client.Protocol.QpCommands.GetAgentList.Response()
             {
-                Data = glashAgentContexts.Select(t => t.AgentInfo).ToArray()
+                Data = Agents.Select(t => t.Name).ToArray()
             };
         }
 
@@ -186,13 +196,20 @@ namespace Glash.Core.Server
                 {
                     lock (serverTunnelContextDict)
                     {
-                        if (!serverTunnelContextDict.ContainsKey(tunnelId))
+                        GlashServerTunnelContext serverTunnelContext;
+                        if (!serverTunnelContextDict.TryGetValue(tunnelId, out serverTunnelContext))
                             return;
                         serverTunnelContextDict.Remove(tunnelId);
+                        Tunnels = serverTunnelContextDict.Values.ToArray();
+                        serverTunnelContext.Dispose();
                     }
                 });
+
             lock (serverTunnelContextDict)
+            {
                 serverTunnelContextDict[tunnelId] = serverTunnelContext;
+                Tunnels = serverTunnelContextDict.Values.ToArray();
+            }
 
             return new Glash.Client.Protocol.QpCommands.CreateTunnel.Response() { Data = tunnelInfo };
         }
