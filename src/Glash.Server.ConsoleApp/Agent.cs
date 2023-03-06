@@ -1,4 +1,5 @@
-﻿using Glash.Core.Server;
+﻿using Glash.Core.Client;
+using Glash.Core.Server;
 using System.Net;
 using YiQiDong.Agent;
 using YiQiDong.Core;
@@ -36,6 +37,7 @@ namespace Glash.Server.ConsoleApp
                 Password = Config.Password
             };
             glashServer = new GlashServer();
+            glashServer.LogPushed += (sender, e) => AgentContext.Instance.LogInfo(e);
             glashServer.HandleServerOptions(qpServerOptions);
             glashServer.AgentConnected += GlashServer_AgentConnected;
             glashServer.AgentDisconnected += GlashServer_AgentDisconnected;

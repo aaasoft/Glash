@@ -7,17 +7,12 @@ using System.Threading.Tasks;
 
 namespace Glash.Core.Server
 {
-    public class GlashClientContext:IDisposable
+    public class GlashClientContext
     {
         public QpChannel Channel { get; private set; }
         public GlashClientContext(QpChannel channel)
         {
             this.Channel = channel;
-        }
-
-        public void Dispose()
-        {
-
         }
     }
 }

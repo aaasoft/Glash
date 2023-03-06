@@ -35,6 +35,20 @@ namespace Glash.Client.ConsoleApp
             cts = new CancellationTokenSource();
 
             glashClient = new GlashClient(Config.ServerUrl, Config.Password);
+            glashClient.LogPushed += (sender, e) => AgentContext.Instance.LogInfo(e);
+#if DEBUG
+            glashClient.AddProxyPortInfo(new ProxyPortInfo()
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Agent = "TestAgent1",
+                LocalIPAddress = "127.0.0.1",
+                LocalPort = 19000,
+                ProtocolType = Model.ProtocolType.TCP,
+                RemoteHost = "www.baidu.com",
+                RemotePort = 80,
+                Enable = true
+            });
+#endif
             glashClient.Disconnected += GlashClient_Disconnected;
             _ = beginConnect(cts.Token);
         }

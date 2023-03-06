@@ -1,4 +1,5 @@
 ﻿using Glash.Core.Agent;
+using Glash.Core.Client;
 using Quick.Protocol;
 using System.Net;
 using YiQiDong.Agent;
@@ -35,6 +36,7 @@ namespace Glash.Agent.ConsoleApp
             cts = new CancellationTokenSource();
 
             glashAgent = new GlashAgent(Config.ServerUrl, Config.Password, Config.AgentName);
+            glashAgent.LogPushed += (sender, e) => AgentContext.Instance.LogInfo(e);
             glashAgent.Disconnected += GlashAgent_Disconnected;
             _ = beginConnect(cts.Token);
         }
