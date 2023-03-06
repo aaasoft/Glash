@@ -1,5 +1,6 @@
 ﻿using Glash.Core.Agent;
 using Glash.Core.Client;
+using Newtonsoft.Json;
 using Quick.Protocol;
 using System.Net;
 using YiQiDong.Agent;
@@ -36,19 +37,8 @@ namespace Glash.Client.ConsoleApp
 
             glashClient = new GlashClient(Config.ServerUrl, Config.Password);
             glashClient.LogPushed += (sender, e) => AgentContext.Instance.LogInfo(e);
-#if DEBUG
-            glashClient.AddProxyPortInfo(new ProxyPortInfo()
-            {
-                Id = Guid.NewGuid().ToString("N"),
-                Agent = "TestAgent1",
-                LocalIPAddress = "127.0.0.1",
-                LocalPort = 19000,
-                ProtocolType = Model.ProtocolType.TCP,
-                RemoteHost = "www.baidu.com",
-                RemotePort = 80,
-                Enable = true
-            });
-#endif
+            var proxyConfigs = JsonConvert.DeserializeObject<ProxyInfo[]>(Config.ProxyConfig);
+            glashClient.AddProxyPortInfos(proxyConfigs);
             glashClient.Disconnected += GlashClient_Disconnected;
             _ = beginConnect(cts.Token);
         }

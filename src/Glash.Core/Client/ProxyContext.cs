@@ -3,14 +3,14 @@ using System.Net.Sockets;
 
 namespace Glash.Core.Client
 {
-    public class ProxyPortContext
+    public class ProxyContext
     {
         private GlashClient glashClient;
         private TcpListener tcpListener;
         private CancellationTokenSource cts;
-        public ProxyPortInfo Config { get; private set; }
+        public ProxyInfo Config { get; private set; }
 
-        public ProxyPortContext(GlashClient glashClient, ProxyPortInfo config)
+        public ProxyContext(GlashClient glashClient, ProxyInfo config)
         {
             this.glashClient = glashClient;
             Config = config;
@@ -21,19 +21,18 @@ namespace Glash.Core.Client
             cts?.Cancel();
             cts = new CancellationTokenSource();
 
-            switch (Config.ProtocolType)
+            switch (Config.Type)
             {
-                case Model.ProtocolType.TCP:
+                case Model.TunnelType.TCP:
                     {
                         tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
                         tcpListener.Start();
                         _ = beginAcceptTcpClient(tcpListener, cts.Token);
                         break;
                     }
-                case Model.ProtocolType.UDP:
-                    {
-                        break;
-                    }
+                case Model.TunnelType.UDP:
+                default:
+                    throw new NotImplementedException();
             }
         }
 
@@ -41,18 +40,17 @@ namespace Glash.Core.Client
         {
             cts?.Cancel();
 
-            switch (Config.ProtocolType)
+            switch (Config.Type)
             {
-                case Model.ProtocolType.TCP:
+                case Model.TunnelType.TCP:
                     {
                         tcpListener.Stop();
                         tcpListener = null;
                         break;
                     }
-                case Model.ProtocolType.UDP:
-                    {
-                        break;
-                    }
+                case Model.TunnelType.UDP:
+                default:
+                    throw new NotImplementedException();
             }
         }
 

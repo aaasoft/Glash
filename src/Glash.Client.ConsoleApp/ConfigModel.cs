@@ -4,5 +4,6 @@
     {
         public string ServerUrl { get; set; }
         public string Password { get; set; }
+        public string ProxyConfig { get; set; }
     }
 }

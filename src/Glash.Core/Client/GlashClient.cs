@@ -45,9 +45,9 @@ namespace Glash.Core.Client
             qpClient.Disconnect();
         }
 
-        private Dictionary<string, ProxyPortContext> proxyPortContextDict = new Dictionary<string, ProxyPortContext>();
+        private Dictionary<string, ProxyContext> proxyPortContextDict = new Dictionary<string, ProxyContext>();
 
-        public void EnableProxyPortInfo(ProxyPortContext context)
+        public void EnableProxyPortInfo(ProxyContext context)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Glash.Core.Client
             EnableProxyPortInfo(context);
         }
 
-        public void DisableProxyPortInfo(ProxyPortContext context)
+        public void DisableProxyPortInfo(ProxyContext context)
         {
             try
             {
@@ -92,15 +92,15 @@ namespace Glash.Core.Client
             DisableProxyPortInfo(context);
         }
 
-        public void AddProxyPortInfo(ProxyPortInfo config)
+        public void AddProxyPortInfo(ProxyInfo config)
         {
-            var context = new ProxyPortContext(this, config);
-            proxyPortContextDict[config.Id] = context;
+            var context = new ProxyContext(this, config);
+            proxyPortContextDict[config.Name] = context;
             if (config.Enable)
                 EnableProxyPortInfo(context);
         }
 
-        public void AddProxyPortInfos(ProxyPortInfo[] items)
+        public void AddProxyPortInfos(ProxyInfo[] items)
         {
             foreach (var item in items)
                 AddProxyPortInfo(item);
@@ -117,7 +117,7 @@ namespace Glash.Core.Client
 
         private Dictionary<int, GlashTunnelContext> tunnelContextDict = new Dictionary<int, GlashTunnelContext>();
 
-        public async Task CreateAndStartTunnelAsync(ProxyPortInfo config, string connectionName, Stream stream)
+        public async Task CreateAndStartTunnelAsync(ProxyInfo config, string connectionName, Stream stream)
         {
             try
             {
@@ -127,7 +127,7 @@ namespace Glash.Core.Client
                     Data = new Model.TunnelInfo()
                     {
                         Agent = config.Agent,
-                        Type = config.ProtocolType,
+                        Type = config.Type,
                         Host = config.RemoteHost,
                         Port = config.RemotePort
                     }
@@ -158,11 +158,11 @@ namespace Glash.Core.Client
                 await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.StartTunnel.Request() { TunnelId = tunnelId });
                 tunnelContext.Start();
 
-                LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel[{tunnelId}] to {config.ProtocolType}://{config.Agent}/{config.RemoteHost}/{config.RemotePort} success.");
+                LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel[{tunnelId}] to {config.Type}://{config.Agent}/{config.RemoteHost}/{config.RemotePort} success.");
             }
             catch (Exception ex)
             {
-                LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel to {config.ProtocolType}://{config.Agent}/{config.RemoteHost}/{config.RemotePort} failed.Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
+                LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel to {config.Type}://{config.Agent}/{config.RemoteHost}/{config.RemotePort} failed.Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
                 try
                 {
                     stream.Close();

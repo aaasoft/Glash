@@ -70,7 +70,7 @@ namespace Glash.Core.Agent
             var tunnelId = tunnelInfo.Id;
             switch (tunnelInfo.Type)
             {
-                case Model.ProtocolType.TCP:
+                case Model.TunnelType.TCP:
                     {
                         var tcpClient = new TcpClient();
                         tcpClient.Connect(tunnelInfo.Host, tunnelInfo.Port);

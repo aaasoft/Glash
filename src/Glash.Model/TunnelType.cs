@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Glash.Model
 {
-    public enum ProtocolType
+    public enum TunnelType
     {
         UDP,
         TCP
