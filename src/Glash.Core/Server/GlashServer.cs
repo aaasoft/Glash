@@ -248,18 +248,21 @@ namespace Glash.Core.Server
         {
             var tunnelId = data.TunnelId;
             LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
-            if (channel.Tag == null)
+
+            GlashServerTunnelContext tunnel;
+            if (!serverTunnelContextDict.TryGetValue(tunnelId, out tunnel))
                 return;
-            GlashServerTunnelContext serverTunnelContext;
-            if (!serverTunnelContextDict.TryGetValue(tunnelId, out serverTunnelContext))
+            tunnel.OnError(new ApplicationException("Tunnel closed."));
+
+            if (channel.Tag == null)
                 return;
             if (channel.Tag is GlashAgentContext)
             {
-                serverTunnelContext.SendTunnelClosedNoticeToClient();
+                tunnel.SendTunnelClosedNoticeToClient();
             }
             else if (channel.Tag is GlashClientContext)
             {
-                serverTunnelContext.SendTunnelClosedNoticeToAgent();
+                tunnel.SendTunnelClosedNoticeToAgent();
             }
         }
     }
