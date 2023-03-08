@@ -82,7 +82,7 @@ namespace Glash.Core.Server
         public void PushDataToClient(byte[] data)
         {
             PushData(Client.Channel, data);
-            DownloadBytes = data.Length;
+            DownloadBytes += data.Length;
         }
 
         public void PushDataToAgent(byte[] data)
