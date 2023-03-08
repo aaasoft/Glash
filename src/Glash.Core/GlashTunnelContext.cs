@@ -29,7 +29,7 @@ namespace Glash.Core
         {
             try
             {
-                var ret = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+                var ret = await stream?.ReadAsync(buffer, 0, buffer.Length, token);
                 if (ret <= 0)
                     throw new IOException("Read count: " + ret);
                 await channel.SendNoticePackage(new G.D()
@@ -53,8 +53,8 @@ namespace Glash.Core
         {
             try
             {
-                stream.Write(data);
-                stream.Flush();
+                stream?.Write(data);
+                stream?.Flush();
             }
             catch (OperationCanceledException)
             {
