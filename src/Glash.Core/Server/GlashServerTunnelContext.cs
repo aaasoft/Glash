@@ -14,7 +14,7 @@ namespace Glash.Core.Server
         public long DownloadBytes { get; private set; }
         public long UploadBytesPerSecond { get; private set; }
         public long DownloadBytesPerSecond { get; private set; }
-
+        private long preUploadBytes, preDownloadBytes;
         private Action<Exception> errorHandler;
 
         public GlashServerTunnelContext(
@@ -29,24 +29,30 @@ namespace Glash.Core.Server
             this.errorHandler = errorHandler;
             CreateTime = DateTime.Now;
             cts = new CancellationTokenSource();
-
+            beginCalcSpeed(cts.Token);
         }
 
         private void beginCalcSpeed(CancellationToken cancellationToken)
         {
-            long preUploadBytes = UploadBytes;
-            long preDownloadBytes = DownloadBytes;
-
             Task.Delay(1000, cancellationToken).ContinueWith(t =>
             {
                 if (t.IsCanceled)
                     return;
-                UploadBytesPerSecond = UploadBytes - preUploadBytes;
-                if (UploadBytesPerSecond < 0)
-                    UploadBytesPerSecond = 0;
-                DownloadBytesPerSecond = DownloadBytes - preDownloadBytes;
-                if (DownloadBytesPerSecond < 0)
-                    DownloadBytesPerSecond = 0;
+                try
+                {
+                    var currentUploadBytes = UploadBytes;
+                    var currentDownloadBytes = DownloadBytes;
+
+                    UploadBytesPerSecond = currentUploadBytes - preUploadBytes;
+                    if (UploadBytesPerSecond < 0)
+                        UploadBytesPerSecond = 0;
+                    preUploadBytes = currentUploadBytes;
+                    DownloadBytesPerSecond = currentDownloadBytes - preDownloadBytes;
+                    if (DownloadBytesPerSecond < 0)
+                        DownloadBytesPerSecond = 0;
+                    preUploadBytes = currentUploadBytes;
+                }
+                catch { }
                 beginCalcSpeed(cancellationToken);
             });
         }
