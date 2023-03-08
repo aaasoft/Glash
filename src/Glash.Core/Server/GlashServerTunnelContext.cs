@@ -47,10 +47,11 @@ namespace Glash.Core.Server
                     if (UploadBytesPerSecond < 0)
                         UploadBytesPerSecond = 0;
                     preUploadBytes = currentUploadBytes;
+
                     DownloadBytesPerSecond = currentDownloadBytes - preDownloadBytes;
                     if (DownloadBytesPerSecond < 0)
                         DownloadBytesPerSecond = 0;
-                    preUploadBytes = currentUploadBytes;
+                    preDownloadBytes = currentDownloadBytes;
                 }
                 catch { }
                 beginCalcSpeed(cancellationToken);
