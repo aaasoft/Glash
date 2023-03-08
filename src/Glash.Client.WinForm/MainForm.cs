@@ -1,5 +1,6 @@
 using Glash.Client.WinForm.Utils;
 using Glash.Core.Client;
+using System.IO.Pipes;
 
 namespace Glash.Client.WinForm
 {
@@ -15,6 +16,50 @@ namespace Glash.Client.WinForm
         {
             InitializeComponent();
             Text += $" v{Application.ProductVersion}";
+            ensureOnlyOne();
+        }
+
+        private NamedPipeServerStream createNewNamedPipedServerStream(String pipeName)
+        {
+            return new NamedPipeServerStream(
+                    pipeName,
+                    PipeDirection.InOut,
+                    1,
+                    PipeTransmissionMode.Byte,
+                    PipeOptions.Asynchronous);
+        }
+
+        private void ensureOnlyOne()
+        {
+            var pipeName = this.GetType().FullName;
+            try
+            {
+                var serverStream = createNewNamedPipedServerStream(pipeName);
+                AsyncCallback ac = null;
+                ac = ar =>
+                {
+                    Invoke(()=> showForm());
+                    serverStream.Close();
+                    serverStream = createNewNamedPipedServerStream(pipeName);
+                    serverStream.BeginWaitForConnection(ac, null);
+                };
+                serverStream.BeginWaitForConnection(ac, null);
+            }
+            catch
+            {
+                try
+                {
+                    var clientStream = new NamedPipeClientStream(pipeName);
+                    clientStream.Connect();
+                    clientStream.Close();
+                }
+                finally
+                {
+                    this.DialogResult = DialogResult.Cancel;
+                    this.Close();
+                    Environment.Exit(0);
+                }
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -73,12 +118,16 @@ namespace Glash.Client.WinForm
                 lvi.Tag = proxy;
             }
         }
+        private void showForm()
+        {
+            ShowInTaskbar = true;
+            WindowState = FormWindowState.Normal;
+            Activate();
+        }
 
         private void niMain_MouseClick(object sender, MouseEventArgs e)
         {
-            this.ShowInTaskbar = true;
-            this.WindowState = FormWindowState.Normal;
-            this.Activate();
+            showForm();
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
@@ -234,12 +283,16 @@ namespace Glash.Client.WinForm
                 currentProxyModel = null;
                 btnEditProxy.Enabled = false;
                 btnDeleteProxy.Enabled = false;
+                btnEnableProxy.Enabled = false;
+                btnDisableProxy.Enabled = false;
             }
             else
             {
                 currentProxyModel = (ProxyInfo)lvProxyList.SelectedItems[0].Tag;
                 btnEditProxy.Enabled = true;
                 btnDeleteProxy.Enabled = true;
+                btnEnableProxy.Enabled = true;
+                btnDisableProxy.Enabled = true;
             }
         }
 
