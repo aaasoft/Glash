@@ -14,6 +14,7 @@ namespace Glash.Client.WinForm
         public MainForm()
         {
             InitializeComponent();
+            Text += $" v{Application.ProductVersion}";
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -131,7 +132,7 @@ namespace Glash.Client.WinForm
 
         private void btnDeleteServer_Click(object sender, EventArgs e)
         {
-            var dr = MessageBox.Show($"Do you want to delete {currentServerModel}", Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            var dr = MessageBox.Show($"Do you want to delete {currentServerModel}", "Delete Server", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.Cancel)
                 return;
             config.ServerList.Remove(currentServerModel);
@@ -217,7 +218,7 @@ namespace Glash.Client.WinForm
 
         private void btnDeleteProxy_Click(object sender, EventArgs e)
         {
-            var dr = MessageBox.Show($"Do you want to delete {currentProxyModel}", Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            var dr = MessageBox.Show($"Do you want to delete {currentProxyModel}", "Delete Proxy", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.Cancel)
                 return;
             currentServerContext.OnProxyRemoved(currentProxyModel);

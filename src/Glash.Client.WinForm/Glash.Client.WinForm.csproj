@@ -6,6 +6,7 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RollForward>Major</RollForward>
+		<Version>1.0.2</Version>
 		<ApplicationIcon>logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
