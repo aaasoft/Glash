@@ -1,23 +1,19 @@
 ﻿using Glash.Model;
-using NJsonSchema.Annotations;
 using Quick.Protocol;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Core.Server
 {
     public class GlashServerTunnelContext : IDisposable
     {
+        private CancellationTokenSource cts = new CancellationTokenSource();
         public TunnelInfo TunnelInfo { get; private set; }
         public GlashClientContext Client { get; private set; }
         public GlashAgentContext Agent { get; private set; }
         public DateTime CreateTime { get; private set; }
         public long UploadBytes { get; private set; }
         public long DownloadBytes { get; private set; }
+        public long UploadBytesPerSecond { get; private set; }
+        public long DownloadBytesPerSecond { get; private set; }
 
         private Action<Exception> errorHandler;
 
@@ -32,6 +28,27 @@ namespace Glash.Core.Server
             this.Agent = agent;
             this.errorHandler = errorHandler;
             CreateTime = DateTime.Now;
+            cts = new CancellationTokenSource();
+
+        }
+
+        private void beginCalcSpeed(CancellationToken cancellationToken)
+        {
+            long preUploadBytes = UploadBytes;
+            long preDownloadBytes = DownloadBytes;
+
+            Task.Delay(1000, cancellationToken).ContinueWith(t =>
+            {
+                if (t.IsCanceled)
+                    return;
+                UploadBytesPerSecond = UploadBytes - preUploadBytes;
+                if (UploadBytesPerSecond < 0)
+                    UploadBytesPerSecond = 0;
+                DownloadBytesPerSecond = DownloadBytes - preDownloadBytes;
+                if (DownloadBytesPerSecond < 0)
+                    DownloadBytesPerSecond = 0;
+                beginCalcSpeed(cancellationToken);
+            });
         }
 
         public void OnError(Exception ex)
@@ -89,7 +106,7 @@ namespace Glash.Core.Server
 
         public void Dispose()
         {
-
+            cts.Cancel();
         }
     }
 }
