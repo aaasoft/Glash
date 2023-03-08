@@ -6,7 +6,7 @@ namespace Glash.Core.Client
     {
         public string Name { get; set; }
         public string Agent { get; set; }
-        public TunnelType Type { get; set; }
+        public TunnelType Type { get; set; } = TunnelType.TCP;
         public string LocalIPAddress { get; set; }
         public int LocalPort { get; set; }
         public string RemoteHost { get; set; }
@@ -15,7 +15,7 @@ namespace Glash.Core.Client
 
         public override string ToString()
         {
-            return $"Proxy[Name:{Name},Agent:{Agent},Type:{Type},Local:{LocalIPAddress}:{LocalPort},Remote:{RemoteHost}:{RemotePort}]";
+            return $"Proxy[{Name}]";
         }
     }
 }

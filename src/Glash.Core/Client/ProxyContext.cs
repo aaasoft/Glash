@@ -44,7 +44,7 @@ namespace Glash.Core.Client
             {
                 case Model.TunnelType.TCP:
                     {
-                        tcpListener.Stop();
+                        tcpListener?.Stop();
                         tcpListener = null;
                         break;
                     }
