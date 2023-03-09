@@ -12,17 +12,22 @@ namespace Glash.Client.WinForm
         public bool IsConnected { get; private set; } = false;
         public Action stateChanged;
         private Action isConnectedChangedAction;
-        public ServerContext(ServerInfo model, Action stateChanged = null, Action isConnectedChangedAction = null)
+        private Action<string> logHandler;
+
+        public ServerContext(ServerInfo model, Action stateChanged = null, Action isConnectedChangedAction = null, Action<string> logHandler = null)
         {
             Model = model;
             this.stateChanged = stateChanged;
             this.isConnectedChangedAction = isConnectedChangedAction;
+            this.logHandler = logHandler;
 
             cts?.Cancel();
             cts = new CancellationTokenSource();
             try
             {
                 glashClient = new GlashClient(model.Url, model.Password);
+                if(logHandler != null)
+                    glashClient.LogPushed += GlashClient_LogPushed;
                 glashClient.AddProxyPortInfos(model.ProxyList.ToArray());
                 glashClient.Disconnected += GlashClient_Disconnected;
                 _ = beginConnect(cts.Token);
@@ -33,6 +38,11 @@ namespace Glash.Client.WinForm
             }
         }
 
+        private void GlashClient_LogPushed(object sender, string e)
+        {
+            logHandler?.Invoke(e);
+        }
+
         private void changeState(string state)
         {
             State = state;
@@ -41,8 +51,11 @@ namespace Glash.Client.WinForm
 
         private void changeIsConnected(bool isConnected)
         {
+            bool isChanged = false;
+            isChanged = IsConnected != isConnected;
             IsConnected = isConnected;
-            isConnectedChangedAction?.Invoke();
+            if (isChanged)
+                isConnectedChangedAction?.Invoke();
         }
 
         private void GlashClient_Disconnected(object sender, EventArgs e)
@@ -104,8 +117,13 @@ namespace Glash.Client.WinForm
                 OnProxyRemoved(proxy);
             cts?.Cancel();
             cts = null;
-            glashClient?.Dispose();
-            glashClient = null;
+            if (glashClient != null)
+            {
+                if (logHandler != null)
+                    glashClient.LogPushed -= GlashClient_LogPushed;
+                glashClient.Dispose();
+                glashClient = null;
+            }
         }
 
         public void EnableProxy(ProxyInfo currentProxyModel)

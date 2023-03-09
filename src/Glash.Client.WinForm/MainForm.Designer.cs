@@ -39,11 +39,11 @@
             btnDuplicateServer = new ToolStripButton();
             btnDeleteServer = new ToolStripButton();
             gbServerInfo = new GroupBox();
-            lblServerState = new Label();
+            txtServerState = new TextBox();
+            txtServerUrl = new TextBox();
+            txtServerName = new TextBox();
             label4 = new Label();
-            lblServerUrl = new Label();
             label2 = new Label();
-            lblServerName = new Label();
             label1 = new Label();
             gbProxyList = new GroupBox();
             lvProxyList = new ListView();
@@ -65,7 +65,10 @@
             btnEnableAllProxy = new ToolStripButton();
             btnDisableAllProxy = new ToolStripButton();
             splitContainer1 = new SplitContainer();
+            splitContainer3 = new SplitContainer();
             splitContainer2 = new SplitContainer();
+            gbLogs = new GroupBox();
+            txtLogs = new TextBox();
             gbServerList.SuspendLayout();
             toolStrip1.SuspendLayout();
             gbServerInfo.SuspendLayout();
@@ -75,10 +78,15 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer3).BeginInit();
+            splitContainer3.Panel1.SuspendLayout();
+            splitContainer3.Panel2.SuspendLayout();
+            splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
+            gbLogs.SuspendLayout();
             SuspendLayout();
             // 
             // niMain
@@ -95,7 +103,7 @@
             gbServerList.Dock = DockStyle.Fill;
             gbServerList.Location = new Point(0, 0);
             gbServerList.Name = "gbServerList";
-            gbServerList.Size = new Size(623, 1095);
+            gbServerList.Size = new Size(623, 665);
             gbServerList.TabIndex = 0;
             gbServerList.TabStop = false;
             gbServerList.Text = "Server List";
@@ -108,7 +116,7 @@
             lbServers.ItemHeight = 31;
             lbServers.Location = new Point(3, 75);
             lbServers.Name = "lbServers";
-            lbServers.Size = new Size(617, 1017);
+            lbServers.Size = new Size(617, 587);
             lbServers.TabIndex = 1;
             lbServers.SelectedIndexChanged += lbServers_SelectedIndexChanged;
             // 
@@ -168,70 +176,71 @@
             // 
             // gbServerInfo
             // 
-            gbServerInfo.Controls.Add(lblServerState);
+            gbServerInfo.Controls.Add(txtServerState);
+            gbServerInfo.Controls.Add(txtServerUrl);
+            gbServerInfo.Controls.Add(txtServerName);
             gbServerInfo.Controls.Add(label4);
-            gbServerInfo.Controls.Add(lblServerUrl);
             gbServerInfo.Controls.Add(label2);
-            gbServerInfo.Controls.Add(lblServerName);
             gbServerInfo.Controls.Add(label1);
             gbServerInfo.Dock = DockStyle.Fill;
             gbServerInfo.Location = new Point(0, 0);
             gbServerInfo.Name = "gbServerInfo";
-            gbServerInfo.Size = new Size(1244, 251);
+            gbServerInfo.Size = new Size(623, 426);
             gbServerInfo.TabIndex = 1;
             gbServerInfo.TabStop = false;
             gbServerInfo.Text = "Server Info";
             gbServerInfo.Visible = false;
             // 
-            // lblServerState
+            // txtServerState
             // 
-            lblServerState.AutoSize = true;
-            lblServerState.Location = new Point(167, 130);
-            lblServerState.Name = "lblServerState";
-            lblServerState.Size = new Size(73, 31);
-            lblServerState.TabIndex = 1;
-            lblServerState.Text = "State";
+            txtServerState.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtServerState.Location = new Point(12, 218);
+            txtServerState.Multiline = true;
+            txtServerState.Name = "txtServerState";
+            txtServerState.ReadOnly = true;
+            txtServerState.Size = new Size(599, 196);
+            txtServerState.TabIndex = 4;
+            // 
+            // txtServerUrl
+            // 
+            txtServerUrl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtServerUrl.Location = new Point(12, 143);
+            txtServerUrl.Name = "txtServerUrl";
+            txtServerUrl.ReadOnly = true;
+            txtServerUrl.Size = new Size(605, 38);
+            txtServerUrl.TabIndex = 3;
+            // 
+            // txtServerName
+            // 
+            txtServerName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtServerName.Location = new Point(12, 68);
+            txtServerName.Name = "txtServerName";
+            txtServerName.ReadOnly = true;
+            txtServerName.Size = new Size(605, 38);
+            txtServerName.TabIndex = 2;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(39, 130);
+            label4.Location = new Point(16, 184);
             label4.Name = "label4";
             label4.Size = new Size(79, 31);
             label4.TabIndex = 0;
             label4.Text = "State:";
             // 
-            // lblServerUrl
-            // 
-            lblServerUrl.AutoSize = true;
-            lblServerUrl.Location = new Point(167, 85);
-            lblServerUrl.Name = "lblServerUrl";
-            lblServerUrl.Size = new Size(47, 31);
-            lblServerUrl.TabIndex = 1;
-            lblServerUrl.Text = "Url";
-            // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(65, 85);
+            label2.Location = new Point(12, 109);
             label2.Name = "label2";
             label2.Size = new Size(53, 31);
             label2.TabIndex = 0;
             label2.Text = "Url:";
             // 
-            // lblServerName
-            // 
-            lblServerName.AutoSize = true;
-            lblServerName.Location = new Point(167, 44);
-            lblServerName.Name = "lblServerName";
-            lblServerName.Size = new Size(163, 31);
-            lblServerName.TabIndex = 1;
-            lblServerName.Text = "Server Name";
-            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(29, 44);
+            label1.Location = new Point(6, 34);
             label1.Name = "label1";
             label1.Size = new Size(89, 31);
             label1.TabIndex = 0;
@@ -244,7 +253,7 @@
             gbProxyList.Dock = DockStyle.Fill;
             gbProxyList.Location = new Point(0, 0);
             gbProxyList.Name = "gbProxyList";
-            gbProxyList.Size = new Size(1244, 840);
+            gbProxyList.Size = new Size(1244, 665);
             gbProxyList.TabIndex = 2;
             gbProxyList.TabStop = false;
             gbProxyList.Text = "Proxy List";
@@ -259,7 +268,7 @@
             lvProxyList.Location = new Point(3, 75);
             lvProxyList.MultiSelect = false;
             lvProxyList.Name = "lvProxyList";
-            lvProxyList.Size = new Size(1238, 762);
+            lvProxyList.Size = new Size(1238, 587);
             lvProxyList.TabIndex = 2;
             lvProxyList.UseCompatibleStateImageBehavior = false;
             lvProxyList.View = View.Details;
@@ -409,7 +418,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(gbServerList);
+            splitContainer1.Panel1.Controls.Add(splitContainer3);
             // 
             // splitContainer1.Panel2
             // 
@@ -417,6 +426,24 @@
             splitContainer1.Size = new Size(1871, 1095);
             splitContainer1.SplitterDistance = 623;
             splitContainer1.TabIndex = 3;
+            // 
+            // splitContainer3
+            // 
+            splitContainer3.Dock = DockStyle.Fill;
+            splitContainer3.Location = new Point(0, 0);
+            splitContainer3.Name = "splitContainer3";
+            splitContainer3.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            splitContainer3.Panel1.Controls.Add(gbServerList);
+            // 
+            // splitContainer3.Panel2
+            // 
+            splitContainer3.Panel2.Controls.Add(gbServerInfo);
+            splitContainer3.Size = new Size(623, 1095);
+            splitContainer3.SplitterDistance = 665;
+            splitContainer3.TabIndex = 1;
             // 
             // splitContainer2
             // 
@@ -427,14 +454,36 @@
             // 
             // splitContainer2.Panel1
             // 
-            splitContainer2.Panel1.Controls.Add(gbServerInfo);
+            splitContainer2.Panel1.Controls.Add(gbProxyList);
             // 
             // splitContainer2.Panel2
             // 
-            splitContainer2.Panel2.Controls.Add(gbProxyList);
+            splitContainer2.Panel2.Controls.Add(gbLogs);
             splitContainer2.Size = new Size(1244, 1095);
-            splitContainer2.SplitterDistance = 251;
+            splitContainer2.SplitterDistance = 665;
             splitContainer2.TabIndex = 0;
+            // 
+            // gbLogs
+            // 
+            gbLogs.Controls.Add(txtLogs);
+            gbLogs.Dock = DockStyle.Fill;
+            gbLogs.Location = new Point(0, 0);
+            gbLogs.Name = "gbLogs";
+            gbLogs.Size = new Size(1244, 426);
+            gbLogs.TabIndex = 0;
+            gbLogs.TabStop = false;
+            gbLogs.Text = "Logs";
+            // 
+            // txtLogs
+            // 
+            txtLogs.Dock = DockStyle.Fill;
+            txtLogs.Location = new Point(3, 34);
+            txtLogs.Multiline = true;
+            txtLogs.Name = "txtLogs";
+            txtLogs.ReadOnly = true;
+            txtLogs.ScrollBars = ScrollBars.Vertical;
+            txtLogs.Size = new Size(1238, 389);
+            txtLogs.TabIndex = 5;
             // 
             // MainForm
             // 
@@ -462,10 +511,16 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            splitContainer3.Panel1.ResumeLayout(false);
+            splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer3).EndInit();
+            splitContainer3.ResumeLayout(false);
             splitContainer2.Panel1.ResumeLayout(false);
             splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
+            gbLogs.ResumeLayout(false);
+            gbLogs.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -482,11 +537,8 @@
         private GroupBox gbProxyList;
         private SplitContainer splitContainer1;
         private SplitContainer splitContainer2;
-        private Label lblServerState;
         private Label label4;
-        private Label lblServerUrl;
         private Label label2;
-        private Label lblServerName;
         private Label label1;
         private ToolStrip toolStrip2;
         private ToolStripButton btnAddProxy;
@@ -507,5 +559,11 @@
         private ToolStripButton btnDuplicateProxy;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripButton btnDuplicateServer;
+        private SplitContainer splitContainer3;
+        private TextBox txtServerState;
+        private TextBox txtServerUrl;
+        private TextBox txtServerName;
+        private GroupBox gbLogs;
+        private TextBox txtLogs;
     }
 }

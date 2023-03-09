@@ -2,7 +2,9 @@ using Glash.Client.WinForm.Utils;
 using Glash.Core.Client;
 using Newtonsoft.Json;
 using Quick.Protocol.Utils;
+using System.Collections;
 using System.IO.Pipes;
+using System.Linq;
 using System.Reflection;
 
 namespace Glash.Client.WinForm
@@ -10,6 +12,7 @@ namespace Glash.Client.WinForm
     public partial class MainForm : Form
     {
         private Config config;
+        private int maxLogLines = 1000;
         private ServerInfo currentServerModel;
         private ServerContext currentServerContext;
         private ProxyInfo currentProxyModel;
@@ -75,22 +78,41 @@ namespace Glash.Client.WinForm
             refreshServerList();
         }
 
+        private void pushLog(string log)
+        {
+            txtLogs.AppendText($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}: {log}{Environment.NewLine}");
+            var lines = txtLogs.Lines;
+            if (lines.Length > maxLogLines)
+            {
+                lines = lines.Skip(lines.Length - maxLogLines).ToArray();
+                txtLogs.Lines = lines;
+            }
+            txtLogs.Select(txtLogs.TextLength, 0);
+            txtLogs.ScrollToCaret();
+        }
+
         private void onServerAdded(ServerInfo serverInfo)
         {
+            var serverName = serverInfo.Name;
             serverDict[serverInfo.Name] = new ServerContext(
                 serverInfo,
                 () =>
                 {
                     if (currentServerModel != serverInfo)
                         return;
-                    Invoke(() => lblServerState.Text = currentServerContext.State);
+                    Invoke(() => txtServerState.Text = currentServerContext.State);
                 },
                 () =>
                 {
                     if (currentServerModel != serverInfo)
                         return;
-                    //Invoke(() => lblServerState.Text = currentServerContext.State);
-                });
+                    if (currentServerContext.IsConnected)
+                        pushLog($"[{serverName}]Connected.");
+                    else
+                        pushLog($"[{serverName}]Disonnected.");
+                },
+                e => pushLog($"[{serverName}]{e}")
+            );
         }
 
         private void onServerRemoved(ServerInfo serverInfo)
@@ -230,6 +252,10 @@ namespace Glash.Client.WinForm
                 gbServerInfo.Visible = false;
                 gbProxyList.Visible = false;
                 lvProxyList.Items.Clear();
+
+                txtServerName.Clear();
+                txtServerUrl.Clear();
+                txtServerState.Clear();
             }
             else
             {
@@ -240,9 +266,9 @@ namespace Glash.Client.WinForm
                 gbServerInfo.Visible = true;
                 gbProxyList.Visible = true;
 
-                lblServerName.Text = currentServerModel.Name;
-                lblServerUrl.Text = currentServerModel.Url;
-                lblServerState.Text = currentServerContext.State;
+                txtServerName.Text = currentServerModel.Name;
+                txtServerUrl.Text = currentServerModel.Url;
+                txtServerState.Text = currentServerContext.State;
 
                 refreshProxyList();
             }
