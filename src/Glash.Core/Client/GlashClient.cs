@@ -168,6 +168,7 @@ namespace Glash.Core.Client
                             tunnelContext = tunnelContextDict[tunnelId];
                         }
                         tunnelContext.Dispose();
+                        LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
                     });
                 lock (tunnelContextDict)
                     tunnelContextDict[tunnelId] = tunnelContext;
