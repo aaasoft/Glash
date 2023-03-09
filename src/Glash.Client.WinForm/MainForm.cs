@@ -1,6 +1,9 @@
 using Glash.Client.WinForm.Utils;
 using Glash.Core.Client;
+using Newtonsoft.Json;
+using Quick.Protocol.Utils;
 using System.IO.Pipes;
+using System.Reflection;
 
 namespace Glash.Client.WinForm
 {
@@ -38,7 +41,7 @@ namespace Glash.Client.WinForm
                 AsyncCallback ac = null;
                 ac = ar =>
                 {
-                    Invoke(()=> showForm());
+                    Invoke(() => showForm());
                     serverStream.Close();
                     serverStream = createNewNamedPipedServerStream(pipeName);
                     serverStream.BeginWaitForConnection(ac, null);
@@ -138,6 +141,33 @@ namespace Glash.Client.WinForm
             }
         }
 
+        private string validateServerName(string serverName, string preServerName = null)
+        {
+            if (preServerName != null && preServerName == serverName)
+                return serverName;
+            var modelName = serverName;
+            var currentIndex = 2;
+            while (true)
+            {
+                if (config.ServerList.Any(t => t.Name == modelName))
+                {
+                    modelName = $"{serverName}({currentIndex})";
+                    currentIndex++;
+                    continue;
+                }
+                break;
+            }
+            return modelName;
+        }
+
+        private void addServer(ServerInfo model)
+        {
+            config.ServerList.Add(model);
+            ConfigFileUtils.Save(config);
+            onServerAdded(model);
+            refreshServerList();
+        }
+
         private void btnAddServer_Click(object sender, EventArgs e)
         {
             var form = new EditServerForm();
@@ -145,22 +175,8 @@ namespace Glash.Client.WinForm
             if (dr == DialogResult.Cancel)
                 return;
             var model = form.Model;
-            var modelName = model.Name;
-            var currentIndex = 2;
-            while (true)
-            {
-                if (config.ServerList.Any(t => t.Name == model.Name))
-                {
-                    model.Name = $"{modelName}({currentIndex})";
-                    currentIndex++;
-                    continue;
-                }
-                break;
-            }
-            config.ServerList.Add(model);
-            ConfigFileUtils.Save(config);
-            onServerAdded(model);
-            refreshServerList();
+            model.Name = validateServerName(model.Name);
+            addServer(model);
         }
 
         private void btnEditServer_Click(object sender, EventArgs e)
@@ -172,12 +188,23 @@ namespace Glash.Client.WinForm
                 return;
             onServerRemoved(currentServerModel);
             var model = form.Model;
+            model.Name = validateServerName(model.Name, currentServerModel.Name);
             currentServerModel.Name = model.Name;
             currentServerModel.Url = model.Url;
             currentServerModel.Password = model.Password;
             ConfigFileUtils.Save(config);
             onServerAdded(currentServerModel);
             refreshServerList();
+        }
+
+        private void btnDuplicateServer_Click(object sender, EventArgs e)
+        {
+            var json = JsonConvert.SerializeObject(currentServerModel);
+            var newModel = JsonConvert.DeserializeObject<ServerInfo>(json);
+            newModel.Name = validateServerName(newModel.Name);
+            foreach (var proxy in newModel.ProxyList)
+                proxy.Enable = false;
+            addServer(newModel);
         }
 
         private void btnDeleteServer_Click(object sender, EventArgs e)
@@ -198,6 +225,7 @@ namespace Glash.Client.WinForm
             {
                 currentServerContext = null;
                 btnEditServer.Enabled = false;
+                btnDuplicateServer.Enabled = false;
                 btnDeleteServer.Enabled = false;
                 gbServerInfo.Visible = false;
                 gbProxyList.Visible = false;
@@ -207,6 +235,7 @@ namespace Glash.Client.WinForm
             {
                 currentServerContext = serverDict[currentServerModel.Name];
                 btnEditServer.Enabled = true;
+                btnDuplicateServer.Enabled = true;
                 btnDeleteServer.Enabled = true;
                 gbServerInfo.Visible = true;
                 gbProxyList.Visible = true;
@@ -219,6 +248,33 @@ namespace Glash.Client.WinForm
             }
         }
 
+        private string validateProxyName(ServerInfo serverModel, string proxyName, string preProxyName = null)
+        {
+            if (preProxyName != null && preProxyName == proxyName)
+                return proxyName;
+            var modelName = proxyName;
+            var currentIndex = 2;
+            while (true)
+            {
+                if (serverModel.ProxyList.Any(t => t.Name == modelName))
+                {
+                    modelName = $"{proxyName}({currentIndex})";
+                    currentIndex++;
+                    continue;
+                }
+                break;
+            }
+            return modelName;
+        }
+
+        private void addProxy(ServerContext serverContext, ProxyInfo model)
+        {
+            serverContext.Model.ProxyList.Add(model);
+            ConfigFileUtils.Save(config);
+            serverContext.OnProxyAdded(model);
+            refreshProxyList();
+        }
+
         private void btnAddProxy_Click(object sender, EventArgs e)
         {
             var form = new EditProxyForm();
@@ -227,22 +283,8 @@ namespace Glash.Client.WinForm
             if (dr == DialogResult.Cancel)
                 return;
             var model = form.Model;
-            var modelName = model.Name;
-            var currentIndex = 2;
-            while (true)
-            {
-                if (currentServerModel.ProxyList.Any(t => t.Name == model.Name))
-                {
-                    model.Name = $"{modelName}({currentIndex})";
-                    currentIndex++;
-                    continue;
-                }
-                break;
-            }
-            currentServerModel.ProxyList.Add(model);
-            ConfigFileUtils.Save(config);
-            currentServerContext.OnProxyAdded(model);
-            refreshProxyList();
+            model.Name = validateProxyName(currentServerModel, model.Name);
+            addProxy(currentServerContext, model);
         }
 
         private void btnEditProxy_Click(object sender, EventArgs e)
@@ -253,8 +295,9 @@ namespace Glash.Client.WinForm
             var dr = form.ShowDialog();
             if (dr == DialogResult.Cancel)
                 return;
-            var model = form.Model;
             currentServerContext.OnProxyRemoved(currentProxyModel);
+            var model = form.Model;
+            model.Name = validateProxyName(currentServerModel, model.Name, currentProxyModel.Name);
             currentProxyModel.Name = model.Name;
             currentProxyModel.Type = model.Type;
             currentProxyModel.Agent = model.Agent;
@@ -265,6 +308,15 @@ namespace Glash.Client.WinForm
             ConfigFileUtils.Save(config);
             currentServerContext.OnProxyAdded(currentProxyModel);
             refreshProxyList();
+        }
+
+        private void btnDuplicateProxy_Click(object sender, EventArgs e)
+        {
+            var json = JsonConvert.SerializeObject(currentProxyModel);
+            var newModel = JsonConvert.DeserializeObject<ProxyInfo>(json);
+            newModel.Name = validateProxyName(currentServerModel, newModel.Name);
+            newModel.Enable = false;
+            addProxy(currentServerContext, newModel);
         }
 
         private void btnDeleteProxy_Click(object sender, EventArgs e)
@@ -284,6 +336,7 @@ namespace Glash.Client.WinForm
             {
                 currentProxyModel = null;
                 btnEditProxy.Enabled = false;
+                btnDuplicateProxy.Enabled = false;
                 btnDeleteProxy.Enabled = false;
                 btnEnableProxy.Enabled = false;
                 btnDisableProxy.Enabled = false;
@@ -292,6 +345,7 @@ namespace Glash.Client.WinForm
             {
                 currentProxyModel = (ProxyInfo)lvProxyList.SelectedItems[0].Tag;
                 btnEditProxy.Enabled = true;
+                btnDuplicateProxy.Enabled = true;
                 btnDeleteProxy.Enabled = true;
                 btnEnableProxy.Enabled = true;
                 btnDisableProxy.Enabled = true;
@@ -300,16 +354,30 @@ namespace Glash.Client.WinForm
 
         private void btnEnableProxy_Click(object sender, EventArgs e)
         {
-            currentServerContext.EnableProxy(currentProxyModel);
-            ConfigFileUtils.Save(config);
-            refreshProxyList();
+            try
+            {
+                currentServerContext.EnableProxy(currentProxyModel);
+                ConfigFileUtils.Save(config);
+                refreshProxyList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Enable {currentProxyModel} failed,Reason:{ExceptionUtils.GetExceptionMessage(ex)}", "Warn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void btnDisableProxy_Click(object sender, EventArgs e)
         {
-            currentServerContext.DisableProxy(currentProxyModel);
-            ConfigFileUtils.Save(config);
-            refreshProxyList();
+            try
+            {
+                currentServerContext.DisableProxy(currentProxyModel);
+                ConfigFileUtils.Save(config);
+                refreshProxyList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Disable {currentProxyModel} failed,Reason:{ExceptionUtils.GetExceptionMessage(ex)}", "Warn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void btnEnableAllProxy_Click(object sender, EventArgs e)
@@ -318,7 +386,11 @@ namespace Glash.Client.WinForm
             {
                 if (proxy.Enable)
                     continue;
-                currentServerContext.EnableProxy(proxy);
+                try
+                {
+                    currentServerContext.EnableProxy(proxy);
+                }
+                catch { }
             }
             ConfigFileUtils.Save(config);
             refreshProxyList();
@@ -330,7 +402,11 @@ namespace Glash.Client.WinForm
             {
                 if (!proxy.Enable)
                     continue;
-                currentServerContext.DisableProxy(proxy);
+                try
+                {
+                    currentServerContext.DisableProxy(proxy);
+                }
+                catch { }
             }
             ConfigFileUtils.Save(config);
             refreshProxyList();

@@ -36,6 +36,7 @@
             toolStrip1 = new ToolStrip();
             btnAddServer = new ToolStripButton();
             btnEditServer = new ToolStripButton();
+            btnDuplicateServer = new ToolStripButton();
             btnDeleteServer = new ToolStripButton();
             gbServerInfo = new GroupBox();
             lblServerState = new Label();
@@ -57,12 +58,14 @@
             btnEditProxy = new ToolStripButton();
             btnDeleteProxy = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
+            btnDuplicateProxy = new ToolStripButton();
             btnEnableProxy = new ToolStripButton();
             btnDisableProxy = new ToolStripButton();
-            splitContainer1 = new SplitContainer();
-            splitContainer2 = new SplitContainer();
+            toolStripSeparator2 = new ToolStripSeparator();
             btnEnableAllProxy = new ToolStripButton();
             btnDisableAllProxy = new ToolStripButton();
+            splitContainer1 = new SplitContainer();
+            splitContainer2 = new SplitContainer();
             gbServerList.SuspendLayout();
             toolStrip1.SuspendLayout();
             gbServerInfo.SuspendLayout();
@@ -92,7 +95,7 @@
             gbServerList.Dock = DockStyle.Fill;
             gbServerList.Location = new Point(0, 0);
             gbServerList.Name = "gbServerList";
-            gbServerList.Size = new Size(569, 945);
+            gbServerList.Size = new Size(623, 1095);
             gbServerList.TabIndex = 0;
             gbServerList.TabStop = false;
             gbServerList.Text = "Server List";
@@ -105,7 +108,7 @@
             lbServers.ItemHeight = 31;
             lbServers.Location = new Point(3, 75);
             lbServers.Name = "lbServers";
-            lbServers.Size = new Size(563, 867);
+            lbServers.Size = new Size(617, 1017);
             lbServers.TabIndex = 1;
             lbServers.SelectedIndexChanged += lbServers_SelectedIndexChanged;
             // 
@@ -113,10 +116,10 @@
             // 
             toolStrip1.GripStyle = ToolStripGripStyle.Hidden;
             toolStrip1.ImageScalingSize = new Size(32, 32);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnAddServer, btnEditServer, btnDeleteServer });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnAddServer, btnEditServer, btnDuplicateServer, btnDeleteServer });
             toolStrip1.Location = new Point(3, 34);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(563, 41);
+            toolStrip1.Size = new Size(617, 41);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -141,6 +144,17 @@
             btnEditServer.Text = "Edit";
             btnEditServer.Click += btnEditServer_Click;
             // 
+            // btnDuplicateServer
+            // 
+            btnDuplicateServer.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnDuplicateServer.Enabled = false;
+            btnDuplicateServer.Image = (Image)resources.GetObject("btnDuplicateServer.Image");
+            btnDuplicateServer.ImageTransparentColor = Color.Magenta;
+            btnDuplicateServer.Name = "btnDuplicateServer";
+            btnDuplicateServer.Size = new Size(126, 35);
+            btnDuplicateServer.Text = "Duplicate";
+            btnDuplicateServer.Click += btnDuplicateServer_Click;
+            // 
             // btnDeleteServer
             // 
             btnDeleteServer.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -163,7 +177,7 @@
             gbServerInfo.Dock = DockStyle.Fill;
             gbServerInfo.Location = new Point(0, 0);
             gbServerInfo.Name = "gbServerInfo";
-            gbServerInfo.Size = new Size(1134, 217);
+            gbServerInfo.Size = new Size(1244, 251);
             gbServerInfo.TabIndex = 1;
             gbServerInfo.TabStop = false;
             gbServerInfo.Text = "Server Info";
@@ -230,7 +244,7 @@
             gbProxyList.Dock = DockStyle.Fill;
             gbProxyList.Location = new Point(0, 0);
             gbProxyList.Name = "gbProxyList";
-            gbProxyList.Size = new Size(1134, 724);
+            gbProxyList.Size = new Size(1244, 840);
             gbProxyList.TabIndex = 2;
             gbProxyList.TabStop = false;
             gbProxyList.Text = "Proxy List";
@@ -245,7 +259,7 @@
             lvProxyList.Location = new Point(3, 75);
             lvProxyList.MultiSelect = false;
             lvProxyList.Name = "lvProxyList";
-            lvProxyList.Size = new Size(1128, 646);
+            lvProxyList.Size = new Size(1238, 762);
             lvProxyList.TabIndex = 2;
             lvProxyList.UseCompatibleStateImageBehavior = false;
             lvProxyList.View = View.Details;
@@ -254,27 +268,27 @@
             // columnHeader1
             // 
             columnHeader1.Text = "Name";
-            columnHeader1.Width = 240;
+            columnHeader1.Width = 280;
             // 
             // columnHeader2
             // 
             columnHeader2.Text = "Type";
-            columnHeader2.Width = 80;
+            columnHeader2.Width = 100;
             // 
             // columnHeader3
             // 
             columnHeader3.Text = "Agent";
-            columnHeader3.Width = 180;
+            columnHeader3.Width = 200;
             // 
             // columnHeader4
             // 
             columnHeader4.Text = "Local";
-            columnHeader4.Width = 240;
+            columnHeader4.Width = 260;
             // 
             // columnHeader5
             // 
             columnHeader5.Text = "Remote";
-            columnHeader5.Width = 240;
+            columnHeader5.Width = 260;
             // 
             // columnHeader6
             // 
@@ -285,10 +299,10 @@
             // 
             toolStrip2.GripStyle = ToolStripGripStyle.Hidden;
             toolStrip2.ImageScalingSize = new Size(32, 32);
-            toolStrip2.Items.AddRange(new ToolStripItem[] { btnAddProxy, btnEditProxy, btnDeleteProxy, toolStripSeparator1, btnEnableProxy, btnDisableProxy, btnEnableAllProxy, btnDisableAllProxy });
+            toolStrip2.Items.AddRange(new ToolStripItem[] { btnAddProxy, btnEditProxy, btnDeleteProxy, toolStripSeparator1, btnDuplicateProxy, btnEnableProxy, btnDisableProxy, toolStripSeparator2, btnEnableAllProxy, btnDisableAllProxy });
             toolStrip2.Location = new Point(3, 34);
             toolStrip2.Name = "toolStrip2";
-            toolStrip2.Size = new Size(1128, 41);
+            toolStrip2.Size = new Size(1238, 41);
             toolStrip2.TabIndex = 1;
             toolStrip2.Text = "toolStrip2";
             // 
@@ -329,6 +343,17 @@
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(6, 41);
             // 
+            // btnDuplicateProxy
+            // 
+            btnDuplicateProxy.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnDuplicateProxy.Enabled = false;
+            btnDuplicateProxy.Image = (Image)resources.GetObject("btnDuplicateProxy.Image");
+            btnDuplicateProxy.ImageTransparentColor = Color.Magenta;
+            btnDuplicateProxy.Name = "btnDuplicateProxy";
+            btnDuplicateProxy.Size = new Size(126, 35);
+            btnDuplicateProxy.Text = "Duplicate";
+            btnDuplicateProxy.Click += btnDuplicateProxy_Click;
+            // 
             // btnEnableProxy
             // 
             btnEnableProxy.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -351,40 +376,10 @@
             btnDisableProxy.Text = "Disable";
             btnDisableProxy.Click += btnDisableProxy_Click;
             // 
-            // splitContainer1
+            // toolStripSeparator2
             // 
-            splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(0, 0);
-            splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            splitContainer1.Panel1.Controls.Add(gbServerList);
-            // 
-            // splitContainer1.Panel2
-            // 
-            splitContainer1.Panel2.Controls.Add(splitContainer2);
-            splitContainer1.Size = new Size(1707, 945);
-            splitContainer1.SplitterDistance = 569;
-            splitContainer1.TabIndex = 3;
-            // 
-            // splitContainer2
-            // 
-            splitContainer2.Dock = DockStyle.Fill;
-            splitContainer2.Location = new Point(0, 0);
-            splitContainer2.Name = "splitContainer2";
-            splitContainer2.Orientation = Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            splitContainer2.Panel1.Controls.Add(gbServerInfo);
-            // 
-            // splitContainer2.Panel2
-            // 
-            splitContainer2.Panel2.Controls.Add(gbProxyList);
-            splitContainer2.Size = new Size(1134, 945);
-            splitContainer2.SplitterDistance = 217;
-            splitContainer2.TabIndex = 0;
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 41);
             // 
             // btnEnableAllProxy
             // 
@@ -406,11 +401,46 @@
             btnDisableAllProxy.Text = "Disable All";
             btnDisableAllProxy.Click += btnDisableAllProxy_Click;
             // 
+            // splitContainer1
+            // 
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(gbServerList);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(splitContainer2);
+            splitContainer1.Size = new Size(1871, 1095);
+            splitContainer1.SplitterDistance = 623;
+            splitContainer1.TabIndex = 3;
+            // 
+            // splitContainer2
+            // 
+            splitContainer2.Dock = DockStyle.Fill;
+            splitContainer2.Location = new Point(0, 0);
+            splitContainer2.Name = "splitContainer2";
+            splitContainer2.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            splitContainer2.Panel1.Controls.Add(gbServerInfo);
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(gbProxyList);
+            splitContainer2.Size = new Size(1244, 1095);
+            splitContainer2.SplitterDistance = 251;
+            splitContainer2.TabIndex = 0;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1707, 945);
+            ClientSize = new Size(1871, 1095);
             Controls.Add(splitContainer1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
@@ -474,5 +504,8 @@
         private ToolStripButton btnDisableProxy;
         private ToolStripButton btnEnableAllProxy;
         private ToolStripButton btnDisableAllProxy;
+        private ToolStripButton btnDuplicateProxy;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripButton btnDuplicateServer;
     }
 }

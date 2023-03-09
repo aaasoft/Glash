@@ -1,7 +1,6 @@
 ﻿using Glash.Model;
 using Quick.Protocol;
 using Quick.Protocol.Utils;
-using System.Net.Sockets;
 
 namespace Glash.Core.Client
 {
@@ -64,8 +63,6 @@ namespace Glash.Core.Client
             qpClient.Disconnect();
         }
 
-
-
         public void EnableProxyInfo(ProxyContext context)
         {
             try
@@ -78,6 +75,7 @@ namespace Glash.Core.Client
             {
                 context.Config.Enable = false;
                 LogPushed?.Invoke(this, $"{context.Config} enable failed.Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
+                throw;
             }
         }
 
@@ -100,6 +98,7 @@ namespace Glash.Core.Client
             catch (Exception ex)
             {
                 LogPushed?.Invoke(this, $"{context.Config} disable failed.Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
+                throw;
             }
         }
 
