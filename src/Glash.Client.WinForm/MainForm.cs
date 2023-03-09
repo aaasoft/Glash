@@ -170,12 +170,13 @@ namespace Glash.Client.WinForm
             var dr = form.ShowDialog();
             if (dr == DialogResult.Cancel)
                 return;
+            onServerRemoved(currentServerModel);
             var model = form.Model;
+            currentServerModel.Name = model.Name;
             currentServerModel.Url = model.Url;
             currentServerModel.Password = model.Password;
             ConfigFileUtils.Save(config);
-            onServerRemoved(model);
-            onServerAdded(model);
+            onServerAdded(currentServerModel);
             refreshServerList();
         }
 
@@ -254,6 +255,7 @@ namespace Glash.Client.WinForm
                 return;
             var model = form.Model;
             currentServerContext.OnProxyRemoved(currentProxyModel);
+            currentProxyModel.Name = model.Name;
             currentProxyModel.Type = model.Type;
             currentProxyModel.Agent = model.Agent;
             currentProxyModel.LocalIPAddress = model.LocalIPAddress;
@@ -261,7 +263,7 @@ namespace Glash.Client.WinForm
             currentProxyModel.RemoteHost = model.RemoteHost;
             currentProxyModel.RemotePort = model.RemotePort;
             ConfigFileUtils.Save(config);
-            currentServerContext.OnProxyAdded(model);
+            currentServerContext.OnProxyAdded(currentProxyModel);
             refreshProxyList();
         }
 

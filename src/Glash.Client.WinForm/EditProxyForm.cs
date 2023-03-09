@@ -53,7 +53,6 @@ namespace Glash.Client.WinForm
             }
             else
             {
-                txtName.Enabled = false;
                 Text = $"Edit Proxy[{Model.Name}]";
             }
             txtName.DataBindings.Add(nameof(txtName.Text), Model, nameof(Model.Name));

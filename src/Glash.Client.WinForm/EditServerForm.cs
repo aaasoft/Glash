@@ -42,7 +42,6 @@ namespace Glash.Client.WinForm
             else
             {
                 Text = $"Edit Server[{Model.Name}]";
-                txtName.Enabled = false;
             }
             txtName.DataBindings.Add(nameof(txtName.Text), Model, nameof(Model.Name));
             txtUrl.DataBindings.Add(nameof(txtUrl.Text), Model, nameof(Model.Url));
