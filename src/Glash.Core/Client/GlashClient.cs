@@ -115,7 +115,11 @@ namespace Glash.Core.Client
             var context = new ProxyContext(this, config);
             proxyContextDict[config.Name] = context;
             if (config.Enable)
-                EnableProxyInfo(context);
+                try
+                {
+                    EnableProxyInfo(context);
+                }
+                catch { }
         }
 
         public void AddProxyPortInfos(ProxyInfo[] items)

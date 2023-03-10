@@ -1,7 +1,7 @@
 ﻿using Glash.Core.Client;
 using Quick.Protocol.Utils;
 
-namespace Glash.Client.WinForm
+namespace Glash.Client.WinForm.Core
 {
     public class ServerContext : IDisposable
     {
@@ -26,7 +26,7 @@ namespace Glash.Client.WinForm
             try
             {
                 glashClient = new GlashClient(model.Url, model.Password);
-                if(logHandler != null)
+                if (logHandler != null)
                     glashClient.LogPushed += GlashClient_LogPushed;
                 glashClient.AddProxyPortInfos(model.ProxyList.ToArray());
                 glashClient.Disconnected += GlashClient_Disconnected;

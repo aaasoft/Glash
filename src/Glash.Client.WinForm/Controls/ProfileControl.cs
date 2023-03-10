@@ -1,79 +1,44 @@
+﻿using Glash.Client.WinForm.Core;
+using Glash.Client.WinForm.Model;
 using Glash.Client.WinForm.Utils;
 using Glash.Core.Client;
 using Newtonsoft.Json;
 using Quick.Protocol.Utils;
-using System.Collections;
-using System.IO.Pipes;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
-using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace Glash.Client.WinForm
+namespace Glash.Client.WinForm.Controls
 {
-    public partial class MainForm : Form
+    public partial class ProfileControl : UserControl
     {
-        private Config config;
         private int maxLogLines = 1000;
         private ServerInfo currentServerModel;
         private ServerContext currentServerContext;
         private ProxyInfo currentProxyModel;
         private Dictionary<string, ServerContext> serverDict = new Dictionary<string, ServerContext>();
 
-        public MainForm()
+        public ProfileInfo Profile { get; private set; }
+
+        public ProfileControl()
         {
             InitializeComponent();
-            Text += $" v{Application.ProductVersion}";
-            ensureOnlyOne();
         }
 
-        private NamedPipeServerStream createNewNamedPipedServerStream(String pipeName)
+        public void SetProfile(ProfileInfo profile)
         {
-            return new NamedPipeServerStream(
-                    pipeName,
-                    PipeDirection.InOut,
-                    1,
-                    PipeTransmissionMode.Byte,
-                    PipeOptions.Asynchronous);
+            Profile = profile;
         }
 
-        private void ensureOnlyOne()
+        private void ProfileControl_Load(object sender, EventArgs e)
         {
-            var pipeName = this.GetType().FullName;
-            try
-            {
-                var serverStream = createNewNamedPipedServerStream(pipeName);
-                AsyncCallback ac = null;
-                ac = ar =>
-                {
-                    Invoke(() => showForm());
-                    serverStream.Close();
-                    serverStream = createNewNamedPipedServerStream(pipeName);
-                    serverStream.BeginWaitForConnection(ac, null);
-                };
-                serverStream.BeginWaitForConnection(ac, null);
-            }
-            catch
-            {
-                try
-                {
-                    var clientStream = new NamedPipeClientStream(pipeName);
-                    clientStream.Connect();
-                    clientStream.Close();
-                }
-                finally
-                {
-                    this.DialogResult = DialogResult.Cancel;
-                    this.Close();
-                    Environment.Exit(0);
-                }
-            }
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            config = ConfigFileUtils.Load<Config>();
-            if (config == null)
-                config = new Config();
-            foreach (var server in config.ServerList)
+            foreach (var server in Profile.Model.ServerList)
                 onServerAdded(server);
             refreshServerList();
         }
@@ -125,7 +90,7 @@ namespace Glash.Client.WinForm
         private void refreshServerList()
         {
             lbServers.DataSource = null;
-            lbServers.DataSource = config.ServerList;
+            lbServers.DataSource = Profile.Model.ServerList;
             lbServers.DisplayMember = "Name";
         }
 
@@ -143,25 +108,6 @@ namespace Glash.Client.WinForm
                 lvi.Tag = proxy;
             }
         }
-        private void showForm()
-        {
-            ShowInTaskbar = true;
-            WindowState = FormWindowState.Normal;
-            Activate();
-        }
-
-        private void niMain_MouseClick(object sender, MouseEventArgs e)
-        {
-            showForm();
-        }
-
-        private void MainForm_SizeChanged(object sender, EventArgs e)
-        {
-            if (WindowState == FormWindowState.Minimized)
-            {
-                this.ShowInTaskbar = false;
-            }
-        }
 
         private string validateServerName(string serverName, string preServerName = null)
         {
@@ -171,7 +117,7 @@ namespace Glash.Client.WinForm
             var currentIndex = 2;
             while (true)
             {
-                if (config.ServerList.Any(t => t.Name == modelName))
+                if (Profile.Model.ServerList.Any(t => t.Name == modelName))
                 {
                     modelName = $"{serverName}({currentIndex})";
                     currentIndex++;
@@ -184,8 +130,8 @@ namespace Glash.Client.WinForm
 
         private void addServer(ServerInfo model)
         {
-            config.ServerList.Add(model);
-            ConfigFileUtils.Save(config);
+            Profile.Model.ServerList.Add(model);
+            Profile.Save();
             onServerAdded(model);
             refreshServerList();
         }
@@ -214,7 +160,7 @@ namespace Glash.Client.WinForm
             currentServerModel.Name = model.Name;
             currentServerModel.Url = model.Url;
             currentServerModel.Password = model.Password;
-            ConfigFileUtils.Save(config);
+            Profile.Save();
             onServerAdded(currentServerModel);
             refreshServerList();
         }
@@ -234,8 +180,8 @@ namespace Glash.Client.WinForm
             var dr = MessageBox.Show($"Do you want to delete {currentServerModel}", "Delete Server", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.Cancel)
                 return;
-            config.ServerList.Remove(currentServerModel);
-            ConfigFileUtils.Save(config);
+            Profile.Model.ServerList.Remove(currentServerModel);
+            Profile.Save();
             onServerRemoved(currentServerModel);
             refreshServerList();
         }
@@ -296,7 +242,7 @@ namespace Glash.Client.WinForm
         private void addProxy(ServerContext serverContext, ProxyInfo model)
         {
             serverContext.Model.ProxyList.Add(model);
-            ConfigFileUtils.Save(config);
+            Profile.Save();
             serverContext.OnProxyAdded(model);
             refreshProxyList();
         }
@@ -331,7 +277,7 @@ namespace Glash.Client.WinForm
             currentProxyModel.LocalPort = model.LocalPort;
             currentProxyModel.RemoteHost = model.RemoteHost;
             currentProxyModel.RemotePort = model.RemotePort;
-            ConfigFileUtils.Save(config);
+            Profile.Save();
             currentServerContext.OnProxyAdded(currentProxyModel);
             refreshProxyList();
         }
@@ -352,7 +298,7 @@ namespace Glash.Client.WinForm
                 return;
             currentServerContext.OnProxyRemoved(currentProxyModel);
             currentServerModel.ProxyList.Remove(currentProxyModel);
-            ConfigFileUtils.Save(config);
+            Profile.Save();
             refreshProxyList();
         }
 
@@ -383,7 +329,7 @@ namespace Glash.Client.WinForm
             try
             {
                 currentServerContext.EnableProxy(currentProxyModel);
-                ConfigFileUtils.Save(config);
+                Profile.Save();
                 refreshProxyList();
             }
             catch (Exception ex)
@@ -397,7 +343,7 @@ namespace Glash.Client.WinForm
             try
             {
                 currentServerContext.DisableProxy(currentProxyModel);
-                ConfigFileUtils.Save(config);
+                Profile.Save();
                 refreshProxyList();
             }
             catch (Exception ex)
@@ -418,7 +364,7 @@ namespace Glash.Client.WinForm
                 }
                 catch { }
             }
-            ConfigFileUtils.Save(config);
+            Profile.Save();
             refreshProxyList();
         }
 
@@ -434,8 +380,14 @@ namespace Glash.Client.WinForm
                 }
                 catch { }
             }
-            ConfigFileUtils.Save(config);
+            Profile.Save();
             refreshProxyList();
+        }
+
+        public void OnClose()
+        {
+            foreach (var server in serverDict.Values)
+                server.Dispose();
         }
     }
 }

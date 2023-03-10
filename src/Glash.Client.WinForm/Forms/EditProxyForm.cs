@@ -1,4 +1,5 @@
-﻿using Glash.Core.Client;
+﻿using Glash.Client.WinForm.Core;
+using Glash.Core.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
