@@ -36,11 +36,17 @@ namespace Glash.Client.WinForm.Controls
             Profile = profile;
         }
 
-        private void ProfileControl_Load(object sender, EventArgs e)
+        public void Start()
         {
             foreach (var server in Profile.Model.ServerList)
                 onServerAdded(server);
             refreshServerList();
+        }
+
+        public void Stop()
+        {
+            foreach (var server in serverDict.Values)
+                server.Dispose();
         }
 
         private void pushLog(string log)
@@ -382,12 +388,6 @@ namespace Glash.Client.WinForm.Controls
             }
             Profile.Save();
             refreshProxyList();
-        }
-
-        public void OnClose()
-        {
-            foreach (var server in serverDict.Values)
-                server.Dispose();
         }
     }
 }

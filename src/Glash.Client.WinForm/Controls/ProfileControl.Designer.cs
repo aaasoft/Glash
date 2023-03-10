@@ -483,7 +483,6 @@
             Controls.Add(scProfile);
             Name = "ProfileControl";
             Size = new Size(1601, 994);
-            Load += ProfileControl_Load;
             scProfile.Panel1.ResumeLayout(false);
             scProfile.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)scProfile).EndInit();

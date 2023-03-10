@@ -190,6 +190,7 @@ namespace Glash.Client.WinForm
                 currentProfileControl.SetProfile(profile);
                 currentProfileControl.Dock = DockStyle.Fill;
                 Controls.Add(currentProfileControl);
+                currentProfileControl.Start();
                 refreshMainForm();
             }
             catch (Exception ex)
@@ -263,7 +264,7 @@ namespace Glash.Client.WinForm
             if (currentProfileControl != null)
             {
                 Controls.Remove(currentProfileControl);
-                currentProfileControl.OnClose();
+                currentProfileControl.Stop();
                 currentProfileControl = null;
             }
             refreshProfiles();
