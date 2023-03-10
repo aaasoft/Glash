@@ -68,9 +68,9 @@
             // btnImportProfile
             // 
             btnImportProfile.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnImportProfile.Location = new Point(168, 1037);
+            btnImportProfile.Location = new Point(168, 1019);
             btnImportProfile.Name = "btnImportProfile";
-            btnImportProfile.Size = new Size(150, 46);
+            btnImportProfile.Size = new Size(150, 64);
             btnImportProfile.TabIndex = 6;
             btnImportProfile.Text = "&Import";
             btnImportProfile.UseVisualStyleBackColor = true;
@@ -80,9 +80,9 @@
             // 
             btnDeleteProfile.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDeleteProfile.Enabled = false;
-            btnDeleteProfile.Location = new Point(636, 1037);
+            btnDeleteProfile.Location = new Point(636, 1019);
             btnDeleteProfile.Name = "btnDeleteProfile";
-            btnDeleteProfile.Size = new Size(150, 46);
+            btnDeleteProfile.Size = new Size(150, 64);
             btnDeleteProfile.TabIndex = 5;
             btnDeleteProfile.Text = "&Delete";
             btnDeleteProfile.UseVisualStyleBackColor = true;
@@ -92,9 +92,9 @@
             // 
             btnRenameProfile.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnRenameProfile.Enabled = false;
-            btnRenameProfile.Location = new Point(480, 1037);
+            btnRenameProfile.Location = new Point(480, 1019);
             btnRenameProfile.Name = "btnRenameProfile";
-            btnRenameProfile.Size = new Size(150, 46);
+            btnRenameProfile.Size = new Size(150, 64);
             btnRenameProfile.TabIndex = 4;
             btnRenameProfile.Text = "&Rename";
             btnRenameProfile.UseVisualStyleBackColor = true;
@@ -104,9 +104,9 @@
             // 
             btnLoadProfile.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLoadProfile.Enabled = false;
-            btnLoadProfile.Location = new Point(324, 1037);
+            btnLoadProfile.Location = new Point(324, 1019);
             btnLoadProfile.Name = "btnLoadProfile";
-            btnLoadProfile.Size = new Size(150, 46);
+            btnLoadProfile.Size = new Size(150, 64);
             btnLoadProfile.TabIndex = 3;
             btnLoadProfile.Text = "&Load";
             btnLoadProfile.UseVisualStyleBackColor = true;
@@ -115,9 +115,9 @@
             // btnNewProfile
             // 
             btnNewProfile.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnNewProfile.Location = new Point(12, 1037);
+            btnNewProfile.Location = new Point(12, 1019);
             btnNewProfile.Name = "btnNewProfile";
-            btnNewProfile.Size = new Size(150, 46);
+            btnNewProfile.Size = new Size(150, 64);
             btnNewProfile.TabIndex = 2;
             btnNewProfile.Text = "&New";
             btnNewProfile.UseVisualStyleBackColor = true;
@@ -149,7 +149,7 @@
             btnCloseProfile.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCloseProfile.Location = new Point(1703, 0);
             btnCloseProfile.Name = "btnCloseProfile";
-            btnCloseProfile.Size = new Size(168, 46);
+            btnCloseProfile.Size = new Size(168, 68);
             btnCloseProfile.TabIndex = 6;
             btnCloseProfile.Text = "Close Profile";
             btnCloseProfile.UseVisualStyleBackColor = true;

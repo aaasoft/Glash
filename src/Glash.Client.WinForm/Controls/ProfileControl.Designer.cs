@@ -119,7 +119,7 @@
             // 
             scServerListAndInfo.Panel2.Controls.Add(gbServerInfo);
             scServerListAndInfo.Size = new Size(533, 994);
-            scServerListAndInfo.SplitterDistance = 602;
+            scServerListAndInfo.SplitterDistance = 514;
             scServerListAndInfo.TabIndex = 1;
             // 
             // gbServerList
@@ -129,7 +129,7 @@
             gbServerList.Dock = DockStyle.Fill;
             gbServerList.Location = new Point(0, 0);
             gbServerList.Name = "gbServerList";
-            gbServerList.Size = new Size(533, 602);
+            gbServerList.Size = new Size(533, 514);
             gbServerList.TabIndex = 0;
             gbServerList.TabStop = false;
             gbServerList.Text = "Server List";
@@ -142,7 +142,7 @@
             lbServers.ItemHeight = 31;
             lbServers.Location = new Point(3, 75);
             lbServers.Name = "lbServers";
-            lbServers.Size = new Size(527, 524);
+            lbServers.Size = new Size(527, 436);
             lbServers.TabIndex = 1;
             lbServers.SelectedIndexChanged += lbServers_SelectedIndexChanged;
             // 
@@ -211,7 +211,7 @@
             gbServerInfo.Dock = DockStyle.Fill;
             gbServerInfo.Location = new Point(0, 0);
             gbServerInfo.Name = "gbServerInfo";
-            gbServerInfo.Size = new Size(533, 388);
+            gbServerInfo.Size = new Size(533, 476);
             gbServerInfo.TabIndex = 1;
             gbServerInfo.TabStop = false;
             gbServerInfo.Text = "Server Info";
@@ -220,17 +220,17 @@
             // txtServerState
             // 
             txtServerState.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtServerState.Location = new Point(12, 218);
+            txtServerState.Location = new Point(12, 267);
             txtServerState.Multiline = true;
             txtServerState.Name = "txtServerState";
             txtServerState.ReadOnly = true;
-            txtServerState.Size = new Size(515, 164);
+            txtServerState.Size = new Size(515, 203);
             txtServerState.TabIndex = 4;
             // 
             // txtServerUrl
             // 
             txtServerUrl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtServerUrl.Location = new Point(12, 143);
+            txtServerUrl.Location = new Point(12, 170);
             txtServerUrl.Name = "txtServerUrl";
             txtServerUrl.ReadOnly = true;
             txtServerUrl.Size = new Size(515, 38);
@@ -248,7 +248,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(16, 184);
+            label4.Location = new Point(16, 233);
             label4.Name = "label4";
             label4.Size = new Size(79, 31);
             label4.TabIndex = 0;
@@ -257,7 +257,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 109);
+            label2.Location = new Point(12, 136);
             label2.Name = "label2";
             label2.Size = new Size(53, 31);
             label2.TabIndex = 0;
@@ -287,7 +287,7 @@
             // 
             scProxyAndLog.Panel2.Controls.Add(gbLogs);
             scProxyAndLog.Size = new Size(1064, 994);
-            scProxyAndLog.SplitterDistance = 602;
+            scProxyAndLog.SplitterDistance = 513;
             scProxyAndLog.TabIndex = 0;
             // 
             // gbProxyList
@@ -297,7 +297,7 @@
             gbProxyList.Dock = DockStyle.Fill;
             gbProxyList.Location = new Point(0, 0);
             gbProxyList.Name = "gbProxyList";
-            gbProxyList.Size = new Size(1064, 602);
+            gbProxyList.Size = new Size(1064, 513);
             gbProxyList.TabIndex = 2;
             gbProxyList.TabStop = false;
             gbProxyList.Text = "Proxy List";
@@ -312,7 +312,7 @@
             lvProxyList.Location = new Point(3, 75);
             lvProxyList.MultiSelect = false;
             lvProxyList.Name = "lvProxyList";
-            lvProxyList.Size = new Size(1058, 524);
+            lvProxyList.Size = new Size(1058, 435);
             lvProxyList.TabIndex = 2;
             lvProxyList.UseCompatibleStateImageBehavior = false;
             lvProxyList.View = View.Details;
@@ -460,7 +460,7 @@
             gbLogs.Dock = DockStyle.Fill;
             gbLogs.Location = new Point(0, 0);
             gbLogs.Name = "gbLogs";
-            gbLogs.Size = new Size(1064, 388);
+            gbLogs.Size = new Size(1064, 477);
             gbLogs.TabIndex = 0;
             gbLogs.TabStop = false;
             gbLogs.Text = "Logs";
@@ -473,7 +473,7 @@
             txtLogs.Name = "txtLogs";
             txtLogs.ReadOnly = true;
             txtLogs.ScrollBars = ScrollBars.Vertical;
-            txtLogs.Size = new Size(1058, 351);
+            txtLogs.Size = new Size(1058, 440);
             txtLogs.TabIndex = 5;
             // 
             // ProfileControl

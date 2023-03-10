@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditServerForm));
             label1 = new Label();
             txtName = new TextBox();
             label2 = new Label();
@@ -59,7 +58,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 90);
+            label2.Location = new Point(12, 114);
             label2.Name = "label2";
             label2.Size = new Size(53, 31);
             label2.TabIndex = 0;
@@ -68,7 +67,7 @@
             // txtUrl
             // 
             txtUrl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtUrl.Location = new Point(12, 124);
+            txtUrl.Location = new Point(12, 148);
             txtUrl.Name = "txtUrl";
             txtUrl.Size = new Size(557, 38);
             txtUrl.TabIndex = 2;
@@ -76,7 +75,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 165);
+            label3.Location = new Point(12, 216);
             label3.Name = "label3";
             label3.Size = new Size(128, 31);
             label3.TabIndex = 0;
@@ -85,7 +84,7 @@
             // txtPassword
             // 
             txtPassword.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtPassword.Location = new Point(12, 199);
+            txtPassword.Location = new Point(12, 250);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '●';
             txtPassword.Size = new Size(557, 38);
@@ -94,9 +93,9 @@
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnSave.Location = new Point(12, 252);
+            btnSave.Location = new Point(12, 342);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(150, 46);
+            btnSave.Size = new Size(150, 60);
             btnSave.TabIndex = 100;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
@@ -105,9 +104,9 @@
             // btnCancel
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnCancel.Location = new Point(168, 252);
+            btnCancel.Location = new Point(168, 342);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(150, 46);
+            btnCancel.Size = new Size(150, 60);
             btnCancel.TabIndex = 101;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
@@ -117,7 +116,7 @@
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(581, 310);
+            ClientSize = new Size(581, 414);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
             Controls.Add(txtPassword);
@@ -126,7 +125,7 @@
             Controls.Add(label2);
             Controls.Add(txtName);
             Controls.Add(label1);
-            Icon = (Icon)resources.GetObject("$this.Icon");
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "EditServerForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Add or edit server";
