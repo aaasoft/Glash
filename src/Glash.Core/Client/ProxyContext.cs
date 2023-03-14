@@ -21,37 +21,17 @@ namespace Glash.Core.Client
             cts?.Cancel();
             cts = new CancellationTokenSource();
 
-            switch (Config.Type)
-            {
-                case Model.TunnelType.TCP:
-                    {
-                        tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
-                        tcpListener.Start();
-                        _ = beginAcceptTcpClient(tcpListener, cts.Token);
-                        break;
-                    }
-                case Model.TunnelType.UDP:
-                default:
-                    throw new NotImplementedException();
-            }
+            tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
+            tcpListener.Start();
+            _ = beginAcceptTcpClient(tcpListener, cts.Token);
         }
 
         public void Stop()
         {
             cts?.Cancel();
 
-            switch (Config.Type)
-            {
-                case Model.TunnelType.TCP:
-                    {
-                        tcpListener?.Stop();
-                        tcpListener = null;
-                        break;
-                    }
-                case Model.TunnelType.UDP:
-                default:
-                    throw new NotImplementedException();
-            }
+            tcpListener?.Stop();
+            tcpListener = null;
         }
 
         private async Task beginAcceptTcpClient(TcpListener tcpListener, CancellationToken token)

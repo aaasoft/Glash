@@ -6,6 +6,5 @@
         public string Agent { get; set; }
         public string Host { get; set; }
         public int Port { get; set; }
-        public TunnelType Type { get; set; }
     }
 }

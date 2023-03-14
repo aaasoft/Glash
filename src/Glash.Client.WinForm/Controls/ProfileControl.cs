@@ -106,7 +106,6 @@ namespace Glash.Client.WinForm.Controls
             foreach (var proxy in currentServerModel.ProxyList)
             {
                 var lvi = lvProxyList.Items.Add(proxy.Name);
-                lvi.SubItems.Add(proxy.Type.ToString());
                 lvi.SubItems.Add(proxy.Agent);
                 lvi.SubItems.Add($"{proxy.LocalIPAddress}:{proxy.LocalPort}");
                 lvi.SubItems.Add($"{proxy.RemoteHost}:{proxy.RemotePort}");
@@ -277,7 +276,6 @@ namespace Glash.Client.WinForm.Controls
             var model = form.Model;
             model.Name = validateProxyName(currentServerModel, model.Name, currentProxyModel.Name);
             currentProxyModel.Name = model.Name;
-            currentProxyModel.Type = model.Type;
             currentProxyModel.Agent = model.Agent;
             currentProxyModel.LocalIPAddress = model.LocalIPAddress;
             currentProxyModel.LocalPort = model.LocalPort;

@@ -20,8 +20,6 @@ namespace Glash.Client.WinForm
         public EditProxyForm()
         {
             InitializeComponent();
-            cbType.Items.Add(Glash.Model.TunnelType.TCP);
-            cbType.Items.Add(Glash.Model.TunnelType.UDP);
         }
 
         public void SetServerContext(ServerContext serverContext)
@@ -35,7 +33,6 @@ namespace Glash.Client.WinForm
             Model = new ProxyInfo()
             {
                 Name = model.Name,
-                Type = model.Type,
                 Agent = model.Agent,
                 LocalIPAddress = model.LocalIPAddress,
                 LocalPort = model.LocalPort,
@@ -57,8 +54,7 @@ namespace Glash.Client.WinForm
                 Text = $"Edit Proxy[{Model.Name}]";
             }
             txtName.DataBindings.Add(nameof(txtName.Text), Model, nameof(Model.Name));
-            cbType.DataBindings.Add(nameof(cbType.SelectedItem), Model, nameof(Model.Type));
-            cbAgent.DataBindings.Add(nameof(cbType.SelectedItem), Model, nameof(Model.Agent));
+            cbAgent.DataBindings.Add(nameof(cbAgent.SelectedItem), Model, nameof(Model.Agent));
             txtLocalIPAddress.DataBindings.Add(nameof(txtName.Text), Model, nameof(Model.LocalIPAddress));
             nudLocalPort.DataBindings.Add(nameof(nudLocalPort.Value), Model, nameof(Model.LocalPort));
             txtRemoteHost.DataBindings.Add(nameof(txtRemoteHost.Text), Model, nameof(Model.RemoteHost));
@@ -70,7 +66,7 @@ namespace Glash.Client.WinForm
                 {
                     cbAgent.Items.AddRange(agents);
                     cbAgent.DataBindings.Clear();
-                    cbAgent.DataBindings.Add(nameof(cbType.SelectedItem), Model, nameof(Model.Agent));
+                    cbAgent.DataBindings.Add(nameof(cbAgent.SelectedItem), Model, nameof(Model.Agent));
                 });
             });
         }

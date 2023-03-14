@@ -49,7 +49,6 @@
             gbProxyList = new GroupBox();
             lvProxyList = new ListView();
             columnHeader1 = new ColumnHeader();
-            columnHeader2 = new ColumnHeader();
             columnHeader3 = new ColumnHeader();
             columnHeader4 = new ColumnHeader();
             columnHeader5 = new ColumnHeader();
@@ -305,7 +304,7 @@
             // 
             // lvProxyList
             // 
-            lvProxyList.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4, columnHeader5, columnHeader6 });
+            lvProxyList.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader3, columnHeader4, columnHeader5, columnHeader6 });
             lvProxyList.Dock = DockStyle.Fill;
             lvProxyList.FullRowSelect = true;
             lvProxyList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
@@ -322,11 +321,6 @@
             // 
             columnHeader1.Text = "Name";
             columnHeader1.Width = 280;
-            // 
-            // columnHeader2
-            // 
-            columnHeader2.Text = "Type";
-            columnHeader2.Width = 100;
             // 
             // columnHeader3
             // 
@@ -532,7 +526,6 @@
         private GroupBox gbProxyList;
         private ListView lvProxyList;
         private ColumnHeader columnHeader1;
-        private ColumnHeader columnHeader2;
         private ColumnHeader columnHeader3;
         private ColumnHeader columnHeader4;
         private ColumnHeader columnHeader5;

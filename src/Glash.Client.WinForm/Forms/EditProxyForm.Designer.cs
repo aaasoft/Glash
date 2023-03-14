@@ -30,10 +30,8 @@
         {
             btnCancel = new Button();
             btnSave = new Button();
-            label2 = new Label();
             txtName = new TextBox();
             label1 = new Label();
-            cbType = new ComboBox();
             label3 = new Label();
             cbAgent = new ComboBox();
             label4 = new Label();
@@ -51,7 +49,7 @@
             // btnCancel
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnCancel.Location = new Point(168, 677);
+            btnCancel.Location = new Point(168, 611);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(150, 64);
             btnCancel.TabIndex = 101;
@@ -62,22 +60,13 @@
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnSave.Location = new Point(12, 677);
+            btnSave.Location = new Point(12, 611);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(150, 64);
             btnSave.TabIndex = 100;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(12, 108);
-            label2.Name = "label2";
-            label2.Size = new Size(76, 31);
-            label2.TabIndex = 103;
-            label2.Text = "Type:";
             // 
             // txtName
             // 
@@ -96,20 +85,10 @@
             label1.TabIndex = 104;
             label1.Text = "Name:";
             // 
-            // cbType
-            // 
-            cbType.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            cbType.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbType.FormattingEnabled = true;
-            cbType.Location = new Point(12, 142);
-            cbType.Name = "cbType";
-            cbType.Size = new Size(557, 39);
-            cbType.TabIndex = 2;
-            // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 204);
+            label3.Location = new Point(12, 111);
             label3.Name = "label3";
             label3.Size = new Size(90, 31);
             label3.TabIndex = 103;
@@ -119,7 +98,7 @@
             // 
             cbAgent.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cbAgent.FormattingEnabled = true;
-            cbAgent.Location = new Point(12, 238);
+            cbAgent.Location = new Point(12, 145);
             cbAgent.Name = "cbAgent";
             cbAgent.Size = new Size(557, 39);
             cbAgent.TabIndex = 3;
@@ -127,7 +106,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(12, 299);
+            label4.Location = new Point(12, 206);
             label4.Name = "label4";
             label4.Size = new Size(199, 31);
             label4.TabIndex = 104;
@@ -136,7 +115,7 @@
             // txtLocalIPAddress
             // 
             txtLocalIPAddress.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtLocalIPAddress.Location = new Point(12, 333);
+            txtLocalIPAddress.Location = new Point(12, 240);
             txtLocalIPAddress.Name = "txtLocalIPAddress";
             txtLocalIPAddress.Size = new Size(557, 38);
             txtLocalIPAddress.TabIndex = 4;
@@ -144,7 +123,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(12, 394);
+            label5.Location = new Point(12, 301);
             label5.Name = "label5";
             label5.Size = new Size(133, 31);
             label5.TabIndex = 104;
@@ -153,7 +132,7 @@
             // nudLocalPort
             // 
             nudLocalPort.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            nudLocalPort.Location = new Point(12, 428);
+            nudLocalPort.Location = new Point(12, 335);
             nudLocalPort.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
             nudLocalPort.Name = "nudLocalPort";
             nudLocalPort.Size = new Size(557, 38);
@@ -162,7 +141,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(12, 483);
+            label6.Location = new Point(12, 390);
             label6.Name = "label6";
             label6.Size = new Size(171, 31);
             label6.TabIndex = 104;
@@ -171,7 +150,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(12, 573);
+            label7.Location = new Point(12, 480);
             label7.Name = "label7";
             label7.Size = new Size(165, 31);
             label7.TabIndex = 104;
@@ -180,7 +159,7 @@
             // txtRemoteHost
             // 
             txtRemoteHost.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtRemoteHost.Location = new Point(12, 517);
+            txtRemoteHost.Location = new Point(12, 424);
             txtRemoteHost.Name = "txtRemoteHost";
             txtRemoteHost.Size = new Size(557, 38);
             txtRemoteHost.TabIndex = 6;
@@ -188,7 +167,7 @@
             // nudRemotePort
             // 
             nudRemotePort.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            nudRemotePort.Location = new Point(12, 607);
+            nudRemotePort.Location = new Point(12, 514);
             nudRemotePort.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
             nudRemotePort.Name = "nudRemotePort";
             nudRemotePort.Size = new Size(557, 38);
@@ -198,15 +177,13 @@
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(581, 749);
+            ClientSize = new Size(581, 683);
             Controls.Add(nudRemotePort);
             Controls.Add(nudLocalPort);
             Controls.Add(cbAgent);
-            Controls.Add(cbType);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
             Controls.Add(label3);
-            Controls.Add(label2);
             Controls.Add(txtRemoteHost);
             Controls.Add(txtLocalIPAddress);
             Controls.Add(txtName);
@@ -230,10 +207,8 @@
 
         private Button btnCancel;
         private Button btnSave;
-        private Label label2;
         private TextBox txtName;
         private Label label1;
-        private ComboBox cbType;
         private Label label3;
         private ComboBox cbAgent;
         private Label label4;

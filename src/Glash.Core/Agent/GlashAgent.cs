@@ -76,36 +76,28 @@ namespace Glash.Core.Agent
         {
             var tunnelInfo = request.Data;
             var tunnelId = tunnelInfo.Id;
-            switch (tunnelInfo.Type)
-            {
-                case Model.TunnelType.TCP:
+
+            var tcpClient = new TcpClient();
+            tcpClient.Connect(tunnelInfo.Host, tunnelInfo.Port);
+            var tunnelContext = new GlashTunnelContext(
+                channel, tunnelInfo,
+                tcpClient.GetStream(),
+                ex =>
+                {
+                    LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] error.Message:{ExceptionUtils.GetExceptionMessage(ex)}");
+                    channel.SendNoticePackage(new Model.TunnelClosed() { TunnelId = tunnelId });
+                    GlashTunnelContext tunnelContext = null;
+                    lock (tunnelContextDict)
                     {
-                        var tcpClient = new TcpClient();
-                        tcpClient.Connect(tunnelInfo.Host, tunnelInfo.Port);
-                        var tunnelContext = new GlashTunnelContext(
-                            channel, tunnelInfo,
-                            tcpClient.GetStream(),
-                            ex =>
-                            {
-                                LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] error.Message:{ExceptionUtils.GetExceptionMessage(ex)}");
-                                channel.SendNoticePackage(new Model.TunnelClosed() { TunnelId = tunnelId });
-                                GlashTunnelContext tunnelContext = null;
-                                lock (tunnelContextDict)
-                                {
-                                    if (!tunnelContextDict.ContainsKey(tunnelId))
-                                        return;
-                                    tunnelContext = tunnelContextDict[tunnelId];
-                                }
-                                tunnelContext.Dispose();
-                            });
-                        lock (tunnelContextDict)
-                            tunnelContextDict[tunnelId] = tunnelContext;
-                        LogPushed?.Invoke(this, $"Create tunnel[{tunnelId}] to {tunnelInfo.Type}://{tunnelInfo.Host}:{tunnelInfo.Port} success.");
-                        break;
+                        if (!tunnelContextDict.ContainsKey(tunnelId))
+                            return;
+                        tunnelContext = tunnelContextDict[tunnelId];
                     }
-                default:
-                    throw new NotImplementedException();
-            }
+                    tunnelContext.Dispose();
+                });
+            lock (tunnelContextDict)
+                tunnelContextDict[tunnelId] = tunnelContext;
+            LogPushed?.Invoke(this, $"Create tunnel[{tunnelId}] to {tunnelInfo.Host}:{tunnelInfo.Port} success.");
             return new Glash.Agent.Protocol.QpCommands.CreateTunnel.Response();
         }
 

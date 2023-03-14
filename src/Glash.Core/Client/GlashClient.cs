@@ -149,7 +149,6 @@ namespace Glash.Core.Client
                     Data = new Model.TunnelInfo()
                     {
                         Agent = config.Agent,
-                        Type = config.Type,
                         Host = config.RemoteHost,
                         Port = config.RemotePort
                     }
@@ -181,11 +180,11 @@ namespace Glash.Core.Client
                 await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.StartTunnel.Request() { TunnelId = tunnelId });
                 tunnelContext.Start();
 
-                LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel[{tunnelId}] to {config.Type}://{config.Agent}/{config.RemoteHost}/{config.RemotePort} success.");
+                LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel[{tunnelId}] to tcp://{config.Agent}/{config.RemoteHost}/{config.RemotePort} success.");
             }
             catch (Exception ex)
             {
-                LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel to {config.Type}://{config.Agent}/{config.RemoteHost}/{config.RemotePort} failed.Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
+                LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel to tcp://{config.Agent}/{config.RemoteHost}/{config.RemotePort} failed.Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
                 try
                 {
                     stream.Close();
