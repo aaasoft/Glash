@@ -189,6 +189,8 @@ namespace Glash.Client.WinForm.Controls
             Profile.Save();
             onServerRemoved(currentServerModel);
             refreshServerList();
+            currentServerModel = null;
+            currentServerContext = null;
         }
 
         private void lbServers_SelectedIndexChanged(object sender, EventArgs e)
@@ -304,6 +306,7 @@ namespace Glash.Client.WinForm.Controls
             currentServerModel.ProxyList.Remove(currentProxyModel);
             Profile.Save();
             refreshProxyList();
+            currentProxyModel = null;
         }
 
         private void lvProxyList_SelectedIndexChanged(object sender, EventArgs e)
