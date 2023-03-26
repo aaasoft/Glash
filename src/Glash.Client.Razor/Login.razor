@@ -1,0 +1,61 @@
+﻿<Modal Visiable DialogBackdropVisiable DialogCentered>
+    <TitleContent>
+        @Title
+    </TitleContent>
+    <BodyContent>
+        <div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-address-book"></i> </span>
+                    </div>
+                    <select class="form-control">
+                        <option selected value="">@Global.TextManager.GetText(Texts.ChooseProfile)</option>
+                    </select>
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button" >...</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-globe"></i> </span>
+                    </div>
+                    <input class="form-control" type="text" autocomplete="off"
+                           placeholder="@Global.TextManager.GetText(Texts.ServerUrl)"
+                           @bind-value="ServerUrl" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                    </div>
+                    <input class="form-control" type="text" autocomplete="off"
+                           placeholder="@Global.TextManager.GetText(Texts.User)"
+                           @bind-value="User" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input class="form-control" type="password" autocomplete="off"
+                           placeholder="@Global.TextManager.GetText(Texts.Password)"
+                           @bind-value="Password" />
+                    @if (!string.IsNullOrEmpty(Message))
+                    {
+                        <div class="invalid-feedback">
+                            @(Message)
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="button" class="btn btn-success btn-block" value="@Global.TextManager.GetText(Texts.Login)" @onclick="OnPost" />
+            </div>
+        </div>
+    </BodyContent>
+</Modal>

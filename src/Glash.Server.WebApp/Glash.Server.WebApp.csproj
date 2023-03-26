@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.2.8" />
+    <PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.2.9" />
   </ItemGroup>
 
   <ItemGroup>

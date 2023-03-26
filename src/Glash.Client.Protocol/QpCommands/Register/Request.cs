@@ -9,5 +9,9 @@ using System.Threading.Tasks;
 namespace Glash.Client.Protocol.QpCommands.Register
 {
     [DisplayName("Register As Client")]
-    public class Request : IQpCommandRequest<Response> { }
+    public class Request : IQpCommandRequest<Response> 
+    {
+        public string Name { get; set; }
+        public string Answer { get; set; }
+    }
 }

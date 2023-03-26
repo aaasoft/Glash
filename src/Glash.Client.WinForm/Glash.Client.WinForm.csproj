@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -6,19 +6,19 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RollForward>Major</RollForward>
-		<Version>1.0.6</Version>
-		<ApplicationIcon>logo.ico</ApplicationIcon>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<Version>1.1.0</Version>
+		<Title>Glash Client</Title>
+		<Product>Glash Client</Product>
+		<ApplicationIcon>../../logo.ico</ApplicationIcon>
 	</PropertyGroup>
-
 	<ItemGroup>
-		<Content Include="logo.ico" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="6.0.552" />
+		<PackageReference Include="Quick.Protocol.AllClients" Version="2.2.9" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Quick.Protocol.AllClients" Version="2.2.8" />
-	</ItemGroup>
-
-	<ItemGroup>
+		<ProjectReference Include="..\Glash.Client.Razor\Glash.Client.Razor.csproj" />
 		<ProjectReference Include="..\Glash.Core\Glash.Core.csproj" />
 	</ItemGroup>
 
