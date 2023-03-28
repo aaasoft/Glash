@@ -25,16 +25,22 @@ namespace Glash.Client.WinForm
             InitializeComponent();
             ensureOnlyOne();
 
+            Global.Instance.Init();
+            Global.Instance.LanguageChanged += Instance_LanguageChanged;
             var services = new ServiceCollection();
             services.AddWindowsFormsBlazorWebView();
             blazorWebView1.HostPage = "wwwroot/index.html";
             blazorWebView1.Services = services.BuildServiceProvider();
             blazorWebView1.RootComponents.Add<Razor.Login>("#app");
 
-            this.Text = $"{Global.TextManager.GetText(Razor.Login.Texts.Title)} v{Application.ProductVersion}";
-            niMain.Text = this.Text;
+            Instance_LanguageChanged(this, EventArgs.Empty);
         }
 
+        private void Instance_LanguageChanged(object sender, EventArgs e)
+        {
+            this.Text = $"{Global.Instance.TextManager.GetText(Razor.Login.Texts.Title)} v{Application.ProductVersion}";
+            niMain.Text = this.Text;
+        }
 
         private NamedPipeServerStream createNewNamedPipedServerStream(String pipeName)
         {

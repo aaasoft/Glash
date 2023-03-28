@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Quick.Protocol.Tcp" Version="2.2.9" />
-		<PackageReference Include="YiQiDong.Agent" Version="2.2.16" />
+		<PackageReference Include="YiQiDong.Agent" Version="2.2.17" />
 	</ItemGroup>
 
 	<ItemGroup>

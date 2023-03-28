@@ -1,7 +1,24 @@
 ﻿<Modal Visiable DialogBackdropVisiable DialogCentered>
-    <TitleContent>
-        @Title
-    </TitleContent>
+    <HeaderContent>
+        <h5 class="modal-title">
+            @Global.Instance.TextManager.GetText(Texts.Title)
+        </h5>
+        <EditForm class="p-0 m-0" Model="@Global.Instance">            
+            <div class="form-group p-0 m-0">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-globe"></i> </span>
+                    </div>
+                    <InputSelect @bind-Value="@Global.Instance.Language" class="form-control">
+                        @foreach (var t in Global.Instance.GetLanuages())
+                        {
+                            <option value="@t.IetfLanguageTag">@t.DisplayName</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        </EditForm>
+    </HeaderContent>
     <BodyContent>
         <div>
             <div class="form-group">
@@ -10,20 +27,20 @@
                         <span class="input-group-text"> <i class="fa fa-address-book"></i> </span>
                     </div>
                     <select class="form-control">
-                        <option selected value="">@Global.TextManager.GetText(Texts.ChooseProfile)</option>
+                        <option selected value="">@Global.Instance.TextManager.GetText(Texts.ChooseProfile)</option>
                     </select>
                     <div class="input-group-append">
-                        <button class="btn btn-secondary" type="button" >...</button>
+                        <button class="btn btn-secondary" type="button">...</button>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-globe"></i> </span>
+                        <span class="input-group-text"> <i class="fa fa-server"></i> </span>
                     </div>
                     <input class="form-control" type="text" autocomplete="off"
-                           placeholder="@Global.TextManager.GetText(Texts.ServerUrl)"
+                           placeholder="@Global.Instance.TextManager.GetText(Texts.ServerUrl)"
                            @bind-value="ServerUrl" />
                 </div>
             </div>
@@ -33,7 +50,7 @@
                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
                     <input class="form-control" type="text" autocomplete="off"
-                           placeholder="@Global.TextManager.GetText(Texts.User)"
+                           placeholder="@Global.Instance.TextManager.GetText(Texts.User)"
                            @bind-value="User" />
                 </div>
             </div>
@@ -43,7 +60,7 @@
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
                     <input class="form-control" type="password" autocomplete="off"
-                           placeholder="@Global.TextManager.GetText(Texts.Password)"
+                           placeholder="@Global.Instance.TextManager.GetText(Texts.Password)"
                            @bind-value="Password" />
                     @if (!string.IsNullOrEmpty(Message))
                     {
@@ -54,7 +71,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="button" class="btn btn-success btn-block" value="@Global.TextManager.GetText(Texts.Login)" @onclick="OnPost" />
+                <input type="button" class="btn btn-success btn-block" value="@Global.Instance.TextManager.GetText(Texts.Login)" @onclick="OnPost" />
             </div>
         </div>
     </BodyContent>

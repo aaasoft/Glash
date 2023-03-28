@@ -25,11 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.ConsoleApp", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Server.WebApp", "Glash.Server.WebApp\Glash.Server.WebApp.csproj", "{C6EC36BD-3CB0-4EA4-81E9-8E6E050634E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Client.Razor", "Glash.Client.Razor\Glash.Client.Razor.csproj", "{4E26D237-B99C-4CA5-8E3D-CD71D680E99A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.Razor", "Glash.Client.Razor\Glash.Client.Razor.csproj", "{4E26D237-B99C-4CA5-8E3D-CD71D680E99A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.WinForm.Old", "Glash.Client.WinForm.Old\Glash.Client.WinForm.Old.csproj", "{2197C33F-3178-4CFD-A19A-8AB330B6DB2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Client.WinForm", "Glash.Client.WinForm\Glash.Client.WinForm.csproj", "{CC98A0CB-8FDE-4A8F-B5C9-3AB8E3FE69F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.WinForm", "Glash.Client.WinForm\Glash.Client.WinForm.csproj", "{CC98A0CB-8FDE-4A8F-B5C9-3AB8E3FE69F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
