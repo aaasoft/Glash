@@ -1,15 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Quick.EntityFrameworkCore.Plus;
+﻿using Quick.EntityFrameworkCore.Plus;
 using Quick.EntityFrameworkCore.Plus.SQLite;
 using Quick.Localize;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Client
 {
@@ -26,20 +21,7 @@ namespace Glash.Client
             {
                 _Language = value;
                 TextManager = TextManager.GetInstance(value);
-                var model = ConfigDbContext.CacheContext.Find(new Razor.Model.Config() { Id = nameof(Language) });
-                if (model == null)
-                {
-                    ConfigDbContext.CacheContext.Add(new Razor.Model.Config()
-                    {
-                        Id = nameof(Language),
-                        Value = value
-                    });
-                }
-                else
-                {
-                    model.Value = value;
-                    ConfigDbContext.CacheContext.Update(model);
-                }
+                Razor.Model.Config.SetConfig(nameof(Language), value);
                 LanguageChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -74,7 +56,7 @@ namespace Glash.Client
                 dbContext.EnsureDatabaseCreatedAndUpdated(t => Debug.Print(t));
             ConfigDbContext.CacheContext.LoadCache();
 
-            _Language = ConfigDbContext.CacheContext.Find(new Razor.Model.Config() { Id = nameof(Language) })?.Value;
+            _Language = Razor.Model.Config.GetConfig(nameof(Language));
             if (_Language == null)
                 _Language = Thread.CurrentThread.CurrentCulture.IetfLanguageTag;
             TextManager = TextManager.GetInstance(Language);

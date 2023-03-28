@@ -1,6 +1,4 @@
 ﻿Title=Glash Client
 ChooseProfile=Choose profile...
-ServerUrl=Server url
-User=User
-Password=Password
 Login=Login
+ProfileManage=Profile Manage

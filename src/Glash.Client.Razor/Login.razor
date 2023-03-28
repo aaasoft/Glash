@@ -1,9 +1,9 @@
-﻿<Modal Visiable DialogBackdropVisiable DialogCentered>
-    <HeaderContent>
-        <h5 class="modal-title">
-            @Global.Instance.TextManager.GetText(Texts.Title)
-        </h5>
-        <EditForm class="p-0 m-0" Model="@Global.Instance">            
+﻿<EditForm class="p-0 m-0" Model="@Global.Instance">
+    <Modal Visiable DialogBackdropVisiable DialogCentered>
+        <HeaderContent>
+            <h5 class="modal-title">
+                @Global.Instance.TextManager.GetText(Texts.Title)
+            </h5>
             <div class="form-group p-0 m-0">
                 <div class="input-group input-group-sm">
                     <div class="input-group-prepend">
@@ -17,62 +17,95 @@
                     </InputSelect>
                 </div>
             </div>
-        </EditForm>
-    </HeaderContent>
-    <BodyContent>
-        <div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-address-book"></i> </span>
-                    </div>
-                    <select class="form-control">
-                        <option selected value="">@Global.Instance.TextManager.GetText(Texts.ChooseProfile)</option>
-                    </select>
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary" type="button">...</button>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-server"></i> </span>
-                    </div>
-                    <input class="form-control" type="text" autocomplete="off"
-                           placeholder="@Global.Instance.TextManager.GetText(Texts.ServerUrl)"
-                           @bind-value="ServerUrl" />
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                    </div>
-                    <input class="form-control" type="text" autocomplete="off"
-                           placeholder="@Global.Instance.TextManager.GetText(Texts.User)"
-                           @bind-value="User" />
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                    </div>
-                    <input class="form-control" type="password" autocomplete="off"
-                           placeholder="@Global.Instance.TextManager.GetText(Texts.Password)"
-                           @bind-value="Password" />
-                    @if (!string.IsNullOrEmpty(Message))
-                    {
-                        <div class="invalid-feedback">
-                            @(Message)
+        </HeaderContent>
+        <BodyContent>
+            <div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-address-book"></i> </span>
                         </div>
-                    }
+                        <InputSelect @bind-Value="@CurrentProfileId" class="form-control">
+                            <option selected value="">@Global.Instance.TextManager.GetText(Texts.ChooseProfile)</option>
+                            @foreach (var t in Quick.EntityFrameworkCore.Plus.ConfigDbContext.CacheContext.Query<Model.Profile>())
+                            {
+                                <option value="@t.Id">@t.Name</option>
+                            }
+                        </InputSelect>
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button" @onclick="ShowProfileManageWindow">...</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-server"></i> </span>
+                        </div>
+                        @if (string.IsNullOrEmpty(CurrentProfileId))
+                        {
+                            <input class="form-control" type="text" autocomplete="off"
+                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.ServerUrl)"
+                               @bind-value="ServerUrl" />
+                        }
+                        else
+                        {
+                            <input class="form-control" type="text" autocomplete="off" readonly
+                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.ServerUrl)"
+                               @bind-value="ServerUrl" />
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                        </div>
+                        @if (string.IsNullOrEmpty(CurrentProfileId))
+                        {
+                            <input class="form-control" type="text" autocomplete="off"
+                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.User)"
+                               @bind-value="User" />
+                        }
+                        else
+                        {
+                            <input class="form-control" type="text" autocomplete="off" readonly
+                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.User)"
+                               @bind-value="User" />
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                        </div>
+                        @if (string.IsNullOrEmpty(CurrentProfileId))
+                        {
+                            <input class="form-control" type="password" autocomplete="off"
+                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.Password)"
+                               @bind-value="Password" />
+                        }
+                        else
+                        {
+                            <input class="form-control" type="password" autocomplete="off" readonly
+                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.Password)"
+                               @bind-value="Password" />
+                        }
+
+                        @if (!string.IsNullOrEmpty(Message))
+                        {
+                            <div class="invalid-feedback">
+                                @(Message)
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="button" class="btn btn-success btn-block" value="@Global.Instance.TextManager.GetText(Texts.Login)" @onclick="OnPost" />
                 </div>
             </div>
-            <div class="form-group">
-                <input type="button" class="btn btn-success btn-block" value="@Global.Instance.TextManager.GetText(Texts.Login)" @onclick="OnPost" />
-            </div>
-        </div>
-    </BodyContent>
-</Modal>
+        </BodyContent>
+    </Modal>
+</EditForm>
+<ModalWindow @ref="modalWindow" DialogSizeExtraLarge></ModalWindow>
