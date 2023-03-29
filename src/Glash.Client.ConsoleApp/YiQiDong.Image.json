@@ -1,8 +1,0 @@
-﻿{
-  "Name": "GlashClient",
-  "Version": "1.0.x.x",
-  "Tags": [ "Proxy" ],
-  "Description": "GlashClient",
-  "Platform": [ "win_x64", "linux_x64", "linux_arm64", "linux_arm" ],
-  "AgentStartup": "Glash.Client.ConsoleApp.dll"
-}
