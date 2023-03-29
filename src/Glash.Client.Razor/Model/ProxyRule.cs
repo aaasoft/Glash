@@ -1,13 +1,13 @@
-﻿using Quick.EntityFrameworkCore.Plus;
+﻿using Glash.Core.Client;
+using Quick.EntityFrameworkCore.Plus;
 using Quick.Localize;
-using Quick.Protocol;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Glash.Client.Razor.Model
 {
     [ModelMeta("ProxyRule")]
-    public class ProxyRule : BaseModel, IHasDependcyRelation
+    public class ProxyRule : BaseModel, IProxyRule, IHasDependcyRelation
     {
         [TextResource]
         public enum Texts
@@ -36,6 +36,8 @@ namespace Glash.Client.Razor.Model
         [Required]
         [Range(0, 65535)]
         public int RemotePort { get; set; }
+        [NotMapped]
+        public bool Enable { get; set; } = false;
 
         public override string ToString()
         {

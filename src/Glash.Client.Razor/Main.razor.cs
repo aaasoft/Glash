@@ -54,6 +54,11 @@ namespace Glash.Client.Razor
         protected override void OnParametersSet()
         {
             GlashClient.Disconnected += GlashClient_Disconnected;
+            var agentHashSet = Agents.ToHashSet();
+            var proxyRules = ConfigDbContext.CacheContext.Query<Model.ProxyRule>()
+                .Where(t => t.ProfileId == CurrentProfile.Id && agentHashSet.Contains(t.Agent))
+                .ToArray();
+            GlashClient.AddProxyRules(proxyRules);
         }
 
         private void GlashClient_Disconnected(object sender, EventArgs e)
@@ -102,6 +107,7 @@ namespace Glash.Client.Razor
                     try
                     {
                         ConfigDbContext.CacheContext.Add(model);
+                        GlashClient.AddProxyRule(model);
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
                     }
@@ -127,7 +133,9 @@ namespace Glash.Client.Razor
                         model.LocalPort = editModel.LocalPort;
                         model.RemoteHost = editModel.RemoteHost;
                         model.RemotePort = editModel.RemotePort;
+                        GlashClient.RemoveProxyRule(model.Id);
                         ConfigDbContext.CacheContext.Update(model);
+                        GlashClient.AddProxyRule(model);
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
                     }
@@ -148,6 +156,7 @@ namespace Glash.Client.Razor
                 {
                     try
                     {
+                        GlashClient.RemoveProxyRule(model.Id);
                         ConfigDbContext.CacheContext.Remove(model);
                         InvokeAsync(StateHasChanged);
                     }
@@ -159,6 +168,14 @@ namespace Glash.Client.Razor
                         });
                     }
                 });
+        }
+
+        private void onProxyRuleEnableChanged(IProxyRule model)
+        {
+            if (model.Enable)
+                GlashClient.DisableProxyRule(model.Id);
+            else
+                GlashClient.EnableProxyRule(model.Id);
         }
     }
 }

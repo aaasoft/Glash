@@ -16,7 +16,7 @@ namespace Glash.Client.WinForm
     {
         private bool isCreate = true;
         private ServerContext serverContext;
-        public ProxyInfo Model { get; private set; }
+        public IProxyRule Model { get; private set; }
         public EditProxyForm()
         {
             InitializeComponent();
@@ -27,10 +27,10 @@ namespace Glash.Client.WinForm
             this.serverContext = serverContext;
         }
 
-        public void SetModel(ProxyInfo model)
+        public void SetModel(IProxyRule model)
         {
             isCreate = false;
-            Model = new ProxyInfo()
+            Model = new IProxyRule()
             {
                 Name = model.Name,
                 Agent = model.Agent,
@@ -47,7 +47,7 @@ namespace Glash.Client.WinForm
             if (isCreate)
             {
                 Text = "Add Proxy";
-                Model = new ProxyInfo();
+                Model = new IProxyRule();
             }
             else
             {

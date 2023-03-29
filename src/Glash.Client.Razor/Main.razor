@@ -27,42 +27,54 @@
                         </div>
                     </div>
                 </nav>
-                @foreach (var proxyRule in ConfigDbContext.CacheContext.Query<Model.ProxyRule>().Where(t => t.ProfileId == CurrentProfile.Id && t.Agent == agent))
+                @foreach (var proxyRule in GlashClient.ProxyRuleContexts.Where(t => t.Config.Agent == agent))
                 {
-                    <div class="col-xl-4 col-lg-6 col-sm-12 mt-2">
+                    <div class="col-xl-3 col-lg-4 col-sm-12 mt-2">
                         <div class="card">
                             <div class="card-header">
-                                <i class="fa fa-cube" aria-hidden="true"></i>
-                                <span>@proxyRule.Name</span>
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                <span>@proxyRule.Config.Name</span>
+                                @if (@proxyRule.Config.Enable)
+                                {
+                                    <div class="custom-control custom-switch d-inline pull-right">
+                                        <input type="checkbox" checked class="custom-control-input" id="switch_enable_proxyrule_@proxyRule.Config.Id" @onclick="@(() => onProxyRuleEnableChanged(@proxyRule.Config))">
+                                        <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRule.Config.Id"></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="custom-control custom-switch d-inline pull-right">
+                                        <input type="checkbox" class="custom-control-input" id="switch_enable_proxyrule_@proxyRule.Config.Id" @onclick="@(() => onProxyRuleEnableChanged(@proxyRule.Config))">
+                                        <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRule.Config.Id"></label>
+                                    </div>
+                                }
                             </div>
                             <div class="card-body small p-2">
                                 <p class="mb-0">
                                     <span class="font-weight-bold">
                                         @Global.Instance.TextManager.GetText(Texts.Local):
                                     </span>
-                                    @proxyRule.LocalIPAddress:@proxyRule.LocalPort
+                                    @proxyRule.Config.LocalIPAddress:@proxyRule.Config.LocalPort
                                 </p>
                                 <p class="mb-0">
                                     <span class="font-weight-bold">
                                         @Global.Instance.TextManager.GetText(Texts.Remote):
-                                    </span>@proxyRule.RemoteHost:@proxyRule.RemotePort
+                                    </span>@proxyRule.Config.RemoteHost:@proxyRule.Config.RemotePort
                                 </p>
                             </div>
                             <div class="card-footer p-1">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-desktop" aria-hidden="true"></i>
-                                    </button>
+
                                 </div>
                                 <button type="button" class="btn btn-sm btn-secondary"
                                         title="@Global.Instance.TextManager.GetText(Texts.EditProxyRule)"
-                                        @onclick=@(e=>EditProxyRule(proxyRule))>
+                                @onclick=@(e=>EditProxyRule((Model.ProxyRule)proxyRule.Config))>
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </button>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-sm btn-secondary"
                                             title="@Global.Instance.TextManager.GetText(Texts.DeleteProxyRule)"
-                                            @onclick=@(e=>DeleteProxyRule(proxyRule))>
+                                    @onclick=@(e=>DeleteProxyRule((Model.ProxyRule)proxyRule.Config))>
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>

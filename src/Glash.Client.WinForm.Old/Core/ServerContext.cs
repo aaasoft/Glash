@@ -101,12 +101,12 @@ namespace Glash.Client.WinForm.Core
             return await glashClient.GetAgentListAsync();
         }
 
-        public void OnProxyAdded(ProxyInfo model)
+        public void OnProxyAdded(IProxyRule model)
         {
             glashClient.AddProxyRule(model);
         }
 
-        public void OnProxyRemoved(ProxyInfo model)
+        public void OnProxyRemoved(IProxyRule model)
         {
             glashClient.RemoveProxyRule(model.Name);
         }
@@ -126,12 +126,12 @@ namespace Glash.Client.WinForm.Core
             }
         }
 
-        public void EnableProxy(ProxyInfo currentProxyModel)
+        public void EnableProxy(IProxyRule currentProxyModel)
         {
             glashClient.EnableProxyRule(currentProxyModel.Name);
         }
 
-        public void DisableProxy(ProxyInfo currentProxyModel)
+        public void DisableProxy(IProxyRule currentProxyModel)
         {
             glashClient.DisableProxyRule(currentProxyModel.Name);
         }

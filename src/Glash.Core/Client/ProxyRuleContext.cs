@@ -3,14 +3,14 @@ using System.Net.Sockets;
 
 namespace Glash.Core.Client
 {
-    public class ProxyContext
+    public class ProxyRuleContext
     {
         private GlashClient glashClient;
         private TcpListener tcpListener;
         private CancellationTokenSource cts;
-        public ProxyInfo Config { get; private set; }
+        public IProxyRule Config { get; private set; }
 
-        public ProxyContext(GlashClient glashClient, ProxyInfo config)
+        public ProxyRuleContext(GlashClient glashClient, IProxyRule config)
         {
             this.glashClient = glashClient;
             Config = config;

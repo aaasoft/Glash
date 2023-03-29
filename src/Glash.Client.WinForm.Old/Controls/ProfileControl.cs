@@ -21,7 +21,7 @@ namespace Glash.Client.WinForm.Controls
         private int maxLogLines = 1000;
         private ServerInfo currentServerModel;
         private ServerContext currentServerContext;
-        private ProxyInfo currentProxyModel;
+        private IProxyRule currentProxyModel;
         private Dictionary<string, ServerContext> serverDict = new Dictionary<string, ServerContext>();
 
         public ProfileInfo Profile { get; private set; }
@@ -246,7 +246,7 @@ namespace Glash.Client.WinForm.Controls
             return modelName;
         }
 
-        private void addProxy(ServerContext serverContext, ProxyInfo model)
+        private void addProxy(ServerContext serverContext, IProxyRule model)
         {
             serverContext.Model.ProxyList.Add(model);
             Profile.Save();
@@ -291,7 +291,7 @@ namespace Glash.Client.WinForm.Controls
         private void btnDuplicateProxy_Click(object sender, EventArgs e)
         {
             var json = JsonConvert.SerializeObject(currentProxyModel);
-            var newModel = JsonConvert.DeserializeObject<ProxyInfo>(json);
+            var newModel = JsonConvert.DeserializeObject<IProxyRule>(json);
             newModel.Name = validateProxyName(currentServerModel, newModel.Name);
             newModel.Enable = false;
             addProxy(currentServerContext, newModel);
@@ -322,7 +322,7 @@ namespace Glash.Client.WinForm.Controls
             }
             else
             {
-                currentProxyModel = (ProxyInfo)lvProxyList.SelectedItems[0].Tag;
+                currentProxyModel = (IProxyRule)lvProxyList.SelectedItems[0].Tag;
                 btnEditProxy.Enabled = true;
                 btnDuplicateProxy.Enabled = true;
                 btnDeleteProxy.Enabled = true;
