@@ -1,4 +1,5 @@
 ﻿using Quick.EntityFrameworkCore.Plus;
+using Quick.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,12 @@ namespace Glash.Client.Razor.Model
 {
     public class Profile : BaseModel
     {
+        [TextResource]
+        public enum Texts
+        {
+            ModelName
+        }
+
         public Profile() { }
         public Profile(string id)
         {
@@ -23,5 +30,10 @@ namespace Glash.Client.Razor.Model
         public string User { get; set; }
         [Required]
         public string Password { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Global.Instance.TextManager.GetText(Texts.ModelName)}[{Name}]";
+        }
     }
 }

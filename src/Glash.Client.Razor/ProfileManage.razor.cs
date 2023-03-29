@@ -84,13 +84,16 @@ namespace Glash.Client.Razor
             {
                 try
                 {
-                    ConfigDbContext.CacheContext.Remove(model);
+                    ConfigDbContext.CacheContext.Remove(model, true);
                     ProfileChangedHandler?.Invoke();
                     InvokeAsync(StateHasChanged);
                 }
                 catch (Exception ex)
                 {
-                    modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                    Task.Delay(100).ContinueWith(t =>
+                    {
+                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                    });
                 }
             });
         }

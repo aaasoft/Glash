@@ -12,6 +12,7 @@ namespace Glash.Client.Razor.Model
         [TextResource]
         public enum Texts
         {
+            ModelName,
             Name,
             Agent,
             LocalIPAddress,
@@ -35,6 +36,11 @@ namespace Glash.Client.Razor.Model
         [Required]
         [Range(0, 65535)]
         public int RemotePort { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Global.Instance.TextManager.GetText(Texts.ModelName)}[{Name}]";
+        }
 
         public ModelDependcyInfo[] GetDependcyRelation()
         {

@@ -1,4 +1,5 @@
-﻿Name=名称
+﻿ModelName=代理规则
+Name=名称
 Agent=代理
 LocalIPAddress=本地IP地址
 LocalPort=本地端口

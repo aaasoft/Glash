@@ -1,4 +1,5 @@
-﻿Name=Name
+﻿ModelName=Proxy Rule
+Name=Name
 Agent=Agent
 LocalIPAddress=Local IPAddress
 LocalPort=Local Port
