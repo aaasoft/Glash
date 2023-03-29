@@ -153,7 +153,10 @@ namespace Glash.Client.Razor
                     }
                     catch (Exception ex)
                     {
-                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                        Task.Delay(100).ContinueWith(t =>
+                        {
+                            modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                        });
                     }
                 });
         }
