@@ -11,7 +11,6 @@
             <thead>
                 <tr>
                     <th scope="col">@Global.Instance.TextManager.GetText(Model.Config.Texts.Name)</th>
-                    <th scope="col">@Global.Instance.TextManager.GetText(Model.Config.Texts.ServerUrl)</th>
                     <th scope="col">@Global.Instance.TextManager.GetText(Model.Config.Texts.User)</th>
                     <th scope="col">@Global.Instance.TextManager.GetText(Texts.Operate)</th>
                 </tr>
@@ -21,7 +20,6 @@
                 {
                     <tr>
                         <td>@item.Name</td>
-                        <td>@item.ServerUrl.Substring(0,@item.ServerUrl.IndexOf("?"))</td>
                         <td>@item.User</td>
                         <td>
                             <div class="btn-toolbar">

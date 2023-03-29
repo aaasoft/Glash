@@ -54,11 +54,9 @@
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1280, 900);
             Controls.Add(blazorWebView1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
-            WindowState = FormWindowState.Maximized;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Glash Client";            
             SizeChanged += MainForm_SizeChanged;

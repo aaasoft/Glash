@@ -31,9 +31,11 @@ namespace Glash.Client.WinForm
             services.AddWindowsFormsBlazorWebView();
             blazorWebView1.HostPage = "wwwroot/index.html";
             blazorWebView1.Services = services.BuildServiceProvider();
-            blazorWebView1.RootComponents.Add<Razor.Login>("#app");
+            blazorWebView1.RootComponents.Add<Razor.Index>("#app");
 
             Instance_LanguageChanged(this, EventArgs.Empty);
+            var screenBounds = Screen.PrimaryScreen.Bounds;
+            ClientSize = new Size(screenBounds.Width * 2 / 3, screenBounds.Height * 2 / 3);
         }
 
         private void Instance_LanguageChanged(object sender, EventArgs e)

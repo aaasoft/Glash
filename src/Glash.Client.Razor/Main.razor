@@ -1,0 +1,50 @@
+﻿<div class="mt-1">
+</div>
+<Tabs IsNavPills>
+    @foreach (var agent in Agents)
+    {
+        <TabPane Key="@agent">
+            <Tab>
+                @agent
+            </Tab>
+            <ChildContent>
+                <nav class="navbar pl-0">
+                    <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-group mr-2">
+                            <button type="button" title="@Global.Instance.TextManager.GetText(Texts.AddProxyRule)" class="btn btn-sm btn-secondary">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="btn-group mr-2">
+                            <button type="button" title="@Global.Instance.TextManager.GetText(Texts.EnableAll)" class="btn btn-sm btn-secondary">
+                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" title="@Global.Instance.TextManager.GetText(Texts.DisableAll)" class="btn btn-sm btn-secondary">
+                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+                <p>hello @agent</p>
+            </ChildContent>
+        </TabPane>
+    }
+    <TabPane Key="System">
+        <Tab>
+            @Global.Instance.TextManager.GetText(Texts.System)
+        </Tab>
+        <ChildContent>
+            <nav class="navbar pl-0">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group mr-2">
+                        <button type="button" class="btn btn-sm btn-secondary" @onclick="Logout">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            @Global.Instance.TextManager.GetText(Texts.Logout)
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </ChildContent>
+    </TabPane>
+</Tabs>
+<ModalAlert @ref="modalAlert"></ModalAlert>

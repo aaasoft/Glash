@@ -6,16 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Language\en-US\Glash.Client.Razor\Main+Texts.lang" />
     <None Remove="Language\en-US\Glash.Client.Razor\Model\Config+Texts.lang" />
     <None Remove="Language\en-US\Glash.Client.Razor\ProfileManage+Texts.lang" />
+    <None Remove="Language\zh-CN\Glash.Client.Razor\Main+Texts.lang" />
     <None Remove="Language\zh-CN\Glash.Client.Razor\Model\Config+Texts.lang" />
     <None Remove="Language\zh-CN\Glash.Client.Razor\ProfileManage+Texts.lang" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Login+Texts.lang" />
+    <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Main+Texts.lang" />
     <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Model\Config+Texts.lang" />
     <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Profiles\ProfileManage+Texts.lang" />
+    <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Main+Texts.lang" />
     <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Model\Config+Texts.lang" />
     <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Profiles\ProfileManage+Texts.lang" />
     <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Login+Texts.lang" />
@@ -31,6 +35,10 @@
     <PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="4.0.3" />
     <PackageReference Include="Quick.EntityFrameworkCore.Plus.SQLite" Version="5.0.2" />
     <PackageReference Include="Quick.Localize" Version="1.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Glash.Core\Glash.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿using Quick.Blazor.Bootstrap;
+﻿using Glash.Core.Client;
+using Microsoft.AspNetCore.Components;
+using Quick.Blazor.Bootstrap;
 using Quick.EntityFrameworkCore.Plus;
 using Quick.Localize;
 using System;
@@ -20,11 +22,16 @@ namespace Glash.Client.Razor
             ProfileManage
         }
 
-        private string Message;
         private string ServerUrl;
         private string User;
         private string Password;
         private ModalWindow modalWindow;
+        private ModalAlert modalAlert;
+        private ModalLoading modalLoading;
+
+        [Parameter]
+        public INavigator INavigator { get; set; }
+
         private string _CurrentProfileId;
         public string CurrentProfileId
         {
@@ -51,9 +58,25 @@ namespace Glash.Client.Razor
             );
         }
 
-        private void OnPost()
+        private async Task OnPost()
         {
-            
+            modalLoading.Show(null, null, true);
+            try
+            {
+                var glashClient = new GlashClient(ServerUrl);
+                await glashClient.ConnectAsync(User, Password);
+                var agentList = await glashClient.GetAgentListAsync();
+
+                Global.Instance.GlashClient = glashClient;
+                INavigator.Navigate<Main>(Main.PrepareParameter(glashClient, agentList));
+            }
+            catch (Exception ex)
+            {
+                Global.Instance.GlashClient?.Dispose();
+                Global.Instance.GlashClient = null;
+                modalAlert.Show("Error", ex.Message);
+            }
+            modalLoading.Close();
         }
     }
 }

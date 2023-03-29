@@ -1,6 +1,8 @@
-﻿using Glash.Model;
+﻿using Glash.Core.Utils;
+using Glash.Model;
 using Quick.Protocol;
 using Quick.Protocol.Utils;
+using System.Security.Cryptography;
 
 namespace Glash.Core.Client
 {
@@ -12,10 +14,11 @@ namespace Glash.Core.Client
         public event EventHandler Disconnected;
         public event EventHandler<string> LogPushed;
 
-        public GlashClient(string url, string password)
+        public GlashClient(string url, string password = null)
         {
             var qpClientOptions = QpClientOptions.Parse(new Uri(url));
-            qpClientOptions.Password = password;
+            if (!string.IsNullOrEmpty(password))
+                qpClientOptions.Password = password;
             qpClientOptions.InstructionSet = new[]
             {
                 Glash.Agent.Protocol.Instruction.Instance
@@ -46,12 +49,17 @@ namespace Glash.Core.Client
             Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
-        public async Task ConnectAsync()
+        public async Task ConnectAsync(string user, string password)
         {
             //Connect
             await qpClient.ConnectAsync();
+            var answer = CryptoUtils.ComputeMD5Hash($"{qpClient.AuthenticateQuestion}:{password}");
             //Register
-            await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.Register.Request());
+            await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.Register.Request()
+            {
+                Name = user,
+                Answer = answer
+            });
         }
 
         public void Dispose()

@@ -1,4 +1,5 @@
-﻿using Quick.EntityFrameworkCore.Plus;
+﻿using Glash.Core.Client;
+using Quick.EntityFrameworkCore.Plus;
 using Quick.EntityFrameworkCore.Plus.SQLite;
 using Quick.Localize;
 using System;
@@ -27,6 +28,8 @@ namespace Glash.Client
         }
         public event EventHandler LanguageChanged;
         public TextManager TextManager { get; private set; }
+        public GlashClient GlashClient { get; internal set; }
+
         public CultureInfo[] GetLanuages()
         {
             var list = new HashSet<string>();
