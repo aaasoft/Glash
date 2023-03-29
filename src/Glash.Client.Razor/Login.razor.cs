@@ -50,9 +50,9 @@ namespace Glash.Client.Razor
 
         private void ShowProfileManageWindow()
         {
-            modalWindow.Show<Profiles.ProfileManage>(
+            modalWindow.Show<ProfileManage>(
                 Global.Instance.TextManager.GetText(Texts.ProfileManage),
-                Profiles.ProfileManage.PrepareParameter(
+                ProfileManage.PrepareParameter(
                     () => InvokeAsync(StateHasChanged)
                 )
             );

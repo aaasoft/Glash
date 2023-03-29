@@ -5,21 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Glash.Client.Razor.Profiles
+namespace Glash.Client.Razor.Controls
 {
-    public partial class EditProfile
+    public partial class EditProxyRule
     {
         [Parameter]
-        public Model.Profile Model { get; set; }
+        public Model.ProxyRule Model { get; set; }
         [Parameter]
-        public Action<Model.Profile> OkAction { get; set; }
+        public Action<Model.ProxyRule> OkAction { get; set; }
 
         private void Ok()
         {
             OkAction?.Invoke(Model);
         }
 
-        public static Dictionary<string, object> PrepareParameter(Model.Profile model, Action<Model.Profile> okAction)
+        public static Dictionary<string, object> PrepareParameter(Model.ProxyRule model, Action<Model.ProxyRule> okAction)
         {
             return new Dictionary<string, object>()
             {

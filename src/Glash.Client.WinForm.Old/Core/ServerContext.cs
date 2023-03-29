@@ -28,7 +28,7 @@ namespace Glash.Client.WinForm.Core
                 glashClient = new GlashClient(model.Url, model.Password);
                 if (logHandler != null)
                     glashClient.LogPushed += GlashClient_LogPushed;
-                glashClient.AddProxyPortInfos(model.ProxyList.ToArray());
+                glashClient.AddProxyRules(model.ProxyList.ToArray());
                 glashClient.Disconnected += GlashClient_Disconnected;
                 _ = beginConnect(cts.Token);
             }
@@ -83,7 +83,7 @@ namespace Glash.Client.WinForm.Core
             try
             {
                 changeState("Connecting...");
-                await glashClient.ConnectAsync();
+                await glashClient.ConnectAsync(string.Empty,string.Empty);
                 changeIsConnected(true);
                 changeState("Connected");
             }
@@ -103,12 +103,12 @@ namespace Glash.Client.WinForm.Core
 
         public void OnProxyAdded(ProxyInfo model)
         {
-            glashClient.AddProxyPortInfo(model);
+            glashClient.AddProxyRule(model);
         }
 
         public void OnProxyRemoved(ProxyInfo model)
         {
-            glashClient.RemoveProxyPortInfo(model.Name);
+            glashClient.RemoveProxyRule(model.Name);
         }
 
         public void Dispose()
@@ -128,12 +128,12 @@ namespace Glash.Client.WinForm.Core
 
         public void EnableProxy(ProxyInfo currentProxyModel)
         {
-            glashClient.EnableProxyInfo(currentProxyModel.Name);
+            glashClient.EnableProxyRule(currentProxyModel.Name);
         }
 
         public void DisableProxy(ProxyInfo currentProxyModel)
         {
-            glashClient.DisableProxyPortInfo(currentProxyModel.Name);
+            glashClient.DisableProxyRule(currentProxyModel.Name);
         }
     }
 }

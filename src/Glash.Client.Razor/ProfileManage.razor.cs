@@ -10,7 +10,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Glash.Client.Razor.Profiles
+namespace Glash.Client.Razor
 {
     public partial class ProfileManage
     {
@@ -33,14 +33,14 @@ namespace Glash.Client.Razor.Profiles
 
         private void Add()
         {
-            modalWindow.Show<EditProfile>(Global.Instance.TextManager.GetText(Texts.Add), EditProfile.PrepareParameter(
+            modalWindow.Show<Controls.EditProfile>(Global.Instance.TextManager.GetText(Texts.Add), Controls.EditProfile.PrepareParameter(
                 new Model.Profile(Guid.NewGuid().ToString("N")),
                 model =>
                 {
                     try
                     {
                         ConfigDbContext.CacheContext.Add(model);
-                        ProfileChangedHandler?.Invoke();                        
+                        ProfileChangedHandler?.Invoke();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
                     }
@@ -55,7 +55,7 @@ namespace Glash.Client.Razor.Profiles
         private void Edit(Model.Profile model)
         {
             var editModel = JsonConvert.DeserializeObject<Model.Profile>(JsonConvert.SerializeObject(model));
-            modalWindow.Show<EditProfile>(Global.Instance.TextManager.GetText(Texts.Add), EditProfile.PrepareParameter(
+            modalWindow.Show<Controls.EditProfile>(Global.Instance.TextManager.GetText(Texts.Edit), Controls.EditProfile.PrepareParameter(
                 editModel,
                 model =>
                 {
@@ -66,7 +66,7 @@ namespace Glash.Client.Razor.Profiles
                         model.User = editModel.User;
                         model.Password = editModel.Password;
                         ConfigDbContext.CacheContext.Update(model);
-                        ProfileChangedHandler?.Invoke();                        
+                        ProfileChangedHandler?.Invoke();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
                     }
@@ -86,7 +86,6 @@ namespace Glash.Client.Razor.Profiles
                 ProfileChangedHandler?.Invoke();
                 InvokeAsync(StateHasChanged);
             });
-            ProfileChangedHandler?.Invoke();
         }
 
         public static Dictionary<string, object> PrepareParameter(Action profileChangedHandler)

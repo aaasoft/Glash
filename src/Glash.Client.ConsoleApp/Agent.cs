@@ -38,7 +38,7 @@ namespace Glash.Client.ConsoleApp
             glashClient = new GlashClient(Config.ServerUrl, Config.Password);
             glashClient.LogPushed += (sender, e) => AgentContext.Instance.LogInfo(e);
             var proxyConfigs = JsonConvert.DeserializeObject<ProxyInfo[]>(Config.ProxyConfig);
-            glashClient.AddProxyPortInfos(proxyConfigs);
+            glashClient.AddProxyRules(proxyConfigs);
             glashClient.Disconnected += GlashClient_Disconnected;
             _ = beginConnect(cts.Token);
         }
@@ -67,7 +67,7 @@ namespace Glash.Client.ConsoleApp
             try
             {
                 AgentContext.Instance.LogInfo($"Client connecting to server[{Config.ServerUrl}]...");
-                await glashClient.ConnectAsync();
+                await glashClient.ConnectAsync(string.Empty, string.Empty);
                 AgentContext.Instance.LogInfo($"Client connected to server[{Config.ServerUrl}].");
             }
             catch (Exception ex)

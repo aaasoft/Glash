@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.Razor", "Glash
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.WinForm", "Glash.Client.WinForm\Glash.Client.WinForm.csproj", "{CC98A0CB-8FDE-4A8F-B5C9-3AB8E3FE69F0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.WinForm.Old", "Glash.Client.WinForm.Old\Glash.Client.WinForm.Old.csproj", "{AD334B49-97BD-45AC-BFD5-AA85AFC33CD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{CC98A0CB-8FDE-4A8F-B5C9-3AB8E3FE69F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC98A0CB-8FDE-4A8F-B5C9-3AB8E3FE69F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC98A0CB-8FDE-4A8F-B5C9-3AB8E3FE69F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD334B49-97BD-45AC-BFD5-AA85AFC33CD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD334B49-97BD-45AC-BFD5-AA85AFC33CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD334B49-97BD-45AC-BFD5-AA85AFC33CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD334B49-97BD-45AC-BFD5-AA85AFC33CD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

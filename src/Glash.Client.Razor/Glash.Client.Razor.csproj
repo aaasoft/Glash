@@ -8,20 +8,22 @@
   <ItemGroup>
     <None Remove="Language\en-US\Glash.Client.Razor\Main+Texts.lang" />
     <None Remove="Language\en-US\Glash.Client.Razor\Model\Config+Texts.lang" />
-    <None Remove="Language\en-US\Glash.Client.Razor\ProfileManage+Texts.lang" />
+    <None Remove="Language\en-US\Glash.Client.Razor\Model\ProxyRule+Texts.lang" />
     <None Remove="Language\zh-CN\Glash.Client.Razor\Main+Texts.lang" />
     <None Remove="Language\zh-CN\Glash.Client.Razor\Model\Config+Texts.lang" />
-    <None Remove="Language\zh-CN\Glash.Client.Razor\ProfileManage+Texts.lang" />
+    <None Remove="Language\zh-CN\Glash.Client.Razor\Model\ProxyRule+Texts.lang" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Login+Texts.lang" />
     <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Main+Texts.lang" />
+    <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Model\ProxyRule+Texts.lang" />
     <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Model\Config+Texts.lang" />
-    <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\Profiles\ProfileManage+Texts.lang" />
+    <EmbeddedResource Include="Language\en-US\Glash.Client.Razor\ProfileManage+Texts.lang" />
     <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Main+Texts.lang" />
     <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Model\Config+Texts.lang" />
-    <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Profiles\ProfileManage+Texts.lang" />
+    <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Model\ProxyRule+Texts.lang" />
+    <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\ProfileManage+Texts.lang" />
     <EmbeddedResource Include="Language\zh-CN\Glash.Client.Razor\Login+Texts.lang" />
   </ItemGroup>
 

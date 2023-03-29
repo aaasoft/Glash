@@ -48,12 +48,25 @@ namespace Glash.Client
             return list.Select(t => new CultureInfo(t)).ToArray();
         }
 
+        public static string GetProfileFolder()
+        {
+            var folder = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                nameof(Glash),
+                nameof(Client));
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+            return folder;
+        }
+
         public void Init()
         {
-            ConfigDbContext.Init(new SQLiteDbContextConfigHandler(SQLiteDbContextConfigHandler.CONFIG_DB_FILE), modelBuilder =>
+            var dbFile = Path.Combine(GetProfileFolder(), SQLiteDbContextConfigHandler.CONFIG_DB_FILE);
+            ConfigDbContext.Init(new SQLiteDbContextConfigHandler(dbFile), modelBuilder =>
             {
                 modelBuilder.Entity<Razor.Model.Config>();
                 modelBuilder.Entity<Razor.Model.Profile>();
+                modelBuilder.Entity<Razor.Model.ProxyRule>();
             });
             using (var dbContext = new ConfigDbContext())
                 dbContext.EnsureDatabaseCreatedAndUpdated(t => Debug.Print(t));

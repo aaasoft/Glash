@@ -1,0 +1,6 @@
+﻿Name=名称
+Agent=代理
+LocalIPAddress=本地IP地址
+LocalPort=本地端口
+RemoteHost=远程主机
+RemotePort=远程端口

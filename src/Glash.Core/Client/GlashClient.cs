@@ -2,7 +2,6 @@
 using Glash.Model;
 using Quick.Protocol;
 using Quick.Protocol.Utils;
-using System.Security.Cryptography;
 
 namespace Glash.Core.Client
 {
@@ -87,7 +86,7 @@ namespace Glash.Core.Client
             }
         }
 
-        public void EnableProxyInfo(string proxyId)
+        public void EnableProxyRule(string proxyId)
         {
             if (!proxyContextDict.ContainsKey(proxyId))
                 return;
@@ -95,7 +94,7 @@ namespace Glash.Core.Client
             EnableProxyInfo(context);
         }
 
-        public void DisableProxyInfo(ProxyContext context)
+        public void DisableProxyRule(ProxyContext context)
         {
             try
             {
@@ -110,15 +109,15 @@ namespace Glash.Core.Client
             }
         }
 
-        public void DisableProxyPortInfo(string configId)
+        public void DisableProxyRule(string configId)
         {
             if (!proxyContextDict.ContainsKey(configId))
                 return;
             var context = proxyContextDict[configId];
-            DisableProxyInfo(context);
+            DisableProxyRule(context);
         }
 
-        public void AddProxyPortInfo(ProxyInfo config)
+        public void AddProxyRule(ProxyInfo config)
         {
             var context = new ProxyContext(this, config);
             proxyContextDict[config.Name] = context;
@@ -130,19 +129,19 @@ namespace Glash.Core.Client
                 catch { }
         }
 
-        public void AddProxyPortInfos(ProxyInfo[] items)
+        public void AddProxyRules(ProxyInfo[] items)
         {
             foreach (var item in items)
-                AddProxyPortInfo(item);
+                AddProxyRule(item);
         }
 
-        public void RemoveProxyPortInfo(string proxyName)
+        public void RemoveProxyRule(string proxyName)
         {
             if (!proxyContextDict.ContainsKey(proxyName))
                 return;
             var context = proxyContextDict[proxyName];
             proxyContextDict.Remove(proxyName);
-            DisableProxyInfo(context);
+            DisableProxyRule(context);
         }
 
         private Dictionary<int, GlashTunnelContext> tunnelContextDict = new Dictionary<int, GlashTunnelContext>();
