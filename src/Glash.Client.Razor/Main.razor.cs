@@ -31,7 +31,8 @@ namespace Glash.Client.Razor
 
         [Parameter]
         public INavigator INavigator { get; set; }
-
+        [Parameter]
+        public Model.Profile CurrentProfile { get; set; }
         [Parameter]
         public GlashClient GlashClient { get; set; }
         [Parameter]
@@ -40,10 +41,11 @@ namespace Glash.Client.Razor
         private ModalAlert modalAlert;
         private ModalWindow modalWindow;
 
-        public static Dictionary<string, object> PrepareParameter(GlashClient glashClient, string[] agents)
+        public static Dictionary<string, object> PrepareParameter(Model.Profile currentProfile, GlashClient glashClient, string[] agents)
         {
             return new Dictionary<string, object>()
             {
+                [nameof(CurrentProfile)] = currentProfile,
                 [nameof(GlashClient)] = glashClient,
                 [nameof(Agents)] = agents
             };
@@ -89,6 +91,10 @@ namespace Glash.Client.Razor
                 new Model.ProxyRule()
                 {
                     Id = Guid.NewGuid().ToString("N"),
+                    ProfileId = CurrentProfile.Id,
+                    LocalIPAddress = "127.0.0.1",
+                    LocalPort = 80,
+                    RemotePort = 80,
                     Agent = agent
                 },
                 model =>
@@ -101,7 +107,7 @@ namespace Glash.Client.Razor
                     }
                     catch (Exception ex)
                     {
-                        modalAlert.Show("Error", ex.Message);
+                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                     }
                 }
             ));
@@ -127,7 +133,7 @@ namespace Glash.Client.Razor
                     }
                     catch (Exception ex)
                     {
-                        modalAlert.Show("Error", ex.Message);
+                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                     }
                 }
             ));
@@ -140,8 +146,15 @@ namespace Glash.Client.Razor
                 Global.Instance.TextManager.GetText(Texts.DeleteProxyRuleConfirm, model.Name),
                 () =>
                 {
-                    ConfigDbContext.CacheContext.Remove(model);
-                    InvokeAsync(StateHasChanged);
+                    try
+                    {
+                        ConfigDbContext.CacheContext.Remove(model);
+                        InvokeAsync(StateHasChanged);
+                    }
+                    catch (Exception ex)
+                    {
+                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                    }
                 });
         }
     }

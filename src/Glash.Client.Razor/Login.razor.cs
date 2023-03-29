@@ -22,15 +22,13 @@ namespace Glash.Client.Razor
             ProfileManage
         }
 
-        private string ServerUrl;
-        private string User;
-        private string Password;
         private ModalWindow modalWindow;
         private ModalAlert modalAlert;
         private ModalLoading modalLoading;
 
         [Parameter]
         public INavigator INavigator { get; set; }
+        private Model.Profile CurrentProfile;
 
         private string _CurrentProfileId;
         public string CurrentProfileId
@@ -39,12 +37,9 @@ namespace Glash.Client.Razor
             set
             {
                 _CurrentProfileId = value;
-                Model.Profile CurrentProfile = null;
+                CurrentProfile = null;
                 if (!string.IsNullOrEmpty(value))
                     CurrentProfile = ConfigDbContext.CacheContext.Find(new Model.Profile(value));
-                ServerUrl = CurrentProfile?.ServerUrl;
-                User = CurrentProfile?.User;
-                Password = CurrentProfile?.Password;
             }
         }
 
@@ -63,18 +58,18 @@ namespace Glash.Client.Razor
             modalLoading.Show(null, null, true);
             try
             {
-                var glashClient = new GlashClient(ServerUrl);
-                await glashClient.ConnectAsync(User, Password);
+                var glashClient = new GlashClient(CurrentProfile.ServerUrl);
+                await glashClient.ConnectAsync(CurrentProfile.User, CurrentProfile.Password);
                 var agentList = await glashClient.GetAgentListAsync();
 
                 Global.Instance.GlashClient = glashClient;
-                INavigator.Navigate<Main>(Main.PrepareParameter(glashClient, agentList));
+                INavigator.Navigate<Main>(Main.PrepareParameter(CurrentProfile, glashClient, agentList));
             }
             catch (Exception ex)
             {
                 Global.Instance.GlashClient?.Dispose();
                 Global.Instance.GlashClient = null;
-                modalAlert.Show("Error", ex.Message);
+                modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
             }
             modalLoading.Close();
         }

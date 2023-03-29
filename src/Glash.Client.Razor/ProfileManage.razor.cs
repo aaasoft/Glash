@@ -46,7 +46,7 @@ namespace Glash.Client.Razor
                     }
                     catch (Exception ex)
                     {
-                        modalAlert.Show("Error", ex.Message);
+                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                     }
                 }
             ));
@@ -72,7 +72,7 @@ namespace Glash.Client.Razor
                     }
                     catch (Exception ex)
                     {
-                        modalAlert.Show("Error", ex.Message);
+                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                     }
                 }
             ));
@@ -82,9 +82,16 @@ namespace Glash.Client.Razor
         {
             modalAlert.Show(Global.Instance.TextManager.GetText(Texts.Delete), Global.Instance.TextManager.GetText(Texts.DeleteConfirm, model.Name), () =>
             {
-                ConfigDbContext.CacheContext.Remove(model);
-                ProfileChangedHandler?.Invoke();
-                InvokeAsync(StateHasChanged);
+                try
+                {
+                    ConfigDbContext.CacheContext.Remove(model);
+                    ProfileChangedHandler?.Invoke();
+                    InvokeAsync(StateHasChanged);
+                }
+                catch (Exception ex)
+                {
+                    modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                }
             });
         }
 

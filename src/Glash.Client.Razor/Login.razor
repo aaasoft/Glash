@@ -38,64 +38,14 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"> <i class="fa fa-server"></i> </span>
-                        </div>
-                        @if (string.IsNullOrEmpty(CurrentProfileId))
-                        {
-                            <input class="form-control" type="text" autocomplete="off"
-                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.ServerUrl)"
-                               @bind-value="ServerUrl" />
-                        }
-                        else
-                        {
-                            <input class="form-control" type="text" autocomplete="off" readonly
-                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.ServerUrl)"
-                               @bind-value="ServerUrl" />
-                        }
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                        </div>
-                        @if (string.IsNullOrEmpty(CurrentProfileId))
-                        {
-                            <input class="form-control" type="text" autocomplete="off"
-                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.User)"
-                               @bind-value="User" />
-                        }
-                        else
-                        {
-                            <input class="form-control" type="text" autocomplete="off" readonly
-                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.User)"
-                               @bind-value="User" />
-                        }
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                        </div>
-                        @if (string.IsNullOrEmpty(CurrentProfileId))
-                        {
-                            <input class="form-control" type="password" autocomplete="off"
-                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.Password)"
-                               @bind-value="Password" />
-                        }
-                        else
-                        {
-                            <input class="form-control" type="password" autocomplete="off" readonly
-                                   placeholder="@Global.Instance.TextManager.GetText(Model.Config.Texts.Password)"
-                               @bind-value="Password" />
-                        }
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input type="button" class="btn btn-success btn-block" value="@Global.Instance.TextManager.GetText(Texts.Login)" @onclick="OnPost" />
+                    @if(CurrentProfile==null)
+                    {
+                        <input type="button" class="btn btn-success btn-block" value="@Global.Instance.TextManager.GetText(Texts.Login)" disabled />
+                    }
+                    else
+                    {
+                        <input type="button" class="btn btn-success btn-block" value="@Global.Instance.TextManager.GetText(Texts.Login)" @onclick="OnPost" />
+                    }
                 </div>
             </div>
             <ModalAlert @ref="modalAlert"></ModalAlert>
