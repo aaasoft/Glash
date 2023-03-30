@@ -1,4 +1,5 @@
 ﻿using Glash.Core.Client;
+using Microsoft.EntityFrameworkCore;
 using Quick.Blazor.Bootstrap;
 using Quick.EntityFrameworkCore.Plus;
 using Quick.EntityFrameworkCore.Plus.SQLite;
@@ -68,31 +69,16 @@ namespace Glash.Client
             return list.Select(t => new CultureInfo(t)).ToArray();
         }
 
-        public static string GetProfileFolder()
+        public void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var folder = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                nameof(Glash),
-                nameof(Client));
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
-            return folder;
+            modelBuilder.Entity<Razor.Model.Config>();
+            modelBuilder.Entity<Razor.Model.Profile>();
+            modelBuilder.Entity<Razor.Model.ProxyRule>();
         }
 
         public void Init(string version)
         {
             Version = version;
-            var dbFile = Path.Combine(GetProfileFolder(), SQLiteDbContextConfigHandler.CONFIG_DB_FILE);
-            ConfigDbContext.Init(new SQLiteDbContextConfigHandler(dbFile), modelBuilder =>
-            {
-                modelBuilder.Entity<Razor.Model.Config>();
-                modelBuilder.Entity<Razor.Model.Profile>();
-                modelBuilder.Entity<Razor.Model.ProxyRule>();
-            });
-            using (var dbContext = new ConfigDbContext())
-                dbContext.EnsureDatabaseCreatedAndUpdated(t => Debug.Print(t));
-            ConfigDbContext.CacheContext.LoadCache();
-
             _Language = Razor.Model.Config.GetConfig(nameof(Language));
             if (_Language == null)
                 _Language = Thread.CurrentThread.CurrentCulture.IetfLanguageTag;

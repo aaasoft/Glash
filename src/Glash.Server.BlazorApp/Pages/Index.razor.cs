@@ -7,7 +7,7 @@ namespace Glash.Server.BlazorApp.Pages
         public enum Texts
         {
             Title,
-            Dashboard,
+            Basic,
             AgentManage,
             ClientManage
         }

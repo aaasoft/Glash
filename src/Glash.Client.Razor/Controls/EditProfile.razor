@@ -13,9 +13,9 @@
                 <ValidationMessage For="@(() => Model.ServerUrl)" />
             </div>
             <div class="form-group">
-                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.User)</label>
-                <InputText class="form-control" @bind-Value="Model.User" />
-                <ValidationMessage For="@(() => Model.User)" />
+                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.Account)</label>
+                <InputText class="form-control" @bind-Value="Model.Account" />
+                <ValidationMessage For="@(() => Model.Account)" />
             </div>
             <div class="form-group">
                 <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.Password)</label>

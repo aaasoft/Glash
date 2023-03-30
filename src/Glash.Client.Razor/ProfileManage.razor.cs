@@ -62,7 +62,7 @@ namespace Glash.Client.Razor
                     {
                         model.Name = editModel.Name;
                         model.ServerUrl = editModel.ServerUrl;
-                        model.User = editModel.User;
+                        model.Account = editModel.Account;
                         model.Password = editModel.Password;
                         ConfigDbContext.CacheContext.Update(model);
                         ProfileChangedHandler?.Invoke();

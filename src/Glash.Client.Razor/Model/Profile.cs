@@ -3,12 +3,14 @@ using Quick.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Glash.Client.Razor.Model
 {
+    [Table($"{nameof(Glash)}_{nameof(Client)}_{nameof(Profile)}")]
     public class Profile : BaseModel
     {
         [TextResource]
@@ -17,7 +19,7 @@ namespace Glash.Client.Razor.Model
             ModelName,
             Name,
             ServerUrl,
-            User,
+            Account,
             Password
         }
 
@@ -31,7 +33,7 @@ namespace Glash.Client.Razor.Model
         [Required]
         public string ServerUrl { get; set; }
         [Required]
-        public string User { get; set; }
+        public string Account { get; set; }
         [Required]
         public string Password { get; set; }
 

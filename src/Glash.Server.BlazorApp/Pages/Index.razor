@@ -6,10 +6,10 @@
             @Global.Instance.TextManager.GetText(Texts.Title)
         </Title>
         <ChildContent>
-            <NavMenuItem Key="Dashboard" OnClick="@(() => Show<Dashboard>())">
+            <NavMenuItem Key="Basic" OnClick="@(() => Show<Basic>())">
                 <Tab>
                     <i class="fa fa-tachometer" aria-hidden="true"></i>
-                    @Global.Instance.TextManager.GetText(Texts.Dashboard)
+                    @Global.Instance.TextManager.GetText(Texts.Basic)
                 </Tab>
             </NavMenuItem>
             <NavMenuItem Key="AgentManage" OnClick="@(() => Show<AgentManage>())">

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Glash.Client.Razor.Model
 {
-    [ModelMeta("ProxyRule")]
+    [Table($"{nameof(Glash)}_{nameof(Client)}_{nameof(ProxyRule)}")]
     public class ProxyRule : BaseModel, IProxyRule, IHasDependcyRelation
     {
         [TextResource]

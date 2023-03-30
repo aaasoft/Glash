@@ -7,6 +7,7 @@ namespace Glash.Server.BlazorApp
     {
         Error,
         Ok,
-        Cancel
+        Cancel,
+        Success
     }
 }

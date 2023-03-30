@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics.Metrics;
-using System.Drawing;
-using System.IO.Pipes;
+﻿using System.IO.Pipes;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.Extensions.DependencyInjection;
-using Quick.Localize;
-using static Glash.Client.Razor.Login;
+using Quick.EntityFrameworkCore.Plus.SQLite;
+using Quick.EntityFrameworkCore.Plus;
+using System.Diagnostics;
 
 namespace Glash.Client.WinForm
 {
@@ -20,12 +13,33 @@ namespace Glash.Client.WinForm
     {
         private FormWindowState preFormWindowState = FormWindowState.Maximized;
 
+        public string GetProfileFolder()
+        {
+            var folder = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                nameof(Glash),
+                nameof(Client));
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+            return folder;
+        }
+
         public MainForm()
         {
             InitializeComponent();
             ensureOnlyOne();
 
+            var dbFile = Path.Combine(GetProfileFolder(), SQLiteDbContextConfigHandler.CONFIG_DB_FILE);
+            ConfigDbContext.Init(new SQLiteDbContextConfigHandler(dbFile), modelBuilder =>
+            {
+                Global.Instance.OnModelCreating(modelBuilder);
+            });
+            using (var dbContext = new ConfigDbContext())
+                dbContext.EnsureDatabaseCreatedAndUpdated(t => Debug.Print(t));
+            ConfigDbContext.CacheContext.LoadCache();
+
             Global.Instance.Init(Application.ProductVersion);
+
             Global.Instance.LanguageChanged += Instance_LanguageChanged;
             Global.Instance.ProfileChanged += Instance_ProfileChanged;
             var services = new ServiceCollection();
