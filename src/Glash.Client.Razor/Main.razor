@@ -94,16 +94,29 @@
                 @Global.Instance.TextManager.GetText(Texts.System)
             </Tab>
             <ChildContent>
-                <nav class="navbar pl-0">
-                    <div class="btn-toolbar" role="toolbar">
-                        <div class="btn-group mr-2">
-                            <button type="button" class="btn btn-sm btn-secondary" @onclick="Logout">
-                                <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                @Global.Instance.TextManager.GetText(Texts.Logout)
-                            </button>
+                <row>
+                    <div class="btn-group mr-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    @Global.Instance.TextManager.GetText(Texts.DisplayRows)
+                                </div>
+                            </div>
+                            <input type="number" class="form-control" min="1" @bind-value="LogRows">
                         </div>
                     </div>
-                </nav>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-secondary" @onclick="Logout">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            @Global.Instance.TextManager.GetText(Texts.Logout)
+                        </button>
+                    </div>
+                </row>
+                <row>
+                    <div class="mt-1">
+                        <LogViewControl @ref="logViewControl" Content="@Logs" Rows="LogRows" MaxLines="MAX_LOG_LINES"></LogViewControl>
+                    </div>
+                </row>
             </ChildContent>
         </TabPane>
     </Tabs>

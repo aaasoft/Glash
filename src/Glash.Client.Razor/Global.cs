@@ -1,4 +1,5 @@
 ﻿using Glash.Core.Client;
+using Quick.Blazor.Bootstrap;
 using Quick.EntityFrameworkCore.Plus;
 using Quick.EntityFrameworkCore.Plus.SQLite;
 using Quick.Localize;
@@ -21,11 +22,12 @@ namespace Glash.Client
             set
             {
                 _Language = value;
-                TextManager = TextManager.GetInstance(value);
                 Razor.Model.Config.SetConfig(nameof(Language), value);
+                afterLanuageChanged();
                 LanguageChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+
         public event EventHandler LanguageChanged;
         public TextManager TextManager { get; private set; }
         public GlashClient GlashClient { get; internal set; }
@@ -75,7 +77,14 @@ namespace Glash.Client
             _Language = Razor.Model.Config.GetConfig(nameof(Language));
             if (_Language == null)
                 _Language = Thread.CurrentThread.CurrentCulture.IetfLanguageTag;
+            afterLanuageChanged();
+        }
+
+        private void afterLanuageChanged()
+        {
             TextManager = TextManager.GetInstance(Language);
+            ModalPrompt.TextOk = ModalAlert.TextOk = TextManager.GetText(Razor.ClientTexts.Ok);
+            ModalPrompt.TextCancel = ModalAlert.TextCancel = TextManager.GetText(Razor.ClientTexts.Cancel);
         }
     }
 }

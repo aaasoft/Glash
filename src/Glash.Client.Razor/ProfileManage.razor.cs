@@ -21,7 +21,6 @@ namespace Glash.Client.Razor
         public enum Texts
         {
             Operate,
-            Ok,
             Add,
             Edit,
             Delete,

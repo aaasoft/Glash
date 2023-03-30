@@ -10,6 +10,8 @@ namespace Glash.Client.Razor
     [TextResource]
     public enum ClientTexts
     {
-        Error
+        Error,
+        Ok,
+        Cancel
     }
 }

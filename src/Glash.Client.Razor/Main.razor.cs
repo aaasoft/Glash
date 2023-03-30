@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
+using Quick.Blazor.Bootstrap.Admin;
 using Quick.EntityFrameworkCore.Plus;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,9 @@ namespace Glash.Client.Razor
             DisableAll,
             System,
             Local,
-            Remote
+            Remote,
+            DisplayRows,
+            DisconnectedFromServer
         }
 
 
@@ -43,6 +46,12 @@ namespace Glash.Client.Razor
         private ModalWindow modalWindow;
         private ModalPrompt modalPrompt;
         private ModalLoading modalLoading;
+        private LogViewControl logViewControl;
+                
+        private Queue<string> logQueue = new Queue<string>();
+        private string Logs;
+        private int LogRows = 25;
+        private int MAX_LOG_LINES = 1000;
 
         public static Dictionary<string, object> PrepareParameter(Model.Profile currentProfile, GlashClient glashClient, string[] agents)
         {
@@ -56,6 +65,7 @@ namespace Glash.Client.Razor
 
         protected override void OnParametersSet()
         {
+            GlashClient.LogPushed += GlashClient_LogPushed;
             GlashClient.Disconnected += GlashClient_Disconnected;
             var agentHashSet = Agents.ToHashSet();
             var proxyRules = ConfigDbContext.CacheContext.Query<Model.ProxyRule>()
@@ -64,20 +74,40 @@ namespace Glash.Client.Razor
             GlashClient.AddProxyRules(proxyRules);
         }
 
+        private void GlashClient_LogPushed(object sender, string e)
+        {
+            var line = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}: {e}";
+            lock (logQueue)
+            {
+                logQueue.Enqueue(line);
+                while (logQueue.Count > MAX_LOG_LINES)
+                    logQueue.Dequeue();
+                Logs = string.Join(Environment.NewLine, logQueue);
+            }
+            logViewControl?.SetContent(Logs);
+        }
+
         private void GlashClient_Disconnected(object sender, EventArgs e)
         {
             if (isUserLogout)
                 return;
 
-            INavigator.Alert("GlashClient_Disconnected", "GlashClient_Disconnected");
+            INavigator.Alert(
+                Global.Instance.TextManager.GetText(ClientTexts.Error),
+                Global.Instance.TextManager.GetText(Texts.DisconnectedFromServer));
             Logout();
         }
 
         private void logout()
         {
             isUserLogout = true;
-            GlashClient.Dispose();
-            GlashClient = null;
+            if (GlashClient != null)
+            {
+                GlashClient.LogPushed -= GlashClient_LogPushed;
+                GlashClient.Disconnected -= GlashClient_Disconnected;
+                GlashClient.Dispose();
+                GlashClient = null;
+            }
             INavigator.Navigate<Login>();
         }
 

@@ -10,3 +10,5 @@ System=System
 Local=Local
 Remote=Remote
 DeleteProxyRuleConfirm=Are you sure to delete ProxyRule[{0}]?
+DisplayRows=Display Rows
+DisconnectedFromServer=Disconnected from server
