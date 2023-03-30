@@ -255,6 +255,7 @@ namespace Glash.Client.Razor
         {
             return GlashClient.ProxyRuleContexts
                 .Where(t => t.Config.Agent == agent)
+                .OrderBy(t => t.Config.Name)
                 .ToArray();
         }
 

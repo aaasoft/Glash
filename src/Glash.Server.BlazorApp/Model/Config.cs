@@ -1,13 +1,9 @@
 ﻿using Quick.EntityFrameworkCore.Plus;
-using Quick.Localize;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Glash.Client.Razor.Model
+namespace Glash.Server.BlazorApp.Model
 {
+    [Table($"{nameof(Glash)}_{nameof(Server)}_{nameof(Config)}")]
     public class Config : BaseModel
     {
         public string Value { get; set; }

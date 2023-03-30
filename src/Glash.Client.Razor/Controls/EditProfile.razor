@@ -3,22 +3,22 @@
         <EditForm Model="@Model" OnValidSubmit="Ok">
             <DataAnnotationsValidator />
             <div class="form-group">
-                <label>@Global.Instance.TextManager.GetText(Razor.Model.Config.Texts.Name)</label>
+                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.Name)</label>
                 <InputText class="form-control" @bind-Value="Model.Name" />
                 <ValidationMessage For="@(() => Model.Name)" />
             </div>
             <div class="form-group">
-                <label>@Global.Instance.TextManager.GetText(Razor.Model.Config.Texts.ServerUrl)</label>
+                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.ServerUrl)</label>
                 <InputText class="form-control" @bind-Value="Model.ServerUrl" />
                 <ValidationMessage For="@(() => Model.ServerUrl)" />
             </div>
             <div class="form-group">
-                <label>@Global.Instance.TextManager.GetText(Razor.Model.Config.Texts.User)</label>
+                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.User)</label>
                 <InputText class="form-control" @bind-Value="Model.User" />
                 <ValidationMessage For="@(() => Model.User)" />
             </div>
             <div class="form-group">
-                <label>@Global.Instance.TextManager.GetText(Razor.Model.Config.Texts.Password)</label>
+                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.Password)</label>
                 <input type="password" class="form-control" @bind-value="Model.Password" />
                 <ValidationMessage For="@(() => Model.Password)" />
             </div>

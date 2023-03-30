@@ -14,7 +14,11 @@ namespace Glash.Client.Razor.Model
         [TextResource]
         public enum Texts
         {
-            ModelName
+            ModelName,
+            Name,
+            ServerUrl,
+            User,
+            Password
         }
 
         public Profile() { }
