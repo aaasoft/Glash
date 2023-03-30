@@ -1,4 +1,5 @@
 ﻿AddProxyRule=Add ProxyRule
+DuplicateProxyRule=Duplicate ProxyRule
 EditProxyRule=Edit ProxyRule
 DeleteProxyRule=Delete ProxyRule
 Logout=Logout

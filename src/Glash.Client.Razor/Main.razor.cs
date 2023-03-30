@@ -16,6 +16,7 @@ namespace Glash.Client.Razor
         public enum Texts
         {
             AddProxyRule,
+            DuplicateProxyRule,
             EditProxyRule,
             DeleteProxyRule,
             DeleteProxyRuleConfirm,
@@ -40,6 +41,8 @@ namespace Glash.Client.Razor
         private bool isUserLogout = false;
         private ModalAlert modalAlert;
         private ModalWindow modalWindow;
+        private ModalPrompt modalPrompt;
+        private ModalLoading modalLoading;
 
         public static Dictionary<string, object> PrepareParameter(Model.Profile currentProfile, GlashClient glashClient, string[] agents)
         {
@@ -119,6 +122,35 @@ namespace Glash.Client.Razor
             ));
         }
 
+        private void DuplicateProxyRule(Model.ProxyRule model)
+        {
+            modalPrompt.Show(@Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule), model.Name, newName =>
+            {
+                var newModel = new Model.ProxyRule()
+                {
+                    Id = Guid.NewGuid().ToString("N"),
+                    Name = newName,
+                    Agent = model.Agent,
+                    ProfileId = model.ProfileId,
+                    LocalIPAddress = model.LocalIPAddress,
+                    LocalPort = model.LocalPort,
+                    RemoteHost = model.RemoteHost,
+                    RemotePort = model.RemotePort
+                };
+                try
+                {
+                    ConfigDbContext.CacheContext.Add(newModel);
+                    GlashClient.AddProxyRule(newModel);
+                    InvokeAsync(StateHasChanged);
+                    modalWindow.Close();
+                }
+                catch (Exception ex)
+                {
+                    modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                }
+            });
+        }
+
         private void EditProxyRule(Model.ProxyRule model)
         {
             var editModel = JsonConvert.DeserializeObject<Model.ProxyRule>(JsonConvert.SerializeObject(model));
@@ -170,12 +202,45 @@ namespace Glash.Client.Razor
                 });
         }
 
-        private void onProxyRuleEnableChanged(IProxyRule model)
+        private async Task onProxyRuleEnableChanged(ProxyRuleContext proxyRuleContext)
         {
-            if (model.Enable)
-                GlashClient.DisableProxyRule(model.Id);
-            else
-                GlashClient.EnableProxyRule(model.Id);
+            await Task.Delay(100);
+            try
+            {
+                if (proxyRuleContext.Config.Enable)
+                    GlashClient.EnableProxyRule(proxyRuleContext);
+                else
+                    GlashClient.DisableProxyRule(proxyRuleContext);
+            }
+            catch (Exception ex)
+            {
+                modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                await Task.Delay(100);
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+
+        private ProxyRuleContext[] GetProxyRuleContexts(string agent)
+        {
+            return GlashClient.ProxyRuleContexts
+                .Where(t => t.Config.Agent == agent)
+                .ToArray();
+        }
+
+        private void EnableAllProxyRules(string agent)
+        {
+            foreach (var item in GetProxyRuleContexts(agent))
+                try { GlashClient.EnableProxyRule(item); }
+                catch { }
+            InvokeAsync(StateHasChanged);
+        }
+
+        private void DisableAllProxyRules(string agent)
+        {
+            foreach (var item in GetProxyRuleContexts(agent))
+                try { GlashClient.DisableProxyRule(item); }
+                catch { }
+            InvokeAsync(StateHasChanged);
         }
     }
 }

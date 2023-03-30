@@ -1,107 +1,114 @@
 ﻿<div class="mt-1">
 </div>
-<Tabs IsNavPills>
-    @foreach (var agent in Agents)
-    {
-        <TabPane Key="@agent">
+<EditForm Model="this">
+    <Tabs IsNavPills>
+        @foreach (var agent in Agents)
+        {
+            <TabPane Key="@agent">
+                <Tab>
+                    @agent
+                </Tab>
+                <ChildContent>
+                    <nav class="navbar pl-0">
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-group mr-2">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                        title="@Global.Instance.TextManager.GetText(Texts.AddProxyRule)"
+                                    @onclick=@(e=>AddProxyRule(agent))>
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="btn-group mr-2">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                        title="@Global.Instance.TextManager.GetText(Texts.EnableAll)"
+                                    @onclick="@(e=>EnableAllProxyRules(agent))">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                    @Global.Instance.TextManager.GetText(Texts.EnableAll)
+                                </button>
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                        title="@Global.Instance.TextManager.GetText(Texts.DisableAll)"
+                                    @onclick="@(e=>DisableAllProxyRules(agent))">
+                                    <i class="fa fa-stop" aria-hidden="true"></i>
+                                    @Global.Instance.TextManager.GetText(Texts.DisableAll)
+                                </button>
+                            </div>
+                        </div>
+                    </nav>
+                    <div class="row">
+                        @foreach (var proxyRuleContext in GetProxyRuleContexts(agent))
+                        {
+                            <div class="col-xl-3 col-lg-4 col-sm-12 mt-2">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fa fa-plug mr-1" aria-hidden="true"></i>
+                                        <span>@proxyRuleContext.Config.Name</span>
+                                        <div class="custom-control custom-switch d-inline pull-right">
+                                            <InputCheckbox class="custom-control-input"
+                                                    id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
+                                                   @bind-Value="proxyRuleContext.Config.Enable"
+                                                   @onclick="@(e=>onProxyRuleEnableChanged(proxyRuleContext))" />
+                                            <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
+                                        </div>
+                                    </div>
+                                    <div class="card-body small p-2">
+                                        <p class="mb-0">
+                                            <span class="font-weight-bold">
+                                                @Global.Instance.TextManager.GetText(Texts.Local):
+                                            </span>
+                                            @proxyRuleContext.Config.LocalIPAddress:@proxyRuleContext.LocalPort
+                                        </p>
+                                        <p class="mb-0">
+                                            <span class="font-weight-bold">
+                                                @Global.Instance.TextManager.GetText(Texts.Remote):
+                                            </span>@proxyRuleContext.Config.RemoteHost:@proxyRuleContext.Config.RemotePort
+                                        </p>
+                                    </div>
+                                    <div class="card-footer p-1">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-secondary"
+                                                    title="@Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule)"
+                                            @onclick=@(e=>DuplicateProxyRule((Model.ProxyRule)proxyRuleContext.Config))>
+                                                <i class="fa fa-copy" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary"
+                                                    title="@Global.Instance.TextManager.GetText(Texts.EditProxyRule)"
+                                            @onclick=@(e=>EditProxyRule((Model.ProxyRule)proxyRuleContext.Config))>
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary"
+                                                    title="@Global.Instance.TextManager.GetText(Texts.DeleteProxyRule)"
+                                            @onclick=@(e=>DeleteProxyRule((Model.ProxyRule)proxyRuleContext.Config))>
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </ChildContent>
+            </TabPane>
+        }
+        <TabPane Key="System">
             <Tab>
-                @agent
+                @Global.Instance.TextManager.GetText(Texts.System)
             </Tab>
             <ChildContent>
                 <nav class="navbar pl-0">
                     <div class="btn-toolbar" role="toolbar">
                         <div class="btn-group mr-2">
-                            <button type="button" class="btn btn-sm btn-secondary"
-                                    title="@Global.Instance.TextManager.GetText(Texts.AddProxyRule)"
-                                    @onclick=@(e=>AddProxyRule(agent))>
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="btn-group mr-2">
-                            <button type="button" title="@Global.Instance.TextManager.GetText(Texts.EnableAll)" class="btn btn-sm btn-secondary">
-                                <i class="fa fa-check-square" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" title="@Global.Instance.TextManager.GetText(Texts.DisableAll)" class="btn btn-sm btn-secondary">
-                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                            <button type="button" class="btn btn-sm btn-secondary" @onclick="Logout">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                @Global.Instance.TextManager.GetText(Texts.Logout)
                             </button>
                         </div>
                     </div>
                 </nav>
-                @foreach (var proxyRule in GlashClient.ProxyRuleContexts.Where(t => t.Config.Agent == agent))
-                {
-                    <div class="col-xl-3 col-lg-4 col-sm-12 mt-2">
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                <span>@proxyRule.Config.Name</span>
-                                @if (@proxyRule.Config.Enable)
-                                {
-                                    <div class="custom-control custom-switch d-inline pull-right">
-                                        <input type="checkbox" checked class="custom-control-input" id="switch_enable_proxyrule_@proxyRule.Config.Id" @onclick="@(() => onProxyRuleEnableChanged(@proxyRule.Config))">
-                                        <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRule.Config.Id"></label>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="custom-control custom-switch d-inline pull-right">
-                                        <input type="checkbox" class="custom-control-input" id="switch_enable_proxyrule_@proxyRule.Config.Id" @onclick="@(() => onProxyRuleEnableChanged(@proxyRule.Config))">
-                                        <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRule.Config.Id"></label>
-                                    </div>
-                                }
-                            </div>
-                            <div class="card-body small p-2">
-                                <p class="mb-0">
-                                    <span class="font-weight-bold">
-                                        @Global.Instance.TextManager.GetText(Texts.Local):
-                                    </span>
-                                    @proxyRule.Config.LocalIPAddress:@proxyRule.Config.LocalPort
-                                </p>
-                                <p class="mb-0">
-                                    <span class="font-weight-bold">
-                                        @Global.Instance.TextManager.GetText(Texts.Remote):
-                                    </span>@proxyRule.Config.RemoteHost:@proxyRule.Config.RemotePort
-                                </p>
-                            </div>
-                            <div class="card-footer p-1">
-                                <div class="btn-group">
-
-                                </div>
-                                <button type="button" class="btn btn-sm btn-secondary"
-                                        title="@Global.Instance.TextManager.GetText(Texts.EditProxyRule)"
-                                @onclick=@(e=>EditProxyRule((Model.ProxyRule)proxyRule.Config))>
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                </button>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-secondary"
-                                            title="@Global.Instance.TextManager.GetText(Texts.DeleteProxyRule)"
-                                    @onclick=@(e=>DeleteProxyRule((Model.ProxyRule)proxyRule.Config))>
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
             </ChildContent>
         </TabPane>
-    }
-    <TabPane Key="System">
-        <Tab>
-            @Global.Instance.TextManager.GetText(Texts.System)
-        </Tab>
-        <ChildContent>
-            <nav class="navbar pl-0">
-                <div class="btn-toolbar" role="toolbar">
-                    <div class="btn-group mr-2">
-                        <button type="button" class="btn btn-sm btn-secondary" @onclick="Logout">
-                            <i class="fa fa-sign-out" aria-hidden="true"></i>
-                            @Global.Instance.TextManager.GetText(Texts.Logout)
-                        </button>
-                    </div>
-                </div>
-            </nav>
-        </ChildContent>
-    </TabPane>
-</Tabs>
+    </Tabs>
+</EditForm>
 <ModalAlert @ref="modalAlert"></ModalAlert>
 <ModalWindow @ref="modalWindow"></ModalWindow>
+<ModalPrompt @ref="modalPrompt"></ModalPrompt>
+<ModalLoading @ref="modalLoading"></ModalLoading>

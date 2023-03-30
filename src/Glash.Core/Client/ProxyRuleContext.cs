@@ -9,11 +9,13 @@ namespace Glash.Core.Client
         private TcpListener tcpListener;
         private CancellationTokenSource cts;
         public IProxyRule Config { get; private set; }
+        public int LocalPort { get; private set; }
 
         public ProxyRuleContext(GlashClient glashClient, IProxyRule config)
         {
             this.glashClient = glashClient;
             Config = config;
+            LocalPort = config.LocalPort;
         }
 
         public void Start()
@@ -23,6 +25,7 @@ namespace Glash.Core.Client
 
             tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
             tcpListener.Start();
+            LocalPort = ((IPEndPoint)tcpListener.LocalEndpoint).Port;
             _ = beginAcceptTcpClient(tcpListener, cts.Token);
         }
 
@@ -32,6 +35,7 @@ namespace Glash.Core.Client
 
             tcpListener?.Stop();
             tcpListener = null;
+            LocalPort = Config.LocalPort;
         }
 
         private async Task beginAcceptTcpClient(TcpListener tcpListener, CancellationToken token)

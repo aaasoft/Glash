@@ -1,4 +1,5 @@
 ﻿AddProxyRule=添加代理规则
+DuplicateProxyRule=复制代理规则
 EditProxyRule=编辑代理规则
 DeleteProxyRule=删除代理规则
 Logout=退出登录
