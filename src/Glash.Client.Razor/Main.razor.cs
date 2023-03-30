@@ -108,6 +108,7 @@ namespace Glash.Client.Razor
                 GlashClient.Dispose();
                 GlashClient = null;
             }
+            Global.Instance.Profile = null;
             INavigator.Navigate<Login>();
         }
 

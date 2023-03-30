@@ -25,8 +25,9 @@ namespace Glash.Client.WinForm
             InitializeComponent();
             ensureOnlyOne();
 
-            Global.Instance.Init();
+            Global.Instance.Init(Application.ProductVersion);
             Global.Instance.LanguageChanged += Instance_LanguageChanged;
+            Global.Instance.ProfileChanged += Instance_ProfileChanged;
             var services = new ServiceCollection();
             services.AddWindowsFormsBlazorWebView();
             blazorWebView1.HostPage = "wwwroot/index.html";
@@ -38,10 +39,25 @@ namespace Glash.Client.WinForm
             ClientSize = new Size(screenBounds.Width * 2 / 3, screenBounds.Height * 2 / 3);
         }
 
+        private void Instance_ProfileChanged(object sender, EventArgs e)
+        {
+            refreshProfileAndLanguage();
+        }
+
         private void Instance_LanguageChanged(object sender, EventArgs e)
         {
-            this.Text = $"{Global.Instance.TextManager.GetText(Razor.Login.Texts.Title)} v{Application.ProductVersion}";
-            niMain.Text = this.Text;
+            refreshProfileAndLanguage();
+        }
+
+        private void refreshProfileAndLanguage()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (Global.Instance.Profile != null)
+                sb.Append($"{Global.Instance.Profile.Name} - ");
+            sb.Append(Global.Instance.TextManager.GetText(Razor.Login.Texts.Title));
+            var text = sb.ToString();
+            this.Text = text;
+            niMain.Text = text;
         }
 
         private NamedPipeServerStream createNewNamedPipedServerStream(String pipeName)
@@ -86,11 +102,11 @@ namespace Glash.Client.WinForm
                 }
             }
         }
-        
+
         private void showForm()
         {
             WindowState = preFormWindowState;
-            ShowInTaskbar = true;            
+            ShowInTaskbar = true;
             Activate();
         }
 

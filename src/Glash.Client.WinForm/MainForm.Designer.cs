@@ -46,7 +46,7 @@
             blazorWebView1.Dock = DockStyle.Fill;
             blazorWebView1.Location = new Point(0, 0);
             blazorWebView1.Name = "blazorWebView1";
-            blazorWebView1.Size = new Size(1280, 720);
+            blazorWebView1.Size = new Size(274, 229);
             blazorWebView1.TabIndex = 0;
             blazorWebView1.Text = "blazorWebView1";
             // 
@@ -54,11 +54,12 @@
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(274, 229);
             Controls.Add(blazorWebView1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Glash Client";            
+            Text = "Glash Client";
             SizeChanged += MainForm_SizeChanged;
             ResumeLayout(false);
         }

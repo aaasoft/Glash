@@ -15,6 +15,8 @@ namespace Glash.Client
         public static Global Instance { get; } = new Global();
 
         private const string LANGUAGE_RESOURCE_PREFIX = "Glash.Client.Razor.Language.";
+
+        public string Version { get; private set; }
         private string _Language;
         public string Language
         {
@@ -29,7 +31,23 @@ namespace Glash.Client
         }
 
         public event EventHandler LanguageChanged;
+        public event EventHandler ProfileChanged;
         public TextManager TextManager { get; private set; }
+        private Razor.Model.Profile _Profile;
+        public Razor.Model.Profile Profile
+        {
+            get
+            {
+                return _Profile;
+            }
+
+            internal set
+            {
+                _Profile = value;
+                ProfileChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         public GlashClient GlashClient { get; internal set; }
 
         public CultureInfo[] GetLanuages()
@@ -61,8 +79,9 @@ namespace Glash.Client
             return folder;
         }
 
-        public void Init()
+        public void Init(string version)
         {
+            Version = version;
             var dbFile = Path.Combine(GetProfileFolder(), SQLiteDbContextConfigHandler.CONFIG_DB_FILE);
             ConfigDbContext.Init(new SQLiteDbContextConfigHandler(dbFile), modelBuilder =>
             {

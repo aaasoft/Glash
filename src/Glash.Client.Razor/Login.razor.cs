@@ -28,8 +28,6 @@ namespace Glash.Client.Razor
 
         [Parameter]
         public INavigator INavigator { get; set; }
-        private Model.Profile CurrentProfile;
-
         private string _CurrentProfileId;
         public string CurrentProfileId
         {
@@ -37,9 +35,9 @@ namespace Glash.Client.Razor
             set
             {
                 _CurrentProfileId = value;
-                CurrentProfile = null;
+                Global.Instance.Profile = null;
                 if (!string.IsNullOrEmpty(value))
-                    CurrentProfile = ConfigDbContext.CacheContext.Find(new Model.Profile(value));
+                    Global.Instance.Profile = ConfigDbContext.CacheContext.Find(new Model.Profile(value));
             }
         }
 
@@ -58,12 +56,12 @@ namespace Glash.Client.Razor
             modalLoading.Show(null, null, true);
             try
             {
-                var glashClient = new GlashClient(CurrentProfile.ServerUrl);
-                await glashClient.ConnectAsync(CurrentProfile.User, CurrentProfile.Password);
+                var glashClient = new GlashClient(Global.Instance.Profile.ServerUrl);
+                await glashClient.ConnectAsync(Global.Instance.Profile.User, Global.Instance.Profile.Password);
                 var agentList = await glashClient.GetAgentListAsync();
 
                 Global.Instance.GlashClient = glashClient;
-                INavigator.Navigate<Main>(Main.PrepareParameter(CurrentProfile, glashClient, agentList));
+                INavigator.Navigate<Main>(Main.PrepareParameter(Global.Instance.Profile, glashClient, agentList));
             }
             catch (Exception ex)
             {
