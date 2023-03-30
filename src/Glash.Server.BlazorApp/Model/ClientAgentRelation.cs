@@ -9,6 +9,13 @@ namespace Glash.Server.BlazorApp.Model
         public string ClientId { get; set; }
         public string AgentId { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj,
+                t => t.ClientId,
+                t => t.AgentId);
+        }
+
         public override int GetHashCode()
         {
             return this.GetHashCode(

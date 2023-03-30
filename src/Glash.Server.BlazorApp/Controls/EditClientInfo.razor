@@ -12,6 +12,19 @@
                 <input type="password" class="form-control" @bind-value="Model.Password" />
                 <ValidationMessage For="@(() => Model.Password)" />
             </div>
+            <div class="form-group">
+                <label>@Global.Instance.TextManager.GetText(BlazorApp.Model.AgentInfo.Texts.ModelName)</label>
+                @if (selectAgents != null)
+                {
+                    <p>
+
+                        @foreach (var tag in selectAgents)
+                        {
+                            <button type="button" class="btn btn-sm m-1 @(tag.Checked ? "btn-info" : "btn-light")" @onclick="@(e => checkAgent(tag))">@tag.Name</button>
+                        }
+                    </p>
+                }
+            </div>
             <button type="submit" class="btn btn-primary col-sm-5 col-md-4 col-lg-2">@Global.Instance.TextManager.GetText(ServerTexts.Ok)</button>
         </EditForm>
     </div>

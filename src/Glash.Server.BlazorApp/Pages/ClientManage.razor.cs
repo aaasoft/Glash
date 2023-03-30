@@ -30,15 +30,45 @@ namespace Glash.Server.BlazorApp.Pages
         [Parameter]
         public Action ClientChangedHandler { get; set; }
 
+        private void setClientRelateAgents(string clientId, string[] agents)
+        {
+            var oldModels = ConfigDbContext.CacheContext
+                .Query<Model.ClientAgentRelation>(t => t.ClientId == clientId)
+                .ToHashSet();
+            var newModels = agents.Select(t => new Model.ClientAgentRelation()
+            {
+                AgentId = t,
+                ClientId = clientId
+            }).ToHashSet();
+            var toAddList = new List<Model.ClientAgentRelation>();
+            var toDelList = new List<Model.ClientAgentRelation>();
+
+            foreach (var model in newModels)
+            {
+                if (oldModels.Contains(model))
+                    continue;
+                toAddList.Add(model);
+            }
+            foreach (var model in oldModels)
+            {
+                if (newModels.Contains(model))
+                    continue;
+                toDelList.Add(model);
+            }
+            ConfigDbContext.CacheContext.AddRange(toAddList);
+            ConfigDbContext.CacheContext.RemoveRange(toDelList.ToArray());
+        }
+
         private void Add()
         {
             modalWindow.Show<Controls.EditClientInfo>(Global.Instance.TextManager.GetText(Texts.Add), Controls.EditClientInfo.PrepareParameter(
                 new Model.ClientInfo(Guid.NewGuid().ToString("N")),
-                model =>
+                (model, agents) =>
                 {
                     try
                     {
                         ConfigDbContext.CacheContext.Add(model);
+                        setClientRelateAgents(model.Id, agents);
                         ClientChangedHandler?.Invoke();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
@@ -56,13 +86,14 @@ namespace Glash.Server.BlazorApp.Pages
             var editModel = JsonConvert.DeserializeObject<Model.ClientInfo>(JsonConvert.SerializeObject(model));
             modalWindow.Show<Controls.EditClientInfo>(Global.Instance.TextManager.GetText(Texts.Edit), Controls.EditClientInfo.PrepareParameter(
                 editModel,
-                model =>
+                (model,agents) =>
                 {
                     try
                     {
                         model.Name = editModel.Name;
                         model.Password = editModel.Password;
                         ConfigDbContext.CacheContext.Update(model);
+                        setClientRelateAgents(model.Id, agents);
                         ClientChangedHandler?.Invoke();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
