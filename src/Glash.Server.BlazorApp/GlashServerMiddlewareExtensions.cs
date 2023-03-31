@@ -8,8 +8,8 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class GlashServerMiddlewareExtensions
     {
-        private static GlashServer glashServer;
         private static QpWebSocketServer qpServer;
+        public static GlashServer GlashServer { get; private set; }        
         public static QpServerOptions ServerOptions { get; private set; }
 
         public static IApplicationBuilder UseGlashServer(this IApplicationBuilder app, string path, string password, int maxTunnelCount = 100)
@@ -21,7 +21,7 @@ namespace Microsoft.AspNetCore.Builder
                 ServerProgram = "Glash.Server"
             };
             ServerOptions = serverOptions;
-            glashServer = new GlashServer(new GlashServerOptions()
+            GlashServer = new GlashServer(new GlashServerOptions()
             {
                 MaxTunnelCount = maxTunnelCount,
                 AgentRegisterValidator = rvi =>
@@ -60,12 +60,12 @@ namespace Microsoft.AspNetCore.Builder
                     return model != null;
                 }
             });
-            glashServer.AgentConnected += GlashServer_AgentConnected;
-            glashServer.AgentDisconnected += GlashServer_AgentDisconnected;
-            glashServer.ClientConnected += GlashServer_ClientConnected;
-            glashServer.ClientDisconnected += GlashServer_ClientDisconnected;
+            GlashServer.AgentConnected += GlashServer_AgentConnected;
+            GlashServer.AgentDisconnected += GlashServer_AgentDisconnected;
+            GlashServer.ClientConnected += GlashServer_ClientConnected;
+            GlashServer.ClientDisconnected += GlashServer_ClientDisconnected;
 
-            glashServer.HandleServerOptions(serverOptions);
+            GlashServer.HandleServerOptions(serverOptions);
             app.UseQuickProtocol(serverOptions, out qpServer);
             qpServer.Start();
             return app;

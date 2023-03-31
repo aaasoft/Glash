@@ -1,14 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
-using Quick.Blazor.Bootstrap.Admin.Utils;
 using Quick.EntityFrameworkCore.Plus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Server.BlazorApp.Pages
 {
@@ -26,29 +19,9 @@ namespace Glash.Server.BlazorApp.Pages
         private ModalWindow modalWindow;
         private ModalLoading modalLoading;
         private ModalAlert modalAlert;
-        private CancellationTokenSource cts = new CancellationTokenSource();
 
         [Parameter]
         public Action ClientChangedHandler { get; set; }
-        protected override void OnAfterRender(bool firstRender)
-        {
-            base.OnAfterRender(firstRender);
-            if (firstRender)
-            {
-                beginRefresh(cts.Token);
-            }
-        }
-
-        private void beginRefresh(CancellationToken token)
-        {
-            Task.Delay(1000, token).ContinueWith(t =>
-            {
-                if (t.IsCanceled)
-                    return;
-                InvokeAsync(StateHasChanged);
-                beginRefresh(token);
-            });
-        }
 
         private void setClientRelateAgents(string clientId, string[] agents)
         {
@@ -156,9 +129,22 @@ namespace Glash.Server.BlazorApp.Pages
             };
         }
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            GlashServerMiddlewareExtensions.GlashServer.ClientConnected += GlashServer_ClientConnectedOrDisconnected;
+            GlashServerMiddlewareExtensions.GlashServer.ClientDisconnected += GlashServer_ClientConnectedOrDisconnected;
+        }
+
+        private void GlashServer_ClientConnectedOrDisconnected(object sender, Core.Server.GlashClientContext e)
+        {
+            InvokeAsync(StateHasChanged);
+        }
+
         public void Dispose()
         {
-            cts.Cancel();
+            GlashServerMiddlewareExtensions.GlashServer.ClientConnected -= GlashServer_ClientConnectedOrDisconnected;
+            GlashServerMiddlewareExtensions.GlashServer.ClientDisconnected -= GlashServer_ClientConnectedOrDisconnected;
         }
     }
 }

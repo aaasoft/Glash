@@ -43,7 +43,6 @@ namespace Glash.Client.Razor
 
         private void ShowProfileManageWindow()
         {
-            CurrentProfileId = null;
             modalWindow.Show<ProfileManage>(
                 Global.Instance.TextManager.GetText(Texts.ProfileManage),
                 ProfileManage.PrepareParameter(

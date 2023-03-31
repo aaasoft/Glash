@@ -26,20 +26,9 @@ namespace Glash.Server.BlazorApp.Pages
         private ModalWindow modalWindow;
         private ModalLoading modalLoading;
         private ModalAlert modalAlert;
-        private CancellationTokenSource cts = new CancellationTokenSource();
-
 
         [Parameter]
         public Action AgentChangedHandler { get; set; }
-
-        protected override void OnAfterRender(bool firstRender)
-        {
-            base.OnAfterRender(firstRender);
-            if (firstRender)
-            {
-                beginRefresh(cts.Token);
-            }
-        }
 
         private void beginRefresh(CancellationToken token)
         {
@@ -127,9 +116,22 @@ namespace Glash.Server.BlazorApp.Pages
             };
         }
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            GlashServerMiddlewareExtensions.GlashServer.AgentConnected += GlashServer_AgentConnectedOrDisconnected;
+            GlashServerMiddlewareExtensions.GlashServer.AgentDisconnected += GlashServer_AgentConnectedOrDisconnected;
+        }
+
+        private void GlashServer_AgentConnectedOrDisconnected(object sender, Core.Server.GlashAgentContext e)
+        {
+            InvokeAsync(StateHasChanged);
+        }
+
         public void Dispose()
         {
-            cts.Cancel();
+            GlashServerMiddlewareExtensions.GlashServer.AgentConnected -= GlashServer_AgentConnectedOrDisconnected;
+            GlashServerMiddlewareExtensions.GlashServer.AgentDisconnected -= GlashServer_AgentConnectedOrDisconnected;
         }
     }
 }
