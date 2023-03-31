@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.WinForm", "Gla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Server.BlazorApp", "Glash.Server.BlazorApp\Glash.Server.BlazorApp.csproj", "{2EA74E0D-4353-4668-8912-C9FC1798A41D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Agent.BlazorApp", "Glash.Agent.BlazorApp\Glash.Agent.BlazorApp.csproj", "{3436E49A-89F2-48CD-93FE-658D764BAC9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{2EA74E0D-4353-4668-8912-C9FC1798A41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EA74E0D-4353-4668-8912-C9FC1798A41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EA74E0D-4353-4668-8912-C9FC1798A41D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3436E49A-89F2-48CD-93FE-658D764BAC9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3436E49A-89F2-48CD-93FE-658D764BAC9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3436E49A-89F2-48CD-93FE-658D764BAC9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3436E49A-89F2-48CD-93FE-658D764BAC9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{4E26D237-B99C-4CA5-8E3D-CD71D680E99A} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
 		{CC98A0CB-8FDE-4A8F-B5C9-3AB8E3FE69F0} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
 		{2EA74E0D-4353-4668-8912-C9FC1798A41D} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
+		{3436E49A-89F2-48CD-93FE-658D764BAC9A} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DB86FF5-9232-4A7E-AFAC-1342B77700E7}

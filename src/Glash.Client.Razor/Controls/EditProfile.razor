@@ -13,14 +13,14 @@
                 <ValidationMessage For="@(() => Model.ServerUrl)" />
             </div>
             <div class="form-group">
-                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.Account)</label>
-                <InputText class="form-control" @bind-Value="Model.Account" />
-                <ValidationMessage For="@(() => Model.Account)" />
+                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.ClientName)</label>
+                <InputText class="form-control" @bind-Value="Model.ClientName" />
+                <ValidationMessage For="@(() => Model.ClientName)" />
             </div>
             <div class="form-group">
-                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.Password)</label>
-                <input type="password" class="form-control" @bind-value="Model.Password" />
-                <ValidationMessage For="@(() => Model.Password)" />
+                <label>@Global.Instance.TextManager.GetText(Razor.Model.Profile.Texts.ClientPassword)</label>
+                <InputText type="password" class="form-control" @bind-Value="Model.ClientPassword" />
+                <ValidationMessage For="@(() => Model.ClientPassword)" />
             </div>
             <button type="submit" class="btn btn-primary col-sm-5 col-md-4 col-lg-2">@Global.Instance.TextManager.GetText(ClientTexts.Ok)</button>
         </EditForm>

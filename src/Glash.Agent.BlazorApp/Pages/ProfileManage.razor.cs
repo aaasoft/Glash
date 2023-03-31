@@ -1,16 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
-using Quick.Blazor.Bootstrap.Admin.Utils;
 using Quick.EntityFrameworkCore.Plus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Glash.Client.Razor
+namespace Glash.Agent.BlazorApp.Pages
 {
     public partial class ProfileManage
     {
@@ -44,7 +37,7 @@ namespace Glash.Client.Razor
                     }
                     catch (Exception ex)
                     {
-                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                        modalAlert.Show(Global.Instance.TextManager.GetText(AgentTexts.Error), ex.Message);
                     }
                 }
             ));
@@ -60,8 +53,8 @@ namespace Glash.Client.Razor
                     {
                         model.Name = editModel.Name;
                         model.ServerUrl = editModel.ServerUrl;
-                        model.ClientName = editModel.ClientName;
-                        model.ClientPassword = editModel.ClientPassword;
+                        model.AgentName = editModel.AgentName;
+                        model.AgentPassword = editModel.AgentPassword;
                         ConfigDbContext.CacheContext.Update(model);
                         ProfileChangedHandler?.Invoke();
                         InvokeAsync(StateHasChanged);
@@ -69,7 +62,7 @@ namespace Glash.Client.Razor
                     }
                     catch (Exception ex)
                     {
-                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                        modalAlert.Show(Global.Instance.TextManager.GetText(AgentTexts.Error), ex.Message);
                     }
                 }
             ));
@@ -89,7 +82,7 @@ namespace Glash.Client.Razor
                 {
                     Task.Delay(100).ContinueWith(t =>
                     {
-                        modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
+                        modalAlert.Show(Global.Instance.TextManager.GetText(AgentTexts.Error), ex.Message);
                     });
                 }
             });

@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Glash.Client.Razor.Model
+namespace Glash.Agent.BlazorApp.Model
 {
-    [Table($"{nameof(Glash)}_{nameof(Client)}_{nameof(Profile)}")]
+    [Table($"{nameof(Glash)}_{nameof(Agent)}_{nameof(Profile)}")]
     public class Profile : BaseModel
     {
         public enum Texts
@@ -12,8 +12,8 @@ namespace Glash.Client.Razor.Model
             ModelName,
             Name,
             ServerUrl,
-            ClientName,
-            ClientPassword
+            AgentName,
+            AgentPassword
         }
 
         public Profile() { }
@@ -25,8 +25,8 @@ namespace Glash.Client.Razor.Model
         public string Name { get; set; }
         [Required]
         public string ServerUrl { get; set; }
-        public string ClientName { get; set; }
-        public string ClientPassword { get; set; }
+        public string AgentName { get; set; }
+        public string AgentPassword { get; set; }
 
         public override string ToString()
         {

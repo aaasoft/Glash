@@ -1,4 +1,5 @@
-﻿using Quick.Protocol;
+﻿using Glash.Core.Utils;
+using Quick.Protocol;
 using Quick.Protocol.Utils;
 using System.Net.Sockets;
 
@@ -8,15 +9,16 @@ namespace Glash.Core.Agent
     {
         private QpClient qpClient;
         private string agentName;
+        private string password;
         private Dictionary<int, GlashTunnelContext> tunnelContextDict = new Dictionary<int, GlashTunnelContext>();
 
         public event EventHandler Disconnected;
         public event EventHandler<string> LogPushed;
 
-        public GlashAgent(string url, string password, string agentName)
+        public GlashAgent(string url, string agentName, string password)
         {
+            this.password = password;
             var qpClientOptions = QpClientOptions.Parse(new Uri(url));
-            qpClientOptions.Password = password;
             qpClientOptions.InstructionSet = new[]
             {
                 Glash.Agent.Protocol.Instruction.Instance
@@ -59,9 +61,11 @@ namespace Glash.Core.Agent
             //Connect
             await qpClient.ConnectAsync();
             //Register
+            var answer = CryptoUtils.GetAnswer(qpClient.AuthenticateQuestion, password);
             await qpClient.SendCommand(new Glash.Agent.Protocol.QpCommands.Register.Request()
             {
-                Name = agentName
+                Name = agentName,
+                Answer = answer
             });
         }
 

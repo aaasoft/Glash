@@ -50,7 +50,7 @@ namespace Glash.Client.Razor
             try
             {
                 var glashClient = new GlashClient(Global.Instance.Profile.ServerUrl);
-                await glashClient.ConnectAsync(Global.Instance.Profile.Account, Global.Instance.Profile.Password);
+                await glashClient.ConnectAsync(Global.Instance.Profile.ClientName, Global.Instance.Profile.ClientPassword);
                 var agentList = await glashClient.GetAgentListAsync();
                 agentList = agentList.OrderBy(t => t).ToArray();
                 Global.Instance.GlashClient = glashClient;
