@@ -33,12 +33,12 @@ namespace Glash.Server.BlazorApp.Pages
         private void setClientRelateAgents(string clientId, string[] agents)
         {
             var oldModels = ConfigDbContext.CacheContext
-                .Query<Model.ClientAgentRelation>(t => t.ClientId == clientId)
+                .Query<Model.ClientAgentRelation>(t => t.ClientName == clientId)
                 .ToHashSet();
             var newModels = agents.Select(t => new Model.ClientAgentRelation()
             {
-                AgentId = t,
-                ClientId = clientId
+                AgentName = t,
+                ClientName = clientId
             }).ToHashSet();
             var toAddList = new List<Model.ClientAgentRelation>();
             var toDelList = new List<Model.ClientAgentRelation>();
@@ -62,13 +62,13 @@ namespace Glash.Server.BlazorApp.Pages
         private void Add()
         {
             modalWindow.Show<Controls.EditClientInfo>(Global.Instance.TextManager.GetText(Texts.Add), Controls.EditClientInfo.PrepareParameter(
-                new Model.ClientInfo(Guid.NewGuid().ToString("N")),
+                new Model.ClientInfo(),
                 (model, agents) =>
                 {
                     try
                     {
                         ConfigDbContext.CacheContext.Add(model);
-                        setClientRelateAgents(model.Id, agents);
+                        setClientRelateAgents(model.Name, agents);
                         ClientChangedHandler?.Invoke();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
@@ -90,10 +90,9 @@ namespace Glash.Server.BlazorApp.Pages
                 {
                     try
                     {
-                        model.Name = editModel.Name;
                         model.Password = editModel.Password;
                         ConfigDbContext.CacheContext.Update(model);
-                        setClientRelateAgents(model.Id, agents);
+                        setClientRelateAgents(model.Name, agents);
                         ClientChangedHandler?.Invoke();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();

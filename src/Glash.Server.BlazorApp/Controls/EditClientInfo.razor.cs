@@ -5,6 +5,8 @@ namespace Glash.Server.BlazorApp.Controls
 {
     public partial class EditClientInfo
     {
+        private bool IsAdd;
+
         [Parameter]
         public Model.ClientInfo Model { get; set; }
 
@@ -13,7 +15,6 @@ namespace Glash.Server.BlazorApp.Controls
 
         public class SelectAgentInfo
         {
-            public string Id { get; set; }
             public string Name { get; set; }
             public bool Checked { get; set; }
         }
@@ -24,7 +25,7 @@ namespace Glash.Server.BlazorApp.Controls
         {
             var agents = selectAgents
                 .Where(t => t.Checked)
-                .Select(t => t.Id)
+                .Select(t => t.Name)
                 .ToArray();
             OkAction?.Invoke(Model, agents);
         }
@@ -46,18 +47,17 @@ namespace Glash.Server.BlazorApp.Controls
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-
+            IsAdd = Model.Name == null;
             var checkedAgentHashSet = ConfigDbContext.CacheContext
-                .Query<Model.ClientAgentRelation>(t => t.ClientId == Model.Id)
-                .Select(t => t.AgentId)
+                .Query<Model.ClientAgentRelation>(t => t.ClientName == Model.Name)
+                .Select(t => t.AgentName)
                 .ToHashSet();
 
             selectAgents = ConfigDbContext.CacheContext.Query<BlazorApp.Model.AgentInfo>()
                 .Select(t => new SelectAgentInfo()
                 {
-                    Id = t.Id,
                     Name = t.Name,
-                    Checked = checkedAgentHashSet.Contains(t.Id)
+                    Checked = checkedAgentHashSet.Contains(t.Name)
                 }).ToArray();
         }
     }

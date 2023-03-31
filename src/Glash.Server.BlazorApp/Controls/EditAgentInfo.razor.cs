@@ -4,11 +4,18 @@ namespace Glash.Server.BlazorApp.Controls
 {
     public partial class EditAgentInfo
     {
+        private bool IsAdd;
         [Parameter]
         public Model.AgentInfo Model { get; set; }
 
         [Parameter]
         public Action<Model.AgentInfo> OkAction { get; set; }
+
+        protected override void OnParametersSet()
+        {
+            base.OnParametersSet();
+            IsAdd = Model.Name == null;
+        }
 
         private void Ok()
         {

@@ -95,7 +95,7 @@ namespace Glash.Client.Razor
             INavigator.Alert(
                 Global.Instance.TextManager.GetText(ClientTexts.Error),
                 Global.Instance.TextManager.GetText(Texts.DisconnectedFromServer));
-            Logout();
+            logout();
         }
 
         private void logout()

@@ -6,21 +6,21 @@ namespace Glash.Server.BlazorApp.Model
     [Table($"{nameof(Glash)}_{nameof(Server)}_{nameof(ClientAgentRelation)}")]
     public class ClientAgentRelation : IHasDependcyRelation
     {
-        public string ClientId { get; set; }
-        public string AgentId { get; set; }
+        public string ClientName { get; set; }
+        public string AgentName { get; set; }
 
         public override bool Equals(object obj)
         {
             return this.Equals(obj,
-                t => t.ClientId,
-                t => t.AgentId);
+                t => t.ClientName,
+                t => t.AgentName);
         }
 
         public override int GetHashCode()
         {
             return this.GetHashCode(
-                t => t.ClientId,
-                t => t.AgentId);
+                t => t.ClientName,
+                t => t.AgentName);
         }
 
         public ModelDependcyInfo[] GetDependcyRelation()
@@ -29,13 +29,13 @@ namespace Glash.Server.BlazorApp.Model
             {
                 new ModelDependcyInfo<ClientAgentRelation, ClientInfo>
                 (
-                    source => source.ClientId == null ? null : new ClientInfo(source.ClientId),
-                    target => t => t.ClientId == target.Id
+                    source => source.ClientName == null ? null : new ClientInfo(source.ClientName),
+                    target => t => t.ClientName == target.Name
                 ),
                 new ModelDependcyInfo<ClientAgentRelation, AgentInfo>
                 (
-                    source => source.AgentId == null ? null : new AgentInfo(source.AgentId),
-                    target => t => t.AgentId == target.Id
+                    source => source.AgentName == null ? null : new AgentInfo(source.AgentName),
+                    target => t => t.AgentName == target.Name
                 )
             };
         }

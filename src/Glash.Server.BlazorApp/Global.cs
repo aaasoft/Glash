@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Quick.EntityFrameworkCore.Plus;
-using Quick.EntityFrameworkCore.Plus.SQLite;
 using Quick.Localize;
-using System.Diagnostics;
 
 namespace Glash.Server.BlazorApp
 {
@@ -35,7 +32,7 @@ namespace Glash.Server.BlazorApp
             modelBuilder.Entity<Model.AgentInfo>();
             modelBuilder.Entity<Model.ClientInfo>();
             modelBuilder.Entity<Model.ClientAgentRelation>()
-                .HasKey(t => new { t.ClientId, t.AgentId });
+                .HasKey(t => new { t.ClientName, t.AgentName });
         }
 
         public void Init()

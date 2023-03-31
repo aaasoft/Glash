@@ -1,12 +1,13 @@
 using Glash.Server.BlazorApp;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Quick.EntityFrameworkCore.Plus.SQLite;
 using Quick.EntityFrameworkCore.Plus;
 using System.Diagnostics;
-using Microsoft.AspNetCore.Builder;
 
-ConfigDbContext.Init(new SQLiteDbContextConfigHandler(SQLiteDbContextConfigHandler.CONFIG_DB_FILE), modelBuilder =>
+var dbFile = SQLiteDbContextConfigHandler.CONFIG_DB_FILE;
+#if DEBUG
+dbFile = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), dbFile);
+#endif
+ConfigDbContext.Init(new SQLiteDbContextConfigHandler(dbFile), modelBuilder =>
 {
     Global.Instance.OnModelCreating(modelBuilder);
 });

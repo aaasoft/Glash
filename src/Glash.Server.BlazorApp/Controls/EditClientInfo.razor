@@ -4,12 +4,19 @@
             <DataAnnotationsValidator />
             <div class="form-group">
                 <label>@Global.Instance.TextManager.GetText(BlazorApp.Model.ClientInfo.Texts.Name)</label>
-                <InputText class="form-control" @bind-Value="Model.Name" />
+                @if (IsAdd)
+                {
+                    <InputText class="form-control" @bind-Value="Model.Name" />
+                }
+                else
+                {
+                    <InputText class="form-control" @bind-Value="Model.Name" readonly />
+                }
                 <ValidationMessage For="@(() => Model.Name)" />
             </div>
             <div class="form-group">
                 <label>@Global.Instance.TextManager.GetText(BlazorApp.Model.ClientInfo.Texts.Password)</label>
-                <input type="password" class="form-control" @bind-value="Model.Password" />
+                <InputText class="form-control" @bind-Value="Model.Password" />
                 <ValidationMessage For="@(() => Model.Password)" />
             </div>
             <div class="form-group">

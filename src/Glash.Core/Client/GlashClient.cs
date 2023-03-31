@@ -54,7 +54,7 @@ namespace Glash.Core.Client
         {
             //Connect
             await qpClient.ConnectAsync();
-            var answer = CryptoUtils.ComputeMD5Hash($"{qpClient.AuthenticateQuestion}:{password}");
+            var answer = CryptoUtils.GetAnswer(qpClient.AuthenticateQuestion, password);
             //Register
             await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.Register.Request()
             {

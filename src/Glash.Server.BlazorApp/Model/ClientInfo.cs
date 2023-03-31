@@ -1,10 +1,11 @@
 ﻿using Quick.EntityFrameworkCore.Plus;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Glash.Server.BlazorApp.Model
 {
     [Table($"{nameof(Glash)}_{nameof(Server)}_{nameof(ClientInfo)}")]
-    public class ClientInfo : BaseModel
+    public class ClientInfo
     {
         public enum Texts
         {
@@ -14,8 +15,23 @@ namespace Glash.Server.BlazorApp.Model
         }
 
         public ClientInfo() { }
-        public ClientInfo(string id) { Id = id; }
+        public ClientInfo(string name) { Name = name; }
+
+        [Key]
+        [Required]
+        [MaxLength(100)]
         public string Name { get; set; }
+        [Required]
         public string Password { get; set; }
+
+        public override int GetHashCode()
+        {
+            return this.GetHashCode(t => t.Name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj, t => t.Name);
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace Glash.Server.BlazorApp.Pages
         private void Add()
         {
             modalWindow.Show<Controls.EditAgentInfo>(Global.Instance.TextManager.GetText(Texts.Add), Controls.EditAgentInfo.PrepareParameter(
-                new Model.AgentInfo(Guid.NewGuid().ToString("N")),
+                new Model.AgentInfo(),
                 model =>
                 {
                     try
@@ -60,7 +60,6 @@ namespace Glash.Server.BlazorApp.Pages
                 {
                     try
                     {
-                        model.Name = editModel.Name;
                         model.Password = editModel.Password;
                         ConfigDbContext.CacheContext.Update(model);
                         AgentChangedHandler?.Invoke();
