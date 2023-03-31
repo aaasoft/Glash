@@ -15,6 +15,7 @@
 	  <None Remove="Language\en-US\Glash.Server.BlazorApp\Pages\Basic+Texts.lang" />
 	  <None Remove="Language\en-US\Glash.Server.BlazorApp\Pages\ClientManage+Texts.lang" />
 	  <None Remove="Language\en-US\Glash.Server.BlazorApp\Pages\Index+Texts.lang" />
+	  <None Remove="Language\en-US\Glash.Server.BlazorApp\Pages\TunnelManage+Texts.lang" />
 	  <None Remove="Language\en-US\Glash.Server.BlazorApp\ServerTexts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Server.BlazorApp\Login+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Server.BlazorApp\Model\AgentInfo+Texts.lang" />
@@ -22,10 +23,12 @@
 	  <None Remove="Language\zh-CN\Glash.Server.BlazorApp\Pages\AgentManage+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Server.BlazorApp\Pages\Basic+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Server.BlazorApp\Pages\ClientManage+Texts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Server.BlazorApp\Pages\TunnelManage+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Server.BlazorApp\ServerTexts.lang" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Language\en-US\Glash.Server.BlazorApp\Pages\TunnelManage+Texts.lang" />
 	  <EmbeddedResource Include="Language\en-US\Glash.Server.BlazorApp\Pages\Basic+Texts.lang" />
 	  <EmbeddedResource Include="Language\en-US\Glash.Server.BlazorApp\Pages\ClientManage+Texts.lang" />
 	  <EmbeddedResource Include="Language\en-US\Glash.Server.BlazorApp\Pages\AgentManage+Texts.lang" />
@@ -36,6 +39,7 @@
 	  <EmbeddedResource Include="Language\zh-CN\Glash.Server.BlazorApp\Pages\ClientManage+Texts.lang" />
 	  <EmbeddedResource Include="Language\zh-CN\Glash.Server.BlazorApp\Pages\AgentManage+Texts.lang" />
 	  <EmbeddedResource Include="Language\zh-CN\Glash.Server.BlazorApp\Pages\Basic+Texts.lang" />
+	  <EmbeddedResource Include="Language\zh-CN\Glash.Server.BlazorApp\Pages\TunnelManage+Texts.lang" />
 	  <EmbeddedResource Include="Language\zh-CN\Glash.Server.BlazorApp\ServerTexts.lang" />
 	  <EmbeddedResource Include="Language\zh-CN\Glash.Server.BlazorApp\Model\ClientInfo+Texts.lang" />
 	  <EmbeddedResource Include="Language\zh-CN\Glash.Server.BlazorApp\Model\AgentInfo+Texts.lang" />

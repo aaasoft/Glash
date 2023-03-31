@@ -2,6 +2,7 @@
 using Glash.Model;
 using Quick.Protocol;
 using Quick.Protocol.Utils;
+using System.Collections.Generic;
 
 namespace Glash.Core.Client
 {
@@ -137,13 +138,18 @@ namespace Glash.Core.Client
                 AddProxyRule(item);
         }
 
+        public void RemoveProxyRule(ProxyRuleContext proxyRuleContext)
+        {
+            if (proxyRuleContextDict.ContainsKey(proxyRuleContext.Config.Id))
+                proxyRuleContextDict.Remove(proxyRuleContext.Config.Id);
+            DisableProxyRule(proxyRuleContext);
+        }
+
         public void RemoveProxyRule(string proxyRuleId)
         {
             if (!proxyRuleContextDict.ContainsKey(proxyRuleId))
                 return;
-            var context = proxyRuleContextDict[proxyRuleId];
-            proxyRuleContextDict.Remove(proxyRuleId);
-            DisableProxyRule(context);
+            RemoveProxyRule(proxyRuleContextDict[proxyRuleId]);
         }
 
         private Dictionary<int, GlashTunnelContext> tunnelContextDict = new Dictionary<int, GlashTunnelContext>();

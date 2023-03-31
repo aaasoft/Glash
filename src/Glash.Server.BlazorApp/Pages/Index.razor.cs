@@ -9,7 +9,8 @@ namespace Glash.Server.BlazorApp.Pages
             Title,
             Basic,
             AgentManage,
-            ClientManage
+            ClientManage,
+            TunnelManage
         }
 
         [Parameter]

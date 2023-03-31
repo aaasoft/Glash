@@ -1,19 +1,12 @@
 ﻿using Quick.EntityFrameworkCore.Plus;
-using Quick.Localize;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Client.Razor.Model
 {
     [Table($"{nameof(Glash)}_{nameof(Client)}_{nameof(Profile)}")]
     public class Profile : BaseModel
     {
-        [TextResource]
         public enum Texts
         {
             ModelName,

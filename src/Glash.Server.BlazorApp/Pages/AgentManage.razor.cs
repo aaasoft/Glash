@@ -1,14 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
-using Quick.Blazor.Bootstrap.Admin.Utils;
 using Quick.EntityFrameworkCore.Plus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Server.BlazorApp.Pages
 {
@@ -24,22 +17,10 @@ namespace Glash.Server.BlazorApp.Pages
         }
 
         private ModalWindow modalWindow;
-        private ModalLoading modalLoading;
         private ModalAlert modalAlert;
 
         [Parameter]
         public Action AgentChangedHandler { get; set; }
-
-        private void beginRefresh(CancellationToken token)
-        {
-            Task.Delay(1000, token).ContinueWith(t =>
-            {
-                if (t.IsCanceled)
-                    return;
-                InvokeAsync(StateHasChanged);
-                beginRefresh(token);
-            });
-        }
 
         private void Add()
         {

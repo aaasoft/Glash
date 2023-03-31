@@ -103,6 +103,8 @@ namespace Glash.Client.Razor
             isUserLogout = true;
             if (GlashClient != null)
             {
+                foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
+                    GlashClient.RemoveProxyRule(proxyRuleContext);
                 GlashClient.LogPushed -= GlashClient_LogPushed;
                 GlashClient.Disconnected -= GlashClient_Disconnected;
                 GlashClient.Dispose();

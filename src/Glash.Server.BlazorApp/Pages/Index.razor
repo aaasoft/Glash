@@ -24,6 +24,12 @@
                     @Global.Instance.TextManager.GetText(Texts.ClientManage)
                 </Tab>
             </NavMenuItem>
+            <NavMenuItem Key="TunnelManage" OnClick="@(() => Show<TunnelManage>())">
+                <Tab>
+                    <i class="fa fa-plug" aria-hidden="true"></i>
+                    @Global.Instance.TextManager.GetText(Texts.TunnelManage)
+                </Tab>
+            </NavMenuItem>
         </ChildContent>
     </NavMenu>
 </div>

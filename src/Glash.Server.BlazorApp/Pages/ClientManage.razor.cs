@@ -17,7 +17,6 @@ namespace Glash.Server.BlazorApp.Pages
         }
 
         private ModalWindow modalWindow;
-        private ModalLoading modalLoading;
         private ModalAlert modalAlert;
 
         [Parameter]

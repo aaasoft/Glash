@@ -2,18 +2,11 @@
 using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using Quick.EntityFrameworkCore.Plus;
-using Quick.Localize;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Client.Razor
 {
     public partial class Login
     {
-        [TextResource]
         public enum Texts
         {
             Title,

@@ -25,6 +25,10 @@ namespace Glash.Core.Server
         public GlashServerTunnelContext[] Tunnels { get; private set; } = new GlashServerTunnelContext[0];
 
         public event EventHandler<string> LogPushed;
+
+        public event EventHandler<GlashServerTunnelContext> TunnelCreated;
+        public event EventHandler<GlashServerTunnelContext> TunnelClosed;
+
         public event EventHandler<GlashClientContext> ClientConnected;
         public event EventHandler<GlashAgentContext> AgentConnected;
 
@@ -235,7 +239,7 @@ namespace Glash.Core.Server
                     throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not registered.");
                 agentContext.CreateTunnelAsync(tunnelInfo).Wait();
 
-                var serverTunnelContext = new GlashServerTunnelContext(
+                var tunnel = new GlashServerTunnelContext(
                     tunnelInfo,
                     clientContext,
                     agentContext,
@@ -252,9 +256,9 @@ namespace Glash.Core.Server
                         }
                     });
 
-                serverTunnelContextDict[tunnelId] = serverTunnelContext;
+                serverTunnelContextDict[tunnelId] = tunnel;
                 Tunnels = serverTunnelContextDict.Values.ToArray();
-
+                TunnelCreated?.Invoke(this, tunnel);
                 return new Glash.Client.Protocol.QpCommands.CreateTunnel.Response() { Data = tunnelInfo };
             }
         }
@@ -308,7 +312,7 @@ namespace Glash.Core.Server
             if (!serverTunnelContextDict.TryGetValue(tunnelId, out tunnel))
                 return;
             tunnel.OnError(new ApplicationException("Tunnel closed."));
-
+            TunnelClosed?.Invoke(this, tunnel);
             if (channel.Tag == null)
                 return;
             if (channel.Tag is GlashAgentContext agentContext)

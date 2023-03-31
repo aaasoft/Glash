@@ -1,6 +1,5 @@
 ﻿using Glash.Core.Client;
 using Quick.EntityFrameworkCore.Plus;
-using Quick.Localize;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +8,6 @@ namespace Glash.Client.Razor.Model
     [Table($"{nameof(Glash)}_{nameof(Client)}_{nameof(ProxyRule)}")]
     public class ProxyRule : BaseModel, IProxyRule, IHasDependcyRelation
     {
-        [TextResource]
         public enum Texts
         {
             ModelName,
