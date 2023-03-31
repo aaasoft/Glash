@@ -35,6 +35,7 @@
 		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="4.0.3" />
 		<PackageReference Include="Quick.EntityFrameworkCore.Plus.SQLite" Version="5.0.2" />
 		<PackageReference Include="Quick.Localize" Version="1.0.4" />
+		<PackageReference Include="Quick.Protocol.AllClients" Version="2.2.9" />
 	</ItemGroup>
 
 	<ItemGroup>

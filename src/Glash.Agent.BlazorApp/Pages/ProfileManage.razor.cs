@@ -5,7 +5,7 @@ using Quick.EntityFrameworkCore.Plus;
 
 namespace Glash.Agent.BlazorApp.Pages
 {
-    public partial class ProfileManage
+    public partial class ProfileManage : IDisposable
     {
         private ModalWindow modalWindow;
         private ModalAlert modalAlert;
@@ -19,8 +19,32 @@ namespace Glash.Agent.BlazorApp.Pages
             DeleteConfirm
         }
 
-        [Parameter]
-        public Action ProfileChangedHandler { get; set; }
+        private CancellationTokenSource cts = new CancellationTokenSource();
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
+            if (firstRender)
+            {
+                beginRefresh(cts.Token);
+            }
+        }
+
+        private void beginRefresh(CancellationToken token)
+        {
+            Task.Delay(1000, token).ContinueWith(t =>
+            {
+                if (t.IsCanceled)
+                    return;
+                InvokeAsync(StateHasChanged);
+                beginRefresh(token);
+            });
+        }
+
+        public void Dispose()
+        {
+            cts.Cancel();
+        }
 
         private void Add()
         {
@@ -31,7 +55,7 @@ namespace Glash.Agent.BlazorApp.Pages
                     try
                     {
                         ConfigDbContext.CacheContext.Add(model);
-                        ProfileChangedHandler?.Invoke();
+                        Core.GlashAgentManager.Instance.OnAdd(model);
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
                     }
@@ -51,12 +75,13 @@ namespace Glash.Agent.BlazorApp.Pages
                 {
                     try
                     {
+                        Core.GlashAgentManager.Instance.OnDelete(model);
                         model.Name = editModel.Name;
                         model.ServerUrl = editModel.ServerUrl;
                         model.AgentName = editModel.AgentName;
                         model.AgentPassword = editModel.AgentPassword;
                         ConfigDbContext.CacheContext.Update(model);
-                        ProfileChangedHandler?.Invoke();
+                        Core.GlashAgentManager.Instance.OnAdd(model);
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
                     }
@@ -75,7 +100,7 @@ namespace Glash.Agent.BlazorApp.Pages
                 try
                 {
                     ConfigDbContext.CacheContext.Remove(model, true);
-                    ProfileChangedHandler?.Invoke();
+                    Core.GlashAgentManager.Instance.OnDelete(model);
                     InvokeAsync(StateHasChanged);
                 }
                 catch (Exception ex)
@@ -86,14 +111,6 @@ namespace Glash.Agent.BlazorApp.Pages
                     });
                 }
             });
-        }
-
-        public static Dictionary<string, object> PrepareParameter(Action profileChangedHandler)
-        {
-            return new Dictionary<string, object>()
-            {
-                [nameof(ProfileChangedHandler)] = profileChangedHandler
-            };
         }
     }
 }

@@ -126,10 +126,10 @@ namespace Glash.Core.Server
                     if (!agentDict.ContainsKey(key))
                         return;
                     context = agentDict[key];
-                    context.Dispose();
                     agentDict.Remove(key);
                     Agents = agentDict.Values.ToArray();
                 }
+                context.Dispose();
                 foreach (var tunnel in Tunnels)
                 {
                     if (tunnel.Agent.Name == key)
@@ -176,10 +176,10 @@ namespace Glash.Core.Server
                     if (!clientDict.ContainsKey(key))
                         return;
                     context = clientDict[key];
-                    context.Dispose();
                     clientDict.Remove(key);
                     Clients = clientDict.Values.ToArray();
                 }
+                context.Dispose();
                 foreach (var tunnel in Tunnels)
                 {
                     if (tunnel.Client.Name == key)
@@ -214,6 +214,7 @@ namespace Glash.Core.Server
             if (!options.IsClientRelateAgentFunc(clientContext.Name, request.Data.Agent))
                 throw new ApplicationException($"Client[{clientContext.Name}] not relate to Agent[{request.Data.Agent}].");
 
+            var tunnelInfo = request.Data;
             lock (serverTunnelContextDict)
             {
                 if (serverTunnelContextDict.Count >= options.MaxTunnelCount)
@@ -230,37 +231,38 @@ namespace Glash.Core.Server
                 nextTunnelId = tunnelId + 1;
                 if (nextTunnelId >= options.MaxTunnelCount)
                     nextTunnelId = 0;
-
-                var tunnelInfo = request.Data;
                 tunnelInfo.Id = tunnelId;
-
-                GlashAgentContext agentContext = null;
-                if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
-                    throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not registered.");
-                agentContext.CreateTunnelAsync(tunnelInfo).Wait();
-
-                var tunnel = new GlashServerTunnelContext(
-                    tunnelInfo,
-                    clientContext,
-                    agentContext,
-                    ex =>
-                    {
-                        lock (serverTunnelContextDict)
-                        {
-                            GlashServerTunnelContext serverTunnelContext;
-                            if (!serverTunnelContextDict.TryGetValue(tunnelId, out serverTunnelContext))
-                                return;
-                            serverTunnelContextDict.Remove(tunnelId);
-                            Tunnels = serverTunnelContextDict.Values.ToArray();
-                            serverTunnelContext.Dispose();
-                        }
-                    });
-
-                serverTunnelContextDict[tunnelId] = tunnel;
-                Tunnels = serverTunnelContextDict.Values.ToArray();
-                TunnelCreated?.Invoke(this, tunnel);
-                return new Glash.Client.Protocol.QpCommands.CreateTunnel.Response() { Data = tunnelInfo };
+                serverTunnelContextDict[tunnelId] = null;
             }
+            GlashAgentContext agentContext = null;
+            if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
+                throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not registered.");
+            agentContext.CreateTunnelAsync(tunnelInfo).Wait();
+
+            var tunnel = new GlashServerTunnelContext(
+                tunnelInfo,
+                clientContext,
+                agentContext,
+                ex =>
+                {
+                    GlashServerTunnelContext serverTunnelContext;
+                    lock (serverTunnelContextDict)
+                    {
+                        if (!serverTunnelContextDict.TryGetValue(tunnelInfo.Id, out serverTunnelContext))
+                            return;
+                        serverTunnelContextDict.Remove(tunnelInfo.Id);
+                        Tunnels = serverTunnelContextDict.Values.ToArray();
+                    }
+                    serverTunnelContext.Dispose();
+                });
+
+            lock (serverTunnelContextDict)
+            {
+                serverTunnelContextDict[tunnelInfo.Id] = tunnel;
+                Tunnels = serverTunnelContextDict.Values.ToArray();
+            }
+            TunnelCreated?.Invoke(this, tunnel);
+            return new Glash.Client.Protocol.QpCommands.CreateTunnel.Response() { Data = tunnelInfo };
         }
 
         private Glash.Client.Protocol.QpCommands.StartTunnel.Response ExecuteCommand_Client_StartTunnel(

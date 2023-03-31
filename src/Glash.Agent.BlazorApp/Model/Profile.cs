@@ -13,7 +13,10 @@ namespace Glash.Agent.BlazorApp.Model
             Name,
             ServerUrl,
             AgentName,
-            AgentPassword
+            AgentPassword,
+            Status,
+            Connected,
+            Disconnected            
         }
 
         public Profile() { }

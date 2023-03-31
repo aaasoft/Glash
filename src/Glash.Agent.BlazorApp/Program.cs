@@ -3,6 +3,7 @@ using Quick.EntityFrameworkCore.Plus.SQLite;
 using Quick.EntityFrameworkCore.Plus;
 using System.Diagnostics;
 
+Quick.Protocol.QpAllClients.RegisterUriSchema();
 var dbFile = SQLiteDbContextConfigHandler.CONFIG_DB_FILE;
 #if DEBUG
 dbFile = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), dbFile);
@@ -15,6 +16,7 @@ using (var dbContext = new ConfigDbContext())
     dbContext.EnsureDatabaseCreatedAndUpdated(t => Debug.Print(t));
 ConfigDbContext.CacheContext.LoadCache();
 Global.Instance.Init();
+Glash.Agent.BlazorApp.Core.GlashAgentManager.Instance.Init();
 
 var builder = WebApplication.CreateBuilder(args);
 
