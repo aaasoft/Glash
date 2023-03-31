@@ -6,8 +6,22 @@
 		<RollForward>Major</RollForward>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<Version>1.1.0</Version>
+		<IsPackable>true</IsPackable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Description>Glash is a reverse proxy that allows you to expose a local server located behind a NAT or firewall to other local server.</Description>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/aaasoft/Glash</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/aaasoft/Glash</RepositoryUrl>
+		<PackageTags>Glash;Proxy</PackageTags>
 	</PropertyGroup>
-
+	
+	<ItemGroup>
+		<None Include="..\..\logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <None Remove="Language\en-US\Glash.Server.BlazorApp\Model\AgentInfo+Texts.lang" />
 	  <None Remove="Language\en-US\Glash.Server.BlazorApp\Model\ClientInfo+Texts.lang" />
