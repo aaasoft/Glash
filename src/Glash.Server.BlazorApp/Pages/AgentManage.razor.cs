@@ -12,12 +12,8 @@ using System.Threading.Tasks;
 
 namespace Glash.Server.BlazorApp.Pages
 {
-    public partial class AgentManage
+    public partial class AgentManage : IDisposable
     {
-        private ModalWindow modalWindow;
-        private ModalLoading modalLoading;
-        private ModalAlert modalAlert;
-
         public enum Texts
         {
             Operate,
@@ -27,8 +23,34 @@ namespace Glash.Server.BlazorApp.Pages
             DeleteConfirm
         }
 
+        private ModalWindow modalWindow;
+        private ModalLoading modalLoading;
+        private ModalAlert modalAlert;
+        private CancellationTokenSource cts = new CancellationTokenSource();
+
+
         [Parameter]
         public Action AgentChangedHandler { get; set; }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
+            if (firstRender)
+            {
+                beginRefresh(cts.Token);
+            }
+        }
+
+        private void beginRefresh(CancellationToken token)
+        {
+            Task.Delay(1000, token).ContinueWith(t =>
+            {
+                if (t.IsCanceled)
+                    return;
+                InvokeAsync(StateHasChanged);
+                beginRefresh(token);
+            });
+        }
 
         private void Add()
         {
@@ -53,13 +75,14 @@ namespace Glash.Server.BlazorApp.Pages
 
         private void Edit(Model.AgentInfo model)
         {
-            var editModel = JsonConvert.DeserializeObject<Model.AgentInfo>(JsonConvert.SerializeObject(model));
             modalWindow.Show<Controls.EditAgentInfo>(Global.Instance.TextManager.GetText(Texts.Edit), Controls.EditAgentInfo.PrepareParameter(
-                editModel,
-                model =>
+                JsonConvert.DeserializeObject<Model.AgentInfo>(JsonConvert.SerializeObject(model)),
+                editModel =>
                 {
                     try
                     {
+                        if (model.Context != null)
+                            model.Context.Dispose();
                         model.Password = editModel.Password;
                         ConfigDbContext.CacheContext.Update(model);
                         AgentChangedHandler?.Invoke();
@@ -80,6 +103,8 @@ namespace Glash.Server.BlazorApp.Pages
             {
                 try
                 {
+                    if (model.Context != null)
+                        model.Context.Dispose();
                     ConfigDbContext.CacheContext.Remove(model, true);
                     AgentChangedHandler?.Invoke();
                     InvokeAsync(StateHasChanged);
@@ -100,6 +125,11 @@ namespace Glash.Server.BlazorApp.Pages
             {
                 [nameof(AgentChangedHandler)] = profileChangedHandler
             };
+        }
+
+        public void Dispose()
+        {
+            cts.Cancel();
         }
     }
 }

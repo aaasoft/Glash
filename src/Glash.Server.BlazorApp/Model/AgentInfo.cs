@@ -1,4 +1,6 @@
-﻿using Quick.EntityFrameworkCore.Plus;
+﻿using Glash.Core.Server;
+using Newtonsoft.Json;
+using Quick.EntityFrameworkCore.Plus;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,7 +13,9 @@ namespace Glash.Server.BlazorApp.Model
         {
             ModelName,
             Name,
-            Password
+            Password,
+            ChannelName,
+            ConnectTime
         }
 
         public AgentInfo() { }
@@ -23,6 +27,9 @@ namespace Glash.Server.BlazorApp.Model
         public string Name { get; set; }
         [Required]
         public string Password { get; set; }
+        [NotMapped]
+        [JsonIgnore]
+        public GlashAgentContext Context { get; set; }
 
         public override int GetHashCode()
         {

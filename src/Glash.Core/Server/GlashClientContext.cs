@@ -2,7 +2,7 @@
 
 namespace Glash.Core.Server
 {
-    public class GlashClientContext
+    public class GlashClientContext : IDisposable
     {
         public string Name { get; private set; }
         public QpChannel Channel { get; private set; }
@@ -13,6 +13,11 @@ namespace Glash.Core.Server
             Name = name;
             Channel = channel;
             CreateTime = DateTime.Now;
+        }
+
+        public void Dispose()
+        {
+            Channel.Disconnect();
         }
     }
 }

@@ -60,10 +60,48 @@ namespace Microsoft.AspNetCore.Builder
                     return model != null;
                 }
             });
+            glashServer.AgentConnected += GlashServer_AgentConnected;
+            glashServer.AgentDisconnected += GlashServer_AgentDisconnected;
+            glashServer.ClientConnected += GlashServer_ClientConnected;
+            glashServer.ClientDisconnected += GlashServer_ClientDisconnected;
+
             glashServer.HandleServerOptions(serverOptions);
             app.UseQuickProtocol(serverOptions, out qpServer);
             qpServer.Start();
             return app;
+        }
+
+
+        private static void GlashServer_AgentConnected(object sender, GlashAgentContext e)
+        {
+            var agentInfo = ConfigDbContext.CacheContext.Find(new Glash.Server.BlazorApp.Model.AgentInfo(e.Name));
+            if (agentInfo == null)
+                return;
+            agentInfo.Context = e;
+        }
+
+        private static void GlashServer_AgentDisconnected(object sender, GlashAgentContext e)
+        {
+            var agentInfo = ConfigDbContext.CacheContext.Find(new Glash.Server.BlazorApp.Model.AgentInfo(e.Name));
+            if (agentInfo == null)
+                return;
+            agentInfo.Context = null;
+        }
+
+        private static void GlashServer_ClientConnected(object sender, GlashClientContext e)
+        {
+            var clientInfo = ConfigDbContext.CacheContext.Find(new Glash.Server.BlazorApp.Model.ClientInfo(e.Name));
+            if (clientInfo == null)
+                return;
+            clientInfo.Context = e;
+        }
+
+        private static void GlashServer_ClientDisconnected(object sender, GlashClientContext e)
+        {
+            var clientInfo = ConfigDbContext.CacheContext.Find(new Glash.Server.BlazorApp.Model.ClientInfo(e.Name));
+            if (clientInfo == null)
+                return;
+            clientInfo.Context = null;
         }
     }
 }

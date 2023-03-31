@@ -172,6 +172,7 @@ namespace Glash.Core.Server
                     if (!clientDict.ContainsKey(key))
                         return;
                     context = clientDict[key];
+                    context.Dispose();
                     clientDict.Remove(key);
                     Clients = clientDict.Values.ToArray();
                 }

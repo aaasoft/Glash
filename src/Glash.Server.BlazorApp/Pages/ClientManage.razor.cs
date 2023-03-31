@@ -12,12 +12,8 @@ using System.Threading.Tasks;
 
 namespace Glash.Server.BlazorApp.Pages
 {
-    public partial class ClientManage
+    public partial class ClientManage : IDisposable
     {
-        private ModalWindow modalWindow;
-        private ModalLoading modalLoading;
-        private ModalAlert modalAlert;
-
         public enum Texts
         {
             Operate,
@@ -27,8 +23,32 @@ namespace Glash.Server.BlazorApp.Pages
             DeleteConfirm
         }
 
+        private ModalWindow modalWindow;
+        private ModalLoading modalLoading;
+        private ModalAlert modalAlert;
+        private CancellationTokenSource cts = new CancellationTokenSource();
+
         [Parameter]
         public Action ClientChangedHandler { get; set; }
+        protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
+            if (firstRender)
+            {
+                beginRefresh(cts.Token);
+            }
+        }
+
+        private void beginRefresh(CancellationToken token)
+        {
+            Task.Delay(1000, token).ContinueWith(t =>
+            {
+                if (t.IsCanceled)
+                    return;
+                InvokeAsync(StateHasChanged);
+                beginRefresh(token);
+            });
+        }
 
         private void setClientRelateAgents(string clientId, string[] agents)
         {
@@ -83,13 +103,14 @@ namespace Glash.Server.BlazorApp.Pages
 
         private void Edit(Model.ClientInfo model)
         {
-            var editModel = JsonConvert.DeserializeObject<Model.ClientInfo>(JsonConvert.SerializeObject(model));
             modalWindow.Show<Controls.EditClientInfo>(Global.Instance.TextManager.GetText(Texts.Edit), Controls.EditClientInfo.PrepareParameter(
-                editModel,
-                (model,agents) =>
+                JsonConvert.DeserializeObject<Model.ClientInfo>(JsonConvert.SerializeObject(model)),
+                (editModel, agents) =>
                 {
                     try
                     {
+                        if (model.Context != null)
+                            model.Context.Dispose();
                         model.Password = editModel.Password;
                         ConfigDbContext.CacheContext.Update(model);
                         setClientRelateAgents(model.Name, agents);
@@ -111,6 +132,8 @@ namespace Glash.Server.BlazorApp.Pages
             {
                 try
                 {
+                    if (model.Context != null)
+                        model.Context.Dispose();
                     ConfigDbContext.CacheContext.Remove(model, true);
                     ClientChangedHandler?.Invoke();
                     InvokeAsync(StateHasChanged);
@@ -131,6 +154,11 @@ namespace Glash.Server.BlazorApp.Pages
             {
                 [nameof(ClientChangedHandler)] = profileChangedHandler
             };
+        }
+
+        public void Dispose()
+        {
+            cts.Cancel();
         }
     }
 }

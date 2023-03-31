@@ -53,10 +53,9 @@ namespace Glash.Client.Razor
 
         private void Edit(Model.Profile model)
         {
-            var editModel = JsonConvert.DeserializeObject<Model.Profile>(JsonConvert.SerializeObject(model));
             modalWindow.Show<Controls.EditProfile>(Global.Instance.TextManager.GetText(Texts.Edit), Controls.EditProfile.PrepareParameter(
-                editModel,
-                model =>
+                JsonConvert.DeserializeObject<Model.Profile>(JsonConvert.SerializeObject(model)),
+                editModel =>
                 {
                     try
                     {

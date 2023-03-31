@@ -184,10 +184,9 @@ namespace Glash.Client.Razor
 
         private void EditProxyRule(Model.ProxyRule model)
         {
-            var editModel = JsonConvert.DeserializeObject<Model.ProxyRule>(JsonConvert.SerializeObject(model));
             modalWindow.Show<Controls.EditProxyRule>(Global.Instance.TextManager.GetText(Texts.EditProxyRule), Controls.EditProxyRule.PrepareParameter(
-                editModel,
-                model =>
+                JsonConvert.DeserializeObject<Model.ProxyRule>(JsonConvert.SerializeObject(model)),
+                editModel =>
                 {
                     try
                     {
