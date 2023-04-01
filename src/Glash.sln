@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Client.WinForm", "Gla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Server.BlazorApp", "Glash.Server.BlazorApp\Glash.Server.BlazorApp.csproj", "{2EA74E0D-4353-4668-8912-C9FC1798A41D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Agent.BlazorApp", "Glash.Agent.BlazorApp\Glash.Agent.BlazorApp.csproj", "{3436E49A-89F2-48CD-93FE-658D764BAC9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Agent.BlazorApp", "Glash.Agent.BlazorApp\Glash.Agent.BlazorApp.csproj", "{3436E49A-89F2-48CD-93FE-658D764BAC9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

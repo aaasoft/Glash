@@ -1,3 +1,6 @@
-﻿.modal {
+﻿@import url('/_content/Quick.Blazor.Bootstrap/bootstrap/bootstrap.min.css');
+@import url('/_content/Quick.Blazor.Bootstrap/fontawesome/css/font-awesome.min.css');
+
+.modal {
     overflow-y: auto;
 }

@@ -1,4 +1,5 @@
-@import url('fontawesome/css/font-awesome.min.css');
+@import url('../_content/Quick.Blazor.Bootstrap/bootstrap/bootstrap.min.css');
+@import url('../_content/Quick.Blazor.Bootstrap/fontawesome/css/font-awesome.min.css');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
