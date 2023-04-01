@@ -1,0 +1,81 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Language\en-US\Glash.Blazor.Client\ClientTexts.lang" />
+	  <None Remove="Language\en-US\Glash.Blazor.Client\Login+Texts.lang" />
+	  <None Remove="Language\en-US\Glash.Blazor.Client\Main+Texts.lang" />
+	  <None Remove="Language\en-US\Glash.Blazor.Client\Model\ProxyRule+Texts.lang" />
+	  <None Remove="Language\en-US\Glash.Blazor.Client\ProfileManage+Texts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Blazor.Client\ClientTexts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Blazor.Client\Login+Texts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Blazor.Client\Main+Texts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Blazor.Client\Model\Profile+Texts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Blazor.Client\Model\ProxyRule+Texts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Blazor.Client\ProfileManage+Texts.lang" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Login+Texts.lang" />
+		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Main+Texts.lang" />
+		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Model\Profile+Texts.lang" />
+		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Model\ProxyRule+Texts.lang" />
+		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ProfileManage+Texts.lang" />
+		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ClientTexts.lang" />
+		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ClientTexts.lang" />
+		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Main+Texts.lang" />
+		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Model\Profile+Texts.lang" />
+		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Model\ProxyRule+Texts.lang" />
+		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ProfileManage+Texts.lang" />
+		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Login+Texts.lang" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.15" />
+		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="4.0.4" />
+		<PackageReference Include="Quick.EntityFrameworkCore.Plus.SQLite" Version="5.0.2" />
+		<PackageReference Include="Quick.Localize" Version="1.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Glash\Glash.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Controls\EditProfile.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="Controls\EditProxyRule.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="Index.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="Login.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="Main.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="ProfileManage.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="wwwroot\css\app.css">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Update="_Imports.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	</ItemGroup>
+
+</Project>
