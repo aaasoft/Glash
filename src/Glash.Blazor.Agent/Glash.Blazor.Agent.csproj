@@ -5,7 +5,6 @@
 		<RollForward>Major</RollForward>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<Version>1.1.0</Version>
-		<IsPackable>true</IsPackable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Description>Glash is a reverse proxy that allows you to expose a local server located behind a NAT or firewall to other local server.</Description>
 		<PackageIcon>logo.png</PackageIcon>
@@ -16,11 +15,9 @@
 
 	<ItemGroup>
 	  <None Remove="Language\en-US\Glash.Blazor.Agent\AgentTexts.lang" />
-	  <None Remove="Language\en-US\Glash.Blazor.Agent\Pages\Index+Texts.lang" />
 	  <None Remove="Language\en-US\Glash.Blazor.Agent\Pages\ProfileManage+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Blazor.Agent\AgentTexts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Blazor.Agent\Model\Profile+Texts.lang" />
-	  <None Remove="Language\zh-CN\Glash.Blazor.Agent\Pages\Index+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Blazor.Agent\Pages\ProfileManage+Texts.lang" />
 	</ItemGroup>
 
@@ -34,11 +31,9 @@
 	<ItemGroup>
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Agent\Model\Profile+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Agent\AgentTexts.lang" />
-		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Agent\Pages\Index+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Agent\Pages\ProfileManage+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Agent\Model\Profile+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Agent\AgentTexts.lang" />
-		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Agent\Pages\Index+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Agent\Pages\ProfileManage+Texts.lang" />
 	</ItemGroup>
 
@@ -51,14 +46,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Glash.Core\Glash.Core.csproj" />
+		<ProjectReference Include="..\Glash\Glash.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Content Update="Controls\EditProfile.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Update="Pages\Index.razor">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>
 	  <Content Update="Pages\ProfileManage.razor">

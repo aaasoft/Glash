@@ -1,4 +1,4 @@
-﻿using Glash.Core.Agent;
+﻿using Glash.Agent;
 
 namespace Glash.Blazor.Agent.Core
 {

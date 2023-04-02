@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Core", "Glash.Core\Glash.Core.csproj", "{39643219-9E21-40D2-9678-F5AAE553B2A7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Server.BlazorApp", "Glash.Server.BlazorApp\Glash.Server.BlazorApp.csproj", "{2EA74E0D-4353-4668-8912-C9FC1798A41D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash", "Glash\Glash.csproj", "{5EC978E8-B4D9-436A-AEA5-64056961B696}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Glash.Blazor.Client", "Glash.Blazor.Client\Glash.Blazor.Client.csproj", "{9769581D-D9B7-48AF-BFEB-6A34C8A7A045}"
@@ -19,20 +13,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Blazor.Agent", "Glash
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlashAgent", "GlashAgent\GlashAgent.csproj", "{2BD26CE7-726C-4C7F-8F27-AF5D185D9E49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glash.Blazor.Server", "Glash.Blazor.Server\Glash.Blazor.Server.csproj", "{0254A262-2978-4E23-A493-5C79BE7284C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlashServer", "GlashServer\GlashServer.csproj", "{F503D3FF-DF90-4854-83CE-3996CF6952A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{39643219-9E21-40D2-9678-F5AAE553B2A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39643219-9E21-40D2-9678-F5AAE553B2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39643219-9E21-40D2-9678-F5AAE553B2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39643219-9E21-40D2-9678-F5AAE553B2A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2EA74E0D-4353-4668-8912-C9FC1798A41D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2EA74E0D-4353-4668-8912-C9FC1798A41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2EA74E0D-4353-4668-8912-C9FC1798A41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2EA74E0D-4353-4668-8912-C9FC1798A41D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5EC978E8-B4D9-436A-AEA5-64056961B696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5EC978E8-B4D9-436A-AEA5-64056961B696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EC978E8-B4D9-436A-AEA5-64056961B696}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,13 +43,17 @@ Global
 		{2BD26CE7-726C-4C7F-8F27-AF5D185D9E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BD26CE7-726C-4C7F-8F27-AF5D185D9E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BD26CE7-726C-4C7F-8F27-AF5D185D9E49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0254A262-2978-4E23-A493-5C79BE7284C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0254A262-2978-4E23-A493-5C79BE7284C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0254A262-2978-4E23-A493-5C79BE7284C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0254A262-2978-4E23-A493-5C79BE7284C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F503D3FF-DF90-4854-83CE-3996CF6952A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F503D3FF-DF90-4854-83CE-3996CF6952A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F503D3FF-DF90-4854-83CE-3996CF6952A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F503D3FF-DF90-4854-83CE-3996CF6952A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{39643219-9E21-40D2-9678-F5AAE553B2A7} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
-		{2EA74E0D-4353-4668-8912-C9FC1798A41D} = {3E403ACB-A35B-4DDD-8CEC-C65C5CB022F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DB86FF5-9232-4A7E-AFAC-1342B77700E7}

@@ -65,13 +65,20 @@ namespace GlashClient
 
         private void refreshProfileAndLanguage()
         {
-            StringBuilder sb = new StringBuilder();
-            if (Global.Instance.Profile != null)
-                sb.Append($"{Global.Instance.Profile.Name} - ");
-            sb.Append(Global.Instance.TextManager.GetText(Login.Texts.Title));
-            var text = sb.ToString();
-            this.Text = text;
-            niMain.Text = text;
+            Action action = () =>
+            {
+                StringBuilder sb = new StringBuilder();
+                if (Global.Instance.Profile != null)
+                    sb.Append($"{Global.Instance.Profile.Name} - ");
+                sb.Append(Global.Instance.TextManager.GetText(Login.Texts.Title));
+                var text = sb.ToString();
+                this.Text = text;
+                niMain.Text = text;
+            };
+            if (InvokeRequired)
+                Invoke(action);
+            else
+                action.Invoke();
         }
 
         private NamedPipeServerStream createNewNamedPipedServerStream(String pipeName)
