@@ -62,7 +62,7 @@ namespace Glash.Agent
             await qpClient.ConnectAsync();
             //Register
             var answer = CryptoUtils.GetAnswer(qpClient.AuthenticateQuestion, password);
-            await qpClient.SendCommand(new Glash.Agent.Protocol.QpCommands.Register.Request()
+            await qpClient.SendCommand(new Glash.Agent.Protocol.QpCommands.Login.Request()
             {
                 Name = agentName,
                 Answer = answer

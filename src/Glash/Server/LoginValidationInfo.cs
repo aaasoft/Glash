@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Glash.Server
 {
-    public class RegisterValidationInfo
+    public class LoginValidationInfo
     {
         public string Name { get; set; }
         public string Question { get; set; }

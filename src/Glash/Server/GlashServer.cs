@@ -41,11 +41,11 @@ namespace Glash.Server
         {
             this.options = options;
             commandExecuterManager.Register(
-                new Glash.Agent.Protocol.QpCommands.Register.Request(),
-                ExecuteCommand_Agent_Register);
+                new Glash.Agent.Protocol.QpCommands.Login.Request(),
+                ExecuteCommand_Agent_Login);
             commandExecuterManager.Register(
-                new Glash.Client.Protocol.QpCommands.Register.Request(),
-                ExecuteCommand_Client_Register);
+                new Glash.Client.Protocol.QpCommands.Login.Request(),
+                ExecuteCommand_Client_Login);
             commandExecuterManager.Register(
                 new Glash.Client.Protocol.QpCommands.GetAgentList.Request(),
                 ExecuteCommand_Client_GetAgentList);
@@ -91,20 +91,20 @@ namespace Glash.Server
             this.qpServerOptions = qpServerOptions;
         }
 
-        //Register as Agent
-        private Glash.Agent.Protocol.QpCommands.Register.Response ExecuteCommand_Agent_Register(
+        //Login as Agent
+        private Glash.Agent.Protocol.QpCommands.Login.Response ExecuteCommand_Agent_Login(
             QpChannel channel,
-            Glash.Agent.Protocol.QpCommands.Register.Request request)
+            Glash.Agent.Protocol.QpCommands.Login.Request request)
         {
-            if (options.AgentRegisterValidator != null)
+            if (options.AgentLoginValidator != null)
             {
-                var rvi = new RegisterValidationInfo()
+                var rvi = new LoginValidationInfo()
                 {
                     Name = request.Name,
                     Question = channel.AuthenticateQuestion,
                     Answer = request.Answer
                 };
-                if (!options.AgentRegisterValidator.Invoke(rvi))
+                if (!options.AgentLoginValidator.Invoke(rvi))
                     throw new ApplicationException("Agent authenticate failed.");
             }
             var key = request.Name;
@@ -112,7 +112,7 @@ namespace Glash.Server
             lock (agentDict)
             {
                 if (agentDict.ContainsKey(key))
-                    throw new ApplicationException($"Agent [{key}] already registered.");
+                    throw new ApplicationException($"Agent [{key}] already login.");
                 agent = new GlashAgentContext(key, channel);
                 agentDict[key] = agent;
                 Agents = agentDict.Values.ToArray();
@@ -138,23 +138,23 @@ namespace Glash.Server
                 AgentDisconnected?.Invoke(this, context);
             };
             AgentConnected?.Invoke(this, agent);
-            return new Glash.Agent.Protocol.QpCommands.Register.Response();
+            return new Glash.Agent.Protocol.QpCommands.Login.Response();
         }
 
-        //Register as Client
-        private Glash.Client.Protocol.QpCommands.Register.Response ExecuteCommand_Client_Register(
+        //Login as Client
+        private Glash.Client.Protocol.QpCommands.Login.Response ExecuteCommand_Client_Login(
             QpChannel channel,
-            Glash.Client.Protocol.QpCommands.Register.Request request)
+            Glash.Client.Protocol.QpCommands.Login.Request request)
         {
-            if (options.ClientRegisterValidator != null)
+            if (options.ClientLoginValidator != null)
             {
-                var rvi = new RegisterValidationInfo()
+                var rvi = new LoginValidationInfo()
                 {
                     Name = request.Name,
                     Question = channel.AuthenticateQuestion,
                     Answer = request.Answer
                 };
-                if (!options.ClientRegisterValidator.Invoke(rvi))
+                if (!options.ClientLoginValidator.Invoke(rvi))
                     throw new ApplicationException("Client authenticate failed.");
             }
             var key = request.Name;
@@ -162,7 +162,7 @@ namespace Glash.Server
             lock (clientDict)
             {
                 if (clientDict.ContainsKey(key))
-                    throw new ApplicationException($"Client [{key}] already registered.");
+                    throw new ApplicationException($"Client [{key}] already login.");
                 client = new GlashClientContext(key, channel);
                 clientDict[key] = client;
                 Clients = clientDict.Values.ToArray();
@@ -188,7 +188,7 @@ namespace Glash.Server
                 ClientDisconnected?.Invoke(this, context);
             };
             ClientConnected?.Invoke(this, client);
-            return new Glash.Client.Protocol.QpCommands.Register.Response();
+            return new Glash.Client.Protocol.QpCommands.Login.Response();
         }
 
         private Glash.Client.Protocol.QpCommands.GetAgentList.Response ExecuteCommand_Client_GetAgentList(
@@ -197,7 +197,7 @@ namespace Glash.Server
         {
             var client = channel.Tag as GlashClientContext;
             if (client == null)
-                throw new ApplicationException("Client not register.");
+                throw new ApplicationException("Client not login.");
             return new Glash.Client.Protocol.QpCommands.GetAgentList.Response()
             {
                 Data = options.GetClientRelateAgentsFunc(client.Name)
@@ -210,7 +210,7 @@ namespace Glash.Server
         {
             var clientContext = channel.Tag as GlashClientContext;
             if (clientContext == null)
-                throw new ApplicationException("Client not registered.");
+                throw new ApplicationException("Client not login.");
             if (!options.IsClientRelateAgentFunc(clientContext.Name, request.Data.Agent))
                 throw new ApplicationException($"Client[{clientContext.Name}] not relate to Agent[{request.Data.Agent}].");
 
@@ -236,7 +236,7 @@ namespace Glash.Server
             }
             GlashAgentContext agentContext = null;
             if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
-                throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not registered.");
+                throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not login.");
             agentContext.CreateTunnelAsync(tunnelInfo).Wait();
 
             var tunnel = new GlashServerTunnelContext(
@@ -271,7 +271,7 @@ namespace Glash.Server
         {
             var clientContext = channel.Tag as GlashClientContext;
             if (clientContext == null)
-                throw new ApplicationException("Client not registered.");
+                throw new ApplicationException("Client not login.");
 
             var tunnelId = request.TunnelId;
             GlashServerTunnelContext serverTunnelContext;

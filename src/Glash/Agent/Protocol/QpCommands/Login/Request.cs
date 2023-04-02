@@ -1,9 +1,9 @@
 ﻿using Quick.Protocol;
 using System.ComponentModel;
 
-namespace Glash.Agent.Protocol.QpCommands.Register
+namespace Glash.Agent.Protocol.QpCommands.Login
 {
-    [DisplayName("Register")]
+    [DisplayName("Login as Agent")]
     public class Request : IQpCommandRequest<Response>
     {
         public string Name { get; set; }

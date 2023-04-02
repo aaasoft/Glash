@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Builder
             GlashServer = new GlashServer(new GlashServerOptions()
             {
                 MaxTunnelCount = maxTunnelCount,
-                AgentRegisterValidator = rvi =>
+                AgentLoginValidator = rvi =>
                 {
                     var model = ConfigDbContext.CacheContext
                         .Find(new Glash.Blazor.Server.Model.AgentInfo(rvi.Name));
@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Builder
                     var answer = CryptoUtils.GetAnswer(rvi.Question, model.Password);
                     return answer == rvi.Answer;
                 },
-                ClientRegisterValidator = rvi =>
+                ClientLoginValidator = rvi =>
                 {
                     var model = ConfigDbContext.CacheContext
                         .Find(new Glash.Blazor.Server.Model.ClientInfo(rvi.Name));
