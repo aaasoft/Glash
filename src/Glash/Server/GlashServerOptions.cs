@@ -9,9 +9,7 @@ namespace Glash.Server
     public class GlashServerOptions
     {
         public int MaxTunnelCount { get; set; } = 100;
-        public Func<LoginValidationInfo, bool> AgentLoginValidator { get; set; }
-        public Func<LoginValidationInfo, bool> ClientLoginValidator { get; set; }
-        public Func<string, string[]> GetClientRelateAgentsFunc { get; set; }
-        public Func<string, string, bool> IsClientRelateAgentFunc { get; set; }
+        public IAgentManager AgentManager { get; set; }
+        public IClientManager ClientManager { get; set; }
     }
 }

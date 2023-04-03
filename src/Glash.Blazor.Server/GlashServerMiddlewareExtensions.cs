@@ -1,4 +1,5 @@
-﻿using Glash.Core;
+﻿using Glash.Blazor.Server;
+using Glash.Core;
 using Glash.Server;
 using Quick.EntityFrameworkCore.Plus;
 using Quick.Protocol;
@@ -24,41 +25,8 @@ namespace Microsoft.AspNetCore.Builder
             GlashServer = new GlashServer(new GlashServerOptions()
             {
                 MaxTunnelCount = maxTunnelCount,
-                AgentLoginValidator = rvi =>
-                {
-                    var model = ConfigDbContext.CacheContext
-                        .Find(new Glash.Blazor.Server.Model.AgentInfo(rvi.Name));
-                    if (model == null)
-                        return false;
-                    var answer = CryptoUtils.GetAnswer(rvi.Question, model.Password);
-                    return answer == rvi.Answer;
-                },
-                ClientLoginValidator = rvi =>
-                {
-                    var model = ConfigDbContext.CacheContext
-                        .Find(new Glash.Blazor.Server.Model.ClientInfo(rvi.Name));
-                    if (model == null)
-                        return false;
-                    var answer = CryptoUtils.GetAnswer(rvi.Question, model.Password);
-                    return answer == rvi.Answer;
-                },
-                GetClientRelateAgentsFunc = clientName =>
-                {
-                    return ConfigDbContext.CacheContext
-                        .Query<Glash.Blazor.Server.Model.ClientAgentRelation>()
-                        .Where(t => t.ClientName == clientName)
-                        .Select(t => t.AgentName)
-                        .ToArray();
-                },
-                IsClientRelateAgentFunc = (client, agent) =>
-                {
-                    var model = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.ClientAgentRelation()
-                    {
-                        ClientName = client,
-                        AgentName = agent
-                    });
-                    return model != null;
-                }
+                AgentManager = new AgentManager(),
+                ClientManager = new ClientManager()
             });
             GlashServer.AgentConnected += GlashServer_AgentConnected;
             GlashServer.AgentDisconnected += GlashServer_AgentDisconnected;
@@ -70,7 +38,6 @@ namespace Microsoft.AspNetCore.Builder
             qpServer.Start();
             return app;
         }
-
 
         private static void GlashServer_AgentConnected(object sender, GlashAgentContext e)
         {

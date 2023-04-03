@@ -96,15 +96,15 @@ namespace Glash.Server
             QpChannel channel,
             Glash.Agent.Protocol.QpCommands.Login.Request request)
         {
-            if (options.AgentLoginValidator != null)
+            if (options.AgentManager != null)
             {
-                var rvi = new LoginValidationInfo()
+                var loginInfo = new LoginInfo()
                 {
                     Name = request.Name,
                     Question = channel.AuthenticateQuestion,
                     Answer = request.Answer
                 };
-                if (!options.AgentLoginValidator.Invoke(rvi))
+                if (!options.AgentManager.Login(loginInfo))
                     throw new ApplicationException("Agent authenticate failed.");
             }
             var key = request.Name;
@@ -146,15 +146,15 @@ namespace Glash.Server
             QpChannel channel,
             Glash.Client.Protocol.QpCommands.Login.Request request)
         {
-            if (options.ClientLoginValidator != null)
+            if (options.ClientManager != null)
             {
-                var rvi = new LoginValidationInfo()
+                var loginInfo = new LoginInfo()
                 {
                     Name = request.Name,
                     Question = channel.AuthenticateQuestion,
                     Answer = request.Answer
                 };
-                if (!options.ClientLoginValidator.Invoke(rvi))
+                if (!options.ClientManager.Login(loginInfo))
                     throw new ApplicationException("Client authenticate failed.");
             }
             var key = request.Name;
@@ -198,9 +198,14 @@ namespace Glash.Server
             var client = channel.Tag as GlashClientContext;
             if (client == null)
                 throw new ApplicationException("Client not login.");
-            return new Glash.Client.Protocol.QpCommands.GetAgentList.Response()
+            string[] agents = null;
+            if (options.ClientManager == null)
+                agents = Agents.Select(t => t.Name).ToArray();
+            else
+                agents = options.ClientManager.GetClientRelateAgents(client.Name);
+            return new Client.Protocol.QpCommands.GetAgentList.Response()
             {
-                Data = options.GetClientRelateAgentsFunc(client.Name)
+                Data = agents
             };
         }
 
@@ -211,7 +216,10 @@ namespace Glash.Server
             var clientContext = channel.Tag as GlashClientContext;
             if (clientContext == null)
                 throw new ApplicationException("Client not login.");
-            if (!options.IsClientRelateAgentFunc(clientContext.Name, request.Data.Agent))
+            var isClientRelateAgent = true;
+            if (options.ClientManager != null)
+                isClientRelateAgent = options.ClientManager.IsClientRelateAgent(clientContext.Name, request.Data.Agent);
+            if (!isClientRelateAgent)
                 throw new ApplicationException($"Client[{clientContext.Name}] not relate to Agent[{request.Data.Agent}].");
 
             var tunnelInfo = request.Data;
