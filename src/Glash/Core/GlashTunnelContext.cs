@@ -29,7 +29,10 @@ namespace Glash.Core
         {
             try
             {
-                var ret = await stream?.ReadAsync(buffer, 0, buffer.Length, token);
+                var task =stream?.ReadAsync(buffer, 0, buffer.Length, token);
+                if (task == null)
+                    return;
+                var ret = await task;
                 if (ret <= 0)
                     throw new IOException("Read count: " + ret);
                 await channel.SendNoticePackage(new G.D()

@@ -12,7 +12,8 @@ namespace Glash.Client.Protocol
             NoticeInfos = new[]
             {
                 QpNoticeInfo.Create<G.D>(),
-                QpNoticeInfo.Create<TunnelClosed>()
+                QpNoticeInfo.Create<TunnelClosed>(),
+                QpNoticeInfo.Create<QpNotices.AgentLoginStatusChanged>()
             },
             CommandInfos = new[]
             {

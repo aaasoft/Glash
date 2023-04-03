@@ -64,23 +64,48 @@ namespace Glash.Blazor.Server
             GlashServer.HandleServerOptions(serverOptions);
         }
 
-        private static void GlashServer_AgentConnected(object sender, GlashAgentContext e)
+        private void onAgentLoginStatusChanged(string agentName, bool isLoggedIn)
         {
-            var agentInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.AgentInfo(e.Name));
+            var relateClients = ConfigDbContext.CacheContext
+                .Query<Model.ClientAgentRelation>(t => t.AgentName == agentName)
+                .Select(t => ConfigDbContext.CacheContext.Find(new Model.ClientInfo(t.ClientName)))
+                .Where(t => t != null)
+                .ToArray();
+            foreach (var client in relateClients)
+            {
+                var qpChannel = client.Context?.Channel;
+                if (qpChannel == null)
+                    continue;
+                qpChannel.SendNoticePackage(new Client.Protocol.QpNotices.AgentLoginStatusChanged()
+                {
+                    Data = new Client.Protocol.QpModel.AgentInfo()
+                    {
+                        AgentName = agentName,
+                        IsLoggedIn = isLoggedIn
+                    }
+                });
+            }
+        }
+
+        private void GlashServer_AgentConnected(object sender, GlashAgentContext e)
+        {
+            var agentInfo = ConfigDbContext.CacheContext.Find(new Model.AgentInfo(e.Name));
             if (agentInfo == null)
                 return;
             agentInfo.Context = e;
+            onAgentLoginStatusChanged(e.Name, true);
         }
 
-        private static void GlashServer_AgentDisconnected(object sender, GlashAgentContext e)
+        private void GlashServer_AgentDisconnected(object sender, GlashAgentContext e)
         {
-            var agentInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.AgentInfo(e.Name));
+            var agentInfo = ConfigDbContext.CacheContext.Find(new Model.AgentInfo(e.Name));
             if (agentInfo == null)
                 return;
             agentInfo.Context = null;
+            onAgentLoginStatusChanged(e.Name, false);
         }
 
-        private static void GlashServer_ClientConnected(object sender, GlashClientContext e)
+        private void GlashServer_ClientConnected(object sender, GlashClientContext e)
         {
             var clientInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.ClientInfo(e.Name));
             if (clientInfo == null)
@@ -88,7 +113,7 @@ namespace Glash.Blazor.Server
             clientInfo.Context = e;
         }
 
-        private static void GlashServer_ClientDisconnected(object sender, GlashClientContext e)
+        private void GlashServer_ClientDisconnected(object sender, GlashClientContext e)
         {
             var clientInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.ClientInfo(e.Name));
             if (clientInfo == null)
@@ -116,12 +141,23 @@ namespace Glash.Blazor.Server
             return answer == loginInfo.Answer;
         }
 
-        string[] IClientManager.GetClientRelateAgents(string clientName)
+        Client.Protocol.QpModel.AgentInfo[] IClientManager.GetClientRelateAgents(string clientName)
         {
             return ConfigDbContext.CacheContext
                 .Query<Model.ClientAgentRelation>()
                 .Where(t => t.ClientName == clientName)
-                .Select(t => t.AgentName)
+                .Select(t =>
+                {
+                    var agentModel = ConfigDbContext.CacheContext.Find(new Model.AgentInfo(t.AgentName));
+                    if (agentModel == null)
+                        return null;
+                    return new Client.Protocol.QpModel.AgentInfo()
+                    {
+                        AgentName = agentModel.Name,
+                        IsLoggedIn = agentModel.Context != null
+                    };
+                })
+                .Where(t => t != null)
                 .ToArray();
         }
 

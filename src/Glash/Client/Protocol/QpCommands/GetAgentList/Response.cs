@@ -2,6 +2,6 @@
 {
     public class Response
     {
-        public string[] Data { get; set; }
+        public QpModel.AgentInfo[] Data { get; set; }
     }
 }

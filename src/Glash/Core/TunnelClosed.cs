@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Glash.Core
 {
+    [DisplayName("Tunnel closed")]
     public class TunnelClosed
     {
         public int TunnelId { get; set; }

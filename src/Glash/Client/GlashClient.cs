@@ -1,7 +1,8 @@
 ﻿using Quick.Protocol;
 using Quick.Protocol.Utils;
-using System.Collections.Generic;
 using Glash.Core;
+using Glash.Client.Protocol.QpModel;
+using Glash.Client.Protocol.QpNotices;
 
 namespace Glash.Client
 {
@@ -10,6 +11,7 @@ namespace Glash.Client
         private QpClient qpClient;
         private Dictionary<string, ProxyRuleContext> proxyRuleContextDict = new Dictionary<string, ProxyRuleContext>();
 
+        public event EventHandler<AgentLoginStatusChanged> AgentLoginStatusChanged;
         public event EventHandler Disconnected;
         public event EventHandler<string> LogPushed;
 
@@ -22,11 +24,12 @@ namespace Glash.Client
                 qpClientOptions.Password = password;
             qpClientOptions.InstructionSet = new[]
             {
-                Glash.Agent.Protocol.Instruction.Instance
+                Client.Protocol.Instruction.Instance
             };
             var noticeHandlerManager = new NoticeHandlerManager();
             noticeHandlerManager.Register<G.D>(OnTunnelDataAviliable);
             noticeHandlerManager.Register<TunnelClosed>(OnTunnelClosed);
+            noticeHandlerManager.Register<AgentLoginStatusChanged>(OnAgentLoginStatusChanged);
             qpClientOptions.RegisterNoticeHandlerManager(noticeHandlerManager);
             qpClient = qpClientOptions.CreateClient();
             qpClient.Disconnected += QpClient_Disconnected;
@@ -56,7 +59,7 @@ namespace Glash.Client
             await qpClient.ConnectAsync();
             var answer = CryptoUtils.GetAnswer(qpClient.AuthenticateQuestion, password);
             //Register
-            await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.Login.Request()
+            await qpClient.SendCommand(new Protocol.QpCommands.Login.Request()
             {
                 Name = user,
                 Answer = answer
@@ -158,7 +161,7 @@ namespace Glash.Client
             try
             {
                 //Create Tunnel
-                var rep = await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.CreateTunnel.Request()
+                var rep = await qpClient.SendCommand(new Protocol.QpCommands.CreateTunnel.Request()
                 {
                     Data = new TunnelInfo()
                     {
@@ -191,7 +194,7 @@ namespace Glash.Client
                     tunnelContextDict[tunnelId] = tunnelContext;
 
                 //Start Tunnel
-                await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.StartTunnel.Request() { TunnelId = tunnelId });
+                await qpClient.SendCommand(new Protocol.QpCommands.StartTunnel.Request() { TunnelId = tunnelId });
                 tunnelContext.Start();
 
                 LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel[{tunnelId}] to tcp://{config.Agent}/{config.RemoteHost}/{config.RemotePort} success.");
@@ -232,10 +235,25 @@ namespace Glash.Client
             LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
         }
 
-        public async Task<string[]> GetAgentListAsync()
+        private void OnAgentLoginStatusChanged(QpChannel channel, AgentLoginStatusChanged data)
         {
-            var rep = await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.GetAgentList.Request());
+            AgentLoginStatusChanged?.Invoke(this, data);
+        }
+
+        public async Task<AgentInfo[]> GetAgentListAsync()
+        {
+            var rep = await qpClient.SendCommand(new Protocol.QpCommands.GetAgentList.Request());
             return rep.Data;
+        }
+
+        public void DisableAgentProxyRules(string agentName)
+        {
+            foreach (var context in ProxyRuleContexts)
+            {
+                if (context.Config.Agent != agentName)
+                    continue;
+                DisableProxyRule(context);
+            }
         }
     }
 }

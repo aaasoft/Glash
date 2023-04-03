@@ -12,3 +12,4 @@ Remote=远程
 DeleteProxyRuleConfirm=确认要删除代理规则[{0}]?
 DisplayRows=显示行数
 DisconnectedFromServer=与服务器的连接断开
+AgentNotLogin=代理[{0}]当前未登录

@@ -52,7 +52,10 @@ namespace Glash.Blazor.Client
                 var glashClient = new GlashClient(Global.Instance.Profile.ServerUrl);
                 await glashClient.ConnectAsync(Global.Instance.Profile.ClientName, Global.Instance.Profile.ClientPassword);
                 var agentList = await glashClient.GetAgentListAsync();
-                agentList = agentList.OrderBy(t => t).ToArray();
+                agentList = agentList
+                    .OrderBy(t => t.AgentName)
+                    .OrderByDescending(t => t.IsLoggedIn)
+                    .ToArray();
                 Global.Instance.GlashClient = glashClient;
                 INavigator.Navigate<Main>(Main.PrepareParameter(Global.Instance.Profile, glashClient, agentList));
             }

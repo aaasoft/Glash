@@ -4,11 +4,7 @@ using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Admin;
 using Quick.EntityFrameworkCore.Plus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Glash.Blazor.Client
 {
@@ -29,7 +25,8 @@ namespace Glash.Blazor.Client
             Local,
             Remote,
             DisplayRows,
-            DisconnectedFromServer
+            DisconnectedFromServer,
+            AgentNotLogin
         }
 
 
@@ -40,12 +37,13 @@ namespace Glash.Blazor.Client
         [Parameter]
         public GlashClient GlashClient { get; set; }
         [Parameter]
-        public string[] Agents { get; set; }
+        public Glash.Client.Protocol.QpModel.AgentInfo[] Agents { get; set; }
+        private Dictionary<string, Glash.Client.Protocol.QpModel.AgentInfo> agentDict;
+
         private bool isUserLogout = false;
         private ModalAlert modalAlert;
         private ModalWindow modalWindow;
         private ModalPrompt modalPrompt;
-        private ModalLoading modalLoading;
         private LogViewControl logViewControl;
                 
         private Queue<string> logQueue = new Queue<string>();
@@ -53,7 +51,10 @@ namespace Glash.Blazor.Client
         private int LogRows = 25;
         private int MAX_LOG_LINES = 1000;
 
-        public static Dictionary<string, object> PrepareParameter(Model.Profile currentProfile, GlashClient glashClient, string[] agents)
+        public static Dictionary<string, object> PrepareParameter(
+            Model.Profile currentProfile,
+            GlashClient glashClient,
+            Glash.Client.Protocol.QpModel.AgentInfo[] agents)
         {
             return new Dictionary<string, object>()
             {
@@ -65,13 +66,32 @@ namespace Glash.Blazor.Client
 
         protected override void OnParametersSet()
         {
+            agentDict = Agents.ToDictionary(t => t.AgentName, t => t);
+            GlashClient.AgentLoginStatusChanged += GlashClient_AgentLoginStatusChanged;
             GlashClient.LogPushed += GlashClient_LogPushed;
             GlashClient.Disconnected += GlashClient_Disconnected;
-            var agentHashSet = Agents.ToHashSet();
+            var agentHashSet = Agents.Select(t => t.AgentName).ToHashSet();
             var proxyRules = ConfigDbContext.CacheContext.Query<Model.ProxyRule>()
                 .Where(t => t.ProfileId == CurrentProfile.Id && agentHashSet.Contains(t.Agent))
                 .ToArray();
             GlashClient.AddProxyRules(proxyRules);
+        }
+
+        private void GlashClient_AgentLoginStatusChanged(
+            object sender,
+            Glash.Client.Protocol.QpNotices.AgentLoginStatusChanged e)
+        {
+            Task.Run(() =>
+            {
+                var data = e.Data;
+                if (!agentDict.ContainsKey(data.AgentName))
+                    return;
+                var agentInfo = agentDict[data.AgentName];
+                agentInfo.IsLoggedIn = data.IsLoggedIn;
+                if (!data.IsLoggedIn)
+                    GlashClient.DisableAgentProxyRules(agentInfo.AgentName);
+                InvokeAsync(StateHasChanged);
+            });
         }
 
         private void GlashClient_LogPushed(object sender, string e)
@@ -105,6 +125,7 @@ namespace Glash.Blazor.Client
             {
                 foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
                     GlashClient.RemoveProxyRule(proxyRuleContext);
+                GlashClient.AgentLoginStatusChanged -= GlashClient_AgentLoginStatusChanged;
                 GlashClient.LogPushed -= GlashClient_LogPushed;
                 GlashClient.Disconnected -= GlashClient_Disconnected;
                 GlashClient.Dispose();

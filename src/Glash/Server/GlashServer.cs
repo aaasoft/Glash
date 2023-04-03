@@ -92,9 +92,9 @@ namespace Glash.Server
         }
 
         //Login as Agent
-        private Glash.Agent.Protocol.QpCommands.Login.Response ExecuteCommand_Agent_Login(
+        private Agent.Protocol.QpCommands.Login.Response ExecuteCommand_Agent_Login(
             QpChannel channel,
-            Glash.Agent.Protocol.QpCommands.Login.Request request)
+            Agent.Protocol.QpCommands.Login.Request request)
         {
             if (options.AgentManager != null)
             {
@@ -138,7 +138,7 @@ namespace Glash.Server
                 AgentDisconnected?.Invoke(this, context);
             };
             AgentConnected?.Invoke(this, agent);
-            return new Glash.Agent.Protocol.QpCommands.Login.Response();
+            return new Agent.Protocol.QpCommands.Login.Response();
         }
 
         //Login as Client
@@ -198,9 +198,13 @@ namespace Glash.Server
             var client = channel.Tag as GlashClientContext;
             if (client == null)
                 throw new ApplicationException("Client not login.");
-            string[] agents = null;
+            Client.Protocol.QpModel.AgentInfo[] agents = null;
             if (options.ClientManager == null)
-                agents = Agents.Select(t => t.Name).ToArray();
+                agents = Agents.Select(t => new Client.Protocol.QpModel.AgentInfo()
+                {
+                    AgentName = t.Name,
+                    IsLoggedIn = true
+                }).ToArray();
             else
                 agents = options.ClientManager.GetClientRelateAgents(client.Name);
             return new Client.Protocol.QpCommands.GetAgentList.Response()
