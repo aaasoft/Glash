@@ -16,12 +16,12 @@
         @foreach (var t in Tunnels)
         {
             <tr>
-                <th scope="row">@t.TunnelInfo.Id</th>
-                <td>@t.Agent.Name</td>
+                <th scope="row">@t.TunnelInfo?.Id</th>
+                <td>@t.Agent?.Name</td>
                 <td>
-                    <span>@t.Client.Name</span>
+                    <span>@t.Client?.Name</span>
                     <span>&nbsp;/&nbsp;</span>
-                    <span>@($"{t.TunnelInfo.Host}:{t.TunnelInfo.Port}")</span>
+                    <span>@($"{t.TunnelInfo?.Host}:{t.TunnelInfo?.Port}")</span>
                 </td>
                 <td>@t.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
                 <td>
