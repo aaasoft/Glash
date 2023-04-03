@@ -17,7 +17,11 @@ namespace Glash.Server
 
         public void Dispose()
         {
-            Channel.Disconnect();
+            try
+            {
+                Channel.Disconnect();
+            }
+            catch { }
         }
     }
 }

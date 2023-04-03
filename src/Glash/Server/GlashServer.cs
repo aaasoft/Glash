@@ -123,18 +123,21 @@ namespace Glash.Server
                 GlashAgentContext context = null;
                 lock (agentDict)
                 {
-                    if (!agentDict.ContainsKey(key))
+                    if (!agentDict.TryGetValue(key, out context))
                         return;
-                    context = agentDict[key];
                     agentDict.Remove(key);
                     Agents = agentDict.Values.ToArray();
                 }
-                context.Dispose();
-                foreach (var tunnel in Tunnels)
+                try
                 {
-                    if (tunnel.Agent.Name == key)
-                        tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
+                    context.Dispose();
+                    foreach (var tunnel in Tunnels)
+                    {
+                        if (tunnel.Agent.Name == key)
+                            tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
+                    }
                 }
+                catch { }
                 AgentDisconnected?.Invoke(this, context);
             };
             AgentConnected?.Invoke(this, agent);
@@ -142,9 +145,9 @@ namespace Glash.Server
         }
 
         //Login as Client
-        private Glash.Client.Protocol.QpCommands.Login.Response ExecuteCommand_Client_Login(
+        private Client.Protocol.QpCommands.Login.Response ExecuteCommand_Client_Login(
             QpChannel channel,
-            Glash.Client.Protocol.QpCommands.Login.Request request)
+            Client.Protocol.QpCommands.Login.Request request)
         {
             if (options.ClientManager != null)
             {
@@ -173,27 +176,30 @@ namespace Glash.Server
                 GlashClientContext context = null;
                 lock (clientDict)
                 {
-                    if (!clientDict.ContainsKey(key))
+                    if (!clientDict.TryGetValue(key, out context))
                         return;
-                    context = clientDict[key];
                     clientDict.Remove(key);
                     Clients = clientDict.Values.ToArray();
                 }
-                context.Dispose();
-                foreach (var tunnel in Tunnels)
+                try
                 {
-                    if (tunnel.Client.Name == key)
-                        tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
+                    context.Dispose();
+                    foreach (var tunnel in Tunnels)
+                    {
+                        if (tunnel.Client.Name == key)
+                            tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
+                    }
                 }
+                catch { }
                 ClientDisconnected?.Invoke(this, context);
             };
             ClientConnected?.Invoke(this, client);
-            return new Glash.Client.Protocol.QpCommands.Login.Response();
+            return new Client.Protocol.QpCommands.Login.Response();
         }
 
-        private Glash.Client.Protocol.QpCommands.GetAgentList.Response ExecuteCommand_Client_GetAgentList(
+        private Client.Protocol.QpCommands.GetAgentList.Response ExecuteCommand_Client_GetAgentList(
             QpChannel channel,
-            Glash.Client.Protocol.QpCommands.GetAgentList.Request request)
+            Client.Protocol.QpCommands.GetAgentList.Request request)
         {
             var client = channel.Tag as GlashClientContext;
             if (client == null)
@@ -213,9 +219,9 @@ namespace Glash.Server
             };
         }
 
-        private Glash.Client.Protocol.QpCommands.CreateTunnel.Response ExecuteCommand_Client_CreateTunnel(
+        private Client.Protocol.QpCommands.CreateTunnel.Response ExecuteCommand_Client_CreateTunnel(
             QpChannel channel,
-            Glash.Client.Protocol.QpCommands.CreateTunnel.Request request)
+            Client.Protocol.QpCommands.CreateTunnel.Request request)
         {
             var clientContext = channel.Tag as GlashClientContext;
             if (clientContext == null)
@@ -274,12 +280,12 @@ namespace Glash.Server
                 Tunnels = serverTunnelContextDict.Values.ToArray();
             }
             TunnelCreated?.Invoke(this, tunnel);
-            return new Glash.Client.Protocol.QpCommands.CreateTunnel.Response() { Data = tunnelInfo };
+            return new Client.Protocol.QpCommands.CreateTunnel.Response() { Data = tunnelInfo };
         }
 
-        private Glash.Client.Protocol.QpCommands.StartTunnel.Response ExecuteCommand_Client_StartTunnel(
+        private Client.Protocol.QpCommands.StartTunnel.Response ExecuteCommand_Client_StartTunnel(
             QpChannel channel,
-            Glash.Client.Protocol.QpCommands.StartTunnel.Request request)
+            Client.Protocol.QpCommands.StartTunnel.Request request)
         {
             var clientContext = channel.Tag as GlashClientContext;
             if (clientContext == null)
@@ -292,7 +298,7 @@ namespace Glash.Server
             if (serverTunnelContext.Client != clientContext)
                 throw new ArgumentException($"Tunnel[{tunnelId}] client context not match.");
             serverTunnelContext.StartAgentTunnel();
-            return new Glash.Client.Protocol.QpCommands.StartTunnel.Response();
+            return new Client.Protocol.QpCommands.StartTunnel.Response();
         }
 
         private void OnTunnelDataAviliable(QpChannel channel, G.D data)

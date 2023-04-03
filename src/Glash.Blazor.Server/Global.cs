@@ -107,7 +107,7 @@ namespace Glash.Blazor.Server
 
         private void GlashServer_ClientConnected(object sender, GlashClientContext e)
         {
-            var clientInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.ClientInfo(e.Name));
+            var clientInfo = ConfigDbContext.CacheContext.Find(new Model.ClientInfo(e.Name));
             if (clientInfo == null)
                 return;
             clientInfo.Context = e;
@@ -115,7 +115,7 @@ namespace Glash.Blazor.Server
 
         private void GlashServer_ClientDisconnected(object sender, GlashClientContext e)
         {
-            var clientInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.ClientInfo(e.Name));
+            var clientInfo = ConfigDbContext.CacheContext.Find(new Model.ClientInfo(e.Name));
             if (clientInfo == null)
                 return;
             clientInfo.Context = null;

@@ -22,7 +22,11 @@ namespace Glash.Server
 
         public void Dispose()
         {
-            Channel.Disconnect();
+            try
+            {
+                Channel.Disconnect();
+            }
+            catch { }
         }
 
         public async Task CreateTunnelAsync(TunnelInfo tunnelInfo)
