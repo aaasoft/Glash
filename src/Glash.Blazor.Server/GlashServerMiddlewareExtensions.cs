@@ -9,7 +9,11 @@ namespace Microsoft.AspNetCore.Builder
     {
         private static QpWebSocketServer qpServer;
 
-        public static IApplicationBuilder UseGlashServer(this IApplicationBuilder app, string path, string password, int maxTunnelCount = 100)
+        public static IApplicationBuilder UseGlashServer(
+            this IApplicationBuilder app,
+            string path,
+            string password,
+            int maxTunnelCount = 100)
         {
             var serverOptions = new QpWebSocketServerOptions()
             {
@@ -18,7 +22,6 @@ namespace Microsoft.AspNetCore.Builder
                 ServerProgram = "Glash.Server"
             };
             Global.Instance.Init(serverOptions, maxTunnelCount);
-            
             app.UseQuickProtocol(serverOptions, out qpServer);
             qpServer.Start();
             return app;

@@ -29,8 +29,8 @@ namespace Glash.Blazor.Client
         public event EventHandler LanguageChanged;
         public event EventHandler ProfileChanged;
         public TextManager TextManager { get; private set; }
-        private Blazor.Client.Model.Profile _Profile;
-        public Blazor.Client.Model.Profile Profile
+        private Model.Profile _Profile;
+        public Model.Profile Profile
         {
             get
             {
@@ -66,15 +66,15 @@ namespace Glash.Blazor.Client
 
         public void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Blazor.Client.Model.Config>();
-            modelBuilder.Entity<Blazor.Client.Model.Profile>();
-            modelBuilder.Entity<Blazor.Client.Model.ProxyRule>();
+            modelBuilder.Entity<Model.Config>();
+            modelBuilder.Entity<Model.Profile>();
+            modelBuilder.Entity<Model.ProxyRule>();
         }
 
         public void Init(string version)
         {
             Version = version;
-            _Language = Blazor.Client.Model.Config.GetConfig(nameof(Language));
+            _Language = Model.Config.GetConfig(nameof(Language));
             if (_Language == null)
                 _Language = Thread.CurrentThread.CurrentCulture.IetfLanguageTag;
             afterLanuageChanged();
