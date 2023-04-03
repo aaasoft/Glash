@@ -1,5 +1,4 @@
 ﻿using Glash.Server;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
@@ -133,8 +132,8 @@ namespace Glash.Blazor.Server.Pages
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            GlashServerMiddlewareExtensions.GlashServer.ClientConnected += GlashServer_ClientConnectedOrDisconnected;
-            GlashServerMiddlewareExtensions.GlashServer.ClientDisconnected += GlashServer_ClientConnectedOrDisconnected;
+            Global.Instance.GlashServer.ClientConnected += GlashServer_ClientConnectedOrDisconnected;
+            Global.Instance.GlashServer.ClientDisconnected += GlashServer_ClientConnectedOrDisconnected;
         }
 
         private void GlashServer_ClientConnectedOrDisconnected(object sender, GlashClientContext e)
@@ -144,8 +143,8 @@ namespace Glash.Blazor.Server.Pages
 
         public void Dispose()
         {
-            GlashServerMiddlewareExtensions.GlashServer.ClientConnected -= GlashServer_ClientConnectedOrDisconnected;
-            GlashServerMiddlewareExtensions.GlashServer.ClientDisconnected -= GlashServer_ClientConnectedOrDisconnected;
+            Global.Instance.GlashServer.ClientConnected -= GlashServer_ClientConnectedOrDisconnected;
+            Global.Instance.GlashServer.ClientDisconnected -= GlashServer_ClientConnectedOrDisconnected;
         }
     }
 }

@@ -1,13 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Glash.Core;
+using Glash.Server;
 using Microsoft.EntityFrameworkCore;
+using Quick.EntityFrameworkCore.Plus;
 using Quick.Localize;
+using Quick.Protocol;
 
 namespace Glash.Blazor.Server
 {
-    public class Global
+    public class Global : IAgentManager, IClientManager
     {
         public static Global Instance { get; } = new Global();
         public TextManager TextManager { get; private set; }
+        public GlashServer GlashServer { get; private set; }
+        public QpServerOptions ServerOptions { get; private set; }
+
         public string ConnectionPassword
         {
             get
@@ -23,7 +29,7 @@ namespace Glash.Blazor.Server
             set
             {
                 Model.Config.SetConfig(nameof(ConnectionPassword), value);
-                GlashServerMiddlewareExtensions.ServerOptions.Password = value;
+                ServerOptions.Password = value;
             }
         }
 
@@ -36,14 +42,98 @@ namespace Glash.Blazor.Server
                 .HasKey(t => new { t.ClientName, t.AgentName });
         }
 
-        public void Init()
-        {
-            Init(Thread.CurrentThread.CurrentCulture.IetfLanguageTag);
-        }
-
-        public void Init(string language)
+        public void ChangeLanguage(string language)
         {
             TextManager = TextManager.GetInstance(language);
+        }
+
+        public void Init(Quick.Protocol.WebSocket.Server.AspNetCore.QpWebSocketServerOptions serverOptions, int maxTunnelCount)
+        {
+            TextManager = TextManager.DefaultInstance;
+            GlashServer = new GlashServer(new GlashServerOptions()
+            {
+                MaxTunnelCount = maxTunnelCount,
+                AgentManager = this,
+                ClientManager = this
+            });
+            GlashServer.AgentConnected += GlashServer_AgentConnected;
+            GlashServer.AgentDisconnected += GlashServer_AgentDisconnected;
+            GlashServer.ClientConnected += GlashServer_ClientConnected;
+            GlashServer.ClientDisconnected += GlashServer_ClientDisconnected;
+
+            GlashServer.HandleServerOptions(serverOptions);
+        }
+
+        private static void GlashServer_AgentConnected(object sender, GlashAgentContext e)
+        {
+            var agentInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.AgentInfo(e.Name));
+            if (agentInfo == null)
+                return;
+            agentInfo.Context = e;
+        }
+
+        private static void GlashServer_AgentDisconnected(object sender, GlashAgentContext e)
+        {
+            var agentInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.AgentInfo(e.Name));
+            if (agentInfo == null)
+                return;
+            agentInfo.Context = null;
+        }
+
+        private static void GlashServer_ClientConnected(object sender, GlashClientContext e)
+        {
+            var clientInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.ClientInfo(e.Name));
+            if (clientInfo == null)
+                return;
+            clientInfo.Context = e;
+        }
+
+        private static void GlashServer_ClientDisconnected(object sender, GlashClientContext e)
+        {
+            var clientInfo = ConfigDbContext.CacheContext.Find(new Glash.Blazor.Server.Model.ClientInfo(e.Name));
+            if (clientInfo == null)
+                return;
+            clientInfo.Context = null;
+        }
+
+        bool IAgentManager.Login(LoginInfo loginInfo)
+        {
+            var model = ConfigDbContext.CacheContext
+                        .Find(new Model.AgentInfo(loginInfo.Name));
+            if (model == null)
+                return false;
+            var answer = CryptoUtils.GetAnswer(loginInfo.Question, model.Password);
+            return answer == loginInfo.Answer;
+        }
+
+        bool IClientManager.Login(LoginInfo loginInfo)
+        {
+            var model = ConfigDbContext.CacheContext
+                .Find(new Model.ClientInfo(loginInfo.Name));
+            if (model == null)
+                return false;
+            var answer = CryptoUtils.GetAnswer(loginInfo.Question, model.Password);
+            return answer == loginInfo.Answer;
+        }
+
+        string[] IClientManager.GetClientRelateAgents(string clientName)
+        {
+            return ConfigDbContext.CacheContext
+                .Query<Model.ClientAgentRelation>()
+                .Where(t => t.ClientName == clientName)
+                .Select(t => t.AgentName)
+                .ToArray();
+        }
+
+        bool IClientManager.IsClientRelateAgent(string clientName, string agnetName)
+        {
+            var model = ConfigDbContext.CacheContext
+                .Find(new Model.ClientAgentRelation()
+                {
+                    ClientName = clientName,
+                    AgentName = agnetName
+                });
+            return model != null;
         }
     }
 }
