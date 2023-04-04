@@ -137,7 +137,10 @@ namespace Glash.Server
                             tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
                     }
                 }
-                catch { }
+                catch 
+                {
+                    Console.WriteLine("ExecuteCommand_Agent_Login->channel.Disconnected->context.Dispose or tunnel.OnError:" + ex.ToString());
+                }
                 AgentDisconnected?.Invoke(this, context);
             };
             AgentConnected?.Invoke(this, agent);
@@ -190,7 +193,10 @@ namespace Glash.Server
                             tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("ExecuteCommand_Client_Login->channel.Disconnected->context.Dispose or tunnel.OnError:" + ex.ToString());
+                }
                 ClientDisconnected?.Invoke(this, context);
             };
             ClientConnected?.Invoke(this, client);
