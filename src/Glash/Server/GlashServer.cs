@@ -137,7 +137,7 @@ namespace Glash.Server
                             tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
                     }
                 }
-                catch 
+                catch (Exception ex)
                 {
                     Console.WriteLine("ExecuteCommand_Agent_Login->channel.Disconnected->context.Dispose or tunnel.OnError:" + ex.ToString());
                 }
