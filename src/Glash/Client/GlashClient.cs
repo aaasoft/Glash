@@ -252,6 +252,8 @@ namespace Glash.Client
             {
                 if (context.Config.Agent != agentName)
                     continue;
+                if (!context.Config.Enable)
+                    continue;
                 DisableProxyRule(context);
             }
         }
