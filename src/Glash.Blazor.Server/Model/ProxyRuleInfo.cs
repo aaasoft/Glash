@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Glash.Blazor.Server.Model
 {
     [Table($"{nameof(Glash)}_{nameof(Server)}_{nameof(ProxyRuleInfo)}")]
-    public class ProxyRuleInfo : Client.Protocol.QpModel.ProxyRuleInfo
+    public class ProxyRuleInfo : Client.Protocol.QpModel.ProxyRuleInfo, IHasDependcyRelation
     {
         public ProxyRuleInfo() { }
         public ProxyRuleInfo(string id)
