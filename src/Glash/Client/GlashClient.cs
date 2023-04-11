@@ -123,7 +123,7 @@ namespace Glash.Client
             DisableProxyRule(context);
         }
 
-        public void LoadProxyRule(IProxyRule config)
+        public void LoadProxyRule(ProxyRuleInfo config)
         {
             var context = new ProxyRuleContext(this, config);
             proxyRuleContextDict[config.Id] = context;
@@ -135,7 +135,7 @@ namespace Glash.Client
                 catch { }
         }
 
-        public void LoadProxyRules(IProxyRule[] items)
+        public void LoadProxyRules(ProxyRuleInfo[] items)
         {
             foreach (var item in items)
                 LoadProxyRule(item);
@@ -157,7 +157,7 @@ namespace Glash.Client
 
         private Dictionary<int, GlashTunnelContext> tunnelContextDict = new Dictionary<int, GlashTunnelContext>();
 
-        internal async Task CreateAndStartTunnelAsync(IProxyRule config, string connectionName, Stream stream)
+        internal async Task CreateAndStartTunnelAsync(ProxyRuleInfo config, string connectionName, Stream stream)
         {
             try
             {

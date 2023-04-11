@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Admin;
-using Quick.EntityFrameworkCore.Plus;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Glash.Blazor.Client
 {
@@ -47,6 +45,7 @@ namespace Glash.Blazor.Client
         private bool isUserLogout = false;
         private ModalAlert modalAlert;
         private ModalWindow modalWindow;
+        private ModalLoading modalLoading;
         private ModalPrompt modalPrompt;
         private LogViewControl logViewControl;
                 
@@ -162,6 +161,7 @@ namespace Glash.Blazor.Client
                 },
                 async model =>
                 {
+                    modalLoading.Show(Global.Instance.TextManager.GetText(Texts.AddProxyRule), null, true);
                     try
                     {
                         model = await GlashClient.SaveProxyRule(model);
@@ -173,6 +173,7 @@ namespace Glash.Blazor.Client
                     {
                         modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                     }
+                    modalLoading.Close();
                 }
             ));
         }
@@ -190,6 +191,7 @@ namespace Glash.Blazor.Client
                     RemoteHost = model.RemoteHost,
                     RemotePort = model.RemotePort
                 };
+                modalLoading.Show(Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule), null, true);
                 try
                 {
                     newModel = await GlashClient.SaveProxyRule(newModel);
@@ -201,6 +203,7 @@ namespace Glash.Blazor.Client
                 {
                     modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                 }
+                modalLoading.Close();
             });
         }
 
@@ -210,6 +213,7 @@ namespace Glash.Blazor.Client
                 JsonConvert.DeserializeObject<ProxyRuleInfo>(JsonConvert.SerializeObject(model)),
                 async editModel =>
                 {
+                    modalLoading.Show(Global.Instance.TextManager.GetText(Texts.EditProxyRule), null, true);
                     try
                     {
                         model.Name = editModel.Name;
@@ -227,6 +231,7 @@ namespace Glash.Blazor.Client
                     {
                         modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                     }
+                    modalLoading.Close();
                 }
             ));
         }
@@ -238,6 +243,7 @@ namespace Glash.Blazor.Client
                 Global.Instance.TextManager.GetText(Texts.DeleteProxyRuleConfirm, model.Name),
                 async () =>
                 {
+                    modalLoading.Show(Global.Instance.TextManager.GetText(Texts.DeleteProxyRule), null, true);
                     try
                     {
                         GlashClient.UnloadProxyRule(model.Id);
@@ -251,6 +257,7 @@ namespace Glash.Blazor.Client
                             modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                         });
                     }
+                    modalLoading.Close();
                 });
         }
 

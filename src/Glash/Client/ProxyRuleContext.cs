@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Glash.Client.Protocol.QpModel;
+using System.Net;
 using System.Net.Sockets;
 
 namespace Glash.Client
@@ -8,10 +9,10 @@ namespace Glash.Client
         private GlashClient glashClient;
         private TcpListener tcpListener;
         private CancellationTokenSource cts;
-        public IProxyRule Config { get; private set; }
+        public ProxyRuleInfo Config { get; private set; }
         public int LocalPort { get; private set; }
 
-        public ProxyRuleContext(GlashClient glashClient, IProxyRule config)
+        public ProxyRuleContext(GlashClient glashClient, ProxyRuleInfo config)
         {
             this.glashClient = glashClient;
             Config = config;

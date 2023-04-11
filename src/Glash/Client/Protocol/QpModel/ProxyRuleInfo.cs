@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Glash.Client.Protocol.QpModel
 {
-    public class ProxyRuleInfo : IProxyRule
+    public class ProxyRuleInfo
     {
         public enum Texts
         {
