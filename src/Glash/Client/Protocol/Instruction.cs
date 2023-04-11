@@ -19,6 +19,9 @@ namespace Glash.Client.Protocol
             {
                 QpCommandInfo.Create(new QpCommands.Login.Request()),
                 QpCommandInfo.Create(new QpCommands.GetAgentList.Request()),
+                QpCommandInfo.Create(new QpCommands.GetProxyRuleList.Request()),
+                QpCommandInfo.Create(new QpCommands.SaveProxyRule.Request()),
+                QpCommandInfo.Create(new QpCommands.DeleteProxyRule.Request()),
                 QpCommandInfo.Create(new QpCommands.CreateTunnel.Request()),
                 QpCommandInfo.Create(new QpCommands.StartTunnel.Request())
             }

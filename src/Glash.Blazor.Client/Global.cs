@@ -68,7 +68,6 @@ namespace Glash.Blazor.Client
         {
             modelBuilder.Entity<Model.Config>();
             modelBuilder.Entity<Model.Profile>();
-            modelBuilder.Entity<Model.ProxyRule>();
         }
 
         public void Init(string version)

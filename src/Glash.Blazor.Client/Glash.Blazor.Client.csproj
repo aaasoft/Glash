@@ -38,13 +38,11 @@
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Login+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Main+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Model\Profile+Texts.lang" />
-		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Model\ProxyRule+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ProfileManage+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ClientTexts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ClientTexts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Main+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Model\Profile+Texts.lang" />
-		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Model\ProxyRule+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ProfileManage+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Login+Texts.lang" />
 	</ItemGroup>

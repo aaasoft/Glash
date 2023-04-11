@@ -1,4 +1,5 @@
-﻿using Glash.Core;
+﻿using Glash.Client.Protocol.QpModel;
+using Glash.Core;
 using Glash.Server;
 using Microsoft.EntityFrameworkCore;
 using Quick.EntityFrameworkCore.Plus;
@@ -40,6 +41,7 @@ namespace Glash.Blazor.Server
             modelBuilder.Entity<Model.ClientInfo>();
             modelBuilder.Entity<Model.ClientAgentRelation>()
                 .HasKey(t => new { t.ClientName, t.AgentName });
+            modelBuilder.Entity<Model.ProxyRuleInfo>();
         }
 
         public void ChangeLanguage(string language)
@@ -60,7 +62,6 @@ namespace Glash.Blazor.Server
             GlashServer.AgentDisconnected += GlashServer_AgentDisconnected;
             GlashServer.ClientConnected += GlashServer_ClientConnected;
             GlashServer.ClientDisconnected += GlashServer_ClientDisconnected;
-
             GlashServer.HandleServerOptions(serverOptions);
         }
 
@@ -78,7 +79,7 @@ namespace Glash.Blazor.Server
                     continue;
                 qpChannel.SendNoticePackage(new Client.Protocol.QpNotices.AgentLoginStatusChanged()
                 {
-                    Data = new Client.Protocol.QpModel.AgentInfo()
+                    Data = new AgentInfo()
                     {
                         AgentName = agentName,
                         IsLoggedIn = isLoggedIn
@@ -141,7 +142,7 @@ namespace Glash.Blazor.Server
             return answer == loginInfo.Answer;
         }
 
-        Client.Protocol.QpModel.AgentInfo[] IClientManager.GetClientRelateAgents(string clientName)
+        AgentInfo[] IClientManager.GetClientRelateAgents(string clientName)
         {
             return ConfigDbContext.CacheContext
                 .Query<Model.ClientAgentRelation>()
@@ -151,7 +152,7 @@ namespace Glash.Blazor.Server
                     var agentModel = ConfigDbContext.CacheContext.Find(new Model.AgentInfo(t.AgentName));
                     if (agentModel == null)
                         return null;
-                    return new Client.Protocol.QpModel.AgentInfo()
+                    return new AgentInfo()
                     {
                         AgentName = agentModel.Name,
                         IsLoggedIn = agentModel.Context != null
@@ -170,6 +171,59 @@ namespace Glash.Blazor.Server
                     AgentName = agnetName
                 });
             return model != null;
+        }
+
+        public ProxyRuleInfo[] GetProxyRuleList(string clientName, string agentName)
+        {
+            return ConfigDbContext.CacheContext
+                .Query<Model.ProxyRuleInfo>(t =>
+                    t.ClientName == clientName
+                    && (agentName == null || t.Agent == agentName));
+        }
+
+        public ProxyRuleInfo SaveProxyRule(string clientName, ProxyRuleInfo proxyRule)
+        {
+            IClientManager manager = this;
+            if (!manager.IsClientRelateAgent(clientName, proxyRule.Agent))
+                throw new ApplicationException($"Client[{clientName}] not relate to Agent[{proxyRule.Agent}].");
+
+            var model = new Model.ProxyRuleInfo()
+            {
+                Id = proxyRule.Id,
+                Agent = proxyRule.Agent,
+                ClientName = clientName,
+                Enable = proxyRule.Enable,
+                LocalIPAddress = proxyRule.LocalIPAddress,
+                LocalPort = proxyRule.LocalPort,
+                Name = proxyRule.Name,
+                RemoteHost = proxyRule.RemoteHost,
+                RemotePort = proxyRule.RemotePort
+            };
+
+            //Add
+            if (string.IsNullOrEmpty(model.Id))
+            {
+                model.Id = Guid.NewGuid().ToString("N");
+                ConfigDbContext.CacheContext.Add(model);
+            }
+            //Update
+            else
+            {
+                ConfigDbContext.CacheContext.Update(model);
+            }
+            return model;
+        }
+
+        public void DeleteProxyRule(string clientName, string proxyRuleId)
+        {
+            var model = ConfigDbContext.CacheContext.Find(new Model.ProxyRuleInfo(proxyRuleId));
+            if (model == null)
+                throw new ApplicationException($"Can't found ProxyRule with Id[{proxyRuleId}].");
+
+            if (model.ClientName != model.ClientName)
+                throw new ApplicationException($"ProxyRule[{proxyRuleId}] not belong to Client[{clientName}].");
+
+            ConfigDbContext.CacheContext.Remove(model);
         }
     }
 }

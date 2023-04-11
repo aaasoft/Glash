@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -49,6 +50,15 @@ namespace Glash.Server
             commandExecuterManager.Register(
                 new Glash.Client.Protocol.QpCommands.GetAgentList.Request(),
                 ExecuteCommand_Client_GetAgentList);
+            commandExecuterManager.Register(
+                new Glash.Client.Protocol.QpCommands.GetProxyRuleList.Request(),
+                ExecuteCommand_Client_GetProxyRuleList);
+            commandExecuterManager.Register(
+                new Glash.Client.Protocol.QpCommands.SaveProxyRule.Request(),
+                ExecuteCommand_Client_SaveProxyRule);
+            commandExecuterManager.Register(
+                new Glash.Client.Protocol.QpCommands.DeleteProxyRule.Request(),
+                ExecuteCommand_Client_DeleteProxyRule);
             commandExecuterManager.Register(
                 new Glash.Client.Protocol.QpCommands.CreateTunnel.Request(),
                 ExecuteCommand_Client_CreateTunnel);
@@ -223,6 +233,45 @@ namespace Glash.Server
             {
                 Data = agents
             };
+        }
+
+        private Glash.Client.Protocol.QpCommands.GetProxyRuleList.Response ExecuteCommand_Client_GetProxyRuleList(
+            QpChannel channel,
+            Glash.Client.Protocol.QpCommands.GetProxyRuleList.Request request)
+        {
+            var client = channel.Tag as GlashClientContext;
+            if (client == null)
+                throw new ApplicationException("Client not login.");
+
+            return new Client.Protocol.QpCommands.GetProxyRuleList.Response()
+            {
+                Data = options.ClientManager.GetProxyRuleList(client.Name, request.Agent)
+            };
+        }
+
+        private Glash.Client.Protocol.QpCommands.SaveProxyRule.Response ExecuteCommand_Client_SaveProxyRule(
+            QpChannel channel,
+            Glash.Client.Protocol.QpCommands.SaveProxyRule.Request request)
+        {
+            var client = channel.Tag as GlashClientContext;
+            if (client == null)
+                throw new ApplicationException("Client not login.");
+
+            return new Client.Protocol.QpCommands.SaveProxyRule.Response()
+            {
+                Data = options.ClientManager.SaveProxyRule(client.Name, request.Data)
+            };
+        }
+
+        private Glash.Client.Protocol.QpCommands.DeleteProxyRule.Response ExecuteCommand_Client_DeleteProxyRule(
+            QpChannel channel,
+            Glash.Client.Protocol.QpCommands.DeleteProxyRule.Request request)
+        {
+            var client = channel.Tag as GlashClientContext;
+            if (client == null)
+                throw new ApplicationException("Client not login.");
+            options.ClientManager.DeleteProxyRule(client.Name, request.ProxyRuleId);
+            return new Client.Protocol.QpCommands.DeleteProxyRule.Response();
         }
 
         private Client.Protocol.QpCommands.CreateTunnel.Response ExecuteCommand_Client_CreateTunnel(

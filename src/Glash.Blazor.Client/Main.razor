@@ -92,17 +92,17 @@
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-secondary"
                                                     title="@Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule)"
-                                            @onclick=@(e=>DuplicateProxyRule((Model.ProxyRule)proxyRuleContext.Config))>
+                                            @onclick=@(e=>DuplicateProxyRule((Glash.Client.Protocol.QpModel.ProxyRuleInfo)proxyRuleContext.Config))>
                                                 <i class="fa fa-copy" aria-hidden="true"></i>
                                             </button>
                                             <button type="button" class="btn btn-sm btn-secondary"
                                                     title="@Global.Instance.TextManager.GetText(Texts.EditProxyRule)"
-                                            @onclick=@(e=>EditProxyRule((Model.ProxyRule)proxyRuleContext.Config))>
+                                            @onclick=@(e=>EditProxyRule((Glash.Client.Protocol.QpModel.ProxyRuleInfo)proxyRuleContext.Config))>
                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                             </button>
                                             <button type="button" class="btn btn-sm btn-secondary"
                                                     title="@Global.Instance.TextManager.GetText(Texts.DeleteProxyRule)"
-                                            @onclick=@(e=>DeleteProxyRule((Model.ProxyRule)proxyRuleContext.Config))>
+                                            @onclick=@(e=>DeleteProxyRule((Glash.Client.Protocol.QpModel.ProxyRuleInfo)proxyRuleContext.Config))>
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </div>

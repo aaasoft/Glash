@@ -1,4 +1,5 @@
 ﻿using Glash.Client;
+using Glash.Client.Protocol.QpModel;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
@@ -37,8 +38,11 @@ namespace Glash.Blazor.Client
         [Parameter]
         public GlashClient GlashClient { get; set; }
         [Parameter]
-        public Glash.Client.Protocol.QpModel.AgentInfo[] Agents { get; set; }
-        private Dictionary<string, Glash.Client.Protocol.QpModel.AgentInfo> agentDict;
+        public AgentInfo[] Agents { get; set; }
+        [Parameter]
+        public ProxyRuleInfo[] ProxyRules { get; set; }
+
+        private Dictionary<string, AgentInfo> agentDict;
 
         private bool isUserLogout = false;
         private ModalAlert modalAlert;
@@ -54,13 +58,15 @@ namespace Glash.Blazor.Client
         public static Dictionary<string, object> PrepareParameter(
             Model.Profile currentProfile,
             GlashClient glashClient,
-            Glash.Client.Protocol.QpModel.AgentInfo[] agents)
+            AgentInfo[] agents,
+            ProxyRuleInfo[] proxyRules)
         {
             return new Dictionary<string, object>()
             {
                 [nameof(CurrentProfile)] = currentProfile,
                 [nameof(GlashClient)] = glashClient,
-                [nameof(Agents)] = agents
+                [nameof(Agents)] = agents,
+                [nameof(ProxyRules)] = proxyRules
             };
         }
 
@@ -71,10 +77,7 @@ namespace Glash.Blazor.Client
             GlashClient.LogPushed += GlashClient_LogPushed;
             GlashClient.Disconnected += GlashClient_Disconnected;
             var agentHashSet = Agents.Select(t => t.AgentName).ToHashSet();
-            var proxyRules = ConfigDbContext.CacheContext.Query<Model.ProxyRule>()
-                .Where(t => t.ProfileId == CurrentProfile.Id && agentHashSet.Contains(t.Agent))
-                .ToArray();
-            GlashClient.AddProxyRules(proxyRules);
+            GlashClient.LoadProxyRules(ProxyRules);
         }
 
         private void GlashClient_AgentLoginStatusChanged(
@@ -124,7 +127,7 @@ namespace Glash.Blazor.Client
             if (GlashClient != null)
             {
                 foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
-                    GlashClient.RemoveProxyRule(proxyRuleContext);
+                    GlashClient.UnloadProxyRule(proxyRuleContext);
                 GlashClient.AgentLoginStatusChanged -= GlashClient_AgentLoginStatusChanged;
                 GlashClient.LogPushed -= GlashClient_LogPushed;
                 GlashClient.Disconnected -= GlashClient_Disconnected;
@@ -150,22 +153,20 @@ namespace Glash.Blazor.Client
         private void AddProxyRule(string agent)
         {
             modalWindow.Show<Controls.EditProxyRule>(Global.Instance.TextManager.GetText(Texts.AddProxyRule), Controls.EditProxyRule.PrepareParameter(
-                new Model.ProxyRule()
+                new ProxyRuleInfo()
                 {
-                    Id = Guid.NewGuid().ToString("N"),
-                    ProfileId = CurrentProfile.Id,
                     LocalIPAddress = "127.0.0.1",
                     LocalPort = 80,
                     RemotePort = 80,
                     Agent = agent
                 },
-                model =>
+                async model =>
                 {
                     try
                     {
-                        ConfigDbContext.CacheContext.Add(model);
-                        GlashClient.AddProxyRule(model);
-                        InvokeAsync(StateHasChanged);
+                        model = await GlashClient.SaveProxyRule(model);
+                        GlashClient.LoadProxyRule(model);
+                        _ = InvokeAsync(StateHasChanged);
                         modalWindow.Close();
                     }
                     catch (Exception ex)
@@ -176,16 +177,14 @@ namespace Glash.Blazor.Client
             ));
         }
 
-        private void DuplicateProxyRule(Model.ProxyRule model)
+        private void DuplicateProxyRule(ProxyRuleInfo model)
         {
-            modalPrompt.Show(@Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule), model.Name, newName =>
+            modalPrompt.Show(@Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule), model.Name, async newName =>
             {
-                var newModel = new Model.ProxyRule()
+                var newModel = new ProxyRuleInfo()
                 {
-                    Id = Guid.NewGuid().ToString("N"),
                     Name = newName,
                     Agent = model.Agent,
-                    ProfileId = model.ProfileId,
                     LocalIPAddress = model.LocalIPAddress,
                     LocalPort = model.LocalPort,
                     RemoteHost = model.RemoteHost,
@@ -193,9 +192,9 @@ namespace Glash.Blazor.Client
                 };
                 try
                 {
-                    ConfigDbContext.CacheContext.Add(newModel);
-                    GlashClient.AddProxyRule(newModel);
-                    InvokeAsync(StateHasChanged);
+                    newModel = await GlashClient.SaveProxyRule(newModel);
+                    GlashClient.LoadProxyRule(newModel);
+                    _ = InvokeAsync(StateHasChanged);
                     modalWindow.Close();
                 }
                 catch (Exception ex)
@@ -205,11 +204,11 @@ namespace Glash.Blazor.Client
             });
         }
 
-        private void EditProxyRule(Model.ProxyRule model)
+        private void EditProxyRule(ProxyRuleInfo model)
         {
             modalWindow.Show<Controls.EditProxyRule>(Global.Instance.TextManager.GetText(Texts.EditProxyRule), Controls.EditProxyRule.PrepareParameter(
-                JsonConvert.DeserializeObject<Model.ProxyRule>(JsonConvert.SerializeObject(model)),
-                editModel =>
+                JsonConvert.DeserializeObject<ProxyRuleInfo>(JsonConvert.SerializeObject(model)),
+                async editModel =>
                 {
                     try
                     {
@@ -218,10 +217,10 @@ namespace Glash.Blazor.Client
                         model.LocalPort = editModel.LocalPort;
                         model.RemoteHost = editModel.RemoteHost;
                         model.RemotePort = editModel.RemotePort;
-                        GlashClient.RemoveProxyRule(model.Id);
-                        ConfigDbContext.CacheContext.Update(model);
-                        GlashClient.AddProxyRule(model);
-                        InvokeAsync(StateHasChanged);
+                        GlashClient.UnloadProxyRule(model.Id);
+                        model = await GlashClient.SaveProxyRule(model);
+                        GlashClient.LoadProxyRule(model);
+                        _ = InvokeAsync(StateHasChanged);
                         modalWindow.Close();
                     }
                     catch (Exception ex)
@@ -232,22 +231,22 @@ namespace Glash.Blazor.Client
             ));
         }
 
-        private void DeleteProxyRule(Model.ProxyRule model)
+        private void DeleteProxyRule(ProxyRuleInfo model)
         {
             modalAlert.Show(
                 Global.Instance.TextManager.GetText(Texts.DeleteProxyRule),
                 Global.Instance.TextManager.GetText(Texts.DeleteProxyRuleConfirm, model.Name),
-                () =>
+                async () =>
                 {
                     try
                     {
-                        GlashClient.RemoveProxyRule(model.Id);
-                        ConfigDbContext.CacheContext.Remove(model);
-                        InvokeAsync(StateHasChanged);
+                        GlashClient.UnloadProxyRule(model.Id);
+                        await GlashClient.DeleteProxyRule(model.Id);
+                        _ = InvokeAsync(StateHasChanged);
                     }
                     catch (Exception ex)
                     {
-                        Task.Delay(100).ContinueWith(t =>
+                        _ = Task.Delay(100).ContinueWith(t =>
                         {
                             modalAlert.Show(Global.Instance.TextManager.GetText(ClientTexts.Error), ex.Message);
                         });

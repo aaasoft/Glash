@@ -56,8 +56,12 @@ namespace Glash.Blazor.Client
                     .OrderBy(t => t.AgentName)
                     .OrderByDescending(t => t.IsLoggedIn)
                     .ToArray();
+                var proxyRuleList = await glashClient.GetProxyRuleListAsync();
+                proxyRuleList = proxyRuleList
+                    .OrderBy(t => t.Name)
+                    .ToArray();
                 Global.Instance.GlashClient = glashClient;
-                INavigator.Navigate<Main>(Main.PrepareParameter(Global.Instance.Profile, glashClient, agentList));
+                INavigator.Navigate<Main>(Main.PrepareParameter(Global.Instance.Profile, glashClient, agentList, proxyRuleList));
             }
             catch (Exception ex)
             {

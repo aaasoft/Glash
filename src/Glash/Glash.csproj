@@ -13,6 +13,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Language\en-US\Glash.Client.Protocol.QpModel\ProxyRuleInfo+Texts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Client.Protocol.QpModel\ProxyRuleInfo+Texts.lang" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Language\en-US\Glash.Client.Protocol.QpModel\ProxyRuleInfo+Texts.lang" />
+	  <EmbeddedResource Include="Language\zh-CN\Glash.Client.Protocol.QpModel\ProxyRuleInfo+Texts.lang" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="..\..\logo.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>

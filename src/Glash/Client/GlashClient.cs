@@ -3,6 +3,7 @@ using Quick.Protocol.Utils;
 using Glash.Core;
 using Glash.Client.Protocol.QpModel;
 using Glash.Client.Protocol.QpNotices;
+using System.Reflection;
 
 namespace Glash.Client
 {
@@ -14,7 +15,7 @@ namespace Glash.Client
         public event EventHandler<AgentLoginStatusChanged> AgentLoginStatusChanged;
         public event EventHandler Disconnected;
         public event EventHandler<string> LogPushed;
-
+        
         public ProxyRuleContext[] ProxyRuleContexts => proxyRuleContextDict.Values.ToArray();
 
         public GlashClient(string url, string password = null)
@@ -122,7 +123,7 @@ namespace Glash.Client
             DisableProxyRule(context);
         }
 
-        public void AddProxyRule(IProxyRule config)
+        public void LoadProxyRule(IProxyRule config)
         {
             var context = new ProxyRuleContext(this, config);
             proxyRuleContextDict[config.Id] = context;
@@ -134,24 +135,24 @@ namespace Glash.Client
                 catch { }
         }
 
-        public void AddProxyRules(IProxyRule[] items)
+        public void LoadProxyRules(IProxyRule[] items)
         {
             foreach (var item in items)
-                AddProxyRule(item);
+                LoadProxyRule(item);
         }
 
-        public void RemoveProxyRule(ProxyRuleContext proxyRuleContext)
+        public void UnloadProxyRule(ProxyRuleContext proxyRuleContext)
         {
             if (proxyRuleContextDict.ContainsKey(proxyRuleContext.Config.Id))
                 proxyRuleContextDict.Remove(proxyRuleContext.Config.Id);
             DisableProxyRule(proxyRuleContext);
         }
 
-        public void RemoveProxyRule(string proxyRuleId)
+        public void UnloadProxyRule(string proxyRuleId)
         {
             if (!proxyRuleContextDict.ContainsKey(proxyRuleId))
                 return;
-            RemoveProxyRule(proxyRuleContextDict[proxyRuleId]);
+            UnloadProxyRule(proxyRuleContextDict[proxyRuleId]);
         }
 
         private Dictionary<int, GlashTunnelContext> tunnelContextDict = new Dictionary<int, GlashTunnelContext>();
@@ -244,6 +245,29 @@ namespace Glash.Client
         {
             var rep = await qpClient.SendCommand(new Protocol.QpCommands.GetAgentList.Request());
             return rep.Data;
+        }
+
+        public async Task<ProxyRuleInfo[]> GetProxyRuleListAsync()
+        {
+            var rep = await qpClient.SendCommand(new Protocol.QpCommands.GetProxyRuleList.Request());
+            return rep.Data;
+        }
+
+        public async Task<ProxyRuleInfo> SaveProxyRule(ProxyRuleInfo model)
+        {
+            var rep = await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.SaveProxyRule.Request()
+            {
+                Data = model
+            });
+            return rep.Data;
+        }
+
+        public async Task DeleteProxyRule(string proxyRuleId)
+        {
+            await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.DeleteProxyRule.Request()
+            {
+                ProxyRuleId = proxyRuleId
+            });
         }
 
         public void DisableAgentProxyRules(string agentName)

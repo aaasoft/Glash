@@ -1,12 +1,10 @@
 ﻿using Glash.Client;
-using Quick.EntityFrameworkCore.Plus;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Glash.Blazor.Client.Model
+namespace Glash.Client.Protocol.QpModel
 {
-    [Table($"{nameof(Glash)}_{nameof(Client)}_{nameof(ProxyRule)}")]
-    public class ProxyRule : BaseModel, IProxyRule, IHasDependcyRelation
+    public class ProxyRuleInfo : IProxyRule
     {
         public enum Texts
         {
@@ -18,8 +16,9 @@ namespace Glash.Blazor.Client.Model
             RemoteHost,
             RemotePort
         }
-        [Required]
-        public string ProfileId { get; set; }
+
+        [Key]
+        public string Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -36,22 +35,5 @@ namespace Glash.Blazor.Client.Model
         public int RemotePort { get; set; }
         [NotMapped]
         public bool Enable { get; set; } = false;
-
-        public override string ToString()
-        {
-            return $"{Global.Instance.TextManager.GetText(Texts.ModelName)}[{Name}]";
-        }
-
-        public ModelDependcyInfo[] GetDependcyRelation()
-        {
-            return new ModelDependcyInfo[]
-            {
-                new ModelDependcyInfo<ProxyRule, Profile>
-                (
-                    source => source.ProfileId == null ? null : new Profile(source.ProfileId),
-                    target => t => t.ProfileId == target.Id
-                )
-            };
-        }
     }
 }
