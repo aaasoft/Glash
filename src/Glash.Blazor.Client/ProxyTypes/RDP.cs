@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Glash.Blazor.Client.ProxyTypes.RDP
+namespace Glash.Blazor.Client.ProxyTypes
 {
     [ProxyType(typeof(Texts), nameof(Texts.ProxyTypeName))]
-    public class ProxyType : AbstractProxyType<UI>
+    public class RDP : AbstractProxyType<RDP_UI>
     {
         public enum Texts
         {

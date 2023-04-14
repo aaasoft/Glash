@@ -1,4 +1,7 @@
 ﻿ModelName=代理规则
+TabBasic=基础
+TabProxyType=代理类型
+SelectOptionNone=无
 Name=名称
 Agent=代理
 LocalIPAddress=本地IP地址

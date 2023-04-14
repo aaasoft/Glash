@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Glash.Blazor.Client.ProxyTypes
 {
     public abstract class AbstractProxyTypeUI<T> : ComponentBase
-        where T : new()
+        where T : IProxyType, new()
     {
         [Parameter]
         public T Model { get; set; }

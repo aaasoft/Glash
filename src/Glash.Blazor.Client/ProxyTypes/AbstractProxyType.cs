@@ -9,7 +9,7 @@ namespace Glash.Blazor.Client.ProxyTypes
             return Quick.Blazor.Bootstrap.Utils.BlazorUtils.GetRenderFragment<TUI>(
                 new Dictionary<string, object>()
                 {
-                    [nameof(AbstractProxyTypeUI<object>.Model)] = this
+                    ["Model"] = this
                 });
         }
     }

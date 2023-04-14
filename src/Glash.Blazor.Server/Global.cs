@@ -197,7 +197,9 @@ namespace Glash.Blazor.Server
                 LocalPort = proxyRule.LocalPort,
                 Name = proxyRule.Name,
                 RemoteHost = proxyRule.RemoteHost,
-                RemotePort = proxyRule.RemotePort
+                RemotePort = proxyRule.RemotePort,
+                ProxyType = proxyRule.ProxyType,
+                ProxyTypeConfig = proxyRule.ProxyTypeConfig
             };
 
             //Add

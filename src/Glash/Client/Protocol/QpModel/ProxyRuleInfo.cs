@@ -8,6 +8,9 @@ namespace Glash.Client.Protocol.QpModel
         public enum Texts
         {
             ModelName,
+            TabBasic,
+            TabProxyType,
+            SelectOptionNone,
             Name,
             Agent,
             LocalIPAddress,

@@ -1,4 +1,7 @@
 ﻿ModelName=Proxy Rule
+TabBasic=Basic
+TabProxyType=Proxy Type
+SelectOptionNone=None
 Name=Name
 Agent=Agent
 LocalIPAddress=Local IPAddress

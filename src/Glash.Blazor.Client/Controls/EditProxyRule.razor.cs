@@ -1,5 +1,7 @@
-﻿using Glash.Client.Protocol.QpModel;
+﻿using Glash.Blazor.Client.ProxyTypes;
+using Glash.Client.Protocol.QpModel;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace Glash.Blazor.Client.Controls
     {
         [Parameter]
         public ProxyRuleInfo Model { get; set; }
+        private IProxyType ProxyType;
         private RenderFragment ProxyTypeUI;
 
         [Parameter]
@@ -19,6 +22,10 @@ namespace Glash.Blazor.Client.Controls
 
         private void Ok()
         {
+            if (ProxyType == null)
+                Model.ProxyTypeConfig = null;
+            else
+                Model.ProxyTypeConfig = JsonConvert.SerializeObject(ProxyType);
             OkAction?.Invoke(Model);
         }
 
@@ -30,16 +37,31 @@ namespace Glash.Blazor.Client.Controls
                 [nameof(OkAction)] = okAction,
             };
         }
+        
+        protected override void OnParametersSet()
+        {
+            refreshProxyType();
+        }
+
+        private void refreshProxyType()
+        {
+            if (string.IsNullOrEmpty(Model.ProxyType))
+            {
+                ProxyType = null;
+                ProxyTypeUI = null;
+            }
+            else
+            {
+                ProxyType = ProxyTypeManager.Instance
+                    .GetProxyTypeInfo(Model.ProxyType).CreateInstance(Model.ProxyTypeConfig);
+                ProxyTypeUI = ProxyType.GetUI();
+            }
+        }
 
         private void onProxyTypeChanged(string value)
         {
             Model.ProxyType = value;
-            if (string.IsNullOrEmpty(Model.ProxyType))
-                ProxyTypeUI = null;
-            else
-                ProxyTypeUI = ProxyTypes.ProxyTypeManager.Instance
-                    .GetProxyTypeInfo(Model.ProxyType).CreateInstance(Model.ProxyTypeConfig)
-                    .GetUI();
+            refreshProxyType();
             InvokeAsync(StateHasChanged);
         }
     }

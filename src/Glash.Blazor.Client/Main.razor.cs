@@ -1,4 +1,5 @@
-﻿using Glash.Client;
+﻿using Glash.Blazor.Client.ProxyTypes;
+using Glash.Client;
 using Glash.Client.Protocol.QpModel;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -156,6 +157,7 @@ namespace Glash.Blazor.Client
                 {
                     LocalIPAddress = "127.0.0.1",
                     LocalPort = 80,
+                    RemoteHost = "127.0.0.1",
                     RemotePort = 80,
                     Agent = agent
                 },
@@ -189,7 +191,9 @@ namespace Glash.Blazor.Client
                     LocalIPAddress = model.LocalIPAddress,
                     LocalPort = model.LocalPort,
                     RemoteHost = model.RemoteHost,
-                    RemotePort = model.RemotePort
+                    RemotePort = model.RemotePort,
+                    ProxyType = model.ProxyType,
+                    ProxyTypeConfig = model.ProxyTypeConfig
                 };
                 modalLoading.Show(Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule), null, true);
                 try
@@ -221,6 +225,9 @@ namespace Glash.Blazor.Client
                         model.LocalPort = editModel.LocalPort;
                         model.RemoteHost = editModel.RemoteHost;
                         model.RemotePort = editModel.RemotePort;
+                        model.ProxyType = editModel.ProxyType;
+                        model.ProxyTypeConfig = editModel.ProxyTypeConfig;
+
                         GlashClient.UnloadProxyRule(model.Id);
                         model = await GlashClient.SaveProxyRule(model);
                         GlashClient.LoadProxyRule(model);
