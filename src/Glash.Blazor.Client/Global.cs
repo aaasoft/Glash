@@ -1,4 +1,5 @@
-﻿using Glash.Client;
+﻿using Glash.Blazor.Client.ProxyTypes;
+using Glash.Client;
 using Microsoft.EntityFrameworkCore;
 using Quick.Blazor.Bootstrap;
 using Quick.Localize;
@@ -76,7 +77,7 @@ namespace Glash.Blazor.Client
             _Language = Model.Config.GetConfig(nameof(Language));
             if (_Language == null)
                 _Language = Thread.CurrentThread.CurrentCulture.IetfLanguageTag;
-            afterLanuageChanged();
+            afterLanuageChanged();            
         }
 
         private void afterLanuageChanged()
@@ -84,6 +85,7 @@ namespace Glash.Blazor.Client
             TextManager = TextManager.GetInstance(Language);
             ModalPrompt.TextOk = ModalAlert.TextOk = TextManager.GetText(Blazor.Client.ClientTexts.Ok);
             ModalPrompt.TextCancel = ModalAlert.TextCancel = TextManager.GetText(Blazor.Client.ClientTexts.Cancel);
+            ProxyTypeManager.Instance.Init();
         }
     }
 }

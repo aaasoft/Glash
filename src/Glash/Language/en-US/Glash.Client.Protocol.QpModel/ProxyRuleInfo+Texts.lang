@@ -5,3 +5,5 @@ LocalIPAddress=Local IPAddress
 LocalPort=Local Port
 RemoteHost=Remote Host
 RemotePort=Remote Port
+ProxyType=Proxy Type
+ProxyTypeConfig=Proxy Type Config

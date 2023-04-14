@@ -32,6 +32,18 @@
                 <InputNumber class="form-control" @bind-Value="Model.RemotePort" />
                 <ValidationMessage For="@(() => Model.RemotePort)" />
             </div>
+            <div class="form-group">
+                <label>@Global.Instance.TextManager.GetText(Glash.Client.Protocol.QpModel.ProxyRuleInfo.Texts.ProxyType)</label>
+                <InputSelect class="form-control" ValueExpression="@(()=>Model.ProxyType)" ValueChanged="@( (string s) => onProxyTypeChanged(s) )">
+                    <option value="">无</option>
+                    @foreach (var proxyTypeInfo in Glash.Blazor.Client.ProxyTypes.ProxyTypeManager.Instance.GetProxyTypeInfos())
+                    {
+                        <option value="@proxyTypeInfo.Id">@proxyTypeInfo.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Model.RemotePort)" />
+            </div>
+            @ProxyTypeUI
             <button type="submit" class="btn btn-primary col-sm-5 col-md-4 col-lg-2">@Global.Instance.TextManager.GetText(ClientTexts.Ok)</button>
         </EditForm>
     </div>

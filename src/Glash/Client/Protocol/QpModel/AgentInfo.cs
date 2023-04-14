@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Glash.Client.Protocol.QpModel
+﻿namespace Glash.Client.Protocol.QpModel
 {
     public class AgentInfo
     {

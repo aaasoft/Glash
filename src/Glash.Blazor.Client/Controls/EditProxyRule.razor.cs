@@ -12,6 +12,8 @@ namespace Glash.Blazor.Client.Controls
     {
         [Parameter]
         public ProxyRuleInfo Model { get; set; }
+        private RenderFragment ProxyTypeUI;
+
         [Parameter]
         public Action<ProxyRuleInfo> OkAction { get; set; }
 
@@ -27,6 +29,18 @@ namespace Glash.Blazor.Client.Controls
                 [nameof(Model)] = model,
                 [nameof(OkAction)] = okAction,
             };
+        }
+
+        private void onProxyTypeChanged(string value)
+        {
+            Model.ProxyType = value;
+            if (string.IsNullOrEmpty(Model.ProxyType))
+                ProxyTypeUI = null;
+            else
+                ProxyTypeUI = ProxyTypes.ProxyTypeManager.Instance
+                    .GetProxyTypeInfo(Model.ProxyType).CreateInstance(Model.ProxyTypeConfig)
+                    .GetUI();
+            InvokeAsync(StateHasChanged);
         }
     }
 }
