@@ -76,9 +76,10 @@
                                         </p>
                                     </div>
                                     <div class="card-footer p-1">
+                                    <div class="btn-group p-1">
                                         @if (agent.IsLoggedIn)
                                         {
-                                            <div class="custom-control custom-switch d-inline m-2">
+                                            <div class="custom-control custom-switch d-inline">
                                                 <InputCheckbox class="custom-control-input"
                                                                id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
                                                    @bind-Value="proxyRuleContext.Config.Enable"
@@ -88,7 +89,7 @@
                                         }
                                         else
                                         {
-                                            <div class="custom-control custom-switch d-inline m-2">
+                                            <div class="custom-control custom-switch d-inline">
                                                 <InputCheckbox class="custom-control-input"
                                                                id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
                                                    @bind-Value="proxyRuleContext.Config.Enable"
@@ -96,6 +97,7 @@
                                                 <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
                                             </div>
                                         }
+                                        </div>
                                         @if (!string.IsNullOrEmpty(proxyRuleContext.Config.ProxyType))
                                         {
                                             @if (proxyRuleContext.Config.Enable)
