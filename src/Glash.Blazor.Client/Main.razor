@@ -51,7 +51,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-12 mt-2">
                                 <div class="card">
                                     <div class="card-header">
-                                        <i class="fa fa-paper-plane mr-1" aria-hidden="true"></i>
+                                        <i class="@GetProxyRuleContextIcon(proxyRuleContext) mr-1" aria-hidden="true"></i>
                                         <span>@proxyRuleContext.Config.Name</span>
                                         @if (agent.IsLoggedIn)
                                         {
@@ -76,6 +76,15 @@
                                         }
                                     </div>
                                     <div class="card-body small p-2">
+                                        @if(!string.IsNullOrEmpty(proxyRuleContext.Config.ProxyType))
+                                        {
+                                            <p class="mb-0">
+                                                <span class="font-weight-bold">
+                                                    @Global.Instance.TextManager.GetText(Glash.Client.Protocol.QpModel.ProxyRuleInfo.Texts.ProxyType):
+                                                </span>
+                                                @GetProxyTypeInstance(proxyRuleContext).Name
+                                            </p>
+                                        }
                                         <p class="mb-0">
                                             <span class="font-weight-bold">
                                                 @Global.Instance.TextManager.GetText(Texts.Local):
@@ -89,7 +98,7 @@
                                         </p>
                                     </div>
                                     <div class="card-footer p-1">
-                                        <div class="btn-group">
+                                        <div class="btn-group mr-2">
                                             <button type="button" class="btn btn-sm btn-secondary"
                                                     title="@Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule)"
                                             @onclick=@(e=>DuplicateProxyRule((Glash.Client.Protocol.QpModel.ProxyRuleInfo)proxyRuleContext.Config))>
@@ -106,6 +115,18 @@
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </div>
+                                        @if (proxyRuleContext.Config.Enable && !string.IsNullOrEmpty(proxyRuleContext.Config.ProxyType))
+                                        {
+                                            <div class="btn-group">
+                                                @foreach (var button in GetProxyTypeInstance(proxyRuleContext).GetButtons())
+                                                {
+                                                    <button type="button" class="btn btn-sm btn-secondary"
+                                                            title="@button.Name" @onclick=@(e=>button.Invoke(proxyRuleContext))>
+                                                        <i class="@button.Icon" aria-hidden="true"></i>
+                                                    </button>
+                                                }
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>

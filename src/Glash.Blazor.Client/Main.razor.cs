@@ -49,7 +49,7 @@ namespace Glash.Blazor.Client
         private ModalLoading modalLoading;
         private ModalPrompt modalPrompt;
         private LogViewControl logViewControl;
-                
+
         private Queue<string> logQueue = new Queue<string>();
         private string Logs;
         private int LogRows = 25;
@@ -308,6 +308,26 @@ namespace Glash.Blazor.Client
                 try { GlashClient.DisableProxyRule(item); }
                 catch { }
             InvokeAsync(StateHasChanged);
+        }
+
+        private IProxyType GetProxyTypeInstance(ProxyRuleContext proxyRuleContext)
+        {
+            var proxyType = proxyRuleContext.GetExtendProperty<IProxyType>();
+            if (proxyType == null)
+            {
+                if (string.IsNullOrEmpty(proxyRuleContext.Config.ProxyType))
+                    return null;
+                proxyType = ProxyTypeManager.Instance
+                    .GetProxyTypeInfo(proxyRuleContext.Config.ProxyType)
+                    .CreateInstance(proxyRuleContext.Config.ProxyTypeConfig);
+                proxyRuleContext.SetExtendProperty(proxyType);
+            }
+            return proxyType;
+        }
+
+        private string GetProxyRuleContextIcon(ProxyRuleContext proxyRuleContext)
+        {
+            return GetProxyTypeInstance(proxyRuleContext)?.Icon ?? "fa fa-cube";
         }
     }
 }

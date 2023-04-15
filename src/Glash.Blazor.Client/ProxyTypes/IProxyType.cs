@@ -9,6 +9,9 @@ namespace Glash.Blazor.Client.ProxyTypes
 {
     public interface IProxyType
     {
+        string Name { get; }
+        string Icon { get; }
         public RenderFragment GetUI();
+        public ProxyTypeButton[] GetButtons();
     }
 }

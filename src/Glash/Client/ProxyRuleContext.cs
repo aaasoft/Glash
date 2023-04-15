@@ -11,6 +11,21 @@ namespace Glash.Client
         private CancellationTokenSource cts;
         public ProxyRuleInfo Config { get; private set; }
         public int LocalPort { get; private set; }
+        private Dictionary<string, object> extendPropertyDict = new Dictionary<string, object>();
+
+        public T GetExtendProperty<T>()
+        {
+            var key = typeof(T).FullName;
+            if (!extendPropertyDict.TryGetValue(key, out var value))
+                return default(T);
+            return (T)value;
+        }
+
+        public void SetExtendProperty<T>(T value)
+        {
+            var key = typeof(T).FullName;
+            extendPropertyDict[key] = value;
+        }
 
         public ProxyRuleContext(GlashClient glashClient, ProxyRuleInfo config)
         {

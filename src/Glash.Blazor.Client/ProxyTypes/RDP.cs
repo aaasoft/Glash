@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Glash.Client;
 
 namespace Glash.Blazor.Client.ProxyTypes
 {
@@ -14,10 +9,30 @@ namespace Glash.Blazor.Client.ProxyTypes
         {
             ProxyTypeName,
             User,
-            Password
+            Password,
+            ButtonStartRDP
         }
 
         public string User { get; set; }
         public string Password { get; set; }
+
+        public override string Icon => "fa fa-desktop";
+
+        public override ProxyTypeButton[] GetButtons()
+        {
+            return new ProxyTypeButton[]
+            {
+                new ProxyTypeButton(
+                    Global.Instance.TextManager.GetText(Texts.ButtonStartRDP),
+                    "fa fa-desktop",
+                    StartRDP
+                    )
+            };
+        }
+
+        private void StartRDP(ProxyRuleContext proxyRuleContext)
+        {
+
+        }
     }
 }
