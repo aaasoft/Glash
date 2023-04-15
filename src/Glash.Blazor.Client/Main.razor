@@ -53,38 +53,16 @@
                                     <div class="card-header">
                                         <i class="@GetProxyRuleContextIcon(proxyRuleContext) mr-1" aria-hidden="true"></i>
                                         <span>@proxyRuleContext.Config.Name</span>
-                                        @if (agent.IsLoggedIn)
+                                        @if (!string.IsNullOrEmpty(proxyRuleContext.Config.ProxyType))
                                         {
-                                            <div class="custom-control custom-switch d-inline pull-right">
-                                                <InputCheckbox class="custom-control-input"
-                                                    id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
-                                                   @bind-Value="proxyRuleContext.Config.Enable"
-                                                   @onclick="@(e=>onProxyRuleEnableChanged(proxyRuleContext))" />
-                                                <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="custom-control custom-switch d-inline pull-right">
-                                                <InputCheckbox class="custom-control-input"
-                                                               id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
-                                                   @bind-Value="proxyRuleContext.Config.Enable"
-                                                   disabled
-                                                   />
-                                                <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
+                                            <div class="pull-right">
+                                                <span class="badge badge-info">
+                                                    @GetProxyTypeInstance(proxyRuleContext).Name
+                                                </span>
                                             </div>
                                         }
                                     </div>
                                     <div class="card-body small p-2">
-                                        @if(!string.IsNullOrEmpty(proxyRuleContext.Config.ProxyType))
-                                        {
-                                            <p class="mb-0">
-                                                <span class="font-weight-bold">
-                                                    @Global.Instance.TextManager.GetText(Glash.Client.Protocol.QpModel.ProxyRuleInfo.Texts.ProxyType):
-                                                </span>
-                                                @GetProxyTypeInstance(proxyRuleContext).Name
-                                            </p>
-                                        }
                                         <p class="mb-0">
                                             <span class="font-weight-bold">
                                                 @Global.Instance.TextManager.GetText(Texts.Local):
@@ -98,7 +76,42 @@
                                         </p>
                                     </div>
                                     <div class="card-footer p-1">
-                                        <div class="btn-group mr-2">
+                                        @if (agent.IsLoggedIn)
+                                        {
+                                            <div class="custom-control custom-switch d-inline m-2">
+                                                <InputCheckbox class="custom-control-input"
+                                                               id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
+                                                   @bind-Value="proxyRuleContext.Config.Enable"
+                                                   @onclick="@(e=>onProxyRuleEnableChanged(proxyRuleContext))" />
+                                                <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="custom-control custom-switch d-inline m-2">
+                                                <InputCheckbox class="custom-control-input"
+                                                               id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
+                                                   @bind-Value="proxyRuleContext.Config.Enable"
+                                                               disabled />
+                                                <label class="custom-control-label" for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(proxyRuleContext.Config.ProxyType))
+                                        {
+                                            @if (proxyRuleContext.Config.Enable)
+                                            {
+                                                <div class="btn-group">
+                                                    @foreach (var button in GetProxyTypeInstance(proxyRuleContext).GetButtons())
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-secondary"
+                                                                title="@button.Name" @onclick=@(e=>button.Invoke(proxyRuleContext))>
+                                                            <i class="@button.Icon" aria-hidden="true"></i>
+                                                        </button>
+                                                    }
+                                                </div>
+                                            }
+                                        }
+                                        <div class="btn-group pull-right">
                                             <button type="button" class="btn btn-sm btn-secondary"
                                                     title="@Global.Instance.TextManager.GetText(Texts.DuplicateProxyRule)"
                                             @onclick=@(e=>DuplicateProxyRule((Glash.Client.Protocol.QpModel.ProxyRuleInfo)proxyRuleContext.Config))>
@@ -115,18 +128,6 @@
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </div>
-                                        @if (proxyRuleContext.Config.Enable && !string.IsNullOrEmpty(proxyRuleContext.Config.ProxyType))
-                                        {
-                                            <div class="btn-group">
-                                                @foreach (var button in GetProxyTypeInstance(proxyRuleContext).GetButtons())
-                                                {
-                                                    <button type="button" class="btn btn-sm btn-secondary"
-                                                            title="@button.Name" @onclick=@(e=>button.Invoke(proxyRuleContext))>
-                                                        <i class="@button.Icon" aria-hidden="true"></i>
-                                                    </button>
-                                                }
-                                            </div>
-                                        }
                                     </div>
                                 </div>
                             </div>
