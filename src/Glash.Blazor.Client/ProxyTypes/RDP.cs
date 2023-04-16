@@ -21,7 +21,7 @@ namespace Glash.Blazor.Client.ProxyTypes
         public string User { get; set; }
         public string Password { get; set; }
 
-        public override string Icon => "fa fa-desktop";
+        public override string Icon => "fa fa-windows";
 
         [SupportedOSPlatform("windows")]
         public override ProxyTypeButton[] GetButtons()

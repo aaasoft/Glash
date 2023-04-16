@@ -27,6 +27,7 @@
 	  <None Remove="Language\en-US\Glash.Blazor.Client\Model\ProxyRule+Texts.lang" />
 	  <None Remove="Language\en-US\Glash.Blazor.Client\ProfileManage+Texts.lang" />
 	  <None Remove="Language\en-US\Glash.Blazor.Client\ProxyTypes\RDP+Texts.lang" />
+	  <None Remove="Language\en-US\Glash.Blazor.Client\ProxyTypes\SSH+Texts.lang" />
 	  <None Remove="Language\en-US\Glash.Blazor.Client\ProxyTypes\Web+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Blazor.Client\ClientTexts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Blazor.Client\Login+Texts.lang" />
@@ -35,6 +36,7 @@
 	  <None Remove="Language\zh-CN\Glash.Blazor.Client\Model\ProxyRule+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Blazor.Client\ProfileManage+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Blazor.Client\ProxyTypes\RDP+Texts.lang" />
+	  <None Remove="Language\zh-CN\Glash.Blazor.Client\ProxyTypes\SSH+Texts.lang" />
 	  <None Remove="Language\zh-CN\Glash.Blazor.Client\ProxyTypes\Web+Texts.lang" />
 	</ItemGroup>
 
@@ -44,6 +46,7 @@
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\Model\Profile+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ProfileManage+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ClientTexts.lang" />
+		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ProxyTypes\SSH+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ProxyTypes\Web+Texts.lang" />
 		<EmbeddedResource Include="Language\en-US\Glash.Blazor.Client\ProxyTypes\RDP+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ClientTexts.lang" />
@@ -52,6 +55,7 @@
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ProfileManage+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\Login+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ProxyTypes\RDP+Texts.lang" />
+		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ProxyTypes\SSH+Texts.lang" />
 		<EmbeddedResource Include="Language\zh-CN\Glash.Blazor.Client\ProxyTypes\Web+Texts.lang" />
 	</ItemGroup>
 
@@ -94,6 +98,18 @@
 	  <Content Update="_Imports.razor">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="runtimes\win-x64\native\plink.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="runtimes\win-x64\native\putty.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="runtimes\win-x64\native\WinSCP.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>
