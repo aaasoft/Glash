@@ -48,15 +48,11 @@ namespace Glash.Blazor.Client.ProxyTypes
         }
 
         [SupportedOSPlatform("windows")]
-        private void StartRDP(ProxyRuleContext proxyRuleContext)
+        private void StartRDP(ProxyRuleContext t)
         {
             var sb = new StringBuilder();
-            var localIpAddress = proxyRuleContext.Config.LocalIPAddress;
-            if (localIpAddress == IPAddress.Any.ToString())
-                localIpAddress = IPAddress.Loopback.ToString();
-            if (localIpAddress == IPAddress.IPv6Any.ToString())
-                localIpAddress = IPAddress.IPv6Loopback.ToString();
-            sb.AppendLine($"full address:s:{localIpAddress}:{proxyRuleContext.LocalPort}");
+
+            sb.AppendLine($"full address:s:{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}");
             sb.AppendLine($"username:s:{User}");
             sb.AppendLine($"password 51:b:{GetRdpPassWord(Password)}");
             var tmpFile = Path.GetTempFileName();

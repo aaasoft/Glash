@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Glash.Client;
+using Microsoft.AspNetCore.Components;
+using System.Net;
 
 namespace Glash.Blazor.Client.ProxyTypes
 {
@@ -24,6 +26,15 @@ namespace Glash.Blazor.Client.ProxyTypes
                 {
                     ["Model"] = this
                 });
+        }
+
+        protected string GetLocalIPAddress(string localIPAddress)
+        {
+            if (localIPAddress == IPAddress.Any.ToString())
+                localIPAddress = IPAddress.Loopback.ToString();
+            if (localIPAddress == IPAddress.IPv6Any.ToString())
+                localIPAddress = IPAddress.IPv6Loopback.ToString();
+            return localIPAddress;
         }
     }
 }
