@@ -7,6 +7,6 @@ namespace Glash.Client.Protocol.QpCommands.CreateTunnel
     [DisplayName("Create Tunnel")]
     public class Request : IQpCommandRequest<Response>
     {
-        public TunnelInfo Data { get; set; }
+        public string ProxyRuleId { get; set; }
     }
 }

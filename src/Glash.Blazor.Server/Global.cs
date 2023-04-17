@@ -227,5 +227,15 @@ namespace Glash.Blazor.Server
 
             ConfigDbContext.CacheContext.Remove(model);
         }
+
+        public ProxyRuleInfo GetProxyRule(string clientName, string proxyRuleId)
+        {
+            var model = ConfigDbContext.CacheContext.Find(new Model.ProxyRuleInfo(proxyRuleId));
+            if (model == null)
+                throw new ApplicationException($"Can't found ProxyRule with Id[{proxyRuleId}].");
+            if(model.ClientName != clientName)
+                throw new ApplicationException($"ProxyRule[Id:{proxyRuleId}]'s client name not match.");
+            return model;
+        }
     }
 }

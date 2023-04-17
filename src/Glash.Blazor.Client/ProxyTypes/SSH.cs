@@ -16,12 +16,15 @@ namespace Glash.Blazor.Client.ProxyTypes
             ProxyTypeName,
             User,
             Password,
+            Terminal,
             ButtonStartTerminal,
             ButtonStartFileTransfer
         }
 
         public string User { get; set; }
         public string Password { get; set; }
+        public string Terminal { get; set; }
+
         private const string EXE_FOLDER = "runtimes/win-x64/native";
         public override string Icon => "fa fa-linux";
 
@@ -35,7 +38,7 @@ namespace Glash.Blazor.Client.ProxyTypes
                     "fa fa-terminal",
                     t=>
                     {
-                        Process.Start($"{EXE_FOLDER}/plink",$"-ssh -l {User} -pw {Password} -P {t.LocalPort} {GetLocalIPAddress(t.Config.LocalIPAddress)}");
+                        Process.Start($"{EXE_FOLDER}/{Terminal}",$"-ssh -l {User} -pw {Password} -P {t.LocalPort} {GetLocalIPAddress(t.Config.LocalIPAddress)}");
                     }),
                 new ProxyTypeButton(
                     Global.Instance.TextManager.GetText(Texts.ButtonStartFileTransfer),

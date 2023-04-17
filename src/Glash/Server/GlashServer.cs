@@ -281,13 +281,20 @@ namespace Glash.Server
             var clientContext = channel.Tag as GlashClientContext;
             if (clientContext == null)
                 throw new ApplicationException("Client not login.");
-            var isClientRelateAgent = true;
-            if (options.ClientManager != null)
-                isClientRelateAgent = options.ClientManager.IsClientRelateAgent(clientContext.Name, request.Data.Agent);
-            if (!isClientRelateAgent)
-                throw new ApplicationException($"Client[{clientContext.Name}] not relate to Agent[{request.Data.Agent}].");
 
-            var tunnelInfo = request.Data;
+            if (options.ClientManager == null)
+                throw new ApplicationException("options.ClientManager is null.");
+
+            var proxyRule = options.ClientManager.GetProxyRule(clientContext.Name, request.ProxyRuleId);
+            if (proxyRule == null)
+                throw new ApplicationException($"ProxyRule[Id:{request.ProxyRuleId}] not found.");
+
+            var tunnelInfo = new TunnelInfo()
+            {
+                Agent = proxyRule.Agent,
+                Host = proxyRule.RemoteHost,
+                Port = proxyRule.RemotePort
+            };
             lock (serverTunnelContextDict)
             {
                 if (serverTunnelContextDict.Count >= options.MaxTunnelCount)

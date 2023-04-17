@@ -164,12 +164,7 @@ namespace Glash.Client
                 //Create Tunnel
                 var rep = await qpClient.SendCommand(new Protocol.QpCommands.CreateTunnel.Request()
                 {
-                    Data = new TunnelInfo()
-                    {
-                        Agent = config.Agent,
-                        Host = config.RemoteHost,
-                        Port = config.RemotePort
-                    }
+                    ProxyRuleId = config.Id
                 });
                 var tunnelId = rep.Data.Id;
                 var tunnelContext = new GlashTunnelContext(
