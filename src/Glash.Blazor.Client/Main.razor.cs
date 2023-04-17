@@ -337,7 +337,6 @@ namespace Glash.Blazor.Client
             {
                 modalLoading.Show(button.Name, null, true);
                 await Task.Run(() => button.Invoke(proxyRuleContext));
-                await Task.Delay(1000);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quick.Blazor.Bootstrap;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -36,20 +37,24 @@ namespace Glash.Blazor.Client.ProxyTypes
                     "fa fa-globe",
                     t=>
                     {
+                        if(string.IsNullOrEmpty(Schema))
+                            Schema="http";
                         var url = $"{Schema}://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/{Path}";
                         try
                         {
                             //先尝试使用Chrome浏览器打开
                             var psi = new ProcessStartInfo("chrome", url);
                             psi.UseShellExecute = true;
-                            Process.Start(psi);
+                            var process = Process.Start(psi);
+                            WaitForProcessMainWindow(process);
                         }
                         catch
                         {
                             //使用系统默认浏览器打开
                             var psi = new ProcessStartInfo(url);
                             psi.UseShellExecute = true;
-                            Process.Start(psi);
+                            var process = Process.Start(psi);;
+                            WaitForProcessMainWindow(process);
                         }
                     })
             };

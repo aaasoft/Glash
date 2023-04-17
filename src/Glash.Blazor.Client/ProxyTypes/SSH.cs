@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Versioning;
@@ -20,9 +19,11 @@ namespace Glash.Blazor.Client.ProxyTypes
             ButtonStartTerminal,
             ButtonStartFileTransfer
         }
-
+        [Required]
         public string User { get; set; }
+        [Required]
         public string Password { get; set; }
+        [Required]
         public string Terminal { get; set; }
 
         private const string NATIVE_FOLDER = "runtimes/win-x64/native";
@@ -38,14 +39,18 @@ namespace Glash.Blazor.Client.ProxyTypes
                     "fa fa-terminal",
                     t=>
                     {
-                        Process.Start($"{NATIVE_FOLDER}/PuTTY/{Terminal}",$"-ssh -l {User} -pw {Password} -P {t.LocalPort} {GetLocalIPAddress(t.Config.LocalIPAddress)}");
+                        if(string.IsNullOrEmpty(Terminal))
+                            Terminal="putty";
+                        var process = Process.Start($"{NATIVE_FOLDER}/PuTTY/{Terminal}",$"-ssh -l {User} -pw {Password} -P {t.LocalPort} {GetLocalIPAddress(t.Config.LocalIPAddress)}");
+                        WaitForProcessMainWindow(process);
                     }),
                 new ProxyTypeButton(
                     Global.Instance.TextManager.GetText(Texts.ButtonStartFileTransfer),
                     "fa fa-folder",
                     t=>
                     {
-                        Process.Start($"{NATIVE_FOLDER}/WinSCP/WinSCP",$"/ini=nul sftp://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/ -username={User} -password={Password}");
+                        var process = Process.Start($"{NATIVE_FOLDER}/WinSCP/WinSCP", $"/ini=nul sftp://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/ -username={User} -password={Password}");
+                        WaitForProcessMainWindow(process);
                     })
             };
         }

@@ -1,7 +1,6 @@
 ﻿ProxyTypeName=数据库
 NetType=网络协议类型
 Library=库
-PleaseSelect=请选择...
 User=用户名
 Password=密码
 ButtonStartView=查看

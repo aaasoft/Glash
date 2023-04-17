@@ -18,7 +18,6 @@ namespace Glash.Blazor.Client.ProxyTypes
             ProxyTypeName,
             NetType,
             Library,
-            PleaseSelect,
             User,
             Password,
             ButtonStartView
@@ -85,7 +84,8 @@ Firebird:
                     "fa fa-database",
                      t=>
                      {
-                         Process.Start($"{NATIVE_FOLDER}/HeidiSQL/heidisql",$"--nettype={NetType} --library={Library} --host={GetLocalIPAddress(t.Config.LocalIPAddress)} --port={t.LocalPort} --user={User} --password={Password}");
+                         var process = Process.Start($"{NATIVE_FOLDER}/HeidiSQL/heidisql",$"--nettype={NetType} --library={Library} --host={GetLocalIPAddress(t.Config.LocalIPAddress)} --port={t.LocalPort} --user={User} --password={Password}");
+                         WaitForProcessMainWindow(process);
                      }
                 )
             };

@@ -2,7 +2,7 @@
 <div class="form-group">
     <label>@Global.Instance.TextManager.GetText(Database.Texts.NetType)</label>
     <InputSelect class="form-control" @bind-Value="@Model.NetType">
-        <option value="">@Global.Instance.TextManager.GetText(Database.Texts.PleaseSelect)</option>
+        <option value="">@Global.Instance.TextManager.GetText(ClientTexts.PleaseSelect)</option>
         <option value="0">MariaDB/MySQL</option>
         <option value="4">Microsoft SQL Server</option>
         <option value="8">PostgreSQL</option>
@@ -14,7 +14,7 @@
 <div class="form-group">
     <label>@Global.Instance.TextManager.GetText(Database.Texts.Library)</label>
     <InputSelect class="form-control" @bind-Value="@Model.Library">
-        <option value="">@Global.Instance.TextManager.GetText(Database.Texts.PleaseSelect)</option>
+        <option value="">@Global.Instance.TextManager.GetText(ClientTexts.PleaseSelect)</option>
         @switch(Model.NetType)
         {
             case "0":

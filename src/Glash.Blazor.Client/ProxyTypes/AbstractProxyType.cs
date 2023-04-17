@@ -1,6 +1,8 @@
 ﻿using Glash.Client;
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics;
 using System.Net;
+using System.Runtime.Versioning;
 
 namespace Glash.Blazor.Client.ProxyTypes
 {
@@ -35,6 +37,22 @@ namespace Glash.Blazor.Client.ProxyTypes
             if (localIPAddress == IPAddress.IPv6Any.ToString())
                 localIPAddress = IPAddress.IPv6Loopback.ToString();
             return localIPAddress;
+        }
+
+        [SupportedOSPlatform("windows")]
+        [SupportedOSPlatform("linux")]
+        [SupportedOSPlatform("macos")]
+        protected IntPtr WaitForProcessMainWindow(Process process)
+        {
+            while (true)
+            {
+                Thread.Sleep(1000);
+                if (process.HasExited)
+                    return IntPtr.Zero;
+                var hWnd = process.MainWindowHandle;
+                if (hWnd != IntPtr.Zero)
+                    return hWnd;
+            }
         }
     }
 }

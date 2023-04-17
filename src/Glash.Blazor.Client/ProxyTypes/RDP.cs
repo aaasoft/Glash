@@ -1,4 +1,5 @@
 ﻿using Glash.Client;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Net;
 using System.Runtime.Versioning;
@@ -18,7 +19,9 @@ namespace Glash.Blazor.Client.ProxyTypes
             ButtonStartRDP
         }
 
+        [Required]
         public string User { get; set; }
+        [Required]
         public string Password { get; set; }
 
         public override string Icon => "fa fa-windows";
@@ -47,6 +50,19 @@ namespace Glash.Blazor.Client.ProxyTypes
             return BitConverter.ToString(encryptedSecret).Replace("-", string.Empty);
         }
 
+        private string getRdpFileName(ProxyRuleContext t)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(t.Config.Name);
+            sb.Append("-");
+            sb.Append(t.Config.Agent);
+            sb.Replace('.', '_');
+            sb.Replace(' ', '_');
+            foreach (var c in Path.GetInvalidFileNameChars())
+                sb.Replace(c, '_');
+            return sb.ToString();
+        }
+
         [SupportedOSPlatform("windows")]
         private void StartRDP(ProxyRuleContext t)
         {
@@ -55,26 +71,14 @@ namespace Glash.Blazor.Client.ProxyTypes
             sb.AppendLine($"full address:s:{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}");
             sb.AppendLine($"username:s:{User}");
             sb.AppendLine($"password 51:b:{GetRdpPassWord(Password)}");
-            var tmpFile = Path.GetTempFileName();
-            var tmpFileInfo = new FileInfo(tmpFile);
+            var tmpFile = Path.Combine(Path.GetTempPath(), getRdpFileName(t));
             try
             {
                 File.WriteAllText(tmpFile, sb.ToString());
-                Process.Start("mstsc.exe", tmpFile);
-                Task.Run(async () =>
-                {
-                    for (var i = 0; i < 10; i++)
-                    {
-                        await Task.Delay(1000);
-                        try
-                        {
-                            if (File.Exists(tmpFile))
-                                File.Delete(tmpFile);
-                            break;
-                        }
-                        catch { }
-                    }
-                });
+                var process = Process.Start("mstsc.exe", tmpFile);
+                WaitForProcessMainWindow(process);
+                if (File.Exists(tmpFile))
+                    File.Delete(tmpFile);
             }
             catch
             {
