@@ -23,7 +23,7 @@ namespace Glash.Blazor.Server.Pages
         private ModalAlert modalAlert;
         private UnitStringConverting storageUSC = UnitStringConverting.StorageUnitStringConverting;
         private CancellationTokenSource cts = new CancellationTokenSource();
-        private GlashServerTunnelContext[] Tunnels => Global.Instance.GlashServer.Tunnels;
+        private GlashServerTunnelContext[] GetTunnels() => Global.Instance.GlashServer.Tunnels;
         protected override void OnAfterRender(bool firstRender)
         {
             base.OnAfterRender(firstRender);

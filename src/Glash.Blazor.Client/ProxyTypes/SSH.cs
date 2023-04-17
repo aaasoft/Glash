@@ -25,7 +25,7 @@ namespace Glash.Blazor.Client.ProxyTypes
         public string Password { get; set; }
         public string Terminal { get; set; }
 
-        private const string EXE_FOLDER = "runtimes/win-x64/native";
+        private const string NATIVE_FOLDER = "runtimes/win-x64/native";
         public override string Icon => "fa fa-linux";
 
         [SupportedOSPlatform("windows")]
@@ -38,14 +38,14 @@ namespace Glash.Blazor.Client.ProxyTypes
                     "fa fa-terminal",
                     t=>
                     {
-                        Process.Start($"{EXE_FOLDER}/{Terminal}",$"-ssh -l {User} -pw {Password} -P {t.LocalPort} {GetLocalIPAddress(t.Config.LocalIPAddress)}");
+                        Process.Start($"{NATIVE_FOLDER}/PuTTY/{Terminal}",$"-ssh -l {User} -pw {Password} -P {t.LocalPort} {GetLocalIPAddress(t.Config.LocalIPAddress)}");
                     }),
                 new ProxyTypeButton(
                     Global.Instance.TextManager.GetText(Texts.ButtonStartFileTransfer),
                     "fa fa-folder",
                     t=>
                     {
-                        Process.Start($"{EXE_FOLDER}/WinSCP",$"/ini=nul sftp://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/ -username={User} -password={Password}");
+                        Process.Start($"{NATIVE_FOLDER}/WinSCP/WinSCP",$"/ini=nul sftp://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/ -username={User} -password={Password}");
                     })
             };
         }

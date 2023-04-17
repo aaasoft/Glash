@@ -106,7 +106,7 @@
                                                     @foreach (var button in GetProxyTypeInstance(proxyRuleContext).GetButtons())
                                                     {
                                                         <button type="button" class="btn btn-sm btn-secondary"
-                                                                title="@button.Name" @onclick=@(e=>button.Invoke(proxyRuleContext))>
+                                                                title="@button.Name" @onclick=@(e=>ButtonInvoke(button,proxyRuleContext))>
                                                             <i class="@button.Icon" aria-hidden="true"></i>
                                                         </button>
                                                     }

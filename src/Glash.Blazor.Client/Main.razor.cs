@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Admin;
+using Quick.Blazor.Bootstrap.Admin.Utils;
 
 namespace Glash.Blazor.Client
 {
@@ -328,6 +329,24 @@ namespace Glash.Blazor.Client
         private string GetProxyRuleContextIcon(ProxyRuleContext proxyRuleContext)
         {
             return GetProxyTypeInstance(proxyRuleContext)?.Icon ?? "fa fa-cube";
+        }
+
+        private async Task ButtonInvoke(ProxyTypeButton button, ProxyRuleContext proxyRuleContext)
+        {
+            try
+            {
+                modalLoading.Show(button.Name, null, true);
+                await Task.Run(() => button.Invoke(proxyRuleContext));
+                await Task.Delay(1000);
+            }
+            catch (Exception ex)
+            {
+                modalAlert.Show(button.Name, ExceptionUtils.GetExceptionString(ex));
+            }
+            finally
+            {
+                modalLoading.Close();
+            }
         }
     }
 }
