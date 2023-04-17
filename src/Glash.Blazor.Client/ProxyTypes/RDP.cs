@@ -61,10 +61,20 @@ namespace Glash.Blazor.Client.ProxyTypes
             {
                 File.WriteAllText(tmpFile, sb.ToString());
                 Process.Start("mstsc.exe", tmpFile);
-                Task.Delay(1000).ContinueWith(t =>
+                Task.Run(async () =>
                 {
-                    File.Delete(tmpFile);
-                });                
+                    for (var i = 0; i < 10; i++)
+                    {
+                        await Task.Delay(1000);
+                        try
+                        {
+                            if (File.Exists(tmpFile))
+                                File.Delete(tmpFile);
+                            break;
+                        }
+                        catch { }
+                    }
+                });
             }
             catch
             {
