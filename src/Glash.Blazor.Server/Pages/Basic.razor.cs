@@ -25,7 +25,26 @@ namespace Glash.Blazor.Server.Pages
         {
             var httpUrl = NavigationManager.Uri;
             var httpUri = new Uri(httpUrl);
-            return $"qp.ws://{httpUri.Host}:{httpUri.Port}{httpUri.PathAndQuery}glash?Password={Global.Instance.ConnectionPassword}";
+            string scheme;
+            string hostAndPort = null;
+            switch (httpUri.Scheme)
+            {
+                case "http":
+                    scheme = "qp.ws";
+                    if (httpUri.Port == 80)
+                        hostAndPort = httpUri.Host;
+                    break;
+                case "https":
+                    scheme = "qp.wss";
+                    if (httpUri.Port == 443)
+                        hostAndPort = httpUri.Host;
+                    break;
+                default:
+                    throw new ArgumentException($"Unknown schema: {httpUri.Scheme}");
+            }
+            if (string.IsNullOrEmpty(hostAndPort))
+                hostAndPort = $"{httpUri.Host}:{httpUri.Port}";
+            return $"{scheme}://{hostAndPort}{httpUri.PathAndQuery}glash?Password={Global.Instance.ConnectionPassword}";
         }
 
         private void Ok()
