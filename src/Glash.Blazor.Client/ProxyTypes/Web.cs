@@ -43,7 +43,9 @@ namespace Glash.Blazor.Client.ProxyTypes
                         try
                         {
                             //先尝试使用Chrome浏览器打开
-                            var psi = new ProcessStartInfo("chrome", url);
+                            var psi = new ProcessStartInfo("chrome");
+                            psi.ArgumentList.Add("-incognito");
+                            psi.ArgumentList.Add(url);
                             psi.UseShellExecute = true;
                             var process = Process.Start(psi);
                             WaitForProcessMainWindow(process);
