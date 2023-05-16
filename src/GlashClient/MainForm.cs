@@ -44,6 +44,8 @@ namespace GlashClient
             Global.Instance.ProfileChanged += Instance_ProfileChanged;
             var services = new ServiceCollection();
             services.AddWindowsFormsBlazorWebView();
+            services.AddBlazorWebViewDeveloperTools();
+
             blazorWebView1.HostPage = "wwwroot/index.html";
             blazorWebView1.Services = services.BuildServiceProvider();
             blazorWebView1.RootComponents.Add<Glash.Blazor.Client.Index>("#app");
@@ -147,6 +149,5 @@ namespace GlashClient
                 preFormWindowState = WindowState;
             }
         }
-
     }
 }
