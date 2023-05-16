@@ -312,7 +312,6 @@ namespace Glash.Server
                 if (nextTunnelId >= options.MaxTunnelCount)
                     nextTunnelId = 0;
                 tunnelInfo.Id = tunnelId;
-                serverTunnelContextDict[tunnelId] = null;
             }
             GlashAgentContext agentContext = null;
             if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
