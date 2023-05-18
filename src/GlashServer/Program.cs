@@ -12,7 +12,7 @@ ConfigDbContext.Init(new SQLiteDbContextConfigHandler(dbFile), modelBuilder =>
     Global.Instance.OnModelCreating(modelBuilder);
 });
 using (var dbContext = new ConfigDbContext())
-    dbContext.EnsureDatabaseCreatedAndUpdated(t => Debug.Print(t));
+    dbContext.DatabaseEnsureCreatedAndUpdated(t => Debug.Print(t));
 ConfigDbContext.CacheContext.LoadCache();
 
 var builder = WebApplication.CreateBuilder(args);
