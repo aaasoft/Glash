@@ -74,23 +74,26 @@ namespace Glash.Blazor.Client
 
         private void AddProfile()
         {
-            modalWindow.Show<Controls.EditProfile>(TextAdd, Controls.EditProfile.PrepareParameter(
-                new Model.Profile(Guid.NewGuid().ToString("N")),
-                model =>
+            modalWindow.Show(TextAdd,
+                new DialogParameters<Controls.EditProfile>()
                 {
-                    try
-                    {
-                        ProfileContextManager.Instance.Add(model);
-                        CurrentProfileId = model.Id;
-                        InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                    {x=>x.Model,new Model.Profile(Guid.NewGuid().ToString("N"))},
+                    {x=>x.OkAction, model =>
+                        {
+                            try
+                            {
+                                ProfileContextManager.Instance.Add(model);
+                                CurrentProfileId = model.Id;
+                                InvokeAsync(StateHasChanged);
+                                modalWindow.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                modalAlert.Show(TextError, ex.Message);
+                            }
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        modalAlert.Show(TextError, ex.Message);
-                    }
-                }
-            ));
+                });
         }
 
         private async Task DisableProfile()
@@ -167,26 +170,29 @@ namespace Glash.Blazor.Client
         private void EditProfile()
         {
             var model = CurrentProfileContext.Profile;
-            modalWindow.Show<Controls.EditProfile>(TextEdit, Controls.EditProfile.PrepareParameter(
-                JsonSerializer.Deserialize<Model.Profile>(JsonSerializer.Serialize(model)),
-                editModel =>
+            modalWindow.Show(TextEdit,
+                new DialogParameters<Controls.EditProfile>()
                 {
-                    try
-                    {
-                        model.Name = editModel.Name;
-                        model.ServerUrl = editModel.ServerUrl;
-                        model.ClientName = editModel.ClientName;
-                        model.ClientPassword = editModel.ClientPassword;
-                        ProfileContextManager.Instance.Update(model);
-                        InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                    { x=>x.Model,JsonSerializer.Deserialize<Model.Profile>(JsonSerializer.Serialize(model))},
+                    {x=>x.OkAction,editModel =>
+                        {
+                            try
+                            {
+                                model.Name = editModel.Name;
+                                model.ServerUrl = editModel.ServerUrl;
+                                model.ClientName = editModel.ClientName;
+                                model.ClientPassword = editModel.ClientPassword;
+                                ProfileContextManager.Instance.Update(model);
+                                InvokeAsync(StateHasChanged);
+                                modalWindow.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                modalAlert.Show(TextError, ex.Message);
+                            }
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        modalAlert.Show(TextError, ex.Message);
-                    }
-                }
-            ));
+                });
         }
 
         private void DeleteProfile()
@@ -211,31 +217,35 @@ namespace Glash.Blazor.Client
 
         private void AddProxyRule(string agent)
         {
-            modalWindow.Show<Controls.EditProxyRule>(TextAddProxyRule, Controls.EditProxyRule.PrepareParameter(
-                new ProxyRuleInfo()
+            modalWindow.Show(TextAddProxyRule,
+                new DialogParameters<Controls.EditProxyRule>()
                 {
-                    LocalIPAddress = "127.0.0.1",
-                    LocalPort = 80,
-                    RemoteHost = "127.0.0.1",
-                    RemotePort = 80,
-                    Agent = agent
-                },
-                async model =>
-                {
-                    modalLoading.Show(TextAddProxyRule, null, true);
-                    try
-                    {
-                        await CurrentProfileContext.AddProxyRule(model);
-                        _ = InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                    {x=>x.Model,new ProxyRuleInfo()
+                        {
+                            LocalIPAddress = "127.0.0.1",
+                            LocalPort = 80,
+                            RemoteHost = "127.0.0.1",
+                            RemotePort = 80,
+                            Agent = agent
+                        }
+                    },
+                    {x=>x.OkAction, async model =>
+                        {
+                            modalLoading.Show(TextAddProxyRule, null, true);
+                            try
+                            {
+                                await CurrentProfileContext.AddProxyRule(model);
+                                _ = InvokeAsync(StateHasChanged);
+                                modalWindow.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                modalAlert.Show(TextError, ex.Message);
+                            }
+                            modalLoading.Close();
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        modalAlert.Show(TextError, ex.Message);
-                    }
-                    modalLoading.Close();
-                }
-            ));
+                });
         }
 
         private void DuplicateProxyRule(ProxyRuleInfo model)
@@ -270,32 +280,35 @@ namespace Glash.Blazor.Client
 
         private void EditProxyRule(ProxyRuleInfo model)
         {
-            modalWindow.Show<Controls.EditProxyRule>(Locale.GetString(TextEditProxyRule), Controls.EditProxyRule.PrepareParameter(
-                JsonSerializer.Deserialize<ProxyRuleInfo>(JsonSerializer.Serialize(model)),
-                async editModel =>
+            modalWindow.Show(Locale.GetString(TextEditProxyRule),
+                new DialogParameters<Controls.EditProxyRule>()
                 {
-                    modalLoading.Show(Locale.GetString(TextEditProxyRule), null, true);
-                    try
+                    {x=>x.Model, JsonSerializer.Deserialize<ProxyRuleInfo>(JsonSerializer.Serialize(model))},
+                    {x=>x.OkAction, async editModel =>
                     {
-                        model.Name = editModel.Name;
-                        model.LocalIPAddress = editModel.LocalIPAddress;
-                        model.LocalPort = editModel.LocalPort;
-                        model.RemoteHost = editModel.RemoteHost;
-                        model.RemotePort = editModel.RemotePort;
-                        model.ProxyType = editModel.ProxyType;
-                        model.ProxyTypeConfig = editModel.ProxyTypeConfig;
+                        modalLoading.Show(Locale.GetString(TextEditProxyRule), null, true);
+                        try
+                        {
+                            model.Name = editModel.Name;
+                            model.LocalIPAddress = editModel.LocalIPAddress;
+                            model.LocalPort = editModel.LocalPort;
+                            model.RemoteHost = editModel.RemoteHost;
+                            model.RemotePort = editModel.RemotePort;
+                            model.ProxyType = editModel.ProxyType;
+                            model.ProxyTypeConfig = editModel.ProxyTypeConfig;
 
-                        await CurrentProfileContext.EditProxyRule(model);
-                        _ = InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                            await CurrentProfileContext.EditProxyRule(model);
+                            _ = InvokeAsync(StateHasChanged);
+                            modalWindow.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            modalAlert.Show(TextError, ex.Message);
+                        }
+                        modalLoading.Close();
                     }
-                    catch (Exception ex)
-                    {
-                        modalAlert.Show(TextError, ex.Message);
                     }
-                    modalLoading.Close();
-                }
-            ));
+                });
         }
 
         private void DeleteProxyRule(ProxyRuleInfo model)

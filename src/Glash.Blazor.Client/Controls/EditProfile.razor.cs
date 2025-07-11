@@ -26,14 +26,5 @@ namespace Glash.Blazor.Client.Controls
         {
             OkAction?.Invoke(Model);
         }
-
-        public static Dictionary<string, object> PrepareParameter(Model.Profile model, Action<Model.Profile> okAction)
-        {
-            return new Dictionary<string, object>()
-            {
-                [nameof(Model)] = model,
-                [nameof(OkAction)] = okAction,
-            };
-        }
     }
 }

@@ -49,23 +49,26 @@ namespace Glash.Blazor.Agent.Pages
 
         private void Add()
         {
-            modalWindow.Show<Controls.EditProfile>(Locale.GetString("Add"), Controls.EditProfile.PrepareParameter(
-                new Model.Profile(Guid.NewGuid().ToString("N")),
-                model =>
+            modalWindow.Show(Locale.GetString("Add"),
+                new DialogParameters<Controls.EditProfile>()
                 {
-                    try
-                    {
-                        ConfigDbContext.CacheContext.Add(model);
-                        Core.GlashAgentManager.Instance.OnAdd(model);
-                        InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        modalAlert.Show(Locale.GetString("Error"), ex.Message);
-                    }
-                }
-            ));
+                    {x=>x.Model, new Model.Profile(Guid.NewGuid().ToString("N"))},
+                    {x=>x.OkAction, model =>
+                        {
+                            try
+                            {
+                                ConfigDbContext.CacheContext.Add(model);
+                                Core.GlashAgentManager.Instance.OnAdd(model);
+                                InvokeAsync(StateHasChanged);
+                                modalWindow.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                modalAlert.Show(Locale.GetString("Error"), ex.Message);
+                            }
+                        }
+                    },
+                });
         }
 
         private void ShowLogs(Model.Profile model)
@@ -81,28 +84,31 @@ namespace Glash.Blazor.Agent.Pages
 
         private void Edit(Model.Profile model)
         {
-            modalWindow.Show<Controls.EditProfile>(Locale.GetString("Edit"), Controls.EditProfile.PrepareParameter(
-                JsonSerializer.Deserialize<Model.Profile>(JsonSerializer.Serialize(model)),
-                editModel =>
+            modalWindow.Show(Locale.GetString("Edit"),
+                new DialogParameters<Controls.EditProfile>()
                 {
-                    try
-                    {
-                        Core.GlashAgentManager.Instance.OnDelete(model);
-                        model.Name = editModel.Name;
-                        model.ServerUrl = editModel.ServerUrl;
-                        model.AgentName = editModel.AgentName;
-                        model.AgentPassword = editModel.AgentPassword;
-                        ConfigDbContext.CacheContext.Update(model);
-                        Core.GlashAgentManager.Instance.OnAdd(model);
-                        InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                    { x=>x.Model, JsonSerializer.Deserialize<Model.Profile>(JsonSerializer.Serialize(model))},
+                    {x=>x.OkAction,editModel =>
+                        {
+                            try
+                            {
+                                Core.GlashAgentManager.Instance.OnDelete(model);
+                                model.Name = editModel.Name;
+                                model.ServerUrl = editModel.ServerUrl;
+                                model.AgentName = editModel.AgentName;
+                                model.AgentPassword = editModel.AgentPassword;
+                                ConfigDbContext.CacheContext.Update(model);
+                                Core.GlashAgentManager.Instance.OnAdd(model);
+                                InvokeAsync(StateHasChanged);
+                                modalWindow.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                modalAlert.Show(Locale.GetString("Error"), ex.Message);
+                            }
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        modalAlert.Show(Locale.GetString("Error"), ex.Message);
-                    }
-                }
-            ));
+                });
         }
 
         private void Delete(Model.Profile model)

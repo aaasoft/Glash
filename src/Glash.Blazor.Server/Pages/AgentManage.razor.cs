@@ -28,47 +28,53 @@ namespace Glash.Blazor.Server.Pages
 
         private void Add()
         {
-            modalWindow.Show<Controls.EditAgentInfo>(TextAdd, Controls.EditAgentInfo.PrepareParameter(
-                new Model.AgentInfo(),
-                model =>
+            modalWindow.Show(TextAdd,
+                new DialogParameters<Controls.EditAgentInfo>()
                 {
-                    try
-                    {
-                        ConfigDbContext.CacheContext.Add(model);
-                        AgentChangedHandler?.Invoke();
-                        InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                    {x=>x.Model,new Model.AgentInfo()},
+                    {x=>x.OkAction, model =>
+                        {
+                            try
+                            {
+                                ConfigDbContext.CacheContext.Add(model);
+                                AgentChangedHandler?.Invoke();
+                                InvokeAsync(StateHasChanged);
+                                modalWindow.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                modalAlert.Show(TextError, ex.Message);
+                            }
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        modalAlert.Show(TextError, ex.Message);
-                    }
-                }
-            ));
+                });
         }
 
         private void Edit(Model.AgentInfo model)
         {
-            modalWindow.Show<Controls.EditAgentInfo>(TextEdit, Controls.EditAgentInfo.PrepareParameter(
-                JsonSerializer.Deserialize<Model.AgentInfo>(JsonSerializer.Serialize(model)),
-                editModel =>
+            modalWindow.Show(TextEdit,
+                new DialogParameters<Controls.EditAgentInfo>
                 {
-                    try
-                    {
-                        if (model.Context != null)
-                            model.Context.Dispose();
-                        model.Password = editModel.Password;
-                        ConfigDbContext.CacheContext.Update(model);
-                        AgentChangedHandler?.Invoke();
-                        InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                    {x=>x.Model, JsonSerializer.Deserialize<Model.AgentInfo>(JsonSerializer.Serialize(model))},
+                    {x=>x.OkAction,editModel =>
+                        {
+                            try
+                            {
+                                if (model.Context != null)
+                                    model.Context.Dispose();
+                                model.Password = editModel.Password;
+                                ConfigDbContext.CacheContext.Update(model);
+                                AgentChangedHandler?.Invoke();
+                                InvokeAsync(StateHasChanged);
+                                modalWindow.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                modalAlert.Show(TextError, ex.Message);
+                            }
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        modalAlert.Show(TextError, ex.Message);
-                    }
-                }
-            ));
+                });
         }
 
         private void Delete(Model.AgentInfo model)

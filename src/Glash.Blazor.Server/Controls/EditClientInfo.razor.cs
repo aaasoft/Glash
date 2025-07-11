@@ -37,15 +37,6 @@ namespace Glash.Blazor.Server.Controls
             OkAction?.Invoke(Model, agents);
         }
 
-        public static Dictionary<string, object> PrepareParameter(Model.ClientInfo model, Action<Model.ClientInfo, string[]> okAction)
-        {
-            return new Dictionary<string, object>()
-            {
-                [nameof(Model)] = model,
-                [nameof(OkAction)] = okAction,
-            };
-        }
-
         private void checkAgent(SelectAgentInfo tag)
         {
             tag.Checked = !tag.Checked;
