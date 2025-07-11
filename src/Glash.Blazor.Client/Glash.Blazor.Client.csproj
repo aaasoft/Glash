@@ -5,8 +5,8 @@
 		<Version>1.5.12.1</Version>
 		<Description>Glash Client Blazor controls.</Description>
 		<PackageIcon>logo.png</PackageIcon>
-		<PackageProjectUrl>https://github.com/GlashProxy/Glash</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/GlashProxy/Glash</RepositoryUrl>
+		<PackageProjectUrl>https://cnb.cool/scbeta/Glash</PackageProjectUrl>
+		<RepositoryUrl>https://cnb.cool/scbeta/Glash</RepositoryUrl>
 		<PackageTags>Glash;Proxy</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
