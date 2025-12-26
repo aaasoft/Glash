@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Glash\Glash.csproj" />
+	<PackageReference Include="Quick.Protocol.AllClients" Version="2.6.6" />
   </ItemGroup>
 
 </Project>
