@@ -1,9 +1,11 @@
+using System;
 using Glash.Blazor.Client;
 using Quick.LiteDB.Plus;
 using System.Diagnostics;
 
 Quick.Protocol.QpAllClients.RegisterUriSchema();
-var dbFile = "Config.litedb";
+// Read dbFile path from environment variable, default to "Config.litedb" if not set
+var dbFile = Environment.GetEnvironmentVariable("GLASH_DB_FILE_PATH") ?? "Config.litedb";
 #if DEBUG
 dbFile = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), dbFile);
 #endif
