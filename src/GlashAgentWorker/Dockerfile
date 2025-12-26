@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy the entire source code into the container
+COPY . .
+
+# Build the project
+RUN dotnet publish GlashAgentWorker/GlashAgentWorker.csproj -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+WORKDIR /app
+COPY --from=build /app .
+
+# Set default timezone to Shanghai
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Set default environment variables
+ENV GLASH_SERVER_URL=qp.wss://my_galsh_server.cnb.run/glash?Password=5a79cf67400c48b3afcf33d0e23e5541
+ENV GLASH_AGENT_NAME=agent
+ENV GLASH_AGENT_PASSWORD=agent
+
+# Support passing additional arguments to the application
+ENTRYPOINT ["dotnet", "GlashAgentWorker.dll"]
