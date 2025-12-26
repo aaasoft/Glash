@@ -27,6 +27,7 @@ build_template: &build_template
     - BUILD_KEY_PREFIX
   runner:
     tags: ${RUNNER_TAG}
+    cpus: 2
   services:
     - docker
   name: "Build ${IMAGE_ID} ${ARCH}"
@@ -59,7 +60,7 @@ manifest_template: &manifest_template
     - IMAGE_REPOSITORY
     - BUILD_KEY_PREFIX
   runner:
-    cpus: 2
+    cpus: 1
   services:
     - docker
   name: "Create ${IMAGE_ID} Manifest"
