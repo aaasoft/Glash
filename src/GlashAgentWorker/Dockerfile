@@ -23,6 +23,11 @@ COPY --from=build /app .
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Set default language to Chinese
+ENV LANG=zh_CN.UTF-8
+ENV LANGUAGE=zh_CN:zh
+ENV LC_ALL=zh_CN.UTF-8
+
 # Set default environment variables
 ENV GLASH_SERVER_URL=qp.wss://my_galsh_server.cnb.run/glash?Password=5a79cf67400c48b3afcf33d0e23e5541
 ENV GLASH_AGENT_NAME=agent

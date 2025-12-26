@@ -23,6 +23,11 @@ COPY --from=build /app .
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Set default language to Chinese
+ENV LANG=zh_CN.UTF-8
+ENV LANGUAGE=zh_CN:zh
+ENV LC_ALL=zh_CN.UTF-8
+
 # Set default ASP.NET Core environment
 ENV ASPNETCORE_ENVIRONMENT=Production
 # Set default listening port
