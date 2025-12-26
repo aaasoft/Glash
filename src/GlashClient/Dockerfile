@@ -2,10 +2,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy the entire source code into the container
-COPY .. ..
+COPY src/ .
 
 # Build the project
-RUN dotnet publish GlashClient.csproj -c Release -o /app
+RUN dotnet publish GlashClient/GlashClient.csproj -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
@@ -18,7 +18,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set default ASP.NET Core environment
 ENV ASPNETCORE_ENVIRONMENT=Production
 # Set default listening port
-ENV ASPNETCORE_URLS=http://+:6001
+ENV HTTP_PORTS=6001
 # Set default database file path
 ENV GLASH_DB_FILE_PATH=Config.litedb
 
