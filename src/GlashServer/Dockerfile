@@ -33,6 +33,8 @@ ENV GLASH_DB_FILE_PATH=Config.litedb
 ENV GLASH_SERVER_PATH=/glash
 # Set default connection password (empty)
 ENV GLASH_CONNECTION_PASSWORD=""
+# Set default admin password (empty)
+ENV GLASH_ADMIN_PASSWORD=""
 
 # Support passing additional arguments to the application
 ENTRYPOINT ["dotnet", "GlashServer.dll"]

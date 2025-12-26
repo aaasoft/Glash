@@ -21,6 +21,14 @@ if (!string.IsNullOrEmpty(connectionPassword))
     Global.Instance.ConnectionPassword = connectionPassword;
 }
 
+// Read admin password from environment variable, set it if not empty
+var adminPassword = Environment.GetEnvironmentVariable("GLASH_ADMIN_PASSWORD");
+if (!string.IsNullOrEmpty(adminPassword))
+{
+    GlashServer.Core.LoginPasswordManager.Instance.SetLoginPassword(adminPassword);
+    Console.WriteLine("Admin password set from environment variable.");
+}
+
 // Read Glash server path from environment variable, set it if not empty
 var glashServerPath = Environment.GetEnvironmentVariable("GLASH_SERVER_PATH");
 if (!string.IsNullOrEmpty(glashServerPath))

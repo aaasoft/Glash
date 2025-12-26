@@ -29,6 +29,8 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 ENV HTTP_PORTS=6002
 # Set default database file path
 ENV GLASH_DB_FILE_PATH=Config.litedb
+# Set default admin password (empty)
+ENV GLASH_ADMIN_PASSWORD=""
 
 # Support passing additional arguments to the application
 ENTRYPOINT ["dotnet", "GlashAgent.dll"]

@@ -16,6 +16,15 @@ ConfigDbContext.Init(dbFile, modelBuilder =>
 });
 ConfigDbContext.CacheContext.LoadCache();
 GlashAgent.Core.LoginPasswordManager.Instance.Init();
+
+// Read admin password from environment variable, set it if not empty
+var adminPassword = Environment.GetEnvironmentVariable("GLASH_ADMIN_PASSWORD");
+if (!string.IsNullOrEmpty(adminPassword))
+{
+    GlashAgent.Core.LoginPasswordManager.Instance.SetLoginPassword(adminPassword);
+    Console.WriteLine("Admin password set from environment variable.");
+}
+
 GlashAgentManager.Instance.Init();
 
 var builder = WebApplication.CreateBuilder(args);
