@@ -1,13 +1,21 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Use multi-platform aware base images
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+
 WORKDIR /src
 
 # Copy the entire source code into the container
 COPY src/ .
 
-# Build the project
-RUN dotnet publish GlashAgent/GlashAgent.csproj -c Release -o /app
+# Restore dependencies first for better caching
+RUN dotnet restore
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+# Build the project for the target platform
+RUN dotnet publish GlashAgent/GlashAgent.csproj -c Release -o /app --no-restore
+
+# Use multi-platform aware runtime image
+FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
 

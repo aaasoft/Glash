@@ -1,0 +1,22 @@
+# .cnb/web_trigger.yml
+branch:
+  - buttons:
+      - name: 构建所有 Glash 镜像
+        description: 手动构建所有 Glash 服务镜像
+        event: web_trigger_build_all
+
+      - name: 构建 GlashServer 镜像
+        description: 手动构建 GlashServer 服务镜像
+        event: web_trigger_build_glashserver
+
+      - name: 构建 GlashAgent 镜像
+        description: 手动构建 GlashAgent 服务镜像
+        event: web_trigger_build_glashagent
+
+      - name: 构建 GlashAgentWorker 镜像
+        description: 手动构建 GlashAgentWorker 服务镜像
+        event: web_trigger_build_glashagentworker
+
+      - name: 构建 GlashClient 镜像
+        description: 手动构建 GlashClient 服务镜像
+        event: web_trigger_build_glashclient
