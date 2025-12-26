@@ -241,13 +241,15 @@ glashclient_image: &glashclient_image
   web_trigger_build_glashclient: *glashclient_image
 
 # ====================== VSCODE 服务配置 ======================
+# .cnb.yml
 $:
   vscode:
-    - runner:
-        tags: cnb:arch:arm64:v8
-  services:
-    - vscode
-    - docker
-  stages:
-    - name: Initialize workspace
-      script: ls -al
+    - docker:
+        image: cnbcool/default-dev-env:latest
+      services:
+        - vscode
+        - docker
+      # 开发环境启动后会执行的任务
+      stages:
+        - name: ls
+          script: ls -al
