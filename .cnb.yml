@@ -174,19 +174,59 @@ glashclient_image: &glashclient_image
 
 # ====================== 全局触发配置 ======================
 "**":
-  # 默认触发事件 - 构建所有服务
-  push:
-    - <<: *glashserver_image
-    - <<: *glashagent_image
-    - <<: *glashagentworker_image
-    - <<: *glashclient_image
-  
-  # 手动触发事件 - 构建所有服务
+# 手动触发事件 - 构建所有服务
   web_trigger_build_all:
-    - <<: *glashserver_image
-    - <<: *glashagent_image
-    - <<: *glashagentworker_image
-    - <<: *glashclient_image
+    - name: Build GlashServer ARM64
+      <<: *build_template
+      env:
+        <<: [*glashserver_common_env, *arm64_common_env]
+    - name: Build GlashServer AMD64
+      <<: *build_template
+      env:
+        <<: [*glashserver_common_env, *amd64_common_env]
+    - name: Create GlashServer Manifest
+      <<: *manifest_template
+      env:
+        <<: *glashserver_common_env
+    
+    - name: Build GlashAgent ARM64
+      <<: *build_template
+      env:
+        <<: [*glashagent_common_env, *arm64_common_env]
+    - name: Build GlashAgent AMD64
+      <<: *build_template
+      env:
+        <<: [*glashagent_common_env, *amd64_common_env]
+    - name: Create GlashAgent Manifest
+      <<: *manifest_template
+      env:
+        <<: *glashagent_common_env
+    
+    - name: Build GlashAgentWorker ARM64
+      <<: *build_template
+      env:
+        <<: [*glashagentworker_common_env, *arm64_common_env]
+    - name: Build GlashAgentWorker AMD64
+      <<: *build_template
+      env:
+        <<: [*glashagentworker_common_env, *amd64_common_env]
+    - name: Create GlashAgentWorker Manifest
+      <<: *manifest_template
+      env:
+        <<: *glashagentworker_common_env
+    
+    - name: Build GlashClient ARM64
+      <<: *build_template
+      env:
+        <<: [*glashclient_common_env, *arm64_common_env]
+    - name: Build GlashClient AMD64
+      <<: *build_template
+      env:
+        <<: [*glashclient_common_env, *amd64_common_env]
+    - name: Create GlashClient Manifest
+      <<: *manifest_template
+      env:
+        <<: *glashclient_common_env
   
   # GlashServer 独立触发事件
   web_trigger_build_glashserver: *glashserver_image
