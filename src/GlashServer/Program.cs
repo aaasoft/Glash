@@ -21,6 +21,13 @@ if (!string.IsNullOrEmpty(connectionPassword))
     Global.Instance.ConnectionPassword = connectionPassword;
 }
 
+// Read Glash server path from environment variable, set it if not empty
+var glashServerPath = Environment.GetEnvironmentVariable("GLASH_SERVER_PATH");
+if (!string.IsNullOrEmpty(glashServerPath))
+{
+    Global.Instance.GlashServerPath = glashServerPath;
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -29,9 +36,8 @@ builder.Services.AddServerSideBlazor();
 
 var app = builder.Build();
 app.UseWebSockets();
-// Read Glash server path from environment variable, default to "/glash" if not set
-var glashServerPath = Environment.GetEnvironmentVariable("GLASH_SERVER_PATH") ?? "/glash";
-app.UseGlashServer(glashServerPath, Global.Instance.ConnectionPassword);
+// Use configured Glash server path
+app.UseGlashServer(Global.Instance.GlashServerPath, Global.Instance.ConnectionPassword);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
