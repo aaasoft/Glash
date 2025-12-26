@@ -15,7 +15,7 @@ RUN dotnet restore
 RUN dotnet publish GlashAgentWorker/GlashAgentWorker.csproj -c Release -o /app --no-restore
 
 # Use multi-platform aware runtime image
-FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
 
