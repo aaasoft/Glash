@@ -54,7 +54,8 @@ namespace Glash.Blazor.Server
             set
             {
                 Model.Config.SetConfig(nameof(ConnectionPassword), value);
-                ServerOptions.Password = value;
+                if (ServerOptions != null)
+                    ServerOptions.Password = value;
             }
         }
 
