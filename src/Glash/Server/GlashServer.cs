@@ -1,6 +1,6 @@
 ﻿using Glash.Core;
 using Quick.Protocol;
-using Quick.Protocol.Utils;
+using Quick.Utils;
 
 namespace Glash.Server
 {

@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Quick.Protocol.AllClients" Version="2.6.6" />
+		<PackageReference Include="Quick.Protocol.AllClients" Version="2.6.7" />
 	</ItemGroup>
 
 	<ItemGroup>

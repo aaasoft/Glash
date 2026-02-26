@@ -1,6 +1,6 @@
 ﻿using Glash.Agent;
-using Quick.Blazor.Bootstrap.Utils;
 using Quick.Localize;
+using Quick.Utils;
 
 namespace Glash.Blazor.Agent.Core
 {

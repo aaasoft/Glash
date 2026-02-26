@@ -1,9 +1,8 @@
 ﻿using Quick.Protocol;
-using Quick.Protocol.Utils;
 using Glash.Core;
 using Glash.Client.Protocol.QpModel;
 using Glash.Client.Protocol.QpNotices;
-using System.Reflection;
+using Quick.Utils;
 
 namespace Glash.Client
 {

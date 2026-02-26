@@ -1,5 +1,5 @@
 ﻿using Quick.Blazor.Bootstrap;
-using Quick.Protocol.Utils;
+using Quick.Utils;
 using System.ComponentModel.DataAnnotations;
 
 namespace GlashServer.Pages;
