@@ -1,5 +1,5 @@
 ﻿using Glash.Server;
-using Glash.Utils;
+using Quick.Utils;
 using Quick.Blazor.Bootstrap;
 using Quick.Localize;
 
