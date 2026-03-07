@@ -23,9 +23,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.6.226" />
-		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.6.7" />		
-		<PackageReference Include="Quick.Protocol.AllClients" Version="2.6.7" />
+		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.7.302" />
+		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.6.8" />		
+		<PackageReference Include="Quick.Protocol.AllClients" Version="2.6.8" />
 		<PackageReference Include="Quick.Localize" Version="2.0.4" />
 		<PackageReference Include="Quick.LiteDB.Plus" Version="1.0.3" />
 	</ItemGroup>
