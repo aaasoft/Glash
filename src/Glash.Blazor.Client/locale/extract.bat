@@ -1,2 +1,2 @@
 #/bin/sh
-GetText.Extractor -v -s ../
+dotnet tool exec GetText.NET.Extractor --allow-roll-forward -- -v -s ../

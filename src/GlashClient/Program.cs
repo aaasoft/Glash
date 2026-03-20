@@ -14,7 +14,7 @@ ConfigDbContext.Init(dbFile, modelBuilder =>
     Global.Instance.OnModelCreating(modelBuilder);
 });
 ConfigDbContext.CacheContext.LoadCache();
-
+ProfileContextManager.Instance.Start();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -38,3 +38,4 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+ProfileContextManager.Instance.Stop();

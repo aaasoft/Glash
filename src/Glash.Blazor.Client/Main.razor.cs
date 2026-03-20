@@ -9,6 +9,7 @@ namespace Glash.Blazor.Client
 {
     public partial class Main : ComponentBase_WithGettextSupport
     {
+        private static string TextAutoEnable => Locale.GetString("Auto Enable");
         private static string TextProfile => Locale.GetString("Profile");
         private static string TextEnable => Locale.GetString("Enable");
         private static string TextDisable => Locale.GetString("Disable");
@@ -28,8 +29,6 @@ namespace Glash.Blazor.Client
         private static string TextDisableAll => Locale.GetString("Disable All");
         private static string TextLocal => Locale.GetString("Local");
         private static string TextRemote => Locale.GetString("Remote");
-        private static string TextDisplayRows => Locale.GetString("Display Rows");
-        private static string TextDisconnectedFromServer => Locale.GetString("Disconnected from server");
         private static string TextAgentNotLogin => Locale.GetString("Agent not login");
 
         private ModalAlert modalAlert;
@@ -51,14 +50,12 @@ namespace Glash.Blazor.Client
                 if (CurrentProfileContext != null)
                 {
                     CurrentProfileContext.EnableStateChanged -= profileContext_EnableStateChanged;
-                    CurrentProfileContext.AgentLoginStatusChanged -= profileContext_AgentLoginStatusChanged;
                 }
                 CurrentProfileContext = null;
                 if (!string.IsNullOrEmpty(value))
                 {
                     CurrentProfileContext = ProfileContextManager.Instance.Get(value);
                     CurrentProfileContext.EnableStateChanged += profileContext_EnableStateChanged;
-                    CurrentProfileContext.AgentLoginStatusChanged += profileContext_AgentLoginStatusChanged;
                 }
                 CurrentAgentName = CurrentProfileContext?.Agents?.FirstOrDefault()?.AgentName;
             }
@@ -78,10 +75,18 @@ namespace Glash.Blazor.Client
             }
         }
 
+        private Timer autoRefreshTimer;
+
+        private void autoRefresh(object state)
+        {
+            InvokeAsync(StateHasChanged);
+        }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
             CurrentProfileId = ProfileContextManager.Instance.GetProfileContexts()?.FirstOrDefault()?.Profile?.Id;
+            autoRefreshTimer = new Timer(autoRefresh, null, 1000, 1000);
         }
 
         private void AddProfile()
@@ -147,19 +152,11 @@ namespace Glash.Blazor.Client
 
         private void profileContext_EnableStateChanged(object sender, bool e)
         {
-            var profileContext = (ProfileContext)sender;
-            if (profileContext == CurrentProfileContext)
-            {
+            if(e)
+                CurrentAgentName= CurrentProfileContext?.Agents?.FirstOrDefault()?.AgentName;
+            else
                 CurrentAgentName = null;
-                InvokeAsync(StateHasChanged);
-            }
-        }
-
-        private void profileContext_AgentLoginStatusChanged(object sender, AgentInfo agent)
-        {
-            var profileContext = (ProfileContext)sender;
-            if (profileContext == CurrentProfileContext)
-                InvokeAsync(StateHasChanged);
+            InvokeAsync(StateHasChanged);
         }
 
         private void ShowLogs()
@@ -390,10 +387,10 @@ namespace Glash.Blazor.Client
 
         public override void Dispose()
         {
+            autoRefreshTimer.Dispose();
             foreach (var profileContext in ProfileContextManager.Instance.GetProfileContexts())
             {
                 profileContext.EnableStateChanged -= profileContext_EnableStateChanged;
-                profileContext.AgentLoginStatusChanged -= profileContext_AgentLoginStatusChanged;
             }
             CurrentAgentName = null;
             CurrentProfileId = null;
