@@ -1,5 +1,4 @@
-﻿
-using Glash.Blazor.Client.Model;
+﻿using Glash.Blazor.Client.Model;
 using Quick.LiteDB.Plus;
 using Quick.Utils;
 
@@ -33,6 +32,8 @@ public class ProfileContextManager
             Config.SetConfig(nameof(AutoEnable), value.ToString());
             if (value)
                 beginCheckAutoEnable();
+            else
+                cts?.Cancel();
         }
     }
 
@@ -117,9 +118,9 @@ public class ProfileContextManager
                     {
                         continue;
                     }
-                    foreach(var agent in profile.Agents)
+                    foreach (var agent in profile.Agents)
                     {
-                        if(!agent.IsLoggedIn)
+                        if (!agent.IsLoggedIn)
                             continue;
                         foreach (var proxyRuleContext in profile.GlashClient.ProxyRuleContexts.Where(t => t.Config.Agent == agent.AgentName))
                         {
@@ -128,7 +129,7 @@ public class ProfileContextManager
                             try { profile.GlashClient.EnableProxyRule(proxyRuleContext); }
                             catch { }
                         }
-                    }                    
+                    }
                 }
             }
             catch (Exception ex)
