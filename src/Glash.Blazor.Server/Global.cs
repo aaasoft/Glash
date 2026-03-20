@@ -54,7 +54,33 @@ namespace Glash.Blazor.Server
             set
             {
                 Model.Config.SetConfig(nameof(ConnectionPassword), value);
-                ServerOptions.Password = value;
+                if (ServerOptions != null)
+                    ServerOptions.Password = value;
+            }
+        }
+
+        public string GlashServerPath
+        {
+            get
+            {
+                var path = Model.Config.GetConfig(nameof(GlashServerPath));
+                if (string.IsNullOrEmpty(path))
+                {
+                    path = "/glash";
+                    Model.Config.SetConfig(nameof(GlashServerPath), path);
+                }
+                // Ensure path starts with /
+                if (!path.StartsWith("/"))
+                    path = "/" + path;
+                return path;
+            }
+            set
+            {
+                var path = value;
+                // Ensure path starts with /
+                if (!string.IsNullOrEmpty(path) && !path.StartsWith("/"))
+                    path = "/" + path;
+                Model.Config.SetConfig(nameof(GlashServerPath), path);
             }
         }
 

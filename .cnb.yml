@@ -1,0 +1,256 @@
+# ====================== 基础配置锚点 ======================
+# 设置日期环境变量
+date_stage: &date_stage
+- name: Set build date
+  script: echo -n $(date +"%Y%m%d")
+  exports:
+    info: DATE
+
+# ====================== 架构公共变量 ======================
+# ARM64 公共变量
+arm64_common_env: &arm64_common_env
+  ARCH: "arm64"
+  RUNNER_TAG: "cnb:arch:arm64:v8"
+
+# AMD64 公共变量
+amd64_common_env: &amd64_common_env
+  ARCH: "amd64"
+  RUNNER_TAG: "cnb:arch:amd64"
+
+# ====================== 统一构建模板 ======================
+# 通用构建模板
+build_template: &build_template
+  parameters:
+    - DOCKERFILE
+    - IMAGE_ID
+    - IMAGE_REPOSITORY
+    - BUILD_KEY_PREFIX
+  runner:
+    tags: ${RUNNER_TAG}
+    cpus: 2
+  services:
+    - docker
+  name: "Build ${IMAGE_ID} ${ARCH}"
+  env:
+    DOCKERFILE: ""
+    IMAGE_ID: ""
+    IMAGE_REPOSITORY: ""
+    BUILD_KEY_PREFIX: ""
+  stages:
+    - <<: *date_stage
+    - name: Build ${ARCH} image
+      script: |
+        docker build . -f ${DOCKERFILE} \
+          -t ${IMAGE_REPOSITORY}:latest-${ARCH} \
+          -t ${IMAGE_REPOSITORY}:${DATE}-${ARCH} \
+          --platform linux/${ARCH}
+    - name: Push ${ARCH} images
+      script: |
+        docker push ${IMAGE_REPOSITORY}:latest-${ARCH}
+        docker push ${IMAGE_REPOSITORY}:${DATE}-${ARCH}
+    - name: Resolve ${ARCH} signal
+      type: cnb:resolve
+      options:
+        key: ${BUILD_KEY_PREFIX}-${ARCH}
+
+# ====================== 清单合并模板 ======================
+manifest_template: &manifest_template
+  parameters:
+    - IMAGE_ID
+    - IMAGE_REPOSITORY
+    - BUILD_KEY_PREFIX
+  runner:
+    cpus: 1
+  services:
+    - docker
+  name: "Create ${IMAGE_ID} Manifest"
+  env:
+    IMAGE_ID: ""
+    IMAGE_REPOSITORY: ""
+    BUILD_KEY_PREFIX: ""
+  stages:
+    - <<: *date_stage
+    - name: Wait for ARM64 completion
+      type: cnb:await
+      options:
+        key: ${BUILD_KEY_PREFIX}-arm64
+    - name: Wait for AMD64 completion
+      type: cnb:await
+      options:
+        key: ${BUILD_KEY_PREFIX}-amd64
+    - name: Create multi-arch manifest
+      image: cnbcool/manifest
+      settings:
+        target: ${IMAGE_REPOSITORY}:latest
+        template: ${IMAGE_REPOSITORY}:latest-ARCH
+        platforms:
+          - linux/amd64
+          - linux/arm64
+    - name: Create dated manifest
+      image: cnbcool/manifest
+      settings:
+        target: ${IMAGE_REPOSITORY}:${DATE}
+        template: ${IMAGE_REPOSITORY}:${DATE}-ARCH
+        platforms:
+          - linux/amd64
+          - linux/arm64
+
+# ====================== 公共环境变量定义 ======================
+# GlashServer 公共环境变量
+glashserver_common_env: &glashserver_common_env
+  IMAGE_ID: "glashserver"
+  DOCKERFILE: "src/GlashServer/Dockerfile"
+  IMAGE_REPOSITORY: "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/${IMAGE_ID}"
+  BUILD_KEY_PREFIX: "build-${IMAGE_ID}"
+
+# GlashAgent 公共环境变量
+glashagent_common_env: &glashagent_common_env
+  IMAGE_ID: "glashagent"
+  DOCKERFILE: "src/GlashAgent/Dockerfile"
+  IMAGE_REPOSITORY: "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/${IMAGE_ID}"
+  BUILD_KEY_PREFIX: "build-${IMAGE_ID}"
+
+# GlashAgentWorker 公共环境变量
+glashagentworker_common_env: &glashagentworker_common_env
+  IMAGE_ID: "glashagentworker"
+  DOCKERFILE: "src/GlashAgentWorker/Dockerfile"
+  IMAGE_REPOSITORY: "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/${IMAGE_ID}"
+  BUILD_KEY_PREFIX: "build-${IMAGE_ID}"
+
+# GlashClient 公共环境变量
+glashclient_common_env: &glashclient_common_env
+  IMAGE_ID: "glashclient"
+  DOCKERFILE: "src/GlashClient/Dockerfile"
+  IMAGE_REPOSITORY: "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/${IMAGE_ID}"
+  BUILD_KEY_PREFIX: "build-${IMAGE_ID}"
+
+# ====================== 镜像配置定义 ======================
+# GlashServer 镜像配置 (整体流程)
+glashserver_image: &glashserver_image
+  - <<: *build_template
+    env:
+      <<: [*glashserver_common_env, *arm64_common_env]
+  - <<: *build_template
+    env:
+      <<: [*glashserver_common_env, *amd64_common_env]
+  - <<: *manifest_template
+    env:
+      <<: *glashserver_common_env
+
+# GlashAgent 镜像配置 (整体流程)
+glashagent_image: &glashagent_image
+  - <<: *build_template
+    env:
+      <<: [*glashagent_common_env, *arm64_common_env]
+  - <<: *build_template
+    env:
+      <<: [*glashagent_common_env, *amd64_common_env]
+  - <<: *manifest_template
+    env:
+      <<: *glashagent_common_env
+
+# GlashAgentWorker 镜像配置 (整体流程)
+glashagentworker_image: &glashagentworker_image
+  - <<: *build_template
+    env:
+      <<: [*glashagentworker_common_env, *arm64_common_env]
+  - <<: *build_template
+    env:
+      <<: [*glashagentworker_common_env, *amd64_common_env]
+  - <<: *manifest_template
+    env:
+      <<: *glashagentworker_common_env
+
+# GlashClient 镜像配置 (整体流程)
+glashclient_image: &glashclient_image
+  - <<: *build_template
+    env:
+      <<: [*glashclient_common_env, *arm64_common_env]
+  - <<: *build_template
+    env:
+      <<: [*glashclient_common_env, *amd64_common_env]
+  - <<: *manifest_template
+    env:
+      <<: *glashclient_common_env
+
+# ====================== 全局触发配置 ======================
+"**":
+# 手动触发事件 - 构建所有服务
+  web_trigger_build_all:
+    - name: Build GlashServer ARM64
+      <<: *build_template
+      env:
+        <<: [*glashserver_common_env, *arm64_common_env]
+    - name: Build GlashServer AMD64
+      <<: *build_template
+      env:
+        <<: [*glashserver_common_env, *amd64_common_env]
+    - name: Create GlashServer Manifest
+      <<: *manifest_template
+      env:
+        <<: *glashserver_common_env
+    
+    - name: Build GlashAgent ARM64
+      <<: *build_template
+      env:
+        <<: [*glashagent_common_env, *arm64_common_env]
+    - name: Build GlashAgent AMD64
+      <<: *build_template
+      env:
+        <<: [*glashagent_common_env, *amd64_common_env]
+    - name: Create GlashAgent Manifest
+      <<: *manifest_template
+      env:
+        <<: *glashagent_common_env
+    
+    - name: Build GlashAgentWorker ARM64
+      <<: *build_template
+      env:
+        <<: [*glashagentworker_common_env, *arm64_common_env]
+    - name: Build GlashAgentWorker AMD64
+      <<: *build_template
+      env:
+        <<: [*glashagentworker_common_env, *amd64_common_env]
+    - name: Create GlashAgentWorker Manifest
+      <<: *manifest_template
+      env:
+        <<: *glashagentworker_common_env
+    
+    - name: Build GlashClient ARM64
+      <<: *build_template
+      env:
+        <<: [*glashclient_common_env, *arm64_common_env]
+    - name: Build GlashClient AMD64
+      <<: *build_template
+      env:
+        <<: [*glashclient_common_env, *amd64_common_env]
+    - name: Create GlashClient Manifest
+      <<: *manifest_template
+      env:
+        <<: *glashclient_common_env
+  
+  # GlashServer 独立触发事件
+  web_trigger_build_glashserver: *glashserver_image
+  
+  # GlashAgent 独立触发事件
+  web_trigger_build_glashagent: *glashagent_image
+  
+  # GlashAgentWorker 独立触发事件
+  web_trigger_build_glashagentworker: *glashagentworker_image
+  
+  # GlashClient 独立触发事件
+  web_trigger_build_glashclient: *glashclient_image
+
+# ====================== VSCODE 服务配置 ======================
+# .cnb.yml
+$:
+  vscode:
+    - docker:
+        image: cnbcool/default-dev-env:latest
+      services:
+        - vscode
+        - docker
+      # 开发环境启动后会执行的任务
+      stages:
+        - name: ls
+          script: ls -al
