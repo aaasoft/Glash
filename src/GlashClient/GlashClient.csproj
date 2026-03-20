@@ -12,6 +12,17 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+		<EmbeddedResource Include="locale/zh.mo" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="wwwroot\favicon.ico">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Quick.Protocol.Http.Client" Version="2.6.9" />
 	  <PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.6.9" />
 	</ItemGroup>

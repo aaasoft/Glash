@@ -1,3 +1,66 @@
-﻿@page "/"
-
-<Main></Main>
+﻿@inherits ComponentBase_WithGettextSupport
+@page "/"
+@if (IsLogin)
+{
+    <div class="sidebar">
+    <NavMenu ActiveKey="Home">
+        <Title>
+            @TextTitle
+        </Title>
+        <ChildContent>
+            <NavMenuItem Key="LoginPasswordManage" OnClick="@(() => Show<LoginPasswordManage>())">
+                <Tab>
+                    <i class="fa fa-key" aria-hidden="true"></i>
+                    @TextLoginPasswordManage
+                </Tab>
+            </NavMenuItem>
+            <NavMenuItem Key="ProfileManage" OnClick="@(() => Show<Main>())">
+                <Tab>
+                    <i class="fa fa-address-book" aria-hidden="true"></i>
+                    @TextProfileManage
+                </Tab>
+            </NavMenuItem>
+        </ChildContent>
+    </NavMenu>
+</div>
+<div class="main">
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+}
+else
+{
+    @*
+登录窗口
+*@
+    <Modal Visiable DialogBackdropVisiable DialogCentered>
+        <TitleContent>
+            <img src="favicon.ico" class="mr-2" width="30" height="30" />
+            @TextTitle
+        </TitleContent>
+        <BodyContent>
+            <div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                        </div>
+                        <input class="form-control @(string.IsNullOrEmpty(Message) ? "" : "is-invalid")"
+                            placeholder="@TextPleaseInputPassword" type="password" autocomplete="off" @bind-value="Password"
+                            @bind-value:event="oninput" @onkeypress="onPasswordKeyPress" required autofocus />
+                        @if (!string.IsNullOrEmpty(Message))
+                        {
+                            <div class="invalid-feedback">
+                                @(Message)
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="button" class="btn btn-success btn-block" value="@TextLogin" @onclick="OnPost" />
+                </div>
+            </div>
+        </BodyContent>
+    </Modal>
+}

@@ -14,6 +14,8 @@ ConfigDbContext.Init(dbFile, modelBuilder =>
     Global.Instance.OnModelCreating(modelBuilder);
 });
 ConfigDbContext.CacheContext.LoadCache();
+GlashClient.Core.LoginPasswordManager.Instance.Init();
+
 ProfileContextManager.Instance.Start();
 var builder = WebApplication.CreateBuilder(args);
 
