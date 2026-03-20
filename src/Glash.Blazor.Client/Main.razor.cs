@@ -48,9 +48,18 @@ namespace Glash.Blazor.Client
             set
             {
                 _CurrentProfileId = value;
+                if (CurrentProfileContext != null)
+                {
+                    CurrentProfileContext.EnableStateChanged -= profileContext_EnableStateChanged;
+                    CurrentProfileContext.AgentLoginStatusChanged -= profileContext_AgentLoginStatusChanged;
+                }
                 CurrentProfileContext = null;
                 if (!string.IsNullOrEmpty(value))
+                {
                     CurrentProfileContext = ProfileContextManager.Instance.Get(value);
+                    CurrentProfileContext.EnableStateChanged += profileContext_EnableStateChanged;
+                    CurrentProfileContext.AgentLoginStatusChanged += profileContext_AgentLoginStatusChanged;
+                }
                 CurrentAgentName = CurrentProfileContext?.Agents?.FirstOrDefault()?.AgentName;
             }
         }
@@ -62,7 +71,10 @@ namespace Glash.Blazor.Client
             set
             {
                 _CurrentAgentName = value;
-                CurrentAgent = CurrentProfileContext?.Agents?.FirstOrDefault(t => t.AgentName == value);
+                if (string.IsNullOrEmpty(value))
+                    CurrentAgent = null;
+                else
+                    CurrentAgent = CurrentProfileContext?.Agents?.FirstOrDefault(t => t.AgentName == value);
             }
         }
 
@@ -122,8 +134,6 @@ namespace Glash.Blazor.Client
             {
                 await profileContext.Enable();
                 CurrentAgentName = profileContext?.Agents?.FirstOrDefault()?.AgentName;
-                profileContext.EnableStateChanged += profileContext_EnableStateChanged;
-                profileContext.AgentLoginStatusChanged += profileContext_AgentLoginStatusChanged;
             }
             catch (Exception ex)
             {
@@ -138,9 +148,6 @@ namespace Glash.Blazor.Client
         private void profileContext_EnableStateChanged(object sender, bool e)
         {
             var profileContext = (ProfileContext)sender;
-            profileContext.EnableStateChanged -= profileContext_EnableStateChanged;
-            profileContext.AgentLoginStatusChanged -= profileContext_AgentLoginStatusChanged;
-
             if (profileContext == CurrentProfileContext)
             {
                 CurrentAgentName = null;
