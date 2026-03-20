@@ -12,7 +12,9 @@ public class Program
 
     public static async Task Main(string[] args)
     {
-        Quick.Protocol.QpAllClients.RegisterUriSchema();
+        Quick.Protocol.WebSocket.Client.QpWebSocketClientOptions.RegisterUriSchema();
+        Quick.Protocol.Http.Client.QpHttpClientOptions.RegisterUriSchema();
+
         // Read configuration from environment variables
         var serverUrl = Environment.GetEnvironmentVariable("GLASH_SERVER_URL") ?? throw new ArgumentNullException("GLASH_SERVER_URL", "GLASH_SERVER_URL environment variable is required.");
         var agentName = Environment.GetEnvironmentVariable("GLASH_AGENT_NAME") ?? throw new ArgumentNullException("GLASH_AGENT_NAME", "GLASH_AGENT_NAME environment variable is required.");

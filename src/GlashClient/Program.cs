@@ -1,9 +1,9 @@
-using System;
 using Glash.Blazor.Client;
 using Quick.LiteDB.Plus;
-using System.Diagnostics;
 
-Quick.Protocol.QpAllClients.RegisterUriSchema();
+Quick.Protocol.WebSocket.Client.QpWebSocketClientOptions.RegisterUriSchema();
+Quick.Protocol.Http.Client.QpHttpClientOptions.RegisterUriSchema();
+
 // Read dbFile path from environment variable, default to "Config.litedb" if not set
 var dbFile = Environment.GetEnvironmentVariable("GLASH_DB_FILE_PATH") ?? "Config.litedb";
 #if DEBUG

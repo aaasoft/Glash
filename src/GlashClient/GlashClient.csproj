@@ -9,10 +9,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Quick.Protocol.AllClients" Version="2.6.8" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\Glash.Blazor.Client\Glash.Blazor.Client.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="Quick.Protocol.Http.Client" Version="2.6.9" />
+	  <PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.6.9" />
 	</ItemGroup>
 </Project>
