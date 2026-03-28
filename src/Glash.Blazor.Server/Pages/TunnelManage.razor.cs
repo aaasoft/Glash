@@ -53,9 +53,12 @@ namespace Glash.Blazor.Server.Pages
             modalAlert.Show(
                 TextCloseTunnel,
                 Locale.GetString("Are you sure close tunnel[{0}]", tunnel.TunnelInfo.Id),
-                () =>
+                new ()
                 {
-                    tunnel.OnError(new ApplicationException(Locale.GetString("Closed by server.")));
+                    OkCallback = () =>
+                    {
+                        tunnel.OnError(new ApplicationException(Locale.GetString("Closed by server.")));
+                    }
                 });
         }
     }

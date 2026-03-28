@@ -31,23 +31,23 @@ public partial class LoginPasswordManage
     {
         if (passwordManageModel.OldPassword != Core.LoginPasswordManager.Instance.LoginPassword)
         {
-            modalAlert.Show("提示", "原密码不正确！", null, null);
+            modalAlert.Show("提示", "原密码不正确！");
             return;
         }
         if (passwordManageModel.NewPassword != passwordManageModel.NewPassword2)
         {
-            modalAlert.Show("提示", "两次输入的新密码不匹配！", null, null);
+            modalAlert.Show("提示", "两次输入的新密码不匹配！");
             return;
         }
         try
         {
             Core.LoginPasswordManager.Instance.SetLoginPassword(passwordManageModel.NewPassword);
             passwordManageModel = new PasswordManageModel();
-            modalAlert.Show("提示", "修改登录密码成功！", null, null);
+            modalAlert.Show("提示", "修改登录密码成功！");
         }
         catch (Exception ex)
         {
-            modalAlert.Show("错误", "修改登录密码时出错，原因：" + ExceptionUtils.GetExceptionString(ex), null, null, true);
+            modalAlert.Show("错误", "修改登录密码时出错，原因：" + ExceptionUtils.GetExceptionString(ex), new() { UsePreTag = true });
         }
     }
 }

@@ -79,22 +79,25 @@ namespace Glash.Blazor.Server.Pages
 
         private void Delete(Model.AgentInfo model)
         {
-            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete agent[{0}]?", model.Name), () =>
+            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete agent[{0}]?", model.Name), new ()
             {
-                try
+                OkCallback = () =>
                 {
-                    if (model.Context != null)
-                        model.Context.Dispose();
-                    ConfigDbContext.CacheContext.Remove(model, true);
-                    AgentChangedHandler?.Invoke();
-                    InvokeAsync(StateHasChanged);
-                }
-                catch (Exception ex)
-                {
-                    Task.Delay(100).ContinueWith(t =>
+                    try
                     {
-                        modalAlert.Show(TextError, ex.Message);
-                    });
+                        if (model.Context != null)
+                            model.Context.Dispose();
+                        ConfigDbContext.CacheContext.Remove(model, true);
+                        AgentChangedHandler?.Invoke();
+                        InvokeAsync(StateHasChanged);
+                    }
+                    catch (Exception ex)
+                    {
+                        Task.Delay(100).ContinueWith(t =>
+                        {
+                            modalAlert.Show(TextError, ex.Message);
+                        });
+                    }
                 }
             });
         }

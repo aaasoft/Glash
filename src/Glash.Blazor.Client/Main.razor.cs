@@ -168,7 +168,7 @@ namespace Glash.Blazor.Client
                 modalAlert.Show("错误", $"未找到{model}的上下文！");
                 return;
             }
-            modalAlert.Show("日志", string.Join(Environment.NewLine, context.Logs), usePreTag: true);
+            modalAlert.Show("日志", string.Join(Environment.NewLine, context.Logs), new() { UsePreTag = true });
         }
 
         private void EditProfile()
@@ -202,19 +202,22 @@ namespace Glash.Blazor.Client
         private void DeleteProfile()
         {
             var model = CurrentProfileContext.Profile;
-            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete Profile[{0}]?", model.Name), () =>
+            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete Profile[{0}]?", model.Name), new ()
             {
-                try
+                OkCallback = () =>
                 {
-                    ProfileContextManager.Instance.Remove(model);
-                    InvokeAsync(StateHasChanged);
-                }
-                catch (Exception ex)
-                {
-                    Task.Delay(100).ContinueWith(t =>
+                    try
                     {
-                        modalAlert.Show(TextError, ex.Message);
-                    });
+                        ProfileContextManager.Instance.Remove(model);
+                        InvokeAsync(StateHasChanged);
+                    }
+                    catch (Exception ex)
+                    {
+                        Task.Delay(100).ContinueWith(t =>
+                        {
+                            modalAlert.Show(TextError, ex.Message);
+                        });
+                    }
                 }
             });
         }
@@ -319,23 +322,25 @@ namespace Glash.Blazor.Client
         {
             modalAlert.Show(
                 TextDeleteProxyRule,
-                Locale.GetString("Are you sure to delete ProxyRule[{0}]?", model.Name),
-                async () =>
+                Locale.GetString("Are you sure to delete ProxyRule[{0}]?", model.Name), new ()
                 {
-                    modalLoading.Show(TextDeleteProxyRule, null, true);
-                    try
+                    OkCallback = async () =>
                     {
-                        await CurrentProfileContext.DeleteProxyRule(model);
-                        _ = InvokeAsync(StateHasChanged);
-                    }
-                    catch (Exception ex)
-                    {
-                        _ = Task.Delay(100).ContinueWith(t =>
+                        modalLoading.Show(TextDeleteProxyRule, null, true);
+                        try
                         {
-                            modalAlert.Show(TextError, ex.Message);
-                        });
+                            await CurrentProfileContext.DeleteProxyRule(model);
+                            _ = InvokeAsync(StateHasChanged);
+                        }
+                        catch (Exception ex)
+                        {
+                            _ = Task.Delay(100).ContinueWith(t =>
+                            {
+                                modalAlert.Show(TextError, ex.Message);
+                            });
+                        }
+                        modalLoading.Close();
                     }
-                    modalLoading.Close();
                 });
         }
 

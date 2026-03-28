@@ -79,7 +79,7 @@ namespace Glash.Blazor.Agent.Pages
                 modalAlert.Show("错误", $"未找到{model}的上下文！");
                 return;
             }
-            modalAlert.Show("日志", string.Join(Environment.NewLine, context.Logs), usePreTag: true);
+            modalAlert.Show("日志", string.Join(Environment.NewLine, context.Logs), new() { UsePreTag = true });
         }
 
         private void Edit(Model.Profile model)
@@ -113,20 +113,23 @@ namespace Glash.Blazor.Agent.Pages
 
         private void Delete(Model.Profile model)
         {
-            modalAlert.Show(Locale.GetString("Delete"), Locale.GetString("Are you sure to delete profile[{0}]?", model.Name), () =>
+            modalAlert.Show(Locale.GetString("Delete"), Locale.GetString("Are you sure to delete profile[{0}]?", model.Name), new ()
             {
-                try
+                OkCallback = () =>
                 {
-                    ConfigDbContext.CacheContext.Remove(model, true);
-                    Core.GlashAgentManager.Instance.OnDelete(model);
-                    InvokeAsync(StateHasChanged);
-                }
-                catch (Exception ex)
-                {
-                    Task.Delay(100).ContinueWith(t =>
+                    try
                     {
-                        modalAlert.Show(Locale.GetString("Error"), ex.Message);
-                    });
+                        ConfigDbContext.CacheContext.Remove(model, true);
+                        Core.GlashAgentManager.Instance.OnDelete(model);
+                        InvokeAsync(StateHasChanged);
+                    }
+                    catch (Exception ex)
+                    {
+                        Task.Delay(100).ContinueWith(t =>
+                        {
+                            modalAlert.Show(Locale.GetString("Error"), ex.Message);
+                        });
+                    }
                 }
             });
         }
