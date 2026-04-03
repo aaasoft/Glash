@@ -16,7 +16,6 @@ ConfigDbContext.Init(dbFile, modelBuilder =>
 ConfigDbContext.CacheContext.LoadCache();
 GlashClient.Core.LoginPasswordManager.Instance.Init();
 
-ProfileContextManager.Instance.Start();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -40,4 +39,3 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
-ProfileContextManager.Instance.Stop();

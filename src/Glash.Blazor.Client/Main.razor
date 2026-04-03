@@ -6,35 +6,13 @@
             <div class="btn-group mr-2 mt-1">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">@TextAutoEnable</span>
-                    </div>
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary" type="button" @onclick="@(e => ProfileContextManager.Instance.AutoEnable = !ProfileContextManager.Instance.AutoEnable)" title="@TextProfile">
-                            @if(ProfileContextManager.Instance.AutoEnable)
-                            {
-                                <i class="fa fa-stop" aria-hidden="true"></i>
-                            }
-                            else
-                            {
-                                <i class="fa fa-play" aria-hidden="true"></i>
-                            }
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="btn-group mr-2 mt-1">
-                <div class="input-group">
-                    <div class="input-group-prepend">
                         <span class="input-group-text">@TextProfile</span>
-                    </div>
-                    @if (!ProfileContextManager.Instance.AutoEnable)
-                    {
-                        <div class="input-group-prepend">
-                            <button class="btn btn-secondary" type="button" @onclick="AddProfile" title="@TextAdd">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    }
+                    </div>                    
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary" type="button" @onclick="AddProfile" title="@TextAdd">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>                    
                     <InputSelect @bind-Value="@CurrentProfileId" class="form-control">
                     @foreach (var t in ProfileContexts)
                     {
@@ -48,30 +26,27 @@
                             <i class="fa fa-file" aria-hidden="true"></i>
                         </button>
                     </div>
-                    @if (!ProfileContextManager.Instance.AutoEnable)
+                    @if (CurrentProfileContext.Enabled)
                     {
-                        @if (CurrentProfileContext.Enabled)
-                        {
-                            <div class="input-group-append">
-                                <button class="btn btn-secondary" type="button" @onclick="DisableProfile" title="@TextDisable">
-                                    <i class="fa fa-stop" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="input-group-append">
-                                <button class="btn btn-secondary" type="button" @onclick="EnableProfile" title="@TextEnable">                                                
-                                    <i class="fa fa-play" aria-hidden="true"></i>
-                                </button>
-                                <button class="btn btn-secondary" type="button" @onclick="EditProfile" title="@TextEdit">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                </button>
-                                <button class="btn btn-secondary" type="button" @onclick="DeleteProfile" title="@TextDelete">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                            </div>                                                                    
-                        }
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button" @onclick="DisableProfile" title="@TextDisable">
+                                <i class="fa fa-stop" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button" @onclick="EnableProfile" title="@TextEnable">                                                
+                                <i class="fa fa-play" aria-hidden="true"></i>
+                            </button>
+                            <button class="btn btn-secondary" type="button" @onclick="EditProfile" title="@TextEdit">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </button>
+                            <button class="btn btn-secondary" type="button" @onclick="DeleteProfile" title="@TextDelete">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                        </div>                                                                    
                     }
                 }
                 </div>
@@ -95,38 +70,32 @@
                     </div>
                 </div>
             }
-            @if (CurrentAgent != null && !ProfileContextManager.Instance.AutoEnable)
-            {
-                <div class="btn-group mr-2 mt-1">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">@TextProxyRule</span>
-                        </div>
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-secondary" title="@TextAdd"
-                                    @onclick=@(e=>AddProxyRule(CurrentAgent.AgentName))>
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </button>
-                            @if (!ProfileContextManager.Instance.AutoEnable)
-                            {
-                                @if (CurrentAgent.IsLoggedIn)
-                                {
-                                    <button type="button" class="btn btn-secondary" title="@TextEnableAll"
-                                                @onclick="@(e=>EnableAllProxyRules(CurrentAgent.AgentName))">
-                                                <i class="fa fa-play" aria-hidden="true"></i>
-                                        @TextEnableAll
-                                            </button>
-                                            <button type="button" class="btn btn-secondary" title="@TextDisableAll"
-                                        @onclick="@(e=>DisableAllProxyRules(CurrentAgent.AgentName))">
-                                        <i class="fa fa-stop" aria-hidden="true"></i>
-                                        @TextDisableAll
+            <div class="btn-group mr-2 mt-1">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">@TextProxyRule</span>
+                    </div>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-secondary" title="@TextAdd"
+                                @onclick=@(e=>AddProxyRule(CurrentAgent.AgentName))>
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                        @if (CurrentAgent.IsLoggedIn)
+                        {
+                            <button type="button" class="btn btn-secondary" title="@TextEnableAll"
+                                        @onclick="@(e=>EnableAllProxyRules(CurrentAgent.AgentName))">
+                                        <i class="fa fa-play" aria-hidden="true"></i>
+                                @TextEnableAll
                                     </button>
-                                }
-                            }
-                        </div>
+                                    <button type="button" class="btn btn-secondary" title="@TextDisableAll"
+                                @onclick="@(e=>DisableAllProxyRules(CurrentAgent.AgentName))">
+                                <i class="fa fa-stop" aria-hidden="true"></i>
+                                @TextDisableAll
+                            </button>
+                        }
                     </div>
                 </div>
-            }
+            </div>
             </div>
     </div>
     @if (CurrentAgent != null)
@@ -163,43 +132,28 @@
                                 </div>
                                 <div class="card-footer p-1">
                                     <div class="btn-group p-1">
-                                        @if (ProfileContextManager.Instance.AutoEnable)
+                                        @if (CurrentAgent.IsLoggedIn)
                                         {
                                             <div class="custom-control custom-switch d-inline">
-                                                    <InputCheckbox class="custom-control-input"
-                                                        id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
-                                                        @bind-Value="proxyRuleContext.Config.Enable" disabled />
-                                                    <label class="custom-control-label"
-                                                        for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
+                                                <InputCheckbox class="custom-control-input"
+                                                    id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
+                                                    @bind-Value="proxyRuleContext.Config.Enable"
+                                                    @onclick="@(e=>onProxyRuleEnableChanged(proxyRuleContext))" />
+                                                <label class="custom-control-label"
+                                                    for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
                                             </div>
                                         }
                                         else
                                         {
-                                            @if (CurrentAgent.IsLoggedIn)
-                                            {
-                                                <div class="custom-control custom-switch d-inline">
-                                                    <InputCheckbox class="custom-control-input"
-                                                        id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
-                                                        @bind-Value="proxyRuleContext.Config.Enable"
-                                                        @onclick="@(e=>onProxyRuleEnableChanged(proxyRuleContext))" />
-                                                    <label class="custom-control-label"
-                                                        for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="custom-control custom-switch d-inline">
-                                                    <InputCheckbox class="custom-control-input"
-                                                        id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
-                                                        @bind-Value="proxyRuleContext.Config.Enable" disabled />
-                                                    <label class="custom-control-label"
-                                                        for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
-                                                </div>
-                                            }
+                                            <div class="custom-control custom-switch d-inline">
+                                                <InputCheckbox class="custom-control-input"
+                                                    id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
+                                                    @bind-Value="proxyRuleContext.Config.Enable" disabled />
+                                                <label class="custom-control-label"
+                                                    for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
+                                            </div>
                                         }
                                     </div>
-                                    @if(!ProfileContextManager.Instance.AutoEnable)
-                                    {
                                     <div class="btn-group pull-right">
                                         <button type="button" class="btn btn-sm btn-secondary"
                                             title="@TextDuplicate"
@@ -215,7 +169,6 @@
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                     </div>
-                                    }
                                 </div>
                             </div>
                         </div>
