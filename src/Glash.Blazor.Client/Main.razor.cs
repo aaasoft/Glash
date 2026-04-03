@@ -146,11 +146,13 @@ namespace Glash.Blazor.Client
                         {
                             try
                             {
+                                CurrentProfileId = null;
                                 model.Name = editModel.Name;
                                 model.ServerUrl = editModel.ServerUrl;
                                 model.ClientName = editModel.ClientName;
                                 model.ClientPassword = editModel.ClientPassword;
                                 ProfileContextManager.Instance.Update(model);
+                                CurrentProfileId=model.Id;
                                 InvokeAsync(StateHasChanged);
                                 modalWindow.Close();
                             }
@@ -173,6 +175,7 @@ namespace Glash.Blazor.Client
                     try
                     {
                         ProfileContextManager.Instance.Remove(model);
+                        CurrentProfileId = ProfileContextManager.Instance.GetProfileContexts()?.FirstOrDefault()?.Profile.Id;
                         InvokeAsync(StateHasChanged);
                     }
                     catch (Exception ex)
