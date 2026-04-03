@@ -80,7 +80,21 @@
                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12 p-2">
                     <div class="card">
                         <div class="card-header">
+                            @if(proxyRuleContext.Config.Enable)
+                            {
+                                @if(proxyRuleContext.Working)
+                                {
+                                    <i class="fa fa-cube mr-1 text-success" aria-hidden="true"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-cube mr-1 text-danger" aria-hidden="true"></i>
+                                }
+                            }
+                            else
+                            {
                             <i class="fa fa-cube mr-1" aria-hidden="true"></i>
+                            }
                             <span>@proxyRuleContext.Config.Name</span>
                         </div>
                         <div class="card-body small p-2">
@@ -98,27 +112,14 @@
                         </div>
                         <div class="card-footer p-1">
                             <div class="btn-group p-1">
-                                @if (CurrentAgent.IsLoggedIn)
-                                {
-                                    <div class="custom-control custom-switch d-inline">
-                                        <InputCheckbox class="custom-control-input"
-                                                       id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
-                                                       @bind-Value="proxyRuleContext.Config.Enable"
-                                                       @onclick="@(e => onProxyRuleEnableChanged(proxyRuleContext))" />
-                                        <label class="custom-control-label"
-                                               for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="custom-control custom-switch d-inline">
-                                        <InputCheckbox class="custom-control-input"
-                                                       id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
-                                                       @bind-Value="proxyRuleContext.Config.Enable" disabled />
-                                        <label class="custom-control-label"
-                                               for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
-                                    </div>
-                                }
+                                <div class="custom-control custom-switch d-inline">
+                                    <InputCheckbox class="custom-control-input"
+                                                    id="@($"switch_enable_proxyrule_{proxyRuleContext.Config.Id}")"
+                                                    @bind-Value="proxyRuleContext.Config.Enable"
+                                                    @onclick="@(e => onProxyRuleEnableChanged(proxyRuleContext))" />
+                                    <label class="custom-control-label"
+                                            for="switch_enable_proxyrule_@proxyRuleContext.Config.Id"></label>
+                                </div>
                             </div>
                             <div class="btn-group pull-right">
                                 <button type="button" class="btn btn-sm btn-secondary" title="@TextDuplicate"
