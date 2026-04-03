@@ -114,24 +114,6 @@ public class ProfileContext : IDisposable
                 return;
             var agentInfo = agentDict[data.AgentName];
             agentInfo.IsLoggedIn = data.IsLoggedIn;
-            //如果代理状态变化为登录
-            if (data.IsLoggedIn)
-            {
-                if (agentInfo.AutoEnableRuleIds != null && agentInfo.AutoEnableRuleIds.Length > 0)
-                {
-                    Task.Delay(100).ContinueWith(t =>
-                    {
-                        foreach (var ruleId in agentInfo.AutoEnableRuleIds)
-                            GlashClient.EnableProxyRule(ruleId);
-                        AgentLoginStatusChanged?.Invoke(this, data);
-                    });
-                }
-            }
-            //如果代理状态变化为未登录
-            else
-            {
-                agentInfo.AutoEnableRuleIds = GlashClient.DisableAgentProxyRules(agentInfo.AgentName).ToArray();
-            }
             AgentLoginStatusChanged?.Invoke(this, data);
         });
     }

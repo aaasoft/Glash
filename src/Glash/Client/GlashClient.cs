@@ -71,73 +71,37 @@ namespace Glash.Client
         {
             closeAllTunnel();
             foreach (var proxyContext in proxyRuleContextDict.Values)
-                proxyContext.Stop();
+                proxyContext.Dispose();
             proxyRuleContextDict.Clear();
             qpClient.Disconnect();
         }
 
-        public void EnableProxyRule(ProxyRuleContext context)
-        {
-            try
-            {
-                //如果已经启用，则返回
-                if (context.Config.Enable)
-                    return;
-                context.Start();
-                context.Config.Enable = true;
-                LogPushed?.Invoke(this, $"{context.Config} enabled.");
-            }
-            catch (Exception ex)
-            {
-                context.Config.Enable = false;
-                LogPushed?.Invoke(this, $"{context.Config} enable failed.Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
-                throw;
-            }
-        }
-
-        public void EnableProxyRule(string proxyRuleId)
+        public async Task EnableProxyRule(string proxyRuleId)
         {
             if (!proxyRuleContextDict.ContainsKey(proxyRuleId))
                 return;
             var context = proxyRuleContextDict[proxyRuleId];
-            EnableProxyRule(context);
+            context.Dispose();
+            context.Config.Enable = true;
+            await SaveProxyRule(context.Config);
+            proxyRuleContextDict[proxyRuleId] = new ProxyRuleContext(this, context.Config);
         }
 
-        public void DisableProxyRule(ProxyRuleContext context)
-        {
-            try
-            {
-                if (!context.Config.Enable)
-                    return;
-                context.Stop();
-                context.Config.Enable = false;
-                LogPushed?.Invoke(this, $"{context.Config} disabled.");
-            }
-            catch (Exception ex)
-            {
-                LogPushed?.Invoke(this, $"{context.Config} disable failed.Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
-                throw;
-            }
-        }
-
-        public void DisableProxyRule(string proxyRuleId)
+        public async Task DisableProxyRule(string proxyRuleId)
         {
             if (!proxyRuleContextDict.ContainsKey(proxyRuleId))
                 return;
             var context = proxyRuleContextDict[proxyRuleId];
-            DisableProxyRule(context);
+            context.Dispose();
+            context.Config.Enable = false;
+            await SaveProxyRule(context.Config);
+            proxyRuleContextDict[proxyRuleId] = new ProxyRuleContext(this, context.Config);
         }
 
         public void LoadProxyRule(ProxyRuleInfo config)
         {
             var context = new ProxyRuleContext(this, config);
             proxyRuleContextDict[config.Id] = context;
-            if (config.Enable)
-                try
-                {
-                    EnableProxyRule(context);
-                }
-                catch { }
         }
 
         public void LoadProxyRules(ProxyRuleInfo[] items)
@@ -150,7 +114,7 @@ namespace Glash.Client
         {
             if (proxyRuleContextDict.ContainsKey(proxyRuleContext.Config.Id))
                 proxyRuleContextDict.Remove(proxyRuleContext.Config.Id);
-            DisableProxyRule(proxyRuleContext);
+            proxyRuleContext.Dispose();
         }
 
         public void UnloadProxyRule(string proxyRuleId)
@@ -268,19 +232,6 @@ namespace Glash.Client
             {
                 ProxyRuleId = proxyRuleId
             });
-        }
-
-        public IEnumerable<string> DisableAgentProxyRules(string agentName)
-        {
-            foreach (var context in ProxyRuleContexts)
-            {
-                if (context.Config.Agent != agentName)
-                    continue;
-                if (!context.Config.Enable)
-                    continue;
-                DisableProxyRule(context);
-                yield return context.Config.Id;
-            }
         }
     }
 }

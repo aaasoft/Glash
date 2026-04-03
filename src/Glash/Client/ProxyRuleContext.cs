@@ -4,72 +4,83 @@ using System.Net.Sockets;
 
 namespace Glash.Client
 {
-    public class ProxyRuleContext
+    public class ProxyRuleContext : IDisposable
     {
         private GlashClient glashClient;
         private TcpListener tcpListener;
         private CancellationTokenSource cts;
         public ProxyRuleInfo Config { get; private set; }
         public int LocalPort { get; private set; }
-        private Dictionary<string, object> extendPropertyDict = new Dictionary<string, object>();
 
-        public T GetExtendProperty<T>()
-        {
-            var key = typeof(T).FullName;
-            if (!extendPropertyDict.TryGetValue(key, out var value))
-                return default(T);
-            return (T)value;
-        }
-
-        public void SetExtendProperty<T>(T value)
-        {
-            var key = typeof(T).FullName;
-            extendPropertyDict[key] = value;
-        }
+        public bool Working { get; private set; }
 
         public ProxyRuleContext(GlashClient glashClient, ProxyRuleInfo config)
         {
             this.glashClient = glashClient;
             Config = config;
             LocalPort = config.LocalPort;
-        }
 
-        public void Start()
-        {
-            Stop();
-            
             cts?.Cancel();
             cts = new CancellationTokenSource();
 
-            tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
-            tcpListener.Start();
-            LocalPort = ((IPEndPoint)tcpListener.LocalEndpoint).Port;
-            _ = beginAcceptTcpClient(tcpListener, cts.Token);
+            if (config.Enable)
+            {
+                tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
+                _ = beginStart(cts.Token);
+            }
         }
 
-        public void Stop()
+
+        private async Task delayToStart(CancellationToken token)
+        {
+            try
+            {
+                await Task.Delay(5000, token);
+                _ = beginStart(token);
+            }
+            catch { }
+        }
+
+        private async Task beginStart(CancellationToken token)
+        {
+            try
+            {
+                tcpListener.Start();
+                LocalPort = ((IPEndPoint)tcpListener.LocalEndpoint).Port;
+                _ = beginAcceptTcpClient(tcpListener, token);
+                Working = true;
+            }
+            catch
+            {
+                _ = delayToStart(token);
+            }
+        }
+
+        private async Task beginAcceptTcpClient(TcpListener tcpListener, CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    var tcpClient = await tcpListener.AcceptTcpClientAsync(token);
+                    var connectionName = $"TCP:{tcpClient.Client.RemoteEndPoint}";
+                    //Create and Start Tunnel
+                    _ = glashClient.CreateAndStartTunnelAsync(Config, connectionName, tcpClient.GetStream());
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+            }
+        }
+
+        public void Dispose()
         {
             cts?.Cancel();
 
             tcpListener?.Stop();
             tcpListener = null;
             LocalPort = Config.LocalPort;
-        }
-
-        private async Task beginAcceptTcpClient(TcpListener tcpListener, CancellationToken token)
-        {
-            try
-            {
-                var tcpClient = await tcpListener.AcceptTcpClientAsync();
-                var connectionName = $"TCP:{tcpClient.Client.RemoteEndPoint}";
-                //Create and Start Tunnel
-                _ = glashClient.CreateAndStartTunnelAsync(Config, connectionName, tcpClient.GetStream());
-            }
-            catch (TaskCanceledException)
-            {
-                return;
-            }
-            _ = beginAcceptTcpClient(tcpListener, token);
         }
     }
 }

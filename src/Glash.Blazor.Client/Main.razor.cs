@@ -4,30 +4,23 @@ using Glash.Client;
 using Glash.Client.Protocol.QpModel;
 using Quick.Blazor.Bootstrap;
 using Quick.Localize;
-using Quick.Utils;
 
 namespace Glash.Blazor.Client
 {
     public partial class Main : ComponentBase_WithGettextSupport
     {
-        private static string TextAutoEnable => Locale.GetString("Auto Enable");
         private static string TextProfile => Locale.GetString("Profile");
-        private static string TextEnable => Locale.GetString("Enable");
-        private static string TextDisable => Locale.GetString("Disable");
         private static string TextAdd => Locale.GetString("Add");
         private static string TextLogs => Locale.GetString("Logs");
         private static string TextEdit => Locale.GetString("Edit");
         private static string TextDuplicate => Locale.GetString("Duplicate");
         private static string TextDelete => Locale.GetString("Delete");
         private static string TextAgent => Locale.GetString("Agent");
-        private static string TextProxyRule => Locale.GetString("Proxy Rule");
         private static string TextError => Locale.GetString("Error");
         private static string TextAddProxyRule => Locale.GetString("Add Proxy Rule");
         private static string TextDuplicateProxyRule => Locale.GetString("Duplicate Proxy Rule");
         private static string TextEditProxyRule => Locale.GetString("Edit Proxy Rule");
         private static string TextDeleteProxyRule => Locale.GetString("Delete Proxy Rule");
-        private static string TextEnableAll => Locale.GetString("Enable All");
-        private static string TextDisableAll => Locale.GetString("Disable All");
         private static string TextLocal => Locale.GetString("Local");
         private static string TextRemote => Locale.GetString("Remote");
         private static string TextAgentNotLogin => Locale.GetString("Agent not login");
@@ -313,21 +306,11 @@ namespace Glash.Blazor.Client
 
         private async Task onProxyRuleEnableChanged(ProxyRuleContext proxyRuleContext)
         {
-            await Task.Delay(100);
-            try
-            {
-                proxyRuleContext.Config.Enable = !proxyRuleContext.Config.Enable;
-                if (proxyRuleContext.Config.Enable)
-                    CurrentProfileContext.GlashClient.DisableProxyRule(proxyRuleContext);
-                else
-                    CurrentProfileContext.GlashClient.EnableProxyRule(proxyRuleContext);
-            }
-            catch (Exception ex)
-            {
-                modalAlert.Show(TextError, ex.Message);
-                await Task.Delay(100);
-                await InvokeAsync(StateHasChanged);
-            }
+            if(proxyRuleContext.Config.Enable)
+                await CurrentProfileContext.GlashClient.DisableProxyRule(proxyRuleContext.Config.Id);
+            else
+                await CurrentProfileContext.GlashClient.EnableProxyRule(proxyRuleContext.Config.Id);
+            await InvokeAsync(StateHasChanged);
         }
 
         private ProxyRuleContext[] GetProxyRuleContexts(string agent)

@@ -23,7 +23,6 @@ namespace Glash.Client.Protocol.QpModel
         public int RemotePort { get; set; }
         public string ProxyType { get; set; }
         public string ProxyTypeConfig { get; set; }
-        [NotMapped]
         public bool Enable { get; set; } = false;
 
         public override string ToString()
