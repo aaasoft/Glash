@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Glash.Blazor.Client.Core;
 using Glash.Client;
 using Glash.Client.Protocol.QpModel;
 using Quick.Blazor.Bootstrap;
@@ -49,13 +50,13 @@ namespace Glash.Blazor.Client
                 _CurrentProfileId = value;
                 if (CurrentProfileContext != null)
                 {
-                    CurrentProfileContext.EnableStateChanged -= profileContext_EnableStateChanged;
+                    CurrentProfileContext.ConnectedChanged -= profileContext_ConnectedChanged;
                 }
                 CurrentProfileContext = null;
                 if (!string.IsNullOrEmpty(value))
                 {
                     CurrentProfileContext = ProfileContextManager.Instance.Get(value);
-                    CurrentProfileContext.EnableStateChanged += profileContext_EnableStateChanged;
+                    CurrentProfileContext.ConnectedChanged += profileContext_ConnectedChanged;
                 }
                 CurrentAgentName = CurrentProfileContext?.Agents?.FirstOrDefault()?.AgentName;
             }
@@ -113,47 +114,10 @@ namespace Glash.Blazor.Client
                 });
         }
 
-        private async Task DisableProfile()
+        private void profileContext_ConnectedChanged(object sender, bool e)
         {
-            var profileContext = CurrentProfileContext;
-            modalLoading.Show(TextDisable, Locale.GetString("Disabling profile[{0}]...", profileContext.Profile.Name), true);
-            try
-            {
-                await profileContext.Disable();
-            }
-            catch (Exception ex)
-            {
-                modalAlert.Show(TextDisable, Locale.GetString("Disable profile[{0}] error.Reason: {1}", profileContext.Profile.Name, ExceptionUtils.GetExceptionMessage(ex)));
-            }
-            finally
-            {
-                modalLoading.Close();
-            }
-        }
-
-        private async Task EnableProfile()
-        {
-            var profileContext = CurrentProfileContext;
-            modalLoading.Show(TextEnable, Locale.GetString("Enabling profile[{0}]...", profileContext.Profile.Name), true);
-            try
-            {
-                await profileContext.Enable();
-                CurrentAgentName = profileContext?.Agents?.FirstOrDefault()?.AgentName;
-            }
-            catch (Exception ex)
-            {
-                modalAlert.Show(TextEnable, Locale.GetString("Enable profile[{0}] error.Reason: {1}", profileContext.Profile.Name, ExceptionUtils.GetExceptionMessage(ex)));
-            }
-            finally
-            {
-                modalLoading.Close();
-            }
-        }
-
-        private void profileContext_EnableStateChanged(object sender, bool e)
-        {
-            if(e)
-                CurrentAgentName= CurrentProfileContext?.Agents?.FirstOrDefault()?.AgentName;
+            if (e)
+                CurrentAgentName = CurrentProfileContext?.Agents?.FirstOrDefault()?.AgentName;
             else
                 CurrentAgentName = null;
             InvokeAsync(StateHasChanged);
@@ -202,7 +166,7 @@ namespace Glash.Blazor.Client
         private void DeleteProfile()
         {
             var model = CurrentProfileContext.Profile;
-            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete Profile[{0}]?", model.Name), new ()
+            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete Profile[{0}]?", model.Name), new()
             {
                 OkCallback = () =>
                 {
@@ -322,7 +286,7 @@ namespace Glash.Blazor.Client
         {
             modalAlert.Show(
                 TextDeleteProxyRule,
-                Locale.GetString("Are you sure to delete ProxyRule[{0}]?", model.Name), new ()
+                Locale.GetString("Are you sure to delete ProxyRule[{0}]?", model.Name), new()
                 {
                     OkCallback = async () =>
                     {
@@ -374,28 +338,12 @@ namespace Glash.Blazor.Client
             return ret;
         }
 
-        private void EnableAllProxyRules(string agent)
-        {
-            foreach (var item in GetProxyRuleContexts(agent))
-                try { CurrentProfileContext.GlashClient.EnableProxyRule(item); }
-                catch { }
-            InvokeAsync(StateHasChanged);
-        }
-
-        private void DisableAllProxyRules(string agent)
-        {
-            foreach (var item in GetProxyRuleContexts(agent))
-                try { CurrentProfileContext.GlashClient.DisableProxyRule(item); }
-                catch { }
-            InvokeAsync(StateHasChanged);
-        }
-
         public override void Dispose()
         {
             autoRefreshTimer.Dispose();
             foreach (var profileContext in ProfileContextManager.Instance.GetProfileContexts())
             {
-                profileContext.EnableStateChanged -= profileContext_EnableStateChanged;
+                profileContext.ConnectedChanged -= profileContext_ConnectedChanged;
             }
             CurrentAgentName = null;
             CurrentProfileId = null;
