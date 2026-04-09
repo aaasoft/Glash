@@ -100,13 +100,13 @@
                         <div class="card-body small p-2">
                             <p class="mb-0">
                                 <span class="font-weight-bold">
-                                    @TextLocal:
+                                    @TextListen:
                                 </span>
                                 @proxyRuleContext.Config.LocalIPAddress:@proxyRuleContext.LocalPort
                             </p>
                             <p class="mb-0">
                                 <span class="font-weight-bold">
-                                    @TextRemote:
+                                    @TextProxy:
                                 </span>@proxyRuleContext.Config.RemoteHost:@proxyRuleContext.Config.RemotePort
                             </p>
                         </div>
@@ -122,6 +122,9 @@
                                 </div>
                             </div>
                             <div class="btn-group pull-right">
+                                <button class="btn btn-secondary" type="button" @onclick="@(e=>ShowRuleContextLogs(proxyRuleContext))" title="@TextLogs">
+                                    <i class="fa fa-file" aria-hidden="true"></i>
+                                </button>
                                 <button type="button" class="btn btn-sm btn-secondary" title="@TextDuplicate"
                                         @onclick=@(e => DuplicateProxyRule((Glash.Client.Protocol.QpModel.ProxyRuleInfo)proxyRuleContext.Config))>
                                     <i class="fa fa-copy" aria-hidden="true"></i>

@@ -15,8 +15,8 @@ namespace Glash.Blazor.Client.Controls
 
         private static string TextName=>Locale.GetString("Name");
         private static string TextAgent=>Locale.GetString("Agent");        
-        private static string TextLocal=>Locale.GetString("Local");
-        private static string TextRemote=>Locale.GetString("Remote");
+        private static string TextListen=>Locale.GetString("Listen");
+        private static string TextProxy=>Locale.GetString("Proxy");
         private static string TextOk=>Locale.GetString("OK");
 
         private void Ok()

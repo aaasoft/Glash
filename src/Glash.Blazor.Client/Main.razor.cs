@@ -21,8 +21,8 @@ namespace Glash.Blazor.Client
         private static string TextDuplicateProxyRule => Locale.GetString("Duplicate Proxy Rule");
         private static string TextEditProxyRule => Locale.GetString("Edit Proxy Rule");
         private static string TextDeleteProxyRule => Locale.GetString("Delete Proxy Rule");
-        private static string TextLocal => Locale.GetString("Local");
-        private static string TextRemote => Locale.GetString("Remote");
+        private static string TextListen => Locale.GetString("Listen");
+        private static string TextProxy => Locale.GetString("Proxy");
         private static string TextAgentNotLogin => Locale.GetString("Agent not login");
 
         private ModalAlert modalAlert;
@@ -122,10 +122,15 @@ namespace Glash.Blazor.Client
             var context = ProfileContextManager.Instance.GetContext(model);
             if (context == null)
             {
-                modalAlert.Show("错误", $"未找到{model}的上下文！");
+                modalAlert.Show(TextError, $"未找到{model}的上下文！");
                 return;
-            }
-            modalAlert.Show("日志", string.Join(Environment.NewLine, context.Logs), new() { UsePreTag = true });
+            }            
+            modalAlert.Show(TextLogs, string.Join(Environment.NewLine, context.Logs), new() { UsePreTag = true });
+        }
+
+        private void ShowRuleContextLogs(ProxyRuleContext proxyRuleContext)
+        {
+            modalAlert.Show(TextLogs, string.Join(Environment.NewLine, proxyRuleContext.Logs), new() { UsePreTag = true });
         }
 
         private void EditProfile()

@@ -1,4 +1,5 @@
 ﻿using Glash.Client.Protocol.QpModel;
+using Quick.Utils;
 using System.Net;
 using System.Net.Sockets;
 
@@ -13,6 +14,32 @@ namespace Glash.Client
         public int LocalPort { get; private set; }
 
         public bool Working { get; private set; }
+
+        public static int MaxLogLines = 100;
+        private Queue<string> logQueue = new();
+        public string[] Logs
+        {
+            get
+            {
+                lock (logQueue)
+                    return logQueue.ToArray();
+            }
+        }
+        private void pushLog(string line)
+        {
+            line = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}: {line}";
+            lock (logQueue)
+            {
+                logQueue.Enqueue(line);
+                while (true)
+                {
+                    var currentCount = logQueue.Count;
+                    if (currentCount == 0 || currentCount <= MaxLogLines)
+                        break;
+                    logQueue.Dequeue();
+                }
+            }
+        }
 
         public ProxyRuleContext(GlashClient glashClient, ProxyRuleInfo config)
         {
@@ -45,13 +72,16 @@ namespace Glash.Client
         {
             try
             {
+                pushLog($"Start listen {Config.LocalIPAddress}:{Config.LocalPort}...");
                 tcpListener.Start();
                 LocalPort = ((IPEndPoint)tcpListener.LocalEndpoint).Port;
+                pushLog($"Listening {Config.LocalIPAddress}:{LocalPort}.");
                 _ = beginAcceptTcpClient(tcpListener, token);
                 Working = true;
             }
-            catch
+            catch (Exception ex)
             {
+                pushLog($"Listen {Config.LocalIPAddress}:{LocalPort} error.Reason: {ExceptionUtils.GetExceptionMessage(ex)}");
                 _ = delayToStart(token);
             }
         }
@@ -76,11 +106,13 @@ namespace Glash.Client
 
         public void Dispose()
         {
+            pushLog("Stoping listen.");
             cts?.Cancel();
 
             tcpListener?.Stop();
             tcpListener = null;
             LocalPort = Config.LocalPort;
+            pushLog("Listen stoped.");
         }
     }
 }
