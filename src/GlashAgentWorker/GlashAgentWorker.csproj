@@ -13,7 +13,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Quick.Protocol.Http.Client" Version="2.6.10" />
-	  <PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.6.10" />
+	  <PackageReference Include="Quick.Protocol.Http.Client" Version="2.6.11" />
+	  <PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.6.11" />
 	</ItemGroup>
 </Project>
