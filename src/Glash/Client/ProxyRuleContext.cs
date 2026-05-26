@@ -51,10 +51,27 @@ namespace Glash.Client
             cts = new CancellationTokenSource();
 
             if (config.Enable)
-            {
-                tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
-                _ = beginStart(cts.Token);
-            }
+                Enable();
+        }
+
+        public void Enable()
+        {
+            cts?.Cancel();
+            tcpListener?.Stop();
+
+            tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
+            _ = beginStart(cts.Token);
+        }
+
+        public void Disable()
+        {
+            pushLog("Stoping listen.");
+            cts?.Cancel();
+
+            tcpListener?.Stop();
+            tcpListener = null;
+            LocalPort = Config.LocalPort;
+            pushLog("Listen stoped.");
         }
 
 
@@ -106,13 +123,7 @@ namespace Glash.Client
 
         public void Dispose()
         {
-            pushLog("Stoping listen.");
-            cts?.Cancel();
-
-            tcpListener?.Stop();
-            tcpListener = null;
-            LocalPort = Config.LocalPort;
-            pushLog("Listen stoped.");
+            Disable();
         }
     }
 }

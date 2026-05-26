@@ -78,24 +78,20 @@ namespace Glash.Client
 
         public async Task EnableProxyRule(string proxyRuleId)
         {
-            if (!proxyRuleContextDict.ContainsKey(proxyRuleId))
+            if (!proxyRuleContextDict.TryGetValue(proxyRuleId, out var context))
                 return;
-            var context = proxyRuleContextDict[proxyRuleId];
-            context.Dispose();
             context.Config.Enable = true;
             await SaveProxyRule(context.Config);
-            proxyRuleContextDict[proxyRuleId] = new ProxyRuleContext(this, context.Config);
+            context.Enable();
         }
 
         public async Task DisableProxyRule(string proxyRuleId)
         {
-            if (!proxyRuleContextDict.ContainsKey(proxyRuleId))
+            if (!proxyRuleContextDict.TryGetValue(proxyRuleId, out var context))
                 return;
-            var context = proxyRuleContextDict[proxyRuleId];
-            context.Dispose();
             context.Config.Enable = false;
             await SaveProxyRule(context.Config);
-            proxyRuleContextDict[proxyRuleId] = new ProxyRuleContext(this, context.Config);
+            context.Disable();
         }
 
         public void LoadProxyRule(ProxyRuleInfo config)
