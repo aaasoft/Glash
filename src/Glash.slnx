@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="Glash.Blazor.Agent/Glash.Blazor.Agent.csproj" />
+  <Project Path="Glash.Blazor.Client/Glash.Blazor.Client.csproj" />
+  <Project Path="Glash.Blazor.Server/Glash.Blazor.Server.csproj" />
+  <Project Path="Glash/Glash.csproj" />
+  <Project Path="GlashAgent/GlashAgent.csproj" />
+  <Project Path="GlashAgentWorker/GlashAgentWorker.csproj" />
+  <Project Path="GlashClient/GlashClient.csproj" />
+  <Project Path="GlashServer/GlashServer.csproj" />
+</Solution>
