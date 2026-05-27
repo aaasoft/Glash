@@ -47,9 +47,6 @@ namespace Glash.Client
             Config = config;
             LocalPort = config.LocalPort;
 
-            cts?.Cancel();
-            cts = new CancellationTokenSource();
-
             if (config.Enable)
                 Enable();
         }
@@ -59,6 +56,7 @@ namespace Glash.Client
             cts?.Cancel();
             tcpListener?.Stop();
 
+            cts = new CancellationTokenSource();
             tcpListener = new TcpListener(IPAddress.Parse(Config.LocalIPAddress), Config.LocalPort);
             _ = beginStart(cts.Token);
         }
