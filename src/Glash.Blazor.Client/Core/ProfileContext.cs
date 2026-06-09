@@ -62,7 +62,7 @@ public class ProfileContext : IDisposable
             ProxyRules = proxyRuleList
                 .OrderBy(t => t.Name)
                 .ToArray();
-            GlashClient.LoadProxyRules(proxyRuleList);
+            GlashClient.LoadProxyRules(ProxyRules);
 
             Connected = true;
             pushLog(Locale.GetString("Connected"));
@@ -125,7 +125,9 @@ public class ProfileContext : IDisposable
     }
 
     private void GlashClient_Disconnected(object sender, EventArgs e)
-    {        
+    {
+        foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
+            GlashClient.UnloadProxyRule(proxyRuleContext);
         Connected = false;
         pushLog(Locale.GetString("Disconnected"));
         ConnectedChanged?.Invoke(this, Connected);
