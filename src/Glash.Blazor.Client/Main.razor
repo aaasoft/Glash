@@ -37,29 +37,38 @@
                     }
                 </div>
             </div>
-            @if (CurrentProfileContext != null && CurrentProfileContext.Connected)
+            @if (CurrentProfileContext != null)
             {
                 <div class="btn-group mr-2 mt-1">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">@TextAgent</span>
-                        </div>
-                        <InputSelect @bind-Value="@CurrentAgentName" class="form-control">
-                            @if (CurrentProfileContext.Agents != null)
-                            {
-                                @foreach (var t in CurrentProfileContext.Agents)
+                    @if (CurrentProfileContext.Connected)
+                    {
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">@TextAgent</span>
+                            </div>
+                            <InputSelect @bind-Value="@CurrentAgentName" class="form-control">
+                                @if (CurrentProfileContext.Agents != null)
                                 {
-                                    <option value="@t.AgentName">@t.AgentName</option>
+                                    @foreach (var t in CurrentProfileContext.Agents)
+                                    {
+                                        <option value="@t.AgentName">@t.AgentName</option>
+                                    }
                                 }
-                            }
-                        </InputSelect>
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-secondary" title="@TextAdd"
-                                    @onclick=@(e => AddProxyRule(CurrentAgent.AgentName))>
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </button>
+                            </InputSelect>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-secondary" title="@TextAdd" @onclick=@(e =>
+                                                                                                            AddProxyRule(CurrentAgent.AgentName))>
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Connecting...</span>
+                        </div>
+                    }
                 </div>
             }
         </div>
