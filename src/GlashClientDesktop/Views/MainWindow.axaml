@@ -1,20 +1,46 @@
 <atom:Window xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:vm="using:GlashClientDesktop.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:GlashClientDesktop.ViewModels"
              xmlns:atom="https://atomui.net"
              xmlns:antdicons="https://atomui.net/icons/antdesign"
              x:Class="GlashClientDesktop.Views.MainWindow"
-			 x:DataType="vm:MainWindowViewModel"
+             x:DataType="vm:MainWindowViewModel"
+             d:DesignWidth="800"
+             d:DesignHeight="600"
              Icon="/Assets/logo.ico"
-             Title="GlashClientDesktop">
+             Title="Glash桌面客户端">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <atom:Space Orientation="Horizontal">
-        <atom:Alert Type="Success" Message="{Binding Greeting}" />
-        <atom:Button ButtonType="Primary">开始使用</atom:Button>
-        <atom:Button Icon="{antdicons:AntDesignIconProvider StarOutlined}">在 GitHub 上点赞</atom:Button>
-    </atom:Space>
+    <DockPanel Margin="4">
+        <atom:GroupBox HeaderTitle="配置管理" >
+            <DockPanel DockPanel.Dock="Left" >
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                    <StackPanel.Styles>
+                        <Style Selector="atom|Button">
+                            <Setter Property="Margin" Value="4"></Setter>
+                        </Style>
+                    </StackPanel.Styles>
+                    <atom:Button>添加</atom:Button>
+                    <atom:Button>编辑</atom:Button>
+                    <atom:Button>删除</atom:Button>
+                </StackPanel>
+                <atom:ListBox IsBorderless="True">
+                </atom:ListBox>
+            </DockPanel>
+        </atom:GroupBox>
+        <atom:Splitter Width="4"></atom:Splitter>
+        <atom:GroupBox HeaderTitle="配置详情">
+            <atom:DataGrid>
+                <atom:DataGrid.Columns>
+                    <atom:DataGridTextColumn Header="行1"></atom:DataGridTextColumn>
+                    <atom:DataGridTextColumn Header="行2"></atom:DataGridTextColumn>
+                    <atom:DataGridTextColumn Header="行3"></atom:DataGridTextColumn>
+                </atom:DataGrid.Columns>
+            </atom:DataGrid>
+        </atom:GroupBox>
+    </DockPanel>
 </atom:Window>
