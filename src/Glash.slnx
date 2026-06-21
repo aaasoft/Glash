@@ -6,5 +6,6 @@
   <Project Path="GlashAgent/GlashAgent.csproj" />
   <Project Path="GlashAgentWorker/GlashAgentWorker.csproj" />
   <Project Path="GlashClient/GlashClient.csproj" />
+  <Project Path="GlashClientDesktop/GlashClientDesktop.csproj" />
   <Project Path="GlashServer/GlashServer.csproj" />
 </Solution>

@@ -1,0 +1,20 @@
+<atom:Window xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="using:GlashClientDesktop.ViewModels"
+             xmlns:atom="https://atomui.net"
+             xmlns:antdicons="https://atomui.net/icons/antdesign"
+             x:Class="GlashClientDesktop.Views.MainWindow"
+			 x:DataType="vm:MainWindowViewModel"
+             Icon="/Assets/logo.ico"
+             Title="GlashClientDesktop">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <atom:Space Orientation="Horizontal">
+        <atom:Alert Type="Success" Message="{Binding Greeting}" />
+        <atom:Button ButtonType="Primary">开始使用</atom:Button>
+        <atom:Button Icon="{antdicons:AntDesignIconProvider StarOutlined}">在 GitHub 上点赞</atom:Button>
+    </atom:Space>
+</atom:Window>
