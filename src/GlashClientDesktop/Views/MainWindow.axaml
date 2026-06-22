@@ -1,91 +1,46 @@
-<atom:Window xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:vm="using:GlashClientDesktop.ViewModels"
-             xmlns:atom="https://atomui.net"
-             xmlns:antdicons="https://atomui.net/icons/antdesign"
-             x:Class="GlashClientDesktop.Views.MainWindow"
-             x:DataType="vm:MainWindowViewModel"
-             d:DesignWidth="800"
-             d:DesignHeight="600"
-             Icon="/Assets/logo.ico"
-             Title="Glash桌面客户端">
+<u:UrsaWindow xmlns="https://github.com/avaloniaui"
+              xmlns:core="using:GlashClientDesktop.Core"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="using:GlashClientDesktop.ViewModels"
+        xmlns:u="https://irihi.tech/ursa"
+        x:Class="GlashClientDesktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        d:DesignWidth="800"
+        d:DesignHeight="600"
+        Icon="/Assets/logo.ico"
+        Title="Glash桌面客户端"
+        ExtendClientAreaToDecorationsHint="False"
+        >
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-        to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Panel>
-        <DockPanel Margin="4">
-            <atom:GroupBox HeaderTitle="连接管理" >
-                <DockPanel DockPanel.Dock="Left" MinWidth="200">
+    <Panel Margin="4">
+        <DockPanel>
+            <u:UrsaGroupBox Header="连接管理" DockPanel.Dock="Left">
+                <DockPanel MinWidth="200">
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
-                        <StackPanel.Styles>
-                            <Style Selector="atom|Button">
-                                <Setter Property="Margin" Value="4"></Setter>
-                            </Style>
-                        </StackPanel.Styles>
-                        <atom:Button ButtonType="Primary" Shape="Circle" Icon="{antdicons:AntDesignIconProvider PlusOutlined}" Command="{Binding AddCommand}"></atom:Button>
-                        <atom:Button Shape="Circle" Icon="{antdicons:AntDesignIconProvider EditOutlined}" Command="{Binding EditCommand}"></atom:Button>
-                        <atom:PopupConfirm
-                            Title="Delete the Connection"
-                            ConfirmContent="Are you sure to delete this connection?"
-                            OkText="Ok"
-                            CancelText="Cancel"
-                            Placement="Top">
-                            <atom:Button Shape="Circle" Icon="{antdicons:AntDesignIconProvider DeleteOutlined}" Command="{Binding DeleteCommand}" IsDanger="True"></atom:Button>
-                        </atom:PopupConfirm>
+                        <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}" Classes="Primary" />
+                        <u:IconButton Command="{Binding EditCommand}" Icon="{StaticResource SemiIconEdit}" />
+                        <u:PopConfirm PopupHeader="Delete the Connection"
+                                      HorizontalAlignment="Left"
+                                      PopupContent="Are you sure to delete this connection?"
+                                      ConfirmCommand="{Binding DeleteCommand}">
+                            <u:IconButton Command="{Binding FakeDeleteCommand}" Icon="{StaticResource SemiIconDelete}" Classes="Danger" />
+                        </u:PopConfirm>
                     </StackPanel>
-                    <atom:ListBox IsBorderless="True" ItemsSource="{Binding ConnectionContexts}" SelectedItem="{Binding CurrentConnectionContext}">
-                    </atom:ListBox>
+                    <ListBox ItemsSource="{Binding ConnectionContexts}" SelectedItem="{Binding CurrentConnectionContext}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="core:ConnectionContext">
+                                <TextBlock Text="{Binding Connection.Name}"></TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </DockPanel>
-            </atom:GroupBox>
-            <atom:Splitter Width="4"></atom:Splitter>
-            <atom:GroupBox HeaderTitle="连接详情">
-                <atom:DataGrid>
-                    <atom:DataGrid.Columns>
-                        <atom:DataGridTextColumn Header="行1"></atom:DataGridTextColumn>
-                        <atom:DataGridTextColumn Header="行2"></atom:DataGridTextColumn>
-                        <atom:DataGridTextColumn Header="行3"></atom:DataGridTextColumn>
-                    </atom:DataGrid.Columns>
-                </atom:DataGrid>
-            </atom:GroupBox>
+            </u:UrsaGroupBox>
+            <u:UrsaGroupBox Header="连接详情" Margin="4 0 0 0">
+                
+            </u:UrsaGroupBox>
         </DockPanel>
-        <atom:Drawer Title="{Binding EditDrawerTitle}" IsOpen="{Binding EditDrawerIsOpen}" OpenOn="{Binding $parent}">
-            <atom:Form InitialValues="{Binding EditDrawerFormValues}" Submitted="Form_Submitted">
-                <atom:FormItem LabelText="Id" FieldName="Id" IsVisible="False"><atom:LineEdit /></atom:FormItem>
-                <atom:FormItem LabelText="{Binding Text_ConnectionName}" FieldName="Name"><atom:LineEdit /></atom:FormItem>
-                <atom:FormItem LabelText="{Binding Text_ServerUrl}" FieldName="ServerUrl"><atom:LineEdit /></atom:FormItem>
-                <atom:FormItem LabelText="{Binding Text_User}" FieldName="User"><atom:LineEdit /></atom:FormItem>
-                <atom:FormItem LabelText="{Binding Text_Password}" FieldName="Password"><atom:LineEdit PasswordChar="•" /></atom:FormItem>
-                <atom:FormActionsItem>
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <atom:SubmitButton />
-                        <atom:ResetButton />
-                    </StackPanel>
-                </atom:FormActionsItem>
-            </atom:Form>
-        </atom:Drawer>
-        <!--
-        <atom:Dialog
-                IsOpen="{Binding IsBasicModalOpened, Mode=TwoWay}"
-                IsLightDismissEnabled="False"
-                Title="Basic Modal"
-                IsModal="True"
-                IsResizable="False"
-                IsDragMovable="True"
-                IsMaximizable="False"
-                StandardButtons="Cancel,Ok"
-                DefaultStandardButton="Ok"
-                HorizontalStartupLocation="Center"
-                VerticalOffset="30%"
-                MinWidth="300">
-            <StackPanel Orientation="Vertical">
-                <TextBlock>Some contents...</TextBlock>
-                <TextBlock>Some contents...</TextBlock>
-                <TextBlock>Some contents...</TextBlock>
-            </StackPanel>
-        </atom:Dialog>
-        -->
     </Panel>
-</atom:Window>
+</u:UrsaWindow>

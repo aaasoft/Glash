@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:vm="using:GlashClientDesktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GlashClientDesktop.Views.EditConnectionDialog"
+             x:DataType="vm:EditConnectionDialogViewModel">
+  <Design.DataContext>
+    <vm:EditConnectionDialogViewModel />
+  </Design.DataContext>
+  <u:Form LabelPosition="Top" LabelWidth="*">
+    <u:Form.Styles>
+      <Style Selector="TextBox">
+        <Setter Property="MinWidth" Value="400" />
+      </Style>
+    </u:Form.Styles>
+    <TextBox u:FormItem.Label="{Binding Text_ConnectionName}" Text="{Binding Model.Name}" u:FormItem.IsRequired="True" />
+    <TextBox u:FormItem.Label="{Binding Text_ServerUrl}" Text="{Binding Model.ServerUrl}" u:FormItem.IsRequired="True" />
+    <TextBox u:FormItem.Label="{Binding Text_User}" Text="{Binding Model.User}" u:FormItem.IsRequired="True" />
+    <TextBox u:FormItem.Label="{Binding Text_Password}" Text="{Binding Model.Password}" u:FormItem.IsRequired="True" PasswordChar="•" />
+</u:Form>
+</UserControl>

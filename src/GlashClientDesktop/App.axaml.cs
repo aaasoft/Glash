@@ -1,6 +1,3 @@
-using AtomUI;
-using AtomUI.Desktop.Controls;
-using AtomUI.Theme;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -30,15 +27,6 @@ namespace GlashClientDesktop
             ConfigDbContext.CacheContext.LoadCache();
 
             AvaloniaXamlLoader.Load(this);
-            this.UseAtomUI(builder =>
-            {
-                builder.WithDefaultCultureInfo(CultureInfo.CurrentUICulture);
-                builder.WithDefaultTheme(IThemeManager.DEFAULT_THEME_ID);
-                builder.UseAlibabaSansFont();
-                builder.UseDesktopControls();
-                builder.UseDesktopColorPicker();   // 可选
-                builder.UseDesktopDataGrid();      // 可选
-            });
         }
 
         public override void OnFrameworkInitializationCompleted()

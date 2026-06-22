@@ -1,5 +1,4 @@
-﻿using AtomUI;
-using Avalonia;
+﻿using Avalonia;
 using ReactiveUI.Avalonia;
 using System;
 
@@ -18,11 +17,7 @@ namespace GlashClientDesktop
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-#if DEBUG
-                .WithDeveloperTools()
-#endif
                 .LogToTrace()
-                .UseReactiveUI(t => { })
-                .WithAtomUIDefaultOptions();
+                .UseReactiveUI(t => { });
     }
 }

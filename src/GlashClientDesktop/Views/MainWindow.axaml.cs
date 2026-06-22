@@ -1,18 +1,13 @@
-using AtomUI.Desktop.Controls;
 using GlashClientDesktop.ViewModels;
+using Ursa.Controls;
 
 namespace GlashClientDesktop.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : UrsaWindow
     {
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void Form_Submitted(object sender, FormSubmittedEventArgs e)
-        {
-            ((MainWindowViewModel)DataContext).Submit(e.Values);
         }
     }
 }
