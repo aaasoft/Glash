@@ -2,15 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:qpmodel="using:Glash.Client.Protocol.QpModel"
              xmlns:u="https://irihi.tech/ursa"
              xmlns:vm="using:GlashClientDesktop.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="GlashClientDesktop.Views.ConnectionConsole"
-             x:DataType="vm:ConnectionConsoleViewModel">
+             x:Class="GlashClientDesktop.Views.ConnectionAgentProxies"
+             x:DataType="vm:ConnectionAgentProxiesViewModel">
   <Design.DataContext>
-    <vm:ConnectionConsoleViewModel />
+    <vm:ConnectionAgentProxiesViewModel />
   </Design.DataContext>
+  <!--
   <Grid RowDefinitions="Auto,*,Auto">
     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
       <TextBlock
@@ -33,19 +33,9 @@
           Classes.Bordered="True" Type="Warning"
           Content="{Binding Text_CurrentNotConntected}" />
     </u:LoadingContainer>        
-        <TabControl IsVisible="{Binding Model.Connected}" ItemsSource="{Binding Model.Agents}">
-          <TabControl.ItemTemplate>
-            <DataTemplate DataType="qpmodel:AgentInfo">
-              <TextBlock Text="{Binding AgentName}" />
-              </DataTemplate>
-          </TabControl.ItemTemplate>
-          <TabControl.ContentTemplate>
-            <DataTemplate>
-              <Panel Background="LightGreen"></Panel>
-            </DataTemplate>
-          </TabControl.ContentTemplate>
+        <TabControl IsVisible="{Binding Model.Connected}" ItemsSource="{Binding Model.ProxyRules}">
         </TabControl>
       </Panel>
   </Grid>
-
+-->
 </UserControl>

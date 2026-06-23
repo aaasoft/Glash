@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-06-23 08:56:21+0800\n"
-"PO-Revision-Date: 2026-06-23 08:57+0800\n"
+"POT-Creation-Date: 2026-06-23 13:55:25+0800\n"
+"PO-Revision-Date: 2026-06-23 13:56+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -11,53 +11,84 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:14
-msgid "Are you sure to delete selected connection?"
-msgstr "确定要删除选中的连接？"
-
-#: ..\..\Core\ConnectionContext.cs:139
-msgid "Disconnected"
-msgstr "已断开"
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
-msgid "Password"
-msgstr "密码"
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:12
-msgid "Connections"
-msgstr "连接"
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:80
-msgid "Edit Connection"
-msgstr "编辑连接"
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
-msgid "User"
-msgstr "用户名"
-
-#: ..\..\Core\ConnectionContext.cs:75
+#: ..\..\Core\ConnectionContext.cs:72
 msgid "Connected"
 msgstr "已连接"
 
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
-msgid "Server Url"
-msgstr "服务端URL"
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:48
+msgid "Starting..."
+msgstr "启动中..."
 
 #: ..\..\Model\Connection.cs:26
 msgid "Connection"
 msgstr "连接"
 
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:66
+msgid "Stoping..."
+msgstr "停止中..."
+
 #: ..\..\ViewModels\MainWindowViewModel.cs:13
+msgid "Connections"
+msgstr "连接"
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
+#, csharp-format
+msgid "Stop error,reason: {0}"
+msgstr "停止出错，原因：{0}"
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:12
+msgid "Current not connected."
+msgstr "当前未连接。"
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:76
+msgid "Add Connection"
+msgstr "添加连接"
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:14
 msgid "Delete Confirm"
 msgstr "删除确认"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:61
-msgid "Add Connection"
-msgstr "添加连接"
+#: ..\..\ViewModels\MainWindowViewModel.cs:95
+msgid "Edit Connection"
+msgstr "编辑连接"
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
+msgid "Password"
+msgstr "密码"
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
+msgid "User"
+msgstr "用户名"
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:54
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
+msgid "Error"
+msgstr "错误"
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:15
+msgid "Are you sure to delete selected connection?"
+msgstr "确定要删除选中的连接？"
 
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
 msgid "Connection Name"
 msgstr "连接名称"
+
+#: ..\..\Core\ConnectionContext.cs:145
+msgid "Disconnected"
+msgstr "已断开"
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
+msgid "Server Url"
+msgstr "服务端URL"
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:54
+#, csharp-format
+msgid "Start error,reason: {0}"
+msgstr "启动出错，原因：{0}"
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:82
+msgid "Logs"
+msgstr "日志"
 
 #~ msgid "Name"
 #~ msgstr "名称"
@@ -90,9 +121,6 @@ msgstr "连接名称"
 #~ msgid "Add"
 #~ msgstr "添加"
 
-#~ msgid "Logs"
-#~ msgstr "日志"
-
 #~ msgid "Edit"
 #~ msgstr "编辑"
 
@@ -110,9 +138,6 @@ msgstr "连接名称"
 
 #~ msgid "Delete Proxy Rule"
 #~ msgstr "删除代理规则"
-
-#~ msgid "Error"
-#~ msgstr "错误"
 
 #, csharp-format
 #~ msgid "Enable profile[{0}] error.Reason: {1}"

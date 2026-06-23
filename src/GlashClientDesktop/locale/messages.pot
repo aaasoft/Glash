@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-06-23 08:56:21+0800\n"
-"PO-Revision-Date: 2026-06-23 08:56:21+0800\n"
+"POT-Creation-Date: 2026-06-23 13:55:25+0800\n"
+"PO-Revision-Date: 2026-06-23 13:55:25+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10,51 +10,82 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GetText.NET Extractor\n"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:14
-msgid "Are you sure to delete selected connection?"
-msgstr ""
-
-#: ..\..\Core\ConnectionContext.cs:139
-msgid "Disconnected"
-msgstr ""
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
-msgid "Password"
-msgstr ""
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:12
-msgid "Connections"
-msgstr ""
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:80
-msgid "Edit Connection"
-msgstr ""
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
-msgid "User"
-msgstr ""
-
-#: ..\..\Core\ConnectionContext.cs:75
+#: ..\..\Core\ConnectionContext.cs:72
 msgid "Connected"
 msgstr ""
 
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
-msgid "Server Url"
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:48
+msgid "Starting..."
 msgstr ""
 
 #: ..\..\Model\Connection.cs:26
 msgid "Connection"
 msgstr ""
 
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:66
+msgid "Stoping..."
+msgstr ""
+
 #: ..\..\ViewModels\MainWindowViewModel.cs:13
+msgid "Connections"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
+#, csharp-format
+msgid "Stop error,reason: {0}"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:12
+msgid "Current not connected."
+msgstr ""
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:76
+msgid "Add Connection"
+msgstr ""
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:14
 msgid "Delete Confirm"
 msgstr ""
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:61
-msgid "Add Connection"
+#: ..\..\ViewModels\MainWindowViewModel.cs:95
+msgid "Edit Connection"
+msgstr ""
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
+msgid "Password"
+msgstr ""
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
+msgid "User"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:54
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
+msgid "Error"
+msgstr ""
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:15
+msgid "Are you sure to delete selected connection?"
 msgstr ""
 
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
 msgid "Connection Name"
+msgstr ""
+
+#: ..\..\Core\ConnectionContext.cs:145
+msgid "Disconnected"
+msgstr ""
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
+msgid "Server Url"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:54
+#, csharp-format
+msgid "Start error,reason: {0}"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:82
+msgid "Logs"
 msgstr ""
 

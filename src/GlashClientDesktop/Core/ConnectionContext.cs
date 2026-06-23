@@ -10,14 +10,20 @@ public class ConnectionContext : ReactiveObject, IDisposable
 {
     public Model.Connection Connection { get; private set; }
     public GlashClient GlashClient { get; private set; }
-    public AgentInfo[] Agents { get; private set; }
-        private Dictionary<string, AgentInfo> agentDict;
+    private Dictionary<string, AgentInfo> agentDict;
 
     private bool _Connected;
     public bool Connected
     {
         get => _Connected;
         set => this.RaiseAndSetIfChanged(ref _Connected, value);
+    }
+    
+    private AgentInfo[] _Agents;
+    public AgentInfo[] Agents
+    {
+        get => _Agents;
+        set => this.RaiseAndSetIfChanged(ref _Agents, value);
     }
 
     private ProxyRuleInfo[] _ProxyRules;
