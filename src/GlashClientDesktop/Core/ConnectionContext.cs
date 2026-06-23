@@ -2,58 +2,49 @@
 using Glash.Client.Protocol.QpModel;
 using Quick.Localize;
 using Quick.Utils;
+using ReactiveUI;
 
 namespace GlashClientDesktop.Core;
 
-public class ConnectionContext : IDisposable
+public class ConnectionContext : ReactiveObject, IDisposable
 {
-
     public Model.Connection Connection { get; private set; }
     public GlashClient GlashClient { get; private set; }
     public AgentInfo[] Agents { get; private set; }
-    public ProxyRuleInfo[] ProxyRules { get; private set; }
-    private Dictionary<string, AgentInfo> agentDict;
+        private Dictionary<string, AgentInfo> agentDict;
 
-    public bool Connected { get; private set; }
+    private bool _Connected;
+    public bool Connected
+    {
+        get => _Connected;
+        set => this.RaiseAndSetIfChanged(ref _Connected, value);
+    }
+
+    private ProxyRuleInfo[] _ProxyRules;
+    public ProxyRuleInfo[] ProxyRules
+    {
+        get => _ProxyRules;
+        set => this.RaiseAndSetIfChanged(ref _ProxyRules, value);
+    }
 
     public EventHandler<bool> ConnectedChanged;
     public EventHandler<AgentInfo> AgentLoginStatusChanged;
     public EventHandler<string[]> LogChanged;
 
-    private CancellationTokenSource cts;
-
     public ConnectionContext(Model.Connection connection)
     {
         Connection = connection;
-        cts = new CancellationTokenSource();
-
         try
         {
             GlashClient = new GlashClient(Connection.ServerUrl);
             GlashClient.AgentLoginStatusChanged += GlashClient_AgentLoginStatusChanged;
             GlashClient.LogPushed += GlashClient_LogPushed;
             GlashClient.Disconnected += GlashClient_Disconnected;
-
-            _ = beginConnect(cts.Token);
-        }
-        catch (Exception ex)
-        {
-
-        }
-    }
-
-
-    private async Task delayToConnect(CancellationToken token)
-    {
-        try
-        {
-            await Task.Delay(5000, token);
-            _ = beginConnect(token);
         }
         catch { }
     }
 
-    private async Task beginConnect(CancellationToken token)
+    public async Task Start()
     {
         try
         {
@@ -78,8 +69,17 @@ public class ConnectionContext : IDisposable
         catch (Exception ex)
         {
             pushLog(ExceptionUtils.GetExceptionMessage(ex));
-            _ = delayToConnect(token);
-            return;
+            throw;
+        }
+    }
+
+    public void Stop()
+    {
+        if (GlashClient != null)
+        {
+            foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
+                GlashClient.UnloadProxyRule(proxyRuleContext);
+            GlashClient.Dispose();
         }
     }
 
@@ -138,11 +138,6 @@ public class ConnectionContext : IDisposable
         Connected = false;
         pushLog(Locale.GetString("Disconnected"));
         ConnectedChanged?.Invoke(this, Connected);
-
-        var currentCts = cts;
-        if (currentCts == null)
-            return;
-        _ = delayToConnect(currentCts.Token);
     }
 
     public async Task AddProxyRule(ProxyRuleInfo model)
@@ -172,16 +167,12 @@ public class ConnectionContext : IDisposable
 
     public void Dispose()
     {
-        cts?.Cancel();
-        cts = null;
         if (GlashClient != null)
         {
-            foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
-                GlashClient.UnloadProxyRule(proxyRuleContext);
             GlashClient.AgentLoginStatusChanged -= GlashClient_AgentLoginStatusChanged;
             GlashClient.LogPushed -= GlashClient_LogPushed;
             GlashClient.Disconnected -= GlashClient_Disconnected;
-            GlashClient.Dispose();
+            Stop();
             GlashClient = null;
         }
     }

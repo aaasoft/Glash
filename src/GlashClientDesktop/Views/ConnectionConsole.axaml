@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:vm="using:GlashClientDesktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GlashClientDesktop.Views.ConnectionConsole"
+             x:DataType="vm:ConnectionConsoleViewModel">
+  <Design.DataContext>
+    <vm:ConnectionConsoleViewModel />
+  </Design.DataContext>
+  <Grid RowDefinitions="Auto,*,Auto">
+    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
+      <TextBlock
+        VerticalAlignment="Center"
+        Margin="8 0"
+        FontWeight="Bold"
+        Text="{Binding Model.Connection.Name}" />
+      <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 0 0">
+        <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !Model.Connected}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
+        <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding Model.Connected}" Icon="{StaticResource SemiIconStop}"></u:IconButton>
+        <u:IconButton Command="{Binding LogCommand}" Icon="{StaticResource SemiIconFile}"></u:IconButton>
+      </StackPanel>
+    </StackPanel>
+    <Panel Grid.Row="1">
+      <u:LoadingContainer      
+      IsLoading="{Binding IsLoading}"
+      LoadingMessage="{Binding LoadingMessage}">
+      <u:Banner
+          IsVisible="{Binding !Model.Connected}"
+          Classes.Bordered="True" Type="Warning"
+          Content="{Binding Text_CurrentNotConntected}" />
+    </u:LoadingContainer>        
+        <TabControl IsVisible="{Binding Model.Connected}" ItemsSource="{Binding Model.ProxyRules}">
+        </TabControl>
+      </Panel>
+  </Grid>
+
+</UserControl>

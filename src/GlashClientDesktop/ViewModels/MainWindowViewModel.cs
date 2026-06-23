@@ -1,4 +1,5 @@
 ﻿using System.Reactive;
+using Avalonia.Threading;
 using GlashClientDesktop.Core;
 using GlashClientDesktop.Views;
 using Quick.Localize;
@@ -13,11 +14,25 @@ namespace GlashClientDesktop.ViewModels
         public string Text_DeleteConfirm => Locale.GetString("Delete Confirm");
         public string Text_DeleteConnectionConfirm => Locale.GetString("Are you sure to delete selected connection?");
 
+        private ConnectionConsoleViewModel _ConnectionConsoleViewModel;
+        public ConnectionConsoleViewModel ConnectionConsoleViewModel
+        {
+            get => _ConnectionConsoleViewModel;
+            set => this.RaiseAndSetIfChanged(ref _ConnectionConsoleViewModel, value);
+        }
+
         private ConnectionContext _CurrentConnectionContext;
         public ConnectionContext CurrentConnectionContext
         {
             get => _CurrentConnectionContext;
-            set => this.RaiseAndSetIfChanged(ref _CurrentConnectionContext, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _CurrentConnectionContext, value);
+                if (value == null)
+                    ConnectionConsoleViewModel = null;
+                else
+                    ConnectionConsoleViewModel = new ConnectionConsoleViewModel() { Model = value };
+            }
         }
 
         private ConnectionContext[] _ConnectionContexts;
@@ -100,9 +115,16 @@ namespace GlashClientDesktop.ViewModels
 
         public void ExecuteCommand_Delete()
         {
-            ConnectionContextManager.Instance.Remove(CurrentConnectionContext.Connection);
-            CurrentConnectionContext = null;
-            refreshConnectionContexts();
+            var uiDispatcher = Dispatcher.CurrentDispatcher;
+            Task.Delay(100).ContinueWith(t =>
+            {
+                uiDispatcher.Invoke(() =>
+                {
+                    ConnectionContextManager.Instance.Remove(CurrentConnectionContext.Connection);
+                    CurrentConnectionContext = null;
+                    refreshConnectionContexts();
+                });
+            });
         }
     }
 }

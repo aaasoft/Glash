@@ -2,6 +2,8 @@
               xmlns:core="using:GlashClientDesktop.Core"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:local="using:GlashClientDesktop.Views"
+              xmlns:converters="using:GlashClientDesktop.Converters"
               xmlns:vm="using:GlashClientDesktop.ViewModels"
               xmlns:u="https://irihi.tech/ursa"
               x:Class="GlashClientDesktop.Views.MainWindow"
@@ -17,6 +19,7 @@
     </Design.DataContext>
     <u:UrsaWindow.Resources>
         <ResourceDictionary>
+            <converters:ObjectToBoolConverter x:Key="objectToBoolConverter" />
             <DataTemplate x:Key="GeometryDataTemplate" DataType="Geometry">
                 <PathIcon Theme="{StaticResource InnerPathIcon}" Data="{Binding}" />
             </DataTemplate>
@@ -54,7 +57,7 @@
                                   Content="{StaticResource SemiIconSidebar}"
                                   IsChecked="{Binding #SplitView.IsPaneOpen}"
                                   Theme="{DynamicResource IconBorderlessToggleSwitch}" />
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 0 0">
                         <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}"></u:IconButton>
                         <u:IconButton Command="{Binding EditCommand}" Icon="{StaticResource SemiIconEdit}" />
                         <u:PopConfirm PopupHeader="{Binding Text_DeleteConfirm}"
@@ -79,9 +82,8 @@
                 </ListBox>
             </Grid>
         </SplitView.Pane>
-
-        <Panel>
-            <TextBlock Text="Content"></TextBlock>
+        <Panel IsVisible="{Binding ConnectionConsoleViewModel, Converter={StaticResource objectToBoolConverter}}">
+            <local:ConnectionConsole DataContext="{Binding ConnectionConsoleViewModel}" />
         </Panel>
     </SplitView>
 </u:UrsaWindow>
