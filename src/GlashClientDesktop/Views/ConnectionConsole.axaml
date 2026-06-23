@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:core="using:GlashClientDesktop.Core"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:GlashClientDesktop.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:qpmodel="using:Glash.Client.Protocol.QpModel"
              xmlns:u="https://irihi.tech/ursa"
@@ -19,8 +21,8 @@
         FontWeight="Bold"
         Text="{Binding Model.Connection.Name}" />
       <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 0 0">
-        <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !Model.Connected}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
-        <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding Model.Connected}" Icon="{StaticResource SemiIconStop}"></u:IconButton>
+        <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !Model.Connected}" Icon="{StaticResource SemiIconLink}"></u:IconButton>
+        <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding Model.Connected}" Icon="{StaticResource SemiIconUnlink}" Classes="Danger"></u:IconButton>
         <u:IconButton Command="{Binding LogCommand}" Icon="{StaticResource SemiIconFile}"></u:IconButton>
       </StackPanel>
     </StackPanel>
@@ -35,17 +37,17 @@
     </u:LoadingContainer>        
         <TabControl IsVisible="{Binding Model.Connected}" ItemsSource="{Binding Model.Agents}">
           <TabControl.ItemTemplate>
-            <DataTemplate DataType="qpmodel:AgentInfo">
-              <TextBlock Text="{Binding AgentName}" />
+            <DataTemplate DataType="vm:ConnectionAgentProxiesViewModel">
+              <TextBlock Text="{Binding Name}" />
               </DataTemplate>
           </TabControl.ItemTemplate>
           <TabControl.ContentTemplate>
-            <DataTemplate>
-              <Panel Background="LightGreen"></Panel>
+            <DataTemplate DataType="vm:ConnectionAgentProxiesViewModel">
+              <local:ConnectionAgentProxies />
             </DataTemplate>
           </TabControl.ContentTemplate>
         </TabControl>
-      </Panel>
+    </Panel>
   </Grid>
 
 </UserControl>

@@ -58,7 +58,7 @@
                                   IsChecked="{Binding #SplitView.IsPaneOpen}"
                                   Theme="{DynamicResource IconBorderlessToggleSwitch}" />
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 0 0">
-                        <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}"></u:IconButton>
+                        <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}" />
                         <u:IconButton Command="{Binding EditCommand}" Icon="{StaticResource SemiIconEdit}" />
                         <u:PopConfirm PopupHeader="{Binding Text_DeleteConfirm}"
                                       HorizontalAlignment="Left"
@@ -82,7 +82,7 @@
                 </ListBox>
             </Grid>
         </SplitView.Pane>
-        <Panel IsVisible="{Binding ConnectionConsoleViewModel, Converter={StaticResource objectToBoolConverter}}">
+        <Panel Margin="4 0" IsVisible="{Binding ConnectionConsoleViewModel, Converter={StaticResource objectToBoolConverter}}">
             <local:ConnectionConsole DataContext="{Binding ConnectionConsoleViewModel}" />
         </Panel>
     </SplitView>

@@ -1,5 +1,6 @@
 ﻿using Glash.Client;
 using Glash.Client.Protocol.QpModel;
+using GlashClientDesktop.ViewModels;
 using Quick.Localize;
 using Quick.Utils;
 using ReactiveUI;
@@ -10,7 +11,7 @@ public class ConnectionContext : ReactiveObject, IDisposable
 {
     public Model.Connection Connection { get; private set; }
     public GlashClient GlashClient { get; private set; }
-    private Dictionary<string, AgentInfo> agentDict;
+    private Dictionary<string, ConnectionAgentProxiesViewModel> agentDict;
 
     private bool _Connected;
     public bool Connected
@@ -18,9 +19,9 @@ public class ConnectionContext : ReactiveObject, IDisposable
         get => _Connected;
         set => this.RaiseAndSetIfChanged(ref _Connected, value);
     }
-    
-    private AgentInfo[] _Agents;
-    public AgentInfo[] Agents
+
+    private ConnectionAgentProxiesViewModel[] _Agents;
+    public ConnectionAgentProxiesViewModel[] Agents
     {
         get => _Agents;
         set => this.RaiseAndSetIfChanged(ref _Agents, value);
@@ -55,18 +56,25 @@ public class ConnectionContext : ReactiveObject, IDisposable
         try
         {
             await GlashClient.ConnectAsync(Connection.User, Connection.Password);
-            var agentList = await GlashClient.GetAgentListAsync();
-            Agents = agentList
-                .OrderBy(t => t.AgentName)
-                .OrderByDescending(t => t.IsLoggedIn)
-                .ToArray();
-            agentDict = Agents.ToDictionary(t => t.AgentName, t => t);
-
+            //读取规则
             var proxyRuleList = await GlashClient.GetProxyRuleListAsync();
             ProxyRules = proxyRuleList
                 .OrderBy(t => t.Name)
                 .ToArray();
             GlashClient.LoadProxyRules(ProxyRules);
+            //读取代理端
+            var agentList = await GlashClient.GetAgentListAsync();
+            Agents = agentList
+                .OrderBy(t => t.AgentName)
+                .Select(t => new ConnectionAgentProxiesViewModel()
+                {
+                    ConnectionContext = this,
+                    Name = t.AgentName,
+                    Connected = t.IsLoggedIn,
+                    Rules = proxyRuleList.Where(r => r.Agent == t.AgentName).ToArray()
+                })
+                .ToArray();
+            agentDict = Agents.ToDictionary(t => t.Name, t => t);
 
             Connected = true;
             pushLog(Locale.GetString("Connected"));
@@ -126,7 +134,7 @@ public class ConnectionContext : ReactiveObject, IDisposable
             if (!agentDict.ContainsKey(data.AgentName))
                 return;
             var agentInfo = agentDict[data.AgentName];
-            agentInfo.IsLoggedIn = data.IsLoggedIn;
+            agentInfo.Connected = data.IsLoggedIn;
             AgentLoginStatusChanged?.Invoke(this, data);
         });
     }

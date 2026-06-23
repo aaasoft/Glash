@@ -2,40 +2,80 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:qpmodel="using:Glash.Client.Protocol.QpModel"
              xmlns:u="https://irihi.tech/ursa"
              xmlns:vm="using:GlashClientDesktop.ViewModels"
+             xmlns:converters="using:GlashClientDesktop.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GlashClientDesktop.Views.ConnectionAgentProxies"
              x:DataType="vm:ConnectionAgentProxiesViewModel">
   <Design.DataContext>
     <vm:ConnectionAgentProxiesViewModel />
   </Design.DataContext>
-  <!--
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <converters:ObjectToBoolConverter x:Key="objectToBoolConverter" />
+    </ResourceDictionary>
+  </UserControl.Resources>
   <Grid RowDefinitions="Auto,*,Auto">
     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
-      <TextBlock
-        VerticalAlignment="Center"
-        Margin="8 0"
-        FontWeight="Bold"
-        Text="{Binding Model.Connection.Name}" />
-      <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 0 0">
-        <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !Model.Connected}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
-        <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding Model.Connected}" Icon="{StaticResource SemiIconStop}"></u:IconButton>
-        <u:IconButton Command="{Binding LogCommand}" Icon="{StaticResource SemiIconFile}"></u:IconButton>
+      <StackPanel Orientation="Horizontal">
+        <u:IconButton Icon="{StaticResource SemiIconPlus}"></u:IconButton>
+        <u:IconButton Icon="{StaticResource SemiIconEdit}"></u:IconButton>
+        <u:IconButton Icon="{StaticResource SemiIconDelete}" Classes="Danger"></u:IconButton>
+      </StackPanel>
+      <u:Divider Margin="4 0" Orientation="Vertical" />
+      <StackPanel Orientation="Horizontal" IsVisible="{Binding CurrentRule, Converter={StaticResource objectToBoolConverter}}">
+        <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !CurrentRule.Enable}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
+        <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding CurrentRule.Enable}" Icon="{StaticResource SemiIconStop}" Classes="Danger"></u:IconButton>
       </StackPanel>
     </StackPanel>
     <Panel Grid.Row="1">
-      <u:LoadingContainer      
-      IsLoading="{Binding IsLoading}"
-      LoadingMessage="{Binding LoadingMessage}">
-      <u:Banner
-          IsVisible="{Binding !Model.Connected}"
-          Classes.Bordered="True" Type="Warning"
-          Content="{Binding Text_CurrentNotConntected}" />
-    </u:LoadingContainer>        
-        <TabControl IsVisible="{Binding Model.Connected}" ItemsSource="{Binding Model.ProxyRules}">
-        </TabControl>
-      </Panel>
+      <ListBox SelectedItem="{Binding CurrentRule}" ItemsSource="{Binding Rules}">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal" />
+          </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="qpmodel:ProxyRuleInfo">
+            <Border
+              Margin="4"
+              Padding="12"
+              CornerRadius="8"
+              MinWidth="240"
+              BorderBrush="{StaticResource SemiColorBorder}"
+              BorderThickness="1"
+              BoxShadow="0 2 10 #00000020">
+              <StackPanel Spacing="6">
+                <StackPanel Orientation="Horizontal">
+                  <PathIcon Width="16" Height="16" IsVisible="{Binding Enable}" Data="{StaticResource SemiIconConnectionPoint1}" Foreground="{StaticResource SemiColorPrimary}" />
+                  <PathIcon Width="16" Height="16" IsVisible="{Binding !Enable}" Data="{StaticResource SemiIconConnectionPoint1}" Foreground="{StaticResource SemiColorDisabledText}" />
+                  <TextBlock Margin="4 0" Text="{Binding Name}" FontSize="16"/>
+                </StackPanel>
+                <TextBlock>
+                  <TextBlock.Inlines>
+                    <Run Text="{Binding $parent[ListBox].DataContext.Text_Listen}" FontWeight="Bold" />
+                    <Run Text=":" FontWeight="Bold" />
+                    <Run Text="{Binding LocalIPAddress}" Foreground="{StaticResource SemiColorText3}"/>
+                    <Run Text=":" Foreground="{StaticResource SemiColorText3}" />
+                    <Run Text="{Binding LocalPort}" Foreground="{StaticResource SemiColorText3}"/>
+                  </TextBlock.Inlines>
+                </TextBlock>
+                <TextBlock>
+                  <TextBlock.Inlines>
+                    <Run Text="{Binding $parent[ListBox].DataContext.Text_Proxy}" FontWeight="Bold" />
+                    <Run Text=":" FontWeight="Bold" />
+                    <Run Text="{Binding RemoteHost}" Foreground="{StaticResource SemiColorText3}"/>
+                    <Run Text=":" Foreground="{StaticResource SemiColorText3}" />
+                    <Run Text="{Binding RemotePort}" Foreground="{StaticResource SemiColorText3}"/>
+                  </TextBlock.Inlines>
+                </TextBlock>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Panel>
   </Grid>
--->
 </UserControl>
