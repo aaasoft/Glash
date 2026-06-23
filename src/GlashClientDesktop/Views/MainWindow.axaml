@@ -3,13 +3,13 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:local="using:GlashClientDesktop.Views"
-              xmlns:converters="using:GlashClientDesktop.Converters"
               xmlns:vm="using:GlashClientDesktop.ViewModels"
               xmlns:u="https://irihi.tech/ursa"
               x:Class="GlashClientDesktop.Views.MainWindow"
               x:DataType="vm:MainWindowViewModel"
               d:DesignWidth="800"
               d:DesignHeight="600"
+              WindowStartupLocation="CenterScreen"
               Icon="/Assets/logo.ico"
               Title="Glash桌面客户端"
               ExtendClientAreaToDecorationsHint="False"
@@ -19,7 +19,6 @@
     </Design.DataContext>
     <u:UrsaWindow.Resources>
         <ResourceDictionary>
-            <converters:ObjectToBoolConverter x:Key="objectToBoolConverter" />
             <DataTemplate x:Key="GeometryDataTemplate" DataType="Geometry">
                 <PathIcon Theme="{StaticResource InnerPathIcon}" Data="{Binding}" />
             </DataTemplate>
@@ -82,7 +81,7 @@
                 </ListBox>
             </Grid>
         </SplitView.Pane>
-        <Panel Margin="4 0" IsVisible="{Binding ConnectionConsoleViewModel, Converter={StaticResource objectToBoolConverter}}">
+        <Panel Margin="4 0 4 4" IsVisible="{Binding ConnectionConsoleViewModel, Converter={x:Static ObjectConverters.IsNotNull}}">
             <local:ConnectionConsole DataContext="{Binding ConnectionConsoleViewModel}" />
         </Panel>
     </SplitView>

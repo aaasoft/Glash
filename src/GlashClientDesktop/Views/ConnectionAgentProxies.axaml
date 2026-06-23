@@ -3,21 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:qpmodel="using:Glash.Client.Protocol.QpModel"
              xmlns:u="https://irihi.tech/ursa"
              xmlns:vm="using:GlashClientDesktop.ViewModels"
-             xmlns:converters="using:GlashClientDesktop.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GlashClientDesktop.Views.ConnectionAgentProxies"
              x:DataType="vm:ConnectionAgentProxiesViewModel">
   <Design.DataContext>
     <vm:ConnectionAgentProxiesViewModel />
   </Design.DataContext>
-  <UserControl.Resources>
-    <ResourceDictionary>
-      <converters:ObjectToBoolConverter x:Key="objectToBoolConverter" />
-    </ResourceDictionary>
-  </UserControl.Resources>
   <Grid RowDefinitions="Auto,*,Auto">
     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
       <StackPanel Orientation="Horizontal">
@@ -26,7 +19,7 @@
         <u:IconButton Icon="{StaticResource SemiIconDelete}" Classes="Danger"></u:IconButton>
       </StackPanel>
       <u:Divider Margin="4 0" Orientation="Vertical" />
-      <StackPanel Orientation="Horizontal" IsVisible="{Binding CurrentRule, Converter={StaticResource objectToBoolConverter}}">
+      <StackPanel Orientation="Horizontal" IsVisible="{Binding CurrentRule, Converter={x:Static ObjectConverters.IsNotNull}}">
         <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !CurrentRule.Config.Enable}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
         <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding CurrentRule.Config.Enable}" Icon="{StaticResource SemiIconStop}" Classes="Danger"></u:IconButton>
       </StackPanel>
