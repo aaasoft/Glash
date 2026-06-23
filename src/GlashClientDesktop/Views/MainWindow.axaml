@@ -1,46 +1,87 @@
 <u:UrsaWindow xmlns="https://github.com/avaloniaui"
               xmlns:core="using:GlashClientDesktop.Core"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:vm="using:GlashClientDesktop.ViewModels"
-        xmlns:u="https://irihi.tech/ursa"
-        x:Class="GlashClientDesktop.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        d:DesignWidth="800"
-        d:DesignHeight="600"
-        Icon="/Assets/logo.ico"
-        Title="Glash桌面客户端"
-        ExtendClientAreaToDecorationsHint="False"
-        >
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:vm="using:GlashClientDesktop.ViewModels"
+              xmlns:u="https://irihi.tech/ursa"
+              x:Class="GlashClientDesktop.Views.MainWindow"
+              x:DataType="vm:MainWindowViewModel"
+              d:DesignWidth="800"
+              d:DesignHeight="600"
+              Icon="/Assets/logo.ico"
+              Title="Glash桌面客户端"
+              ExtendClientAreaToDecorationsHint="False"
+              >
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Panel Margin="4">
-        <DockPanel>
-            <u:UrsaGroupBox Header="连接管理" DockPanel.Dock="Left">
-                <DockPanel MinWidth="200">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
-                        <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}" Classes="Primary" />
+    <u:UrsaWindow.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="GeometryDataTemplate" DataType="Geometry">
+                <PathIcon Theme="{StaticResource InnerPathIcon}" Data="{Binding}" />
+            </DataTemplate>
+            <ControlTheme x:Key="IconBorderlessToggleSwitch"
+                          BasedOn="{StaticResource ButtonToggleSwitch}"
+                          TargetType="ToggleSwitch">
+                <Setter Property="Padding" Value="{StaticResource SemiThicknessTight}" />
+                <Setter Property="Width" Value="{StaticResource SemiSpacingExtraLoose}" />
+                <Setter Property="Height" Value="{StaticResource SemiSpacingExtraLoose}" />
+                <Setter Property="Foreground" Value="{DynamicResource SemiColorText1}" />
+                <Setter Property="OnContentTemplate">
+                    <StaticResource ResourceKey="GeometryDataTemplate" />
+                </Setter>
+                <Setter Property="OffContentTemplate">
+                    <StaticResource ResourceKey="GeometryDataTemplate" />
+                </Setter>
+                <Setter Property="ContentTemplate">
+                    <StaticResource ResourceKey="GeometryDataTemplate" />
+                </Setter>
+            </ControlTheme>
+        </ResourceDictionary>
+    </u:UrsaWindow.Resources>
+    <SplitView
+        Grid.Column="0"
+        Name="SplitView"
+        CompactPaneLength="48"
+        DisplayMode="CompactInline"
+        IsPaneOpen="true"
+        OpenPaneLength="256"
+        PanePlacement="Left">
+        <SplitView.Pane>
+            <Grid RowDefinitions="Auto,*,Auto">
+                <DockPanel Grid.Row="0" Margin="8 12">
+                    <ToggleSwitch DockPanel.Dock="Left"
+                                  Content="{StaticResource SemiIconSidebar}"
+                                  IsChecked="{Binding #SplitView.IsPaneOpen}"
+                                  Theme="{DynamicResource IconBorderlessToggleSwitch}" />
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                        <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}"></u:IconButton>
                         <u:IconButton Command="{Binding EditCommand}" Icon="{StaticResource SemiIconEdit}" />
-                        <u:PopConfirm PopupHeader="Delete the Connection"
+                        <u:PopConfirm PopupHeader="{Binding Text_DeleteConfirm}"
                                       HorizontalAlignment="Left"
-                                      PopupContent="Are you sure to delete this connection?"
+                                      PopupContent="{Binding Text_DeleteConnectionConfirm}"
                                       ConfirmCommand="{Binding DeleteCommand}">
                             <u:IconButton Command="{Binding FakeDeleteCommand}" Icon="{StaticResource SemiIconDelete}" Classes="Danger" />
                         </u:PopConfirm>
                     </StackPanel>
-                    <ListBox ItemsSource="{Binding ConnectionContexts}" SelectedItem="{Binding CurrentConnectionContext}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="core:ConnectionContext">
-                                <TextBlock Text="{Binding Connection.Name}"></TextBlock>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Margin="8 0"
+                        FontWeight="Bold"
+                        Text="{Binding Text_Connections}" />
                 </DockPanel>
-            </u:UrsaGroupBox>
-            <u:UrsaGroupBox Header="连接详情" Margin="4 0 0 0">
-                
-            </u:UrsaGroupBox>
-        </DockPanel>
-    </Panel>
+                <ListBox Grid.Row="1" ItemsSource="{Binding ConnectionContexts}" SelectedItem="{Binding CurrentConnectionContext}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="core:ConnectionContext">
+                            <TextBlock Text="{Binding Connection.Name}"></TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </SplitView.Pane>
+
+        <Panel>
+            <TextBlock Text="Content"></TextBlock>
+        </Panel>
+    </SplitView>
 </u:UrsaWindow>

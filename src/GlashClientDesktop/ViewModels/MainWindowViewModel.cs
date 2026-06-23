@@ -9,6 +9,10 @@ namespace GlashClientDesktop.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        public string Text_Connections => Locale.GetString("Connections");
+        public string Text_DeleteConfirm => Locale.GetString("Delete Confirm");
+        public string Text_DeleteConnectionConfirm => Locale.GetString("Are you sure to delete selected connection?");
+
         private ConnectionContext _CurrentConnectionContext;
         public ConnectionContext CurrentConnectionContext
         {

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-04-07 10:46:50+0800\n"
-"PO-Revision-Date: 2026-04-07 10:47+0800\n"
+"POT-Creation-Date: 2026-06-23 08:56:21+0800\n"
+"PO-Revision-Date: 2026-06-23 08:57+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -11,105 +11,108 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
-#: ..\..\Controls\EditProfile.razor.cs:19
-#: ..\..\Controls\EditProxyRule.razor.cs:16
-msgid "Name"
-msgstr "名称"
+#: ..\..\ViewModels\MainWindowViewModel.cs:14
+msgid "Are you sure to delete selected connection?"
+msgstr "确定要删除选中的连接？"
 
-#: ..\..\Main.razor.cs:16
-msgid "Duplicate"
-msgstr "复制"
-
-#: ..\..\Core\ProfileContext.cs:130
+#: ..\..\Core\ConnectionContext.cs:139
 msgid "Disconnected"
 msgstr "已断开"
 
-#: ..\..\Controls\EditProxyRule.razor.cs:19 ..\..\Main.razor.cs:25
-msgid "Proxy"
-msgstr "代理"
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
+msgid "Password"
+msgstr "密码"
 
-#: ..\..\Controls\EditProfile.razor.cs:22
-msgid "Client Password"
-msgstr "客户端密码"
+#: ..\..\ViewModels\MainWindowViewModel.cs:12
+msgid "Connections"
+msgstr "连接"
 
-#: ..\..\Main.razor.cs:12 ..\..\Model\Profile.cs:25
-msgid "Profile"
-msgstr "配置"
+#: ..\..\ViewModels\MainWindowViewModel.cs:80
+msgid "Edit Connection"
+msgstr "编辑连接"
 
-#: ..\..\Main.razor.cs:290
-#, csharp-format
-msgid "Are you sure to delete ProxyRule[{0}]?"
-msgstr "确定要删除代理规则[{0}]？"
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
+msgid "User"
+msgstr "用户名"
 
-#: ..\..\Controls\EditProxyRule.razor.cs:17 ..\..\Main.razor.cs:18
-msgid "Agent"
-msgstr "代理端"
-
-#: ..\..\Main.razor.cs:21
-msgid "Duplicate Proxy Rule"
-msgstr "复制代理规则"
-
-#: ..\..\Controls\EditProfile.razor.cs:20
-msgid "Server Url"
-msgstr "服务端URL"
-
-#: ..\..\Main.razor.cs:20
-msgid "Add Proxy Rule"
-msgstr "添加代理规则"
-
-#: ..\..\Controls\EditProxyRule.razor.cs:18 ..\..\Main.razor.cs:24
-msgid "Listen"
-msgstr "监听"
-
-#: ..\..\Main.razor.cs:13
-msgid "Add"
-msgstr "添加"
-
-#: ..\..\Main.razor.cs:14
-msgid "Logs"
-msgstr "日志"
-
-#: ..\..\Main.razor.cs:15
-msgid "Edit"
-msgstr "编辑"
-
-#: ..\..\Main.razor.cs:17
-msgid "Delete"
-msgstr "删除"
-
-#: ..\..\Controls\EditProfile.razor.cs:21
-msgid "Client Name"
-msgstr "客户端名称"
-
-#: ..\..\Core\ProfileContext.cs:68
+#: ..\..\Core\ConnectionContext.cs:75
 msgid "Connected"
 msgstr "已连接"
 
-#: ..\..\Main.razor.cs:26
-msgid "Agent not login"
-msgstr "代理端未登录"
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
+msgid "Server Url"
+msgstr "服务端URL"
 
-#: ..\..\Controls\EditProfile.razor.cs:23
-#: ..\..\Controls\EditProxyRule.razor.cs:20
-msgid "OK"
-msgstr "确定"
+#: ..\..\Model\Connection.cs:26
+msgid "Connection"
+msgstr "连接"
 
-#: ..\..\Main.razor.cs:22
-msgid "Edit Proxy Rule"
-msgstr "编辑代理规则"
+#: ..\..\ViewModels\MainWindowViewModel.cs:13
+msgid "Delete Confirm"
+msgstr "删除确认"
 
-#: ..\..\Main.razor.cs:23
-msgid "Delete Proxy Rule"
-msgstr "删除代理规则"
+#: ..\..\ViewModels\MainWindowViewModel.cs:61
+msgid "Add Connection"
+msgstr "添加连接"
 
-#: ..\..\Main.razor.cs:169
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
+msgid "Connection Name"
+msgstr "连接名称"
+
+#~ msgid "Name"
+#~ msgstr "名称"
+
+#~ msgid "Duplicate"
+#~ msgstr "复制"
+
+#~ msgid "Proxy"
+#~ msgstr "代理"
+
+#~ msgid "Profile"
+#~ msgstr "配置"
+
 #, csharp-format
-msgid "Are you sure to delete Profile[{0}]?"
-msgstr "确定要删除配置[{0}]？"
+#~ msgid "Are you sure to delete ProxyRule[{0}]?"
+#~ msgstr "确定要删除代理规则[{0}]？"
 
-#: ..\..\Main.razor.cs:19
-msgid "Error"
-msgstr "错误"
+#~ msgid "Agent"
+#~ msgstr "代理端"
+
+#~ msgid "Duplicate Proxy Rule"
+#~ msgstr "复制代理规则"
+
+#~ msgid "Add Proxy Rule"
+#~ msgstr "添加代理规则"
+
+#~ msgid "Listen"
+#~ msgstr "监听"
+
+#~ msgid "Add"
+#~ msgstr "添加"
+
+#~ msgid "Logs"
+#~ msgstr "日志"
+
+#~ msgid "Edit"
+#~ msgstr "编辑"
+
+#~ msgid "Client Name"
+#~ msgstr "客户端名称"
+
+#~ msgid "Agent not login"
+#~ msgstr "代理端未登录"
+
+#~ msgid "OK"
+#~ msgstr "确定"
+
+#~ msgid "Edit Proxy Rule"
+#~ msgstr "编辑代理规则"
+
+#~ msgid "Delete Proxy Rule"
+#~ msgstr "删除代理规则"
+
+#~ msgid "Error"
+#~ msgstr "错误"
 
 #, csharp-format
 #~ msgid "Enable profile[{0}] error.Reason: {1}"

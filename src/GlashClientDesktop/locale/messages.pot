@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-04-07 10:46:50+0800\n"
-"PO-Revision-Date: 2026-04-07 10:46:50+0800\n"
+"Project-Id-Version: GlashClientDesktop\n"
+"POT-Creation-Date: 2026-06-23 08:56:21+0800\n"
+"PO-Revision-Date: 2026-06-23 08:56:21+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10,107 +10,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GetText.NET Extractor\n"
 
-#: ..\..\Controls\EditProfile.razor.cs:19
-#: ..\..\Controls\EditProxyRule.razor.cs:16
-msgid "Name"
+#: ..\..\ViewModels\MainWindowViewModel.cs:14
+msgid "Are you sure to delete selected connection?"
 msgstr ""
 
-#: ..\..\Main.razor.cs:16
-msgid "Duplicate"
-msgstr ""
-
-#: ..\..\Core\ProfileContext.cs:130
+#: ..\..\Core\ConnectionContext.cs:139
 msgid "Disconnected"
 msgstr ""
 
-#: ..\..\Controls\EditProxyRule.razor.cs:19
-#: ..\..\Main.razor.cs:25
-msgid "Proxy"
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
+msgid "Password"
 msgstr ""
 
-#: ..\..\Controls\EditProfile.razor.cs:22
-msgid "Client Password"
+#: ..\..\ViewModels\MainWindowViewModel.cs:12
+msgid "Connections"
 msgstr ""
 
-#: ..\..\Main.razor.cs:12
-#: ..\..\Model\Profile.cs:25
-msgid "Profile"
+#: ..\..\ViewModels\MainWindowViewModel.cs:80
+msgid "Edit Connection"
 msgstr ""
 
-#: ..\..\Main.razor.cs:290
-#, csharp-format
-msgid "Are you sure to delete ProxyRule[{0}]?"
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
+msgid "User"
 msgstr ""
 
-#: ..\..\Controls\EditProxyRule.razor.cs:17
-#: ..\..\Main.razor.cs:18
-msgid "Agent"
-msgstr ""
-
-#: ..\..\Main.razor.cs:21
-msgid "Duplicate Proxy Rule"
-msgstr ""
-
-#: ..\..\Controls\EditProfile.razor.cs:20
-msgid "Server Url"
-msgstr ""
-
-#: ..\..\Main.razor.cs:20
-msgid "Add Proxy Rule"
-msgstr ""
-
-#: ..\..\Controls\EditProxyRule.razor.cs:18
-#: ..\..\Main.razor.cs:24
-msgid "Listen"
-msgstr ""
-
-#: ..\..\Main.razor.cs:13
-msgid "Add"
-msgstr ""
-
-#: ..\..\Main.razor.cs:14
-msgid "Logs"
-msgstr ""
-
-#: ..\..\Main.razor.cs:15
-msgid "Edit"
-msgstr ""
-
-#: ..\..\Main.razor.cs:17
-msgid "Delete"
-msgstr ""
-
-#: ..\..\Controls\EditProfile.razor.cs:21
-msgid "Client Name"
-msgstr ""
-
-#: ..\..\Core\ProfileContext.cs:68
+#: ..\..\Core\ConnectionContext.cs:75
 msgid "Connected"
 msgstr ""
 
-#: ..\..\Main.razor.cs:26
-msgid "Agent not login"
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
+msgid "Server Url"
 msgstr ""
 
-#: ..\..\Controls\EditProfile.razor.cs:23
-#: ..\..\Controls\EditProxyRule.razor.cs:20
-msgid "OK"
+#: ..\..\Model\Connection.cs:26
+msgid "Connection"
 msgstr ""
 
-#: ..\..\Main.razor.cs:22
-msgid "Edit Proxy Rule"
+#: ..\..\ViewModels\MainWindowViewModel.cs:13
+msgid "Delete Confirm"
 msgstr ""
 
-#: ..\..\Main.razor.cs:23
-msgid "Delete Proxy Rule"
+#: ..\..\ViewModels\MainWindowViewModel.cs:61
+msgid "Add Connection"
 msgstr ""
 
-#: ..\..\Main.razor.cs:169
-#, csharp-format
-msgid "Are you sure to delete Profile[{0}]?"
-msgstr ""
-
-#: ..\..\Main.razor.cs:19
-msgid "Error"
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
+msgid "Connection Name"
 msgstr ""
 
