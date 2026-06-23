@@ -1,11 +1,12 @@
 ﻿using Glash.Client.Protocol.QpModel;
+using Glash.Core;
 using Quick.Utils;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Glash.Client
 {
-    public class ProxyRuleContext : IDisposable
+    public class ProxyRuleContext : PropertyNotifyModel,IDisposable
     {
         private GlashClient glashClient;
         private TcpListener tcpListener;
@@ -13,7 +14,12 @@ namespace Glash.Client
         public ProxyRuleInfo Config { get; private set; }
         public int LocalPort { get; private set; }
 
-        public bool Working { get; private set; }
+        private bool _Working;
+        public bool Working
+        {
+            get => _Working;
+            set => RaiseAndSetIfChanged(ref _Working, value);
+        }
 
         public static int MaxLogLines = 100;
         private Queue<string> logQueue = new();

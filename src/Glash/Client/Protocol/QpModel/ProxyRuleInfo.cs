@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Glash.Core;
 
 namespace Glash.Client.Protocol.QpModel
 {
-    public class ProxyRuleInfo
+    public class ProxyRuleInfo:PropertyNotifyModel
     {
         [Key]
         public string Id { get; set; }
@@ -23,7 +23,13 @@ namespace Glash.Client.Protocol.QpModel
         public int RemotePort { get; set; }
         public string ProxyType { get; set; }
         public string ProxyTypeConfig { get; set; }
-        public bool Enable { get; set; } = false;
+
+        private bool _Enable = false;
+        public bool Enable
+        {
+            get => _Enable;
+            set => RaiseAndSetIfChanged(ref _Enable, value);
+        }
 
         public override string ToString()
         {

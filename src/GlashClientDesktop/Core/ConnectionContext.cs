@@ -27,8 +27,8 @@ public class ConnectionContext : ReactiveObject, IDisposable
         set => this.RaiseAndSetIfChanged(ref _Agents, value);
     }
 
-    private ProxyRuleInfo[] _ProxyRules;
-    public ProxyRuleInfo[] ProxyRules
+    private ProxyRuleContext[] _ProxyRules;
+    public ProxyRuleContext[] ProxyRules
     {
         get => _ProxyRules;
         set => this.RaiseAndSetIfChanged(ref _ProxyRules, value);
@@ -58,10 +58,9 @@ public class ConnectionContext : ReactiveObject, IDisposable
             await GlashClient.ConnectAsync(Connection.User, Connection.Password);
             //读取规则
             var proxyRuleList = await GlashClient.GetProxyRuleListAsync();
-            ProxyRules = proxyRuleList
-                .OrderBy(t => t.Name)
-                .ToArray();
-            GlashClient.LoadProxyRules(ProxyRules);
+            GlashClient.LoadProxyRules(proxyRuleList.ToArray());
+            ProxyRules = GlashClient.ProxyRuleContexts;
+
             //读取代理端
             var agentList = await GlashClient.GetAgentListAsync();
             Agents = agentList
@@ -71,7 +70,7 @@ public class ConnectionContext : ReactiveObject, IDisposable
                     ConnectionContext = this,
                     Name = t.AgentName,
                     Connected = t.IsLoggedIn,
-                    Rules = proxyRuleList.Where(r => r.Agent == t.AgentName).ToArray()
+                    Rules = ProxyRules.Where(r => r.Config.Agent == t.AgentName).ToArray()
                 })
                 .ToArray();
             agentDict = Agents.ToDictionary(t => t.Name, t => t);

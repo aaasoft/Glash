@@ -1,4 +1,5 @@
 using System.Reactive;
+using Glash.Client;
 using Glash.Client.Protocol.QpModel;
 using GlashClientDesktop.Core;
 using Quick.Localize;
@@ -27,15 +28,15 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _Connected, value);
     }
 
-    private ProxyRuleInfo[] _Rules;
-    public ProxyRuleInfo[] Rules
+    private ProxyRuleContext[] _Rules;
+    public ProxyRuleContext[] Rules
     {
         get => _Rules;
         set => this.RaiseAndSetIfChanged(ref _Rules, value);
     }
 
-    private ProxyRuleInfo _CurrentRule;
-    public ProxyRuleInfo CurrentRule
+    private ProxyRuleContext _CurrentRule;
+    public ProxyRuleContext CurrentRule
     {
         get => _CurrentRule;
         set => this.RaiseAndSetIfChanged(ref _CurrentRule, value);
@@ -52,11 +53,11 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
 
     public async Task ExecuteCommand_Start()
     {
-        await ConnectionContext.GlashClient.EnableProxyRule(CurrentRule.Id);
+        await ConnectionContext.GlashClient.EnableProxyRule(CurrentRule.Config.Id);
     }
 
     public async Task ExecuteCommand_Stop()
     {
-        await ConnectionContext.GlashClient.DisableProxyRule(CurrentRule.Id);
+        await ConnectionContext.GlashClient.DisableProxyRule(CurrentRule.Config.Id);
     }
 }
