@@ -66,6 +66,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
     public ReactiveCommand<Unit, Unit> FakeDeleteCommand { get; }
 
+    public ReactiveCommand<Unit, Unit> CopyCommand { get; }    
     public ReactiveCommand<Unit, Unit> StartCommand { get; }
     public ReactiveCommand<Unit, Unit> StopCommand { get; }
     public ReactiveCommand<Unit, Unit> LogCommand { get; }
@@ -74,6 +75,9 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     public ConnectionAgentProxiesViewModel()
     {
         AddCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Add);
+        CopyCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Copy, this.WhenAnyValue(
+                x => x.CurrentRule,
+                new Func<ProxyRuleContext, bool>(x => x != null)));
         EditCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Edit, this.WhenAnyValue(
                 x => x.CurrentRule,
                 x => x.CurrentRuleEnable,
@@ -86,7 +90,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
                 x => x.CurrentRule,
                 x => x.CurrentRuleEnable,
                 (currentRule, currentRuleEnable) => currentRule != null && !currentRuleEnable));
-
+                
         StartCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Start);
         StopCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Stop);
         LogCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Log);
@@ -99,7 +103,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
             .ToArray();
     }
 
-    public async Task ExecuteCommand_Add()
+    private async Task innerAdd(ProxyRuleInfo model)
     {
         var options = new OverlayDialogOptions()
         {
@@ -108,12 +112,6 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
             Title = Locale.GetString("Add Rule"),
             CanResize = true
         };
-        var model = new ProxyRuleInfo()
-        {
-            Id = Guid.NewGuid().ToString("N"),
-            Agent = Name,
-            Enable = false
-        };
         var vm = new EditRuleDialogViewModel() { Model = model };
         var ret = await OverlayDialog.ShowStandardAsync<EditRuleDialog, EditRuleDialogViewModel>(vm, null, options);
         if (ret == DialogResult.OK)
@@ -121,6 +119,36 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
             await ConnectionContext.AddProxyRule(model);
             refreshRules();
         }
+    }
+
+    public async Task ExecuteCommand_Add()
+    {
+        var model = new ProxyRuleInfo()
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            Agent = Name,
+            Enable = false
+        };
+        await innerAdd(model);
+    }
+
+    public async Task ExecuteCommand_Copy()
+    {
+        var copyModel = CurrentRule.Config;
+        var model = new ProxyRuleInfo()
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            Agent = Name,
+            Enable = false,
+            Name = copyModel.Name,
+            LocalIPAddress = copyModel.LocalIPAddress,
+            LocalPort = copyModel.LocalPort,
+            RemoteHost = copyModel.RemoteHost,
+            RemotePort = copyModel.RemotePort,
+            ProxyType = copyModel.ProxyType,
+            ProxyTypeConfig = copyModel.ProxyTypeConfig
+        };
+        await innerAdd(model);
     }
 
     public async Task ExecuteCommand_Edit()

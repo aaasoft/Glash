@@ -15,6 +15,7 @@
     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
       <StackPanel Orientation="Horizontal">
         <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}"></u:IconButton>
+        <u:IconButton Command="{Binding CopyCommand}" Icon="{StaticResource SemiIconCopyAdd}"></u:IconButton>
         <u:IconButton Command="{Binding EditCommand}" Icon="{StaticResource SemiIconEdit}"></u:IconButton>
         <u:PopConfirm PopupHeader="{Binding Text_DeleteConfirm}"
                       HorizontalAlignment="Left"
