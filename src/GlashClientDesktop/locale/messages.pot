@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-06-23 13:55:25+0800\n"
-"PO-Revision-Date: 2026-06-23 13:55:25+0800\n"
+"POT-Creation-Date: 2026-06-24 10:38:48+0800\n"
+"PO-Revision-Date: 2026-06-24 10:38:48+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10,8 +10,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GetText.NET Extractor\n"
 
-#: ..\..\Core\ConnectionContext.cs:72
+#: ..\..\Core\ConnectionContext.cs:84
 msgid "Connected"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:108
+msgid "Add Rule"
 msgstr ""
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:48
@@ -39,16 +43,26 @@ msgstr ""
 msgid "Current not connected."
 msgstr ""
 
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:9
+msgid "Name"
+msgstr ""
+
 #: ..\..\ViewModels\MainWindowViewModel.cs:76
 msgid "Add Connection"
 msgstr ""
 
 #: ..\..\ViewModels\MainWindowViewModel.cs:14
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:17
 msgid "Delete Confirm"
 msgstr ""
 
 #: ..\..\ViewModels\MainWindowViewModel.cs:95
 msgid "Edit Connection"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:16
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:11
+msgid "Proxy"
 msgstr ""
 
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
@@ -64,15 +78,23 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:132
+msgid "Edit Rule"
+msgstr ""
+
 #: ..\..\ViewModels\MainWindowViewModel.cs:15
 msgid "Are you sure to delete selected connection?"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:18
+msgid "Are you sure to delete selected rule?"
 msgstr ""
 
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
 msgid "Connection Name"
 msgstr ""
 
-#: ..\..\Core\ConnectionContext.cs:145
+#: ..\..\Core\ConnectionContext.cs:157
 msgid "Disconnected"
 msgstr ""
 
@@ -86,6 +108,12 @@ msgid "Start error,reason: {0}"
 msgstr ""
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:82
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:186
 msgid "Logs"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:15
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:10
+msgid "Listen"
 msgstr ""
 

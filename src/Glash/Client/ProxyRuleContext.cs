@@ -6,12 +6,14 @@ using System.Net.Sockets;
 
 namespace Glash.Client
 {
-    public class ProxyRuleContext : PropertyNotifyModel,IDisposable
+    public class ProxyRuleContext : PropertyNotifyModel, IDisposable
     {
         private GlashClient glashClient;
         private TcpListener tcpListener;
         private CancellationTokenSource cts;
         public ProxyRuleInfo Config { get; private set; }
+        public string LocalEndPoint => $"{Config.LocalIPAddress}:{Config.LocalPort}";
+        public string RemoteEndPoint => $"{Config.RemoteHost}:{Config.RemotePort}";
         public int LocalPort { get; private set; }
 
         private bool _Working;

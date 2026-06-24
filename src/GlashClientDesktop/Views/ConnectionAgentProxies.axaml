@@ -16,12 +16,18 @@
       <StackPanel Orientation="Horizontal">
         <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}"></u:IconButton>
         <u:IconButton Command="{Binding EditCommand}" Icon="{StaticResource SemiIconEdit}"></u:IconButton>
-        <u:IconButton Command="{Binding DeleteCommand}" Icon="{StaticResource SemiIconDelete}" Classes="Danger"></u:IconButton>
+        <u:PopConfirm PopupHeader="{Binding Text_DeleteConfirm}"
+                      HorizontalAlignment="Left"
+                      PopupContent="{Binding Text_DeleteRuleConfirm}"
+                      ConfirmCommand="{Binding DeleteCommand}">
+            <u:IconButton Command="{Binding FakeDeleteCommand}" Icon="{StaticResource SemiIconDelete}" Classes="Danger" />
+        </u:PopConfirm>
       </StackPanel>
       <u:Divider Margin="4 0" Orientation="Vertical" />
       <StackPanel Orientation="Horizontal" IsVisible="{Binding CurrentRule, Converter={x:Static ObjectConverters.IsNotNull}}">
         <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !CurrentRuleEnable}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
         <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding CurrentRuleEnable}" Icon="{StaticResource SemiIconStop}" Classes="Danger"></u:IconButton>
+        <u:IconButton Command="{Binding LogCommand}" Icon="{StaticResource SemiIconFile}"></u:IconButton>
       </StackPanel>
     </StackPanel>
     <Panel Grid.Row="1">
@@ -53,20 +59,14 @@
                 </StackPanel>
                 <TextBlock>
                   <TextBlock.Inlines>
-                    <Run Text="{Binding $parent[ListBox].DataContext.Text_Listen}" FontWeight="Bold" />
-                    <Run Text=":" FontWeight="Bold" />
-                    <Run Text="{Binding Config.LocalIPAddress}" Foreground="{StaticResource SemiColorText3}"/>
-                    <Run Text=":" Foreground="{StaticResource SemiColorText3}" />
-                    <Run Text="{Binding Config.LocalPort}" Foreground="{StaticResource SemiColorText3}"/>
+                    <Run Text="{Binding $parent[ListBox].DataContext.Text_Listen}" />
+                    <Run Text="{Binding LocalEndPoint}" Foreground="{StaticResource SemiColorText3}"/>
                   </TextBlock.Inlines>
                 </TextBlock>
                 <TextBlock>
                   <TextBlock.Inlines>
-                    <Run Text="{Binding $parent[ListBox].DataContext.Text_Proxy}" FontWeight="Bold" />
-                    <Run Text=":" FontWeight="Bold" />
-                    <Run Text="{Binding Config.RemoteHost}" Foreground="{StaticResource SemiColorText3}"/>
-                    <Run Text=":" Foreground="{StaticResource SemiColorText3}" />
-                    <Run Text="{Binding Config.RemotePort}" Foreground="{StaticResource SemiColorText3}"/>
+                    <Run Text="{Binding $parent[ListBox].DataContext.Text_Proxy}" />
+                    <Run Text="{Binding RemoteEndPoint}" Foreground="{StaticResource SemiColorText3}"/>
                   </TextBlock.Inlines>
                 </TextBlock>
               </StackPanel>

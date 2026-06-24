@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:vm="using:GlashClientDesktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GlashClientDesktop.Views.EditRuleDialog"
+             x:DataType="vm:EditRuleDialogViewModel">
+  <Design.DataContext>
+    <vm:EditRuleDialogViewModel />
+  </Design.DataContext>
+  <u:Form LabelPosition="Top" LabelWidth="*" MinWidth="400" HorizontalAlignment="Stretch">
+    <TextBox u:FormItem.Label="{Binding Text_Name}" Text="{Binding Model.Name}" u:FormItem.IsRequired="True" />
+    <u:FormItem u:FormItem.Label="{Binding Text_Listen}">
+      <Grid ColumnDefinitions="2*,1*">
+        <TextBox Grid.Column="0" Text="{Binding Model.LocalIPAddress}" u:FormItem.IsRequired="True" />
+        <u:NumericIntUpDown Margin="8 0 0 0" Grid.Column="1" Value="{Binding Model.LocalPort}" Minimum="0" Maximum="65535" />
+      </Grid>
+    </u:FormItem>
+    <u:FormItem u:FormItem.Label="{Binding Text_Proxy}">
+      <Grid ColumnDefinitions="2*,1*">
+        <TextBox Grid.Column="0" Text="{Binding Model.RemoteHost}" u:FormItem.IsRequired="True" />
+        <u:NumericIntUpDown Margin="8 0 0 0" Grid.Column="1" Value="{Binding Model.RemotePort}" Minimum="0" Maximum="65535" />
+      </Grid>
+    </u:FormItem>
+  </u:Form>
+</UserControl>

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-06-23 13:55:25+0800\n"
-"PO-Revision-Date: 2026-06-23 13:56+0800\n"
+"POT-Creation-Date: 2026-06-24 10:38:48+0800\n"
+"PO-Revision-Date: 2026-06-24 10:39+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -11,9 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
-#: ..\..\Core\ConnectionContext.cs:72
+#: ..\..\Core\ConnectionContext.cs:84
 msgid "Connected"
 msgstr "已连接"
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:108
+msgid "Add Rule"
+msgstr "添加规则"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:48
 msgid "Starting..."
@@ -40,17 +44,27 @@ msgstr "停止出错，原因：{0}"
 msgid "Current not connected."
 msgstr "当前未连接。"
 
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:9
+msgid "Name"
+msgstr "名称"
+
 #: ..\..\ViewModels\MainWindowViewModel.cs:76
 msgid "Add Connection"
 msgstr "添加连接"
 
 #: ..\..\ViewModels\MainWindowViewModel.cs:14
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:17
 msgid "Delete Confirm"
 msgstr "删除确认"
 
 #: ..\..\ViewModels\MainWindowViewModel.cs:95
 msgid "Edit Connection"
 msgstr "编辑连接"
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:16
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:11
+msgid "Proxy"
+msgstr "代理"
 
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
 msgid "Password"
@@ -65,15 +79,23 @@ msgstr "用户名"
 msgid "Error"
 msgstr "错误"
 
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:132
+msgid "Edit Rule"
+msgstr "编辑规则"
+
 #: ..\..\ViewModels\MainWindowViewModel.cs:15
 msgid "Are you sure to delete selected connection?"
 msgstr "确定要删除选中的连接？"
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:18
+msgid "Are you sure to delete selected rule?"
+msgstr "确定要删除选中的规则？"
 
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
 msgid "Connection Name"
 msgstr "连接名称"
 
-#: ..\..\Core\ConnectionContext.cs:145
+#: ..\..\Core\ConnectionContext.cs:157
 msgid "Disconnected"
 msgstr "已断开"
 
@@ -87,17 +109,17 @@ msgid "Start error,reason: {0}"
 msgstr "启动出错，原因：{0}"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:82
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:186
 msgid "Logs"
 msgstr "日志"
 
-#~ msgid "Name"
-#~ msgstr "名称"
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:15
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:10
+msgid "Listen"
+msgstr "监听"
 
 #~ msgid "Duplicate"
 #~ msgstr "复制"
-
-#~ msgid "Proxy"
-#~ msgstr "代理"
 
 #~ msgid "Profile"
 #~ msgstr "配置"
@@ -111,12 +133,6 @@ msgstr "日志"
 
 #~ msgid "Duplicate Proxy Rule"
 #~ msgstr "复制代理规则"
-
-#~ msgid "Add Proxy Rule"
-#~ msgstr "添加代理规则"
-
-#~ msgid "Listen"
-#~ msgstr "监听"
 
 #~ msgid "Add"
 #~ msgstr "添加"
@@ -132,9 +148,6 @@ msgstr "日志"
 
 #~ msgid "OK"
 #~ msgstr "确定"
-
-#~ msgid "Edit Proxy Rule"
-#~ msgstr "编辑代理规则"
 
 #~ msgid "Delete Proxy Rule"
 #~ msgstr "删除代理规则"

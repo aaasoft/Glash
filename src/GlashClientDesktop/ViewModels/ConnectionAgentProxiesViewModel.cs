@@ -1,9 +1,12 @@
 using System.Reactive;
+using Avalonia.Threading;
 using Glash.Client;
 using Glash.Client.Protocol.QpModel;
 using GlashClientDesktop.Core;
+using GlashClientDesktop.Views;
 using Quick.Localize;
 using ReactiveUI;
+using Ursa.Controls;
 
 namespace GlashClientDesktop.ViewModels;
 
@@ -11,6 +14,8 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
 {
     public string Text_Listen => Locale.GetString("Listen");
     public string Text_Proxy => Locale.GetString("Proxy");
+    public string Text_DeleteConfirm => Locale.GetString("Delete Confirm");
+    public string Text_DeleteRuleConfirm => Locale.GetString("Are you sure to delete selected rule?");
 
     public ConnectionContext ConnectionContext { get; set; }
 
@@ -44,7 +49,8 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
             this.RaiseAndSetIfChanged(ref _CurrentRule, value);
             if (value == null)
                 CurrentRuleEnable = false;
-            CurrentRuleEnable = value.Config.Enable;
+            else
+                CurrentRuleEnable = value.Config.Enable;
         }
     }
 
@@ -58,9 +64,12 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> AddCommand { get; }
     public ReactiveCommand<Unit, Unit> EditCommand { get; }
     public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
+    public ReactiveCommand<Unit, Unit> FakeDeleteCommand { get; }
 
     public ReactiveCommand<Unit, Unit> StartCommand { get; }
     public ReactiveCommand<Unit, Unit> StopCommand { get; }
+    public ReactiveCommand<Unit, Unit> LogCommand { get; }
+    
 
     public ConnectionAgentProxiesViewModel()
     {
@@ -69,28 +78,95 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
                 x => x.CurrentRule,
                 x => x.CurrentRuleEnable,
                 (currentRule, currentRuleEnable) => currentRule!=null && !currentRuleEnable));
-        DeleteCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Delete, this.WhenAnyValue(
+        DeleteCommand = ReactiveCommand.Create(ExecuteCommand_Delete, this.WhenAnyValue(
                 x => x.CurrentRule,
                 x => x.CurrentRuleEnable,
                 (currentRule, currentRuleEnable) => currentRule!=null && !currentRuleEnable));
+        FakeDeleteCommand = ReactiveCommand.Create(() => { }, this.WhenAnyValue(
+                x => x.CurrentRule,
+                x => x.CurrentRuleEnable,
+                (currentRule, currentRuleEnable) => currentRule != null && !currentRuleEnable));
 
         StartCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Start);
         StopCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Stop);
+        LogCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Log);
+    }
+
+    private void refreshRules()
+    {
+        Rules = ConnectionContext.ProxyRules
+            .Where(t=>t.Config.Agent == Name)
+            .ToArray();
     }
 
     public async Task ExecuteCommand_Add()
     {
-
+        var options = new OverlayDialogOptions()
+        {
+            Buttons = DialogButton.OKCancel,
+            IsCloseButtonVisible = true,
+            Title = Locale.GetString("Add Rule"),
+            CanResize = true
+        };
+        var model = new ProxyRuleInfo()
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            Agent = Name,
+            Enable = false
+        };
+        var vm = new EditRuleDialogViewModel() { Model = model };
+        var ret = await OverlayDialog.ShowStandardAsync<EditRuleDialog, EditRuleDialogViewModel>(vm, null, options);
+        if (ret == DialogResult.OK)
+        {
+            await ConnectionContext.AddProxyRule(model);
+            refreshRules();
+        }
     }
 
     public async Task ExecuteCommand_Edit()
     {
-
+        var options = new OverlayDialogOptions()
+        {
+            Buttons = DialogButton.OKCancel,
+            IsCloseButtonVisible = true,
+            Title = Locale.GetString("Edit Rule"),
+            CanResize = true
+        };
+        var model = CurrentRule.Config;
+        var editModel = new ProxyRuleInfo()
+        {
+            Id = model.Id,
+            Name = model.Name,
+            Agent = model.Agent,
+            Enable = model.Enable,
+            LocalIPAddress = model.LocalIPAddress,
+            LocalPort = model.LocalPort,
+            ProxyType = model.ProxyType,
+            ProxyTypeConfig = model.ProxyTypeConfig,
+            RemoteHost = model.RemoteHost,
+            RemotePort = model.RemotePort
+        };
+        var vm = new EditRuleDialogViewModel() { Model = editModel };
+        var ret = await OverlayDialog.ShowStandardAsync<EditRuleDialog, EditRuleDialogViewModel>(vm, null, options);
+        if (ret == DialogResult.OK)
+        {
+            await ConnectionContext.EditProxyRule(editModel);
+            refreshRules();
+        }
     }
 
-    public async Task ExecuteCommand_Delete()
+    public void ExecuteCommand_Delete()
     {
-
+        var uiDispatcher = Dispatcher.CurrentDispatcher;
+        Task.Delay(100).ContinueWith(async t =>
+        {
+            await ConnectionContext.DeleteProxyRule(CurrentRule.Config);
+            uiDispatcher.Invoke(() =>
+            {
+                CurrentRule = null;
+                refreshRules();
+            });
+        });
     }
 
     public async Task ExecuteCommand_Start()
@@ -103,5 +179,10 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     {
         await ConnectionContext.GlashClient.DisableProxyRule(CurrentRule.Config.Id);
         CurrentRuleEnable = false;
+    }
+    
+    public async Task ExecuteCommand_Log()
+    {
+        await MessageBox.ShowAsync(string.Join(Environment.NewLine, CurrentRule.Logs), Locale.GetString("Logs"), MessageBoxIcon.Information);
     }
 }
