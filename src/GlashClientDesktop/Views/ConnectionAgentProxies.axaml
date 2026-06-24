@@ -14,14 +14,14 @@
   <Grid RowDefinitions="Auto,*,Auto">
     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
       <StackPanel Orientation="Horizontal">
-        <u:IconButton Icon="{StaticResource SemiIconPlus}"></u:IconButton>
-        <u:IconButton Icon="{StaticResource SemiIconEdit}"></u:IconButton>
-        <u:IconButton Icon="{StaticResource SemiIconDelete}" Classes="Danger"></u:IconButton>
+        <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}"></u:IconButton>
+        <u:IconButton Command="{Binding EditCommand}" Icon="{StaticResource SemiIconEdit}"></u:IconButton>
+        <u:IconButton Command="{Binding DeleteCommand}" Icon="{StaticResource SemiIconDelete}" Classes="Danger"></u:IconButton>
       </StackPanel>
       <u:Divider Margin="4 0" Orientation="Vertical" />
       <StackPanel Orientation="Horizontal" IsVisible="{Binding CurrentRule, Converter={x:Static ObjectConverters.IsNotNull}}">
-        <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !CurrentRule.Config.Enable}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
-        <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding CurrentRule.Config.Enable}" Icon="{StaticResource SemiIconStop}" Classes="Danger"></u:IconButton>
+        <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !CurrentRuleEnable}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
+        <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding CurrentRuleEnable}" Icon="{StaticResource SemiIconStop}" Classes="Danger"></u:IconButton>
       </StackPanel>
     </StackPanel>
     <Panel Grid.Row="1">
