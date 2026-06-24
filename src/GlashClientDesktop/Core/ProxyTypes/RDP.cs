@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using Avalonia.Controls;
+using ReactiveUI;
 
 namespace GlashClientDesktop.Core.ProxyTypes
 {
@@ -19,29 +20,29 @@ namespace GlashClientDesktop.Core.ProxyTypes
         protected override JsonTypeInfo ProxyTypeJsonTypeInfo => RDPSerializerContext.Default.RDP;
         public override Control GetUI() => new RDP_UI() { DataContext = this };
         public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.RDP"];
-        public override string GetName() => Locale.GetString("RDP");        
+        public override string GetName() => Locale.GetString("RDP");
         public override string GetIcon() => "fa fa-windows";
         [JsonIgnore]
-        public string Text_User=>Locale.GetString("User");
+        public string Text_User => Locale.GetString("User");
         [JsonIgnore]
-        public string Text_Password=>Locale.GetString("Password");
+        public string Text_Password => Locale.GetString("Password");
 
         [Required]
         public string User { get; set; }
         [Required]
         public string Password { get; set; }
 
-        
+
 
         [SupportedOSPlatform("windows")]
-        public override ProxyTypeButton[] GetButtons()
+        public override ProxyTypeButton[] GetButtons(ProxyRuleContext t)
         {
             return
             [
                 new ProxyTypeButton(
                     Locale.GetString("Start RDP"),
                     "fa fa-desktop",
-                    StartRDP
+                    ReactiveCommand.Create(()=>StartRDP(t))
                     )
             ];
         }

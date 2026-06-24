@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Glash.Client;
 
 namespace GlashClientDesktop.Core.ProxyTypes
 {
@@ -8,7 +9,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
         string GetName();
         string GetIcon();
         public Control GetUI();
-        public ProxyTypeButton[] GetButtons();
+        public ProxyTypeButton[] GetButtons(ProxyRuleContext t);
         string ToJson();
     }
 }

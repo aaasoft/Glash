@@ -1,5 +1,7 @@
 ﻿using Avalonia.Controls;
+using Glash.Client;
 using Quick.Localize;
+using ReactiveUI;
 using System.Diagnostics;
 using System.Runtime.Versioning;
 using System.Text.Json.Serialization;
@@ -29,14 +31,14 @@ namespace GlashClientDesktop.Core.ProxyTypes
         [SupportedOSPlatform("windows")]
         [SupportedOSPlatform("linux")]
         [SupportedOSPlatform("macos")]
-        public override ProxyTypeButton[] GetButtons()
+        public override ProxyTypeButton[] GetButtons(ProxyRuleContext t)
         {
             return
             [
                 new ProxyTypeButton(
                     Locale.GetString("Visit"),
                     "fa fa-globe",
-                    t=>
+                    ReactiveCommand.Create(()=>
                     {
                         if(string.IsNullOrEmpty(Schema))
                             Schema="http";
@@ -60,6 +62,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
                             WaitForProcessMainWindow(process);
                         }
                     })
+                )
             ];
         }
 

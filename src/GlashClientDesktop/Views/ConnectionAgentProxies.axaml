@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:proxytypes="using:GlashClientDesktop.Core.ProxyTypes"
              xmlns:u="https://irihi.tech/ursa"
              xmlns:vm="using:GlashClientDesktop.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -21,14 +22,22 @@
                       HorizontalAlignment="Left"
                       PopupContent="{Binding Text_DeleteRuleConfirm}"
                       ConfirmCommand="{Binding DeleteCommand}">
-            <u:IconButton Command="{Binding FakeDeleteCommand}" Icon="{StaticResource SemiIconDelete}" Classes="Danger" />
+          <u:IconButton Command="{Binding FakeDeleteCommand}" Icon="{StaticResource SemiIconDelete}" Classes="Danger" />
         </u:PopConfirm>
       </StackPanel>
-      <u:Divider Margin="4 0" Orientation="Vertical" />
       <StackPanel Orientation="Horizontal" IsVisible="{Binding CurrentRule, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <u:Divider Margin="4 0" Orientation="Vertical" />
         <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !CurrentRuleEnable}" Icon="{StaticResource SemiIconPlay}"></u:IconButton>
         <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding CurrentRuleEnable}" Icon="{StaticResource SemiIconStop}" Classes="Danger"></u:IconButton>
         <u:IconButton Command="{Binding LogCommand}" Icon="{StaticResource SemiIconFile}"></u:IconButton>
+        <u:Divider Margin="4 0" Orientation="Vertical" />
+        <ItemsControl IsVisible="{Binding CurrentRuleProxyTypeButtons, Converter={x:Static ObjectConverters.IsNotNull}}" ItemsSource="{Binding CurrentRuleProxyTypeButtons}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="proxytypes:ProxyTypeButton">
+              <u:IconButton Command="{Binding Command}" Icon="{Binding Icon}" Content="{Binding Name}"></u:IconButton>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
       </StackPanel>
     </StackPanel>
     <Panel Grid.Row="1">
@@ -37,7 +46,7 @@
           <ItemsPanelTemplate>
             <WrapPanel Orientation="Horizontal" />
           </ItemsPanelTemplate>
-      </ListBox.ItemsPanel>
+        </ListBox.ItemsPanel>
         <ListBox.ItemTemplate>
           <DataTemplate DataType="client:ProxyRuleContext">
             <Border

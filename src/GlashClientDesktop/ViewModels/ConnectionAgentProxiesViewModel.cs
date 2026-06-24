@@ -3,6 +3,7 @@ using Avalonia.Threading;
 using Glash.Client;
 using Glash.Client.Protocol.QpModel;
 using GlashClientDesktop.Core;
+using GlashClientDesktop.Core.ProxyTypes;
 using GlashClientDesktop.Views;
 using Quick.Localize;
 using ReactiveUI;
@@ -54,11 +55,31 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         }
     }
 
+    private ProxyTypeButton[] _CurrentRuleProxyTypeButtons;
+    public ProxyTypeButton[] CurrentRuleProxyTypeButtons
+    {
+        get => _CurrentRuleProxyTypeButtons;
+        set => this.RaiseAndSetIfChanged(ref _CurrentRuleProxyTypeButtons, value);
+    }
+
     private bool _CurrentRuleEnable = false;
     public bool CurrentRuleEnable
     {
         get => _CurrentRuleEnable;
-        set => this.RaiseAndSetIfChanged(ref _CurrentRuleEnable, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _CurrentRuleEnable, value);
+            if (value && !string.IsNullOrEmpty(CurrentRule.Config.ProxyType))
+            {
+                var proxyTypeInfo = ProxyTypeManager.Instance.GetProxyTypeInfo(CurrentRule.Config.ProxyType);
+                var proxyType = proxyTypeInfo.CreateInstance(CurrentRule.Config.ProxyTypeConfig);
+                CurrentRuleProxyTypeButtons = proxyType.GetButtons(CurrentRule);
+            }
+            else
+            {
+                CurrentRuleProxyTypeButtons = null;
+            }
+        }
     }
 
     public ReactiveCommand<Unit, Unit> AddCommand { get; }
@@ -66,11 +87,11 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
     public ReactiveCommand<Unit, Unit> FakeDeleteCommand { get; }
 
-    public ReactiveCommand<Unit, Unit> CopyCommand { get; }    
+    public ReactiveCommand<Unit, Unit> CopyCommand { get; }
     public ReactiveCommand<Unit, Unit> StartCommand { get; }
     public ReactiveCommand<Unit, Unit> StopCommand { get; }
     public ReactiveCommand<Unit, Unit> LogCommand { get; }
-    
+
 
     public ConnectionAgentProxiesViewModel()
     {
@@ -81,16 +102,16 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         EditCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Edit, this.WhenAnyValue(
                 x => x.CurrentRule,
                 x => x.CurrentRuleEnable,
-                (currentRule, currentRuleEnable) => currentRule!=null && !currentRuleEnable));
+                (currentRule, currentRuleEnable) => currentRule != null && !currentRuleEnable));
         DeleteCommand = ReactiveCommand.Create(ExecuteCommand_Delete, this.WhenAnyValue(
                 x => x.CurrentRule,
                 x => x.CurrentRuleEnable,
-                (currentRule, currentRuleEnable) => currentRule!=null && !currentRuleEnable));
+                (currentRule, currentRuleEnable) => currentRule != null && !currentRuleEnable));
         FakeDeleteCommand = ReactiveCommand.Create(() => { }, this.WhenAnyValue(
                 x => x.CurrentRule,
                 x => x.CurrentRuleEnable,
                 (currentRule, currentRuleEnable) => currentRule != null && !currentRuleEnable));
-                
+
         StartCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Start);
         StopCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Stop);
         LogCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Log);
@@ -99,7 +120,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     private void refreshRules()
     {
         Rules = ConnectionContext.ProxyRules
-            .Where(t=>t.Config.Agent == Name)
+            .Where(t => t.Config.Agent == Name)
             .ToArray();
     }
 
@@ -211,7 +232,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         await ConnectionContext.GlashClient.DisableProxyRule(CurrentRule.Config.Id);
         CurrentRuleEnable = false;
     }
-    
+
     public async Task ExecuteCommand_Log()
     {
         await MessageBox.ShowAsync(string.Join(Environment.NewLine, CurrentRule.Logs), Locale.GetString("Logs"), MessageBoxIcon.Information);

@@ -4,6 +4,7 @@ using System.Runtime.Versioning;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Avalonia.Controls;
+using Glash.Client;
 using GlashClientDesktop.ViewModels;
 
 namespace GlashClientDesktop.Core.ProxyTypes
@@ -16,7 +17,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
 
         public virtual string[] GetFormerIds() => null;
 
-        public abstract ProxyTypeButton[] GetButtons();
+        public abstract ProxyTypeButton[] GetButtons(ProxyRuleContext t);
         public abstract Control GetUI();
 
         public string ToJson() => JsonSerializer.Serialize(this, ProxyTypeJsonTypeInfo);
