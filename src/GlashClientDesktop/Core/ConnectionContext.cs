@@ -1,5 +1,6 @@
 ﻿using Glash.Client;
 using Glash.Client.Protocol.QpModel;
+using GlashClientDesktop.Core.ProxyTypes;
 using GlashClientDesktop.ViewModels;
 using Quick.Localize;
 using Quick.Utils;
@@ -63,6 +64,8 @@ public class ConnectionContext : ReactiveObject, IDisposable
             await GlashClient.ConnectAsync(Connection.User, Connection.Password);
             //读取规则
             var proxyRuleList = await GlashClient.GetProxyRuleListAsync();
+            foreach (var proxyRule in proxyRuleList)
+                proxyRule.ProxyType = ProxyTypeManager.Instance.FixProxyTypeId(proxyRule.ProxyType);
             GlashClient.LoadProxyRules(proxyRuleList.ToArray());
             refreshRules();
 

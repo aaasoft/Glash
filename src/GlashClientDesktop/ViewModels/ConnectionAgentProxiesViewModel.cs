@@ -116,6 +116,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         var ret = await OverlayDialog.ShowStandardAsync<EditRuleDialog, EditRuleDialogViewModel>(vm, null, options);
         if (ret == DialogResult.OK)
         {
+            model.ProxyTypeConfig = vm.CurrentProxyTypeConfig?.ToJson();
             await ConnectionContext.AddProxyRule(model);
             refreshRules();
         }
@@ -178,6 +179,8 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         var ret = await OverlayDialog.ShowStandardAsync<EditRuleDialog, EditRuleDialogViewModel>(vm, null, options);
         if (ret == DialogResult.OK)
         {
+            editModel.ProxyType = vm.CurrentProxyType.Id;
+            editModel.ProxyTypeConfig = vm.CurrentProxyTypeConfig?.ToJson();
             await ConnectionContext.EditProxyRule(editModel);
             refreshRules();
         }
