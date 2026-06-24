@@ -14,11 +14,13 @@ namespace GlashClientDesktop.Core.ProxyTypes
     {
         protected override JsonTypeInfo ProxyTypeJsonTypeInfo => WebSerializerContext.Default.Web;
         public override Control GetUI() => new Web_UI() { DataContext = this };
-        public override string[] FormerIds => ["Glash.Blazor.Client.ProxyTypes.Web"];
-        public override string Icon => "fa fa-globe";
-        public override string Name => Locale.GetString("Web");
+        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Web"];
+        public override string GetIcon() => "fa fa-globe";
+        public override string GetName() => Locale.GetString("Web");
 
+        [JsonIgnore]
         public string Text_Schema => Locale.GetString("Schema");
+        [JsonIgnore]
         public string Text_Path => Locale.GetString("Path");
 
         public string Schema { get; set; }
@@ -61,6 +63,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
             ];
         }
 
+        [JsonIgnore]
         public string[] Schemas { get; set; } = ["http", "https"];
     }
 }

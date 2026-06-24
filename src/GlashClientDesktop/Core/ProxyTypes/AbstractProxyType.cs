@@ -11,10 +11,10 @@ namespace GlashClientDesktop.Core.ProxyTypes
     public abstract class AbstractProxyType : ViewModelBase, IProxyType
     {
         protected abstract JsonTypeInfo ProxyTypeJsonTypeInfo { get; }
-        public abstract string Icon { get; }
-        public abstract string Name { get; }
+        public abstract string GetIcon();
+        public abstract string GetName();
 
-        public virtual string[] FormerIds => null;
+        public virtual string[] GetFormerIds() => null;
 
         public abstract ProxyTypeButton[] GetButtons();
         public abstract Control GetUI();

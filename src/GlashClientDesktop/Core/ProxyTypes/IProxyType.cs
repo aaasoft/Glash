@@ -4,9 +4,9 @@ namespace GlashClientDesktop.Core.ProxyTypes
 {
     public interface IProxyType
     {
-        string[] FormerIds{get;}
-        string Name { get; }
-        string Icon { get; }
+        string[] GetFormerIds();
+        string GetName();
+        string GetIcon();
         public Control GetUI();
         public ProxyTypeButton[] GetButtons();
         string ToJson();

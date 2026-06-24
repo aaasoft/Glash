@@ -18,10 +18,12 @@ namespace GlashClientDesktop.Core.ProxyTypes
     {
         protected override JsonTypeInfo ProxyTypeJsonTypeInfo => RDPSerializerContext.Default.RDP;
         public override Control GetUI() => new RDP_UI() { DataContext = this };
-        public override string[] FormerIds => ["Glash.Blazor.Client.ProxyTypes.RDP"];
-        public override string Name => Locale.GetString("RDP");        
-        public override string Icon => "fa fa-windows";
+        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.RDP"];
+        public override string GetName() => Locale.GetString("RDP");        
+        public override string GetIcon() => "fa fa-windows";
+        [JsonIgnore]
         public string Text_User=>Locale.GetString("User");
+        [JsonIgnore]
         public string Text_Password=>Locale.GetString("Password");
 
         [Required]

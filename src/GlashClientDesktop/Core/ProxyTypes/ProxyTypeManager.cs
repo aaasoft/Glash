@@ -35,10 +35,11 @@ namespace GlashClientDesktop.Core.ProxyTypes
             var model = new T();
             var type = typeof(T);
             var id = type.FullName;
-            var name = model.Name;
+            var name = model.GetName();
 
-            if (model.FormerIds != null)
-                foreach (var formerId in model.FormerIds)
+            var formerIds = model.GetFormerIds();
+            if (formerIds != null)
+                foreach (var formerId in formerIds)
                     formerIdDict[formerId] = id;
 
             proxyTypeDict[id] = new ProxyTypeInfo(

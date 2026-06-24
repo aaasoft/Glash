@@ -26,9 +26,7 @@ public class EditRuleDialogViewModel : ViewModelBase
             {
                 var proxyType = ProxyTypeManager.Instance.GetProxyTypeInfo(Model.ProxyType);
                 if (proxyType != null)
-                {
-                    CurrentProxyTypeConfig = proxyType.CreateInstance(Model.ProxyTypeConfig);
-                }
+                    CurrentProxyType = ProxyTypeManager.Instance.GetProxyTypeInfo(Model.ProxyType);
             }
         }
     }
@@ -59,18 +57,17 @@ public class EditRuleDialogViewModel : ViewModelBase
         }
     }
 
+    private ProxyTypeInfo _CurrentProxyType;
     public ProxyTypeInfo CurrentProxyType
     {
-        get => ProxyTypeManager.Instance.GetProxyTypeInfo(Model.ProxyType);
+        get => _CurrentProxyType;
         set
         {
-            var proxyType = ProxyTypeManager.Instance.GetProxyTypeInfo(Model.ProxyType);
-            this.RaiseAndSetIfChanged(ref proxyType, value);
-
-            if (proxyType == null)
+            this.RaiseAndSetIfChanged(ref _CurrentProxyType, value);
+            if (value == null)
                 CurrentProxyTypeConfig = null;
             else
-                CurrentProxyTypeConfig = proxyType.CreateInstance(Model.ProxyTypeConfig);
+                CurrentProxyTypeConfig = value.CreateInstance(Model.ProxyTypeConfig);
         }
     }
 }
