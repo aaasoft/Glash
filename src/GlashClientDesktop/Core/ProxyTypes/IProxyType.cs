@@ -7,7 +7,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
     {
         string[] GetFormerIds();
         string GetName();
-        string GetIcon();
+        object GetIcon();
         public Control GetUI();
         public ProxyTypeButton[] GetButtons(ProxyRuleContext t);
         string ToJson();

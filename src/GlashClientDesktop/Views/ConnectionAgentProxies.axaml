@@ -34,7 +34,7 @@
         <ItemsControl IsVisible="{Binding CurrentRuleProxyTypeButtons, Converter={x:Static ObjectConverters.IsNotNull}}" ItemsSource="{Binding CurrentRuleProxyTypeButtons}">
           <ItemsControl.ItemTemplate>
             <DataTemplate DataType="proxytypes:ProxyTypeButton">
-              <u:IconButton Command="{Binding Command}" Icon="{Binding Icon}" Content="{Binding Name}"></u:IconButton>
+              <u:IconButton Command="{Binding Command}" Icon="{Binding Icon}" ToolTip.Tip="{Binding Name}" />
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>

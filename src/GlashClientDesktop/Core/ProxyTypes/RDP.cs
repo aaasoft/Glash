@@ -21,7 +21,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
         public override Control GetUI() => new RDP_UI() { DataContext = this };
         public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.RDP"];
         public override string GetName() => Locale.GetString("RDP");
-        public override string GetIcon() => "fa fa-windows";
+        public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconDesktop");
         [JsonIgnore]
         public string Text_User => Locale.GetString("User");
         [JsonIgnore]
@@ -41,7 +41,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
             [
                 new ProxyTypeButton(
                     Locale.GetString("Start RDP"),
-                    "fa fa-desktop",
+                    Avalonia.Application.Current.FindResource("SemiIconDesktop"),
                     ReactiveCommand.Create(()=>StartRDP(t))
                     )
             ];

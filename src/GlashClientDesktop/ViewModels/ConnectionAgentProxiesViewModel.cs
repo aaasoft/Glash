@@ -1,4 +1,5 @@
 using System.Reactive;
+using Avalonia.Controls;
 using Avalonia.Threading;
 using Glash.Client;
 using Glash.Client.Protocol.QpModel;

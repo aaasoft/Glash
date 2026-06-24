@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-06-24 10:38:48+0800\n"
-"PO-Revision-Date: 2026-06-24 10:38:48+0800\n"
+"POT-Creation-Date: 2026-06-24 21:21:23+0800\n"
+"PO-Revision-Date: 2026-06-24 21:21:23+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10,96 +10,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GetText.NET Extractor\n"
 
-#: ..\..\Core\ConnectionContext.cs:84
-msgid "Connected"
-msgstr ""
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:108
-msgid "Add Rule"
-msgstr ""
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:48
-msgid "Starting..."
-msgstr ""
-
-#: ..\..\Model\Connection.cs:26
-msgid "Connection"
-msgstr ""
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:66
-msgid "Stoping..."
-msgstr ""
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:13
-msgid "Connections"
-msgstr ""
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
-#, csharp-format
-msgid "Stop error,reason: {0}"
-msgstr ""
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:12
-msgid "Current not connected."
-msgstr ""
-
-#: ..\..\ViewModels\EditRuleDialogViewModel.cs:9
-msgid "Name"
-msgstr ""
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:76
-msgid "Add Connection"
-msgstr ""
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:14
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:17
-msgid "Delete Confirm"
-msgstr ""
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:95
-msgid "Edit Connection"
-msgstr ""
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:16
-#: ..\..\ViewModels\EditRuleDialogViewModel.cs:11
-msgid "Proxy"
-msgstr ""
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
-msgid "Password"
-msgstr ""
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
-msgid "User"
-msgstr ""
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:54
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
-msgid "Error"
-msgstr ""
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:132
-msgid "Edit Rule"
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:16
+msgid "Type"
 msgstr ""
 
 #: ..\..\ViewModels\MainWindowViewModel.cs:15
 msgid "Are you sure to delete selected connection?"
 msgstr ""
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:18
-msgid "Are you sure to delete selected rule?"
+#: ..\..\ViewModels\MainWindowViewModel.cs:95
+msgid "Edit Connection"
 msgstr ""
 
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
-msgid "Connection Name"
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:12
+msgid "Name"
 msgstr ""
 
-#: ..\..\Core\ConnectionContext.cs:157
+#: ..\..\Core\ConnectionContext.cs:160
 msgid "Disconnected"
 msgstr ""
 
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
-msgid "Server Url"
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:48
+msgid "Starting..."
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:18
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:14
+msgid "Proxy"
+msgstr ""
+
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:15
+msgid "Basic"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\Web.cs:21
+msgid "Web"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\RDP.cs:26
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
+msgid "User"
+msgstr ""
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:13
+msgid "Connections"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\RDP.cs:43
+msgid "Start RDP"
 msgstr ""
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:54
@@ -107,13 +65,89 @@ msgstr ""
 msgid "Start error,reason: {0}"
 msgstr ""
 
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
+#, csharp-format
+msgid "Stop error,reason: {0}"
+msgstr ""
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
+msgid "Server Url"
+msgstr ""
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:76
+msgid "Add Connection"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\RDP.cs:23
+msgid "RDP"
+msgstr ""
+
+#: ..\..\Model\Connection.cs:26
+msgid "Connection"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\Web.cs:24
+msgid "Schema"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:17
+#: ..\..\ViewModels\EditRuleDialogViewModel.cs:13
+msgid "Listen"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:183
+msgid "Edit Rule"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:20
+msgid "Are you sure to delete selected rule?"
+msgstr ""
+
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:82
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:186
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:239
 msgid "Logs"
 msgstr ""
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:15
-#: ..\..\ViewModels\EditRuleDialogViewModel.cs:10
-msgid "Listen"
+#: ..\..\Core\ProxyTypes\Web.cs:26
+msgid "Path"
+msgstr ""
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
+#: ..\..\Core\ProxyTypes\RDP.cs:28
+msgid "Password"
+msgstr ""
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:14
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
+msgid "Delete Confirm"
+msgstr ""
+
+#: ..\..\Core\ConnectionContext.cs:87
+msgid "Connected"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:12
+msgid "Current not connected."
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\Web.cs:39
+msgid "Visit"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:66
+msgid "Stoping..."
+msgstr ""
+
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
+msgid "Connection Name"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:134
+msgid "Add Rule"
+msgstr ""
+
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:54
+#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
+msgid "Error"
 msgstr ""
 
