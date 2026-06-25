@@ -65,7 +65,7 @@ public class ProfileContext : IDisposable
             GlashClient.LoadProxyRules(ProxyRules);
 
             Connected = true;
-            pushLog(Locale.GetString("Connected"));
+            pushLog(Locale<ProfileContext>.GetString("Connected"));
             ConnectedChanged?.Invoke(this, Connected);
         }
         catch (Exception ex)
@@ -129,7 +129,7 @@ public class ProfileContext : IDisposable
         foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
             GlashClient.UnloadProxyRule(proxyRuleContext);
         Connected = false;
-        pushLog(Locale.GetString("Disconnected"));
+        pushLog(Locale<ProfileContext>.GetString("Disconnected"));
         ConnectedChanged?.Invoke(this, Connected);
 
         var currentCts = cts;

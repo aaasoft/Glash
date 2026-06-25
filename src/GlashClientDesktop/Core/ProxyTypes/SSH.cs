@@ -19,14 +19,14 @@ namespace GlashClientDesktop.Core.ProxyTypes
         public override Control GetUI() => new SSH_UI() { DataContext = this };
         public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.SSH"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconTerminal");
-        public override string GetName() => Locale.GetString("SSH");
+        public override string GetName() => Locale<SSH>.GetString("SSH");
 
         [JsonIgnore]
-        public string Text_User => Locale.GetString("User");
+        public string Text_User => Locale<SSH>.GetString("User");
         [JsonIgnore]
-        public string Text_Password => Locale.GetString("Password");
+        public string Text_Password => Locale<SSH>.GetString("Password");
         [JsonIgnore]
-        public string Text_Terminal => Locale.GetString("Terminal");
+        public string Text_Terminal => Locale<SSH>.GetString("Terminal");
         [JsonIgnore]
         public string[] Terminals { get; set; } = ["putty", "plink"];
 
@@ -43,7 +43,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
             return
             [
                 new ProxyTypeButton(
-                    Locale.GetString("Terminal"),
+                    Locale<SSH>.GetString("Terminal"),
                     Avalonia.Application.Current.FindResource("SemiIconTerminal"),
                     ()=>
                     {
@@ -56,11 +56,11 @@ namespace GlashClientDesktop.Core.ProxyTypes
                         }
                         catch (System.ComponentModel.Win32Exception)
                         {
-                            throw new IOException(Locale.GetString("Can't found {0},please install {0} first.","PuTTY"));
+                            throw new IOException(Locale<SSH>.GetString("Can't found {0},please install {0} first.","PuTTY"));
                         }
                     }),
                 new ProxyTypeButton(
-                    Locale.GetString("Start File Transfer"),
+                    Locale<SSH>.GetString("Start File Transfer"),
                     Avalonia.Application.Current.FindResource("SemiIconFolder"),
                     ()=>
                     {
@@ -69,7 +69,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
                         var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\winscp3_is1", false);
                         if (regKey == null)
                         {
-                            throw new IOException(Locale.GetString("Can't found {0},please install {0} first.","WinSCP"));
+                            throw new IOException(Locale<SSH>.GetString("Can't found {0},please install {0} first.","WinSCP"));
                         }
                         var installLocation = regKey.GetValue("InstallLocation").ToString();
                         var exeFile = Path.Combine(installLocation, "WinSCP.exe");

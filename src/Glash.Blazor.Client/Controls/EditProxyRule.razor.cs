@@ -13,11 +13,11 @@ namespace Glash.Blazor.Client.Controls
         [Parameter]
         public Action<ProxyRuleInfo> OkAction { get; set; }
 
-        private static string TextName=>Locale.GetString("Name");
-        private static string TextAgent=>Locale.GetString("Agent");        
-        private static string TextListen=>Locale.GetString("Listen");
-        private static string TextProxy=>Locale.GetString("Proxy");
-        private static string TextOk=>Locale.GetString("OK");
+        private static string TextName=>Locale<EditProxyRule>.GetString("Name");
+        private static string TextAgent=>Locale<EditProxyRule>.GetString("Agent");        
+        private static string TextListen=>Locale<EditProxyRule>.GetString("Listen");
+        private static string TextProxy=>Locale<EditProxyRule>.GetString("Proxy");
+        private static string TextOk=>Locale<EditProxyRule>.GetString("OK");
 
         private void Ok()
         {

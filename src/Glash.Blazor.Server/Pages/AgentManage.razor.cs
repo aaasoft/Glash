@@ -15,16 +15,16 @@ namespace Glash.Blazor.Server.Pages
         [Parameter]
         public Action AgentChangedHandler { get; set; }
 
-        private static string TextName => Locale.GetString("Name");
-        private static string TextChannelName => Locale.GetString("Channel Name");
-        private static string TextConnectTime => Locale.GetString("Connect Time");
+        private static string TextName => Locale<AgentManage>.GetString("Name");
+        private static string TextChannelName => Locale<AgentManage>.GetString("Channel Name");
+        private static string TextConnectTime => Locale<AgentManage>.GetString("Connect Time");
 
-        private static string TextOperate => Locale.GetString("Operate");
-        private static string TextAdd => Locale.GetString("Add");
-        private static string TextLogs => Locale.GetString("Logs");
-        private static string TextEdit => Locale.GetString("Edit");
-        private static string TextDelete => Locale.GetString("Delete");
-        private static string TextError => Locale.GetString("Error");
+        private static string TextOperate => Locale<AgentManage>.GetString("Operate");
+        private static string TextAdd => Locale<AgentManage>.GetString("Add");
+        private static string TextLogs => Locale<AgentManage>.GetString("Logs");
+        private static string TextEdit => Locale<AgentManage>.GetString("Edit");
+        private static string TextDelete => Locale<AgentManage>.GetString("Delete");
+        private static string TextError => Locale<AgentManage>.GetString("Error");
 
         private void Add()
         {
@@ -79,7 +79,7 @@ namespace Glash.Blazor.Server.Pages
 
         private void Delete(Model.AgentInfo model)
         {
-            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete agent[{0}]?", model.Name), new ()
+            modalAlert.Show(TextDelete, Locale<AgentManage>.GetString("Are you sure to delete agent[{0}]?", model.Name), new ()
             {
                 OkCallback = () =>
                 {

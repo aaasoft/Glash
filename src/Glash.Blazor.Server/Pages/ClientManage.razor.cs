@@ -16,15 +16,15 @@ namespace Glash.Blazor.Server.Pages
         [Parameter]
         public Action ClientChangedHandler { get; set; }
 
-        private static string TextName => Locale.GetString("Name");
-        private static string TextChannelName => Locale.GetString("Channel Name");
-        private static string TextConnectTime => Locale.GetString("Connect Time");
+        private static string TextName => Locale<ClientManage>.GetString("Name");
+        private static string TextChannelName => Locale<ClientManage>.GetString("Channel Name");
+        private static string TextConnectTime => Locale<ClientManage>.GetString("Connect Time");
 
-        private static string TextOperate => Locale.GetString("Operate");
-        private static string TextAdd => Locale.GetString("Add");
-        private static string TextEdit => Locale.GetString("Edit");
-        private static string TextDelete => Locale.GetString("Delete");
-        private static string TextError => Locale.GetString("Error");
+        private static string TextOperate => Locale<ClientManage>.GetString("Operate");
+        private static string TextAdd => Locale<ClientManage>.GetString("Add");
+        private static string TextEdit => Locale<ClientManage>.GetString("Edit");
+        private static string TextDelete => Locale<ClientManage>.GetString("Delete");
+        private static string TextError => Locale<ClientManage>.GetString("Error");
 
 
         private void setClientRelateAgents(string clientId, string[] agents)
@@ -111,7 +111,7 @@ namespace Glash.Blazor.Server.Pages
 
         private void Delete(Model.ClientInfo model)
         {
-            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete Client[{0}]?", model.Name), new ()
+            modalAlert.Show(TextDelete, Locale<ClientManage>.GetString("Are you sure to delete Client[{0}]?", model.Name), new ()
             {
                 OkCallback = () =>
                 {

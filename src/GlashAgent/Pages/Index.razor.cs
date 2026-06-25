@@ -8,11 +8,11 @@ namespace GlashAgent.Pages
 {
     public partial class Index : ComponentBase_WithGettextSupport
     {
-        private static string TextTitle => Locale.GetString("Glash Agent");
-        private static string TextLoginPasswordManage => Locale.GetString("Login Password Manage");
-        private static string TextProfileManage => Locale.GetString("Profile Manage");
-        private static string TextPleaseInputPassword => Locale.GetString("Please input password");
-        private static string TextLogin => Locale.GetString("Login");
+        private static string TextTitle => Locale<Index>.GetString("Glash Agent");
+        private static string TextLoginPasswordManage => Locale<Index>.GetString("Login Password Manage");
+        private static string TextProfileManage => Locale<Index>.GetString("Profile Manage");
+        private static string TextPleaseInputPassword => Locale<Index>.GetString("Please input password");
+        private static string TextLogin => Locale<Index>.GetString("Login");
         
         public bool IsLogin { get; private set; } = false;
         public string Message { get; private set; }
@@ -42,7 +42,7 @@ namespace GlashAgent.Pages
         {
             if (!IsLogin && CorrectPassword != Password)
             {
-                Message = Locale.GetString("Password is wrong");
+                Message = Locale<Index>.GetString("Password is wrong");
                 return;
             }
             IsLogin = true;

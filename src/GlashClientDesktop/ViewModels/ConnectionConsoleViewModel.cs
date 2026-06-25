@@ -9,7 +9,7 @@ namespace GlashClientDesktop.ViewModels;
 
 public class ConnectionConsoleViewModel : ViewModelBase
 {
-    public string Text_CurrentNotConntected =>Locale.GetString("Current not connected.");
+    public string Text_CurrentNotConntected =>Locale<ConnectionConsoleViewModel>.GetString("Current not connected.");
     private ConnectionContext _Model;
     public ConnectionContext Model
     {
@@ -45,13 +45,13 @@ public class ConnectionConsoleViewModel : ViewModelBase
     {
         try
         {
-            LoadingMessage = Locale.GetString("Starting...");
+            LoadingMessage = Locale<ConnectionConsoleViewModel>.GetString("Starting...");
             IsLoading = true;
             await Model.Start();
         }
         catch (Exception ex)
         {
-            await OverlayMessageBox.ShowAsync(Locale.GetString("Start error,reason: {0}", ExceptionUtils.GetExceptionMessage(ex)), Locale.GetString("Error"), null, MessageBoxIcon.Warning);
+            await OverlayMessageBox.ShowAsync(Locale<ConnectionConsoleViewModel>.GetString("Start error,reason: {0}", ExceptionUtils.GetExceptionMessage(ex)), Locale<ConnectionConsoleViewModel>.GetString("Error"), null, MessageBoxIcon.Warning);
         }
         finally
         {
@@ -63,13 +63,13 @@ public class ConnectionConsoleViewModel : ViewModelBase
     {
         try
         {
-            LoadingMessage = Locale.GetString("Stoping...");
+            LoadingMessage = Locale<ConnectionConsoleViewModel>.GetString("Stoping...");
             IsLoading = true;
             await Task.Run(Model.Stop);
         }
         catch (Exception ex)
         {
-            await OverlayMessageBox.ShowAsync(Locale.GetString("Stop error,reason: {0}", ExceptionUtils.GetExceptionMessage(ex)), Locale.GetString("Error"), null, MessageBoxIcon.Warning);
+            await OverlayMessageBox.ShowAsync(Locale<ConnectionConsoleViewModel>.GetString("Stop error,reason: {0}", ExceptionUtils.GetExceptionMessage(ex)), Locale<ConnectionConsoleViewModel>.GetString("Error"), null, MessageBoxIcon.Warning);
         }
         finally
         {
@@ -79,6 +79,6 @@ public class ConnectionConsoleViewModel : ViewModelBase
 
     public async Task ExecuteCommand_Log()
     {
-        await OverlayMessageBox.ShowAsync(string.Join(Environment.NewLine, Model.Logs), Locale.GetString("Logs"), null, MessageBoxIcon.Information);
+        await OverlayMessageBox.ShowAsync(string.Join(Environment.NewLine, Model.Logs), Locale<ConnectionConsoleViewModel>.GetString("Logs"), null, MessageBoxIcon.Information);
     }
 }

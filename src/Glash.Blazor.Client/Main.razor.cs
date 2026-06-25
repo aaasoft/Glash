@@ -9,21 +9,21 @@ namespace Glash.Blazor.Client
 {
     public partial class Main : ComponentBase_WithGettextSupport
     {
-        private static string TextProfile => Locale.GetString("Profile");
-        private static string TextAdd => Locale.GetString("Add");
-        private static string TextLogs => Locale.GetString("Logs");
-        private static string TextEdit => Locale.GetString("Edit");
-        private static string TextDuplicate => Locale.GetString("Duplicate");
-        private static string TextDelete => Locale.GetString("Delete");
-        private static string TextAgent => Locale.GetString("Agent");
-        private static string TextError => Locale.GetString("Error");
-        private static string TextAddProxyRule => Locale.GetString("Add Proxy Rule");
-        private static string TextDuplicateProxyRule => Locale.GetString("Duplicate Proxy Rule");
-        private static string TextEditProxyRule => Locale.GetString("Edit Proxy Rule");
-        private static string TextDeleteProxyRule => Locale.GetString("Delete Proxy Rule");
-        private static string TextListen => Locale.GetString("Listen");
-        private static string TextProxy => Locale.GetString("Proxy");
-        private static string TextAgentNotLogin => Locale.GetString("Agent not login");
+        private static string TextProfile => Locale<Main>.GetString("Profile");
+        private static string TextAdd => Locale<Main>.GetString("Add");
+        private static string TextLogs => Locale<Main>.GetString("Logs");
+        private static string TextEdit => Locale<Main>.GetString("Edit");
+        private static string TextDuplicate => Locale<Main>.GetString("Duplicate");
+        private static string TextDelete => Locale<Main>.GetString("Delete");
+        private static string TextAgent => Locale<Main>.GetString("Agent");
+        private static string TextError => Locale<Main>.GetString("Error");
+        private static string TextAddProxyRule => Locale<Main>.GetString("Add Proxy Rule");
+        private static string TextDuplicateProxyRule => Locale<Main>.GetString("Duplicate Proxy Rule");
+        private static string TextEditProxyRule => Locale<Main>.GetString("Edit Proxy Rule");
+        private static string TextDeleteProxyRule => Locale<Main>.GetString("Delete Proxy Rule");
+        private static string TextListen => Locale<Main>.GetString("Listen");
+        private static string TextProxy => Locale<Main>.GetString("Proxy");
+        private static string TextAgentNotLogin => Locale<Main>.GetString("Agent not login");
 
         private ModalAlert modalAlert;
         private ModalWindow modalWindow;
@@ -166,7 +166,7 @@ namespace Glash.Blazor.Client
         private void DeleteProfile()
         {
             var model = CurrentProfileContext.Profile;
-            modalAlert.Show(TextDelete, Locale.GetString("Are you sure to delete Profile[{0}]?", model.Name), new()
+            modalAlert.Show(TextDelete, Locale<Main>.GetString("Are you sure to delete Profile[{0}]?", model.Name), new()
             {
                 OkCallback = () =>
                 {
@@ -252,13 +252,13 @@ namespace Glash.Blazor.Client
 
         private void EditProxyRule(ProxyRuleInfo model)
         {
-            modalWindow.Show(Locale.GetString(TextEditProxyRule),
+            modalWindow.Show(Locale<Main>.GetString(TextEditProxyRule),
                 new DialogParameters<Controls.EditProxyRule>()
                 {
                     {x=>x.Model, JsonSerializer.Deserialize<ProxyRuleInfo>(JsonSerializer.Serialize(model))},
                     {x=>x.OkAction, async editModel =>
                     {
-                        modalLoading.Show(Locale.GetString(TextEditProxyRule), null, true);
+                        modalLoading.Show(Locale<Main>.GetString(TextEditProxyRule), null, true);
                         try
                         {
                             model.Name = editModel.Name;
@@ -287,7 +287,7 @@ namespace Glash.Blazor.Client
         {
             modalAlert.Show(
                 TextDeleteProxyRule,
-                Locale.GetString("Are you sure to delete ProxyRule[{0}]?", model.Name), new()
+                Locale<Main>.GetString("Are you sure to delete ProxyRule[{0}]?", model.Name), new()
                 {
                     OkCallback = async () =>
                     {

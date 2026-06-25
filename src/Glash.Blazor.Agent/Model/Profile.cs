@@ -22,7 +22,7 @@ namespace Glash.Blazor.Agent.Model
 
         public override string ToString()
         {
-            return Locale.GetString("Profile") + $"[{Name}]";
+            return Locale<Profile>.GetString("Profile") + $"[{Name}]";
         }
     }
 }

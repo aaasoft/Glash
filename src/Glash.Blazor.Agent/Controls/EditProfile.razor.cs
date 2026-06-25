@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using Quick.Localize;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Blazor.Agent.Controls
 {
@@ -16,11 +11,11 @@ namespace Glash.Blazor.Agent.Controls
         [Parameter]
         public Action<Model.Profile> OkAction { get; set; }
 
-        private static string TextName => Locale.GetString("Name");
-        private static string TextServerUrl => Locale.GetString("Server Url");
-        private static string TextAgentName => Locale.GetString("Agent Name");
-        private static string TextAgentPassword => Locale.GetString("Agent Password");
-        private static string TextOk => Locale.GetString("OK");
+        private static string TextName => Locale<EditProfile>.GetString("Name");
+        private static string TextServerUrl => Locale<EditProfile>.GetString("Server Url");
+        private static string TextAgentName => Locale<EditProfile>.GetString("Agent Name");
+        private static string TextAgentPassword => Locale<EditProfile>.GetString("Agent Password");
+        private static string TextOk => Locale<EditProfile>.GetString("OK");
 
         private void Ok()
         {

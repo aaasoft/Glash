@@ -10,14 +10,14 @@ namespace Glash.Blazor.Agent.Pages
         private ModalWindow modalWindow;
         private ModalAlert modalAlert;
 
-        private static string TextName => Locale.GetString("Name");
-        private static string TextAgentName => Locale.GetString("Agent Name");
-        private static string TextStatus => Locale.GetString("Status");
-        private static string TextOperate => Locale.GetString("Operate");
-        private static string TextAdd => Locale.GetString("Add");
-        private static string TextLogs => Locale.GetString("Logs");
-        private static string TextEdit => Locale.GetString("Edit");
-        private static string TextDelete => Locale.GetString("Delete");
+        private static string TextName => Locale<ProfileManage>.GetString("Name");
+        private static string TextAgentName => Locale<ProfileManage>.GetString("Agent Name");
+        private static string TextStatus => Locale<ProfileManage>.GetString("Status");
+        private static string TextOperate => Locale<ProfileManage>.GetString("Operate");
+        private static string TextAdd => Locale<ProfileManage>.GetString("Add");
+        private static string TextLogs => Locale<ProfileManage>.GetString("Logs");
+        private static string TextEdit => Locale<ProfileManage>.GetString("Edit");
+        private static string TextDelete => Locale<ProfileManage>.GetString("Delete");
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -49,7 +49,7 @@ namespace Glash.Blazor.Agent.Pages
 
         private void Add()
         {
-            modalWindow.Show(Locale.GetString("Add"),
+            modalWindow.Show(Locale<ProfileManage>.GetString("Add"),
                 new DialogParameters<Controls.EditProfile>()
                 {
                     {x=>x.Model, new Model.Profile(Guid.NewGuid().ToString("N"))},
@@ -64,7 +64,7 @@ namespace Glash.Blazor.Agent.Pages
                             }
                             catch (Exception ex)
                             {
-                                modalAlert.Show(Locale.GetString("Error"), ex.Message);
+                                modalAlert.Show(Locale<ProfileManage>.GetString("Error"), ex.Message);
                             }
                         }
                     },
@@ -84,7 +84,7 @@ namespace Glash.Blazor.Agent.Pages
 
         private void Edit(Model.Profile model)
         {
-            modalWindow.Show(Locale.GetString("Edit"),
+            modalWindow.Show(Locale<ProfileManage>.GetString("Edit"),
                 new DialogParameters<Controls.EditProfile>()
                 {
                     { x=>x.Model, JsonSerializer.Deserialize<Model.Profile>(JsonSerializer.Serialize(model))},
@@ -104,7 +104,7 @@ namespace Glash.Blazor.Agent.Pages
                             }
                             catch (Exception ex)
                             {
-                                modalAlert.Show(Locale.GetString("Error"), ex.Message);
+                                modalAlert.Show(Locale<ProfileManage>.GetString("Error"), ex.Message);
                             }
                         }
                     }
@@ -113,7 +113,7 @@ namespace Glash.Blazor.Agent.Pages
 
         private void Delete(Model.Profile model)
         {
-            modalAlert.Show(Locale.GetString("Delete"), Locale.GetString("Are you sure to delete profile[{0}]?", model.Name), new ()
+            modalAlert.Show(Locale<ProfileManage>.GetString("Delete"), Locale<ProfileManage>.GetString("Are you sure to delete profile[{0}]?", model.Name), new ()
             {
                 OkCallback = () =>
                 {
@@ -127,7 +127,7 @@ namespace Glash.Blazor.Agent.Pages
                     {
                         Task.Delay(100).ContinueWith(t =>
                         {
-                            modalAlert.Show(Locale.GetString("Error"), ex.Message);
+                            modalAlert.Show(Locale<ProfileManage>.GetString("Error"), ex.Message);
                         });
                     }
                 }

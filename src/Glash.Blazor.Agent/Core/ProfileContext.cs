@@ -54,8 +54,8 @@ namespace Glash.Blazor.Agent.Core
 
         private void GlashAgent_Disconnected(object sender, EventArgs e)
         {
-            Status = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}: {Locale.GetString("Disconnected")}";
-            pushLog(Locale.GetString("Disconnected"));
+            Status = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}: {Locale<ProfileContext>.GetString("Disconnected")}";
+            pushLog(Locale<ProfileContext>.GetString("Disconnected"));
             var currentCts = cts;
             if (currentCts == null)
                 return;
@@ -77,8 +77,8 @@ namespace Glash.Blazor.Agent.Core
             try
             {
                 await glashAgent.ConnectAsync();
-                Status = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}: {Locale.GetString("Connected")}";
-                pushLog(Locale.GetString("Connected"));
+                Status = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}: {Locale<ProfileContext>.GetString("Connected")}";
+                pushLog(Locale<ProfileContext>.GetString("Connected"));
             }
             catch (Exception ex)
             {

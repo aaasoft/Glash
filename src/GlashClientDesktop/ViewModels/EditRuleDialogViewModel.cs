@@ -9,11 +9,11 @@ namespace GlashClientDesktop.ViewModels;
 public class EditRuleDialogViewModel : ViewModelBase
 {
 
-    public string Text_Name { get; } = Locale.GetString("Name");
-    public string Text_Listen { get; } = Locale.GetString("Listen");
-    public string Text_Proxy { get; } = Locale.GetString("Proxy");
-    public string Text_Basic { get; } = Locale.GetString("Basic");
-    public string Text_Type { get; } = Locale.GetString("Type");
+    public string Text_Name { get; } = Locale<EditRuleDialogViewModel>.GetString("Name");
+    public string Text_Listen { get; } = Locale<EditRuleDialogViewModel>.GetString("Listen");
+    public string Text_Proxy { get; } = Locale<EditRuleDialogViewModel>.GetString("Proxy");
+    public string Text_Basic { get; } = Locale<EditRuleDialogViewModel>.GetString("Basic");
+    public string Text_Type { get; } = Locale<EditRuleDialogViewModel>.GetString("Type");
 
     private ProxyRuleInfo _Model;
     public ProxyRuleInfo Model

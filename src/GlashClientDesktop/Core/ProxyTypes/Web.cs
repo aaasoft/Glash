@@ -17,12 +17,12 @@ namespace GlashClientDesktop.Core.ProxyTypes
         public override Control GetUI() => new Web_UI() { DataContext = this };
         public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Web"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconGlobe");
-        public override string GetName() => Locale.GetString("Web");
+        public override string GetName() => Locale<Web>.GetString("Web");
 
         [JsonIgnore]
-        public string Text_Schema => Locale.GetString("Schema");
+        public string Text_Schema => Locale<Web>.GetString("Schema");
         [JsonIgnore]
-        public string Text_Path => Locale.GetString("Path");
+        public string Text_Path => Locale<Web>.GetString("Path");
 
         public string Schema { get; set; }
         public string Path { get; set; }
@@ -35,7 +35,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
             return
             [
                 new ProxyTypeButton(
-                    Locale.GetString("Visit"),
+                    Locale<Web>.GetString("Visit"),
                     Avalonia.Application.Current.FindResource("SemiIconGlobe"),
                     ()=>
                     {

@@ -15,10 +15,10 @@ namespace Glash.Blazor.Server.Controls
         [Parameter]
         public Action<Model.ClientInfo, string[]> OkAction { get; set; }
 
-        private static string TextName=> Locale.GetString("Name");
-        private static string TextPassword=> Locale.GetString("Password");
-        private static string TextAgent=> Locale.GetString("Agent");
-        private static string TextOk=> Locale.GetString("OK");
+        private static string TextName=> Locale<EditClientInfo>.GetString("Name");
+        private static string TextPassword=> Locale<EditClientInfo>.GetString("Password");
+        private static string TextAgent=> Locale<EditClientInfo>.GetString("Agent");
+        private static string TextOk=> Locale<EditClientInfo>.GetString("OK");
 
         public class SelectAgentInfo
         {

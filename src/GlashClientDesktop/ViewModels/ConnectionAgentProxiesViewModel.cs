@@ -15,10 +15,10 @@ namespace GlashClientDesktop.ViewModels;
 
 public class ConnectionAgentProxiesViewModel : ViewModelBase
 {
-    public string Text_Listen => Locale.GetString("Listen");
-    public string Text_Proxy => Locale.GetString("Proxy");
-    public string Text_DeleteConfirm => Locale.GetString("Delete Confirm");
-    public string Text_DeleteRuleConfirm => Locale.GetString("Are you sure to delete selected rule?");
+    public string Text_Listen => Locale<ConnectionAgentProxiesViewModel>.GetString("Listen");
+    public string Text_Proxy => Locale<ConnectionAgentProxiesViewModel>.GetString("Proxy");
+    public string Text_DeleteConfirm => Locale<ConnectionAgentProxiesViewModel>.GetString("Delete Confirm");
+    public string Text_DeleteRuleConfirm => Locale<ConnectionAgentProxiesViewModel>.GetString("Are you sure to delete selected rule?");
 
     public ConnectionContext ConnectionContext { get; set; }
 
@@ -135,7 +135,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         {
             Buttons = DialogButton.OKCancel,
             IsCloseButtonVisible = true,
-            Title = Locale.GetString("Add Rule"),
+            Title = Locale<ConnectionAgentProxiesViewModel>.GetString("Add Rule"),
             CanResize = true
         };
         var vm = new EditRuleDialogViewModel() { Model = model };
@@ -184,7 +184,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         {
             Buttons = DialogButton.OKCancel,
             IsCloseButtonVisible = true,
-            Title = Locale.GetString("Edit Rule"),
+            Title = Locale<ConnectionAgentProxiesViewModel>.GetString("Edit Rule"),
             CanResize = true
         };
         var model = CurrentRule.Config;
@@ -240,7 +240,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
 
     public async Task ExecuteCommand_Log()
     {
-        await OverlayMessageBox.ShowAsync(string.Join(Environment.NewLine, CurrentRule.Logs), Locale.GetString("Logs"), null, MessageBoxIcon.Information);
+        await OverlayMessageBox.ShowAsync(string.Join(Environment.NewLine, CurrentRule.Logs), Locale<ConnectionAgentProxiesViewModel>.GetString("Logs"), null, MessageBoxIcon.Information);
     }
 
     public async Task ExecuteCommand_RuleButton(ProxyTypeButton button)
@@ -251,7 +251,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await OverlayMessageBox.ShowAsync(Locale.GetString("Execute {0} error,reason:{1}", button.Name, ExceptionUtils.GetExceptionMessage(ex)), Locale.GetString("Error"));
+            await OverlayMessageBox.ShowAsync(Locale<ConnectionAgentProxiesViewModel>.GetString("Execute {0} error,reason:{1}", button.Name, ExceptionUtils.GetExceptionMessage(ex)), Locale<ConnectionAgentProxiesViewModel>.GetString("Error"));
         }
     }
 }

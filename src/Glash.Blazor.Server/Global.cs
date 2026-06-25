@@ -235,7 +235,7 @@ namespace Glash.Blazor.Server
         {
             IClientManager manager = this;
             if (!manager.IsClientRelateAgent(clientName, proxyRule.Agent))
-                throw new ApplicationException(Locale.GetString("Client[{0}] not relate to Agent[{1}].",clientName,proxyRule.Agent));
+                throw new ApplicationException(Locale<Global>.GetString("Client[{0}] not relate to Agent[{1}].",clientName,proxyRule.Agent));
 
             var model = new Model.ProxyRuleInfo()
             {
@@ -270,10 +270,10 @@ namespace Glash.Blazor.Server
         {
             var model = ConfigDbContext.CacheContext.Find(new Model.ProxyRuleInfo(proxyRuleId));
             if (model == null)
-                throw new ApplicationException(Locale.GetString("Can't found ProxyRule with Id[{0}].", proxyRuleId));
+                throw new ApplicationException(Locale<Global>.GetString("Can't found ProxyRule with Id[{0}].", proxyRuleId));
 
             if (model.ClientName != model.ClientName)
-                throw new ApplicationException(Locale.GetString("ProxyRule[{0}] not belong to Client[{1}].", proxyRuleId, clientName));
+                throw new ApplicationException(Locale<Global>.GetString("ProxyRule[{0}] not belong to Client[{1}].", proxyRuleId, clientName));
 
             ConfigDbContext.CacheContext.Remove(model);
         }
@@ -282,9 +282,9 @@ namespace Glash.Blazor.Server
         {
             var model = ConfigDbContext.CacheContext.Find(new Model.ProxyRuleInfo(proxyRuleId));
             if (model == null)
-                throw new ApplicationException(Locale.GetString("Can't found ProxyRule with Id[{0}].", proxyRuleId));
+                throw new ApplicationException(Locale<Global>.GetString("Can't found ProxyRule with Id[{0}].", proxyRuleId));
             if (model.ClientName != clientName)
-                throw new ApplicationException(Locale.GetString("ProxyRule[Id:{0}]'s client name not match.", proxyRuleId));
+                throw new ApplicationException(Locale<Global>.GetString("ProxyRule[Id:{0}]'s client name not match.", proxyRuleId));
             return model;
         }
     }

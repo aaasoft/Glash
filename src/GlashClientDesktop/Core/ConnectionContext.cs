@@ -84,7 +84,7 @@ public class ConnectionContext : ReactiveObject, IDisposable
             agentDict = Agents.ToDictionary(t => t.Name, t => t);
 
             Connected = true;
-            pushLog(Locale.GetString("Connected"));
+            pushLog(Locale<ConnectionContext>.GetString("Connected"));
             ConnectedChanged?.Invoke(this, Connected);
         }
         catch (Exception ex)
@@ -157,7 +157,7 @@ public class ConnectionContext : ReactiveObject, IDisposable
         foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
             GlashClient.UnloadProxyRule(proxyRuleContext);
         Connected = false;
-        pushLog(Locale.GetString("Disconnected"));
+        pushLog(Locale<ConnectionContext>.GetString("Disconnected"));
         ConnectedChanged?.Invoke(this, Connected);
     }
 

@@ -12,15 +12,15 @@ namespace Glash.Blazor.Server.Pages
         private CancellationTokenSource cts = new CancellationTokenSource();
         private GlashServerTunnelContext[] GetTunnels() => Global.Instance.GlashServer.Tunnels;
 
-        private static string TextId => Locale.GetString("Id");
-        private static string TextAgent => Locale.GetString("Agent");
-        private static string TextClient => Locale.GetString("Client");
-        private static string TextTarget => Locale.GetString("Target");
-        private static string TextConnectTime => Locale.GetString("Connect Time");
-        private static string TextTotalBytes => Locale.GetString("Total Bytes");
-        private static string TextCurrentSpeed => Locale.GetString("Current Speed");
-        private static string TextOperate => Locale.GetString("Operate");
-        private static string TextCloseTunnel => Locale.GetString("Close Tunnel");
+        private static string TextId => Locale<TunnelManage>.GetString("Id");
+        private static string TextAgent => Locale<TunnelManage>.GetString("Agent");
+        private static string TextClient => Locale<TunnelManage>.GetString("Client");
+        private static string TextTarget => Locale<TunnelManage>.GetString("Target");
+        private static string TextConnectTime => Locale<TunnelManage>.GetString("Connect Time");
+        private static string TextTotalBytes => Locale<TunnelManage>.GetString("Total Bytes");
+        private static string TextCurrentSpeed => Locale<TunnelManage>.GetString("Current Speed");
+        private static string TextOperate => Locale<TunnelManage>.GetString("Operate");
+        private static string TextCloseTunnel => Locale<TunnelManage>.GetString("Close Tunnel");
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -52,12 +52,12 @@ namespace Glash.Blazor.Server.Pages
         {
             modalAlert.Show(
                 TextCloseTunnel,
-                Locale.GetString("Are you sure close tunnel[{0}]", tunnel.TunnelInfo.Id),
+                Locale<TunnelManage>.GetString("Are you sure close tunnel[{0}]", tunnel.TunnelInfo.Id),
                 new ()
                 {
                     OkCallback = () =>
                     {
-                        tunnel.OnError(new ApplicationException(Locale.GetString("Closed by server.")));
+                        tunnel.OnError(new ApplicationException(Locale<TunnelManage>.GetString("Closed by server.")));
                     }
                 });
         }

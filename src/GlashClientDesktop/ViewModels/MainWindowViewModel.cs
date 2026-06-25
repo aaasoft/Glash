@@ -10,9 +10,9 @@ namespace GlashClientDesktop.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string Text_Connections => Locale.GetString("Connections");
-        public string Text_DeleteConfirm => Locale.GetString("Delete Confirm");
-        public string Text_DeleteConnectionConfirm => Locale.GetString("Are you sure to delete selected connection?");
+        public string Text_Connections => Locale<MainWindowViewModel>.GetString("Connections");
+        public string Text_DeleteConfirm => Locale<MainWindowViewModel>.GetString("Delete Confirm");
+        public string Text_DeleteConnectionConfirm => Locale<MainWindowViewModel>.GetString("Are you sure to delete selected connection?");
 
         private ConnectionConsoleViewModel _ConnectionConsoleViewModel;
         public ConnectionConsoleViewModel ConnectionConsoleViewModel
@@ -73,7 +73,7 @@ namespace GlashClientDesktop.ViewModels
             {
                 Buttons = DialogButton.OKCancel,
                 IsCloseButtonVisible = true,
-                Title = Locale.GetString("Add Connection"),
+                Title = Locale<MainWindowViewModel>.GetString("Add Connection"),
                 CanResize = true,
             };
             var model = new Model.Connection(Guid.NewGuid().ToString("N"));
@@ -92,7 +92,7 @@ namespace GlashClientDesktop.ViewModels
             {
                 Buttons = DialogButton.OKCancel,
                 IsCloseButtonVisible = true,
-                Title = Locale.GetString("Edit Connection"),
+                Title = Locale<MainWindowViewModel>.GetString("Edit Connection"),
                 CanResize = true,
             };
             var model = CurrentConnectionContext.Connection;

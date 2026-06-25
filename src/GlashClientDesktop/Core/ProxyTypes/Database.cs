@@ -20,17 +20,17 @@ namespace GlashClientDesktop.Core.ProxyTypes
         public override Control GetUI() => new Database_UI() { DataContext = this };
         public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Database"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconGridSquare");
-        public override string GetName() => Locale.GetString("Database");
+        public override string GetName() => Locale<Database>.GetString("Database");
 
         [JsonIgnore]
-        public string Text_NetType => Locale.GetString("Network protocol type");
+        public string Text_NetType => Locale<Database>.GetString("Network protocol type");
         [JsonIgnore]
-        public string Text_Library => Locale.GetString("Library");
+        public string Text_Library => Locale<Database>.GetString("Library");
         
         [JsonIgnore]
-        public string Text_User => Locale.GetString("User");
+        public string Text_User => Locale<Database>.GetString("User");
         [JsonIgnore]
-        public string Text_Password => Locale.GetString("Password");
+        public string Text_Password => Locale<Database>.GetString("Password");
 
         [JsonIgnore]
         public Dictionary<string, string> NetTypes { get; set; } = new()
@@ -137,7 +137,7 @@ Firebird:
             return
             [
                 new ProxyTypeButton(
-                    Locale.GetString("View"),
+                    Locale<Database>.GetString("View"),
                     Avalonia.Application.Current.FindResource("SemiIconGridSquare"),
                     ()=>
                     {
@@ -146,7 +146,7 @@ Firebird:
                     var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\HeidiSQL_is1", false);
                     if (regKey == null)
                     {
-                        throw new IOException(Locale.GetString("Can't found {0},please install {0} first.","HeidiSQL"));
+                        throw new IOException(Locale<Database>.GetString("Can't found {0},please install {0} first.","HeidiSQL"));
                     }
                     var installLocation = regKey.GetValue("InstallLocation").ToString();
                     var exeFile = Path.Combine(installLocation, "heidisql.exe");

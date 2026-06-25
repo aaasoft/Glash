@@ -14,9 +14,9 @@ namespace Glash.Blazor.Server.Pages
         private string ConnectionPassword { get; set; }
         private ModalAlert modalAlert;
 
-        private static string TextConnectionPassword => Locale.GetString("Connection Password");
-        private static string TextApiAddress => Locale.GetString("Api Address");
-        private static string TextOk => Locale.GetString("OK");
+        private static string TextConnectionPassword => Locale<Basic>.GetString("Connection Password");
+        private static string TextApiAddress => Locale<Basic>.GetString("Api Address");
+        private static string TextOk => Locale<Basic>.GetString("OK");
 
         protected override void OnInitialized()
         {
@@ -58,13 +58,13 @@ namespace Glash.Blazor.Server.Pages
             {
                 Global.Instance.ConnectionPassword = ConnectionPassword;
                 modalAlert.Show(
-                    Locale.GetString("Success"),
-                    Locale.GetString("Change connection password success."));
+                    Locale<Basic>.GetString("Success"),
+                    Locale<Basic>.GetString("Change connection password success."));
             }
             catch (Exception ex)
             {
                 modalAlert.Show(
-                    Locale.GetString("Error"),
+                    Locale<Basic>.GetString("Error"),
                     ex.Message);
             }
         }

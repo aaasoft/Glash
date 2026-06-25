@@ -13,9 +13,9 @@ namespace Glash.Blazor.Server.Controls
         [Parameter]
         public Action<Model.AgentInfo> OkAction { get; set; }
 
-        private static string TextName=> Locale.GetString("Name");
-        private static string TextPassword=> Locale.GetString("Password");
-        private static string TextOk=> Locale.GetString("OK");
+        private static string TextName=> Locale<EditAgentInfo>.GetString("Name");
+        private static string TextPassword=> Locale<EditAgentInfo>.GetString("Password");
+        private static string TextOk=> Locale<EditAgentInfo>.GetString("OK");
         
         protected override void OnParametersSet()
         {

@@ -23,7 +23,7 @@ namespace GlashClientDesktop.Model
 
         public override string ToString()
         {
-            return Locale.GetString("Connection") + $"[{Name}]";
+            return Locale<Connection>.GetString("Connection") + $"[{Name}]";
         }
     }
 }
