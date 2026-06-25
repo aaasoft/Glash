@@ -12,6 +12,6 @@
   </Design.DataContext>
   <u:Form LabelPosition="Top" LabelWidth="*" MinWidth="400" HorizontalAlignment="Stretch">
     <ComboBox u:FormItem.Label="{Binding Text_Schema}" SelectedValue="{Binding Schema}" ItemsSource="{Binding Schemas}" HorizontalAlignment="Stretch" u:FormItem.IsRequired="True" />
-    <TextBox u:FormItem.Label="{Binding Text_Path}" Text="{Binding Path}" u:FormItem.IsRequired="True" />
+    <TextBox u:FormItem.Label="{Binding Text_Path}" Text="{Binding Path}" />
 </u:Form>
 </UserControl>

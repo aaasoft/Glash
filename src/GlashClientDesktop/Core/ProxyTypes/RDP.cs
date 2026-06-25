@@ -8,7 +8,6 @@ using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using Avalonia.Controls;
-using ReactiveUI;
 
 namespace GlashClientDesktop.Core.ProxyTypes
 {
@@ -32,9 +31,6 @@ namespace GlashClientDesktop.Core.ProxyTypes
         [Required]
         public string Password { get; set; }
 
-
-
-        [SupportedOSPlatform("windows")]
         public override ProxyTypeButton[] GetButtons(ProxyRuleContext t)
         {
             return
@@ -42,7 +38,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
                 new ProxyTypeButton(
                     Locale.GetString("Start RDP"),
                     Avalonia.Application.Current.FindResource("SemiIconDesktop"),
-                    ReactiveCommand.Create(()=>StartRDP(t))
+                    ()=>StartRDP(t)
                     )
             ];
         }
@@ -71,27 +67,32 @@ namespace GlashClientDesktop.Core.ProxyTypes
             return sb.ToString();
         }
 
-        [SupportedOSPlatform("windows")]
         private void StartRDP(ProxyRuleContext t)
         {
-            var sb = new StringBuilder();
-
-            sb.AppendLine($"full address:s:{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}");
-            sb.AppendLine($"username:s:{User}");
-            sb.AppendLine($"password 51:b:{GetRdpPassWord(Password)}");
-            var tmpFile = Path.Combine(Path.GetTempPath(), getRdpFileName(t));
-            try
+            if (OperatingSystem.IsWindows())
             {
-                File.WriteAllText(tmpFile, sb.ToString());
-                var process = Process.Start("mstsc.exe", tmpFile);
-                WaitForProcessMainWindow(process);
-                if (File.Exists(tmpFile))
+                var sb = new StringBuilder();
+                sb.AppendLine($"full address:s:{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}");
+                sb.AppendLine($"username:s:{User}");
+                sb.AppendLine($"password 51:b:{GetRdpPassWord(Password)}");
+                var tmpFile = Path.Combine(Path.GetTempPath(), getRdpFileName(t));
+                try
+                {
+                    File.WriteAllText(tmpFile, sb.ToString());
+                    var process = Process.Start("mstsc.exe", tmpFile);
+                    WaitForProcessMainWindow(process);
+                    if (File.Exists(tmpFile))
+                        File.Delete(tmpFile);
+                }
+                catch
+                {
                     File.Delete(tmpFile);
+                    throw;
+                }
             }
-            catch
+            else
             {
-                File.Delete(tmpFile);
-                throw;
+                throw new NotImplementedException();
             }
         }
     }

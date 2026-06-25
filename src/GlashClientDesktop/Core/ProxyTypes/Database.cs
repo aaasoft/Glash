@@ -139,25 +139,22 @@ Firebird:
                 new ProxyTypeButton(
                     Locale.GetString("View"),
                     Avalonia.Application.Current.FindResource("SemiIconGridSquare"),
-                    ReactiveCommand.Create(
-                     ()=>
-                     {
-                         #pragma warning disable CA1416 // 验证平台兼容性
-                        //从注册表中读取NSIS的安装目录
-                        var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\HeidiSQL_is1", false);
-                        if (regKey == null)
-                        {
-                            Console.WriteLine("未检测到HeidiSQL，请安装HeidiSQL！");
-                            return;
-                        }
-                        var installLocation = regKey.GetValue("InstallLocation").ToString();
-                        var exeFile = Path.Combine(installLocation, "heidisql.exe");
+                    ()=>
+                    {
+                        #pragma warning disable CA1416 // 验证平台兼容性
+                    //从注册表中读取NSIS的安装目录
+                    var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\HeidiSQL_is1", false);
+                    if (regKey == null)
+                    {
+                        throw new IOException(Locale.GetString("Can't found {0},please install {0} first.","HeidiSQL"));
+                    }
+                    var installLocation = regKey.GetValue("InstallLocation").ToString();
+                    var exeFile = Path.Combine(installLocation, "heidisql.exe");
 #pragma warning restore CA1416 // 验证平台兼容性
 
-                         var process = Process.Start(exeFile,$"--nettype={NetType} --library={Library} --host={GetLocalIPAddress(t.Config.LocalIPAddress)} --port={t.LocalPort} --user={User} --password={Password}");
-                         WaitForProcessMainWindow(process);
-                     }
-                    )
+                        var process = Process.Start(exeFile,$"--nettype={NetType} --library={Library} --host={GetLocalIPAddress(t.Config.LocalIPAddress)} --port={t.LocalPort} --user={User} --password={Password}");
+                        WaitForProcessMainWindow(process);
+                    }
                 )
             ];
         }

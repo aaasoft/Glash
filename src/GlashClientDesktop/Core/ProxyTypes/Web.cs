@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Glash.Client;
 using Quick.Localize;
-using ReactiveUI;
 using System.Diagnostics;
 using System.Runtime.Versioning;
 using System.Text.Json.Serialization;
@@ -38,7 +37,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
                 new ProxyTypeButton(
                     Locale.GetString("Visit"),
                     Avalonia.Application.Current.FindResource("SemiIconGlobe"),
-                    ReactiveCommand.Create(()=>
+                    ()=>
                     {
                         if(string.IsNullOrEmpty(Schema))
                             Schema="http";
@@ -61,7 +60,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
                             var process = Process.Start(psi);;
                             WaitForProcessMainWindow(process);
                         }
-                    })
+                    }
                 )
             ];
         }

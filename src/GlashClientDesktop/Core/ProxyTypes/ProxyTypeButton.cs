@@ -6,9 +6,9 @@ namespace GlashClientDesktop.Core.ProxyTypes
     {
         public string Name { get; private set; }
         public object Icon { get; private set; }
-        public ICommand Command { get; private set; }
+        public Action Command { get; private set; }
 
-        public ProxyTypeButton(string name, object icon, ICommand command)
+        public ProxyTypeButton(string name, object icon, Action command)
         {
             Name = name;
             Icon = icon;

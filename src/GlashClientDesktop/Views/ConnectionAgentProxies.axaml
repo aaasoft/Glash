@@ -31,10 +31,19 @@
         <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding CurrentRuleEnable}" Icon="{StaticResource SemiIconStop}" Classes="Danger"></u:IconButton>
         <u:IconButton Command="{Binding LogCommand}" Icon="{StaticResource SemiIconFile}"></u:IconButton>
         <u:Divider Margin="4 0" Orientation="Vertical" />
-        <ItemsControl IsVisible="{Binding CurrentRuleProxyTypeButtons, Converter={x:Static ObjectConverters.IsNotNull}}" ItemsSource="{Binding CurrentRuleProxyTypeButtons}">
+        <ItemsControl
+          x:Name="ruleList"
+          IsVisible="{Binding CurrentRuleProxyTypeButtons, Converter={x:Static ObjectConverters.IsNotNull}}"
+          ItemsSource="{Binding CurrentRuleProxyTypeButtons}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
           <ItemsControl.ItemTemplate>
             <DataTemplate DataType="proxytypes:ProxyTypeButton">
-              <u:IconButton Command="{Binding Command}" Icon="{Binding Icon}" ToolTip.Tip="{Binding Name}" />
+              <u:IconButton Command="{Binding DataContext.RuleButtonCommand, ElementName=ruleList}"
+                            CommandParameter="{Binding}" Icon="{Binding Icon}" ToolTip.Tip="{Binding Name}" />
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -60,7 +69,7 @@
               <StackPanel Spacing="6">
                 <StackPanel Orientation="Horizontal" IsVisible="{Binding Config.Enable}">
                   <PathIcon Width="16" Height="16" IsVisible="{Binding Working}" Data="{StaticResource SemiIconConnectionPoint1}" Foreground="{StaticResource SemiColorPrimary}" />
-                  <PathIcon Width="16" Height="16" IsVisible="{Binding !Working}" Data="{StaticResource SemiIconConnectionPoint1}" Foreground="{StaticResource SemiColorDisabledText}" />
+                  <PathIcon Width="16" Height="16" IsVisible="{Binding !Working}" Data="{StaticResource SemiIconConnectionPoint1}" Foreground="{StaticResource SemiColorDanger}" />
                   <TextBlock Margin="4 0" Text="{Binding Config.Name}" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" IsVisible="{Binding !Config.Enable}">

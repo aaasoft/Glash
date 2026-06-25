@@ -51,7 +51,7 @@ public class ConnectionConsoleViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await MessageBox.ShowAsync(Locale.GetString("Start error,reason: {0}", ExceptionUtils.GetExceptionMessage(ex)), Locale.GetString("Error"), MessageBoxIcon.Warning);
+            await OverlayMessageBox.ShowAsync(Locale.GetString("Start error,reason: {0}", ExceptionUtils.GetExceptionMessage(ex)), Locale.GetString("Error"), null, MessageBoxIcon.Warning);
         }
         finally
         {
@@ -69,7 +69,7 @@ public class ConnectionConsoleViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await MessageBox.ShowAsync(Locale.GetString("Stop error,reason: {0}", ExceptionUtils.GetExceptionMessage(ex)), Locale.GetString("Error"), MessageBoxIcon.Warning);
+            await OverlayMessageBox.ShowAsync(Locale.GetString("Stop error,reason: {0}", ExceptionUtils.GetExceptionMessage(ex)), Locale.GetString("Error"), null, MessageBoxIcon.Warning);
         }
         finally
         {
@@ -79,6 +79,6 @@ public class ConnectionConsoleViewModel : ViewModelBase
 
     public async Task ExecuteCommand_Log()
     {
-        await MessageBox.ShowAsync(string.Join(Environment.NewLine, Model.Logs), Locale.GetString("Logs"), MessageBoxIcon.Information);
+        await OverlayMessageBox.ShowAsync(string.Join(Environment.NewLine, Model.Logs), Locale.GetString("Logs"), null, MessageBoxIcon.Information);
     }
 }

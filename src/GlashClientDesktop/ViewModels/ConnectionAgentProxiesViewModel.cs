@@ -7,6 +7,7 @@ using GlashClientDesktop.Core;
 using GlashClientDesktop.Core.ProxyTypes;
 using GlashClientDesktop.Views;
 using Quick.Localize;
+using Quick.Utils;
 using ReactiveUI;
 using Ursa.Controls;
 
@@ -92,6 +93,8 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> StartCommand { get; }
     public ReactiveCommand<Unit, Unit> StopCommand { get; }
     public ReactiveCommand<Unit, Unit> LogCommand { get; }
+    public ReactiveCommand<ProxyTypeButton, Unit> RuleButtonCommand { get; }
+
 
 
     public ConnectionAgentProxiesViewModel()
@@ -116,6 +119,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         StartCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Start);
         StopCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Stop);
         LogCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Log);
+        RuleButtonCommand = ReactiveCommand.CreateFromTask<ProxyTypeButton>(ExecuteCommand_RuleButton);
     }
 
     private void refreshRules()
@@ -236,6 +240,18 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
 
     public async Task ExecuteCommand_Log()
     {
-        await MessageBox.ShowAsync(string.Join(Environment.NewLine, CurrentRule.Logs), Locale.GetString("Logs"), MessageBoxIcon.Information);
+        await OverlayMessageBox.ShowAsync(string.Join(Environment.NewLine, CurrentRule.Logs), Locale.GetString("Logs"), null, MessageBoxIcon.Information);
+    }
+
+    public async Task ExecuteCommand_RuleButton(ProxyTypeButton button)
+    {
+        try
+        {
+            await Task.Run(button.Command);
+        }
+        catch (Exception ex)
+        {
+            await OverlayMessageBox.ShowAsync(Locale.GetString("Execute {0} error,reason:{1}", button.Name, ExceptionUtils.GetExceptionMessage(ex)), Locale.GetString("Error"));
+        }
     }
 }

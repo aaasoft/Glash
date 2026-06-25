@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-06-25 09:12:32+0800\n"
-"PO-Revision-Date: 2026-06-25 09:13+0800\n"
+"POT-Creation-Date: 2026-06-25 09:46:34+0800\n"
+"PO-Revision-Date: 2026-06-25 09:47+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -35,7 +35,7 @@ msgstr "已断开"
 msgid "Starting..."
 msgstr "启动中..."
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:18
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
 #: ..\..\ViewModels\EditRuleDialogViewModel.cs:14
 msgid "Proxy"
 msgstr "代理"
@@ -52,17 +52,17 @@ msgstr "查看"
 msgid "Basic"
 msgstr "基本"
 
-#: ..\..\Core\ProxyTypes\SSH.cs:30 ..\..\Core\ProxyTypes\SSH.cs:47
+#: ..\..\Core\ProxyTypes\SSH.cs:29 ..\..\Core\ProxyTypes\SSH.cs:46
 msgid "Terminal"
 msgstr "终端"
 
-#: ..\..\Core\ProxyTypes\Web.cs:21
+#: ..\..\Core\ProxyTypes\Web.cs:20
 msgid "Web"
 msgstr "网页"
 
-#: ..\..\Core\ProxyTypes\RDP.cs:26 ..\..\Core\ProxyTypes\SSH.cs:26
-#: ..\..\Core\ProxyTypes\Database.cs:31
+#: ..\..\Core\ProxyTypes\SSH.cs:25 ..\..\Core\ProxyTypes\RDP.cs:25
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
+#: ..\..\Core\ProxyTypes\Database.cs:31
 msgid "User"
 msgstr "用户名"
 
@@ -70,7 +70,7 @@ msgstr "用户名"
 msgid "Connections"
 msgstr "连接"
 
-#: ..\..\Core\ProxyTypes\RDP.cs:43
+#: ..\..\Core\ProxyTypes\RDP.cs:39
 msgid "Start RDP"
 msgstr "启动远程桌面"
 
@@ -79,16 +79,27 @@ msgstr "启动远程桌面"
 msgid "Start error,reason: {0}"
 msgstr "启动出错，原因：{0}"
 
-#: ..\..\Core\ProxyTypes\SSH.cs:23
+#: ..\..\Core\ProxyTypes\SSH.cs:22
 msgid "SSH"
 msgstr "SSH"
+
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:254
+#, csharp-format
+msgid "Execute {0} error,reason:{1}"
+msgstr "执行{0}时出错，原因：{1}"
+
+#: ..\..\Core\ProxyTypes\SSH.cs:59 ..\..\Core\ProxyTypes\SSH.cs:72
+#: ..\..\Core\ProxyTypes\Database.cs:149
+#, csharp-format
+msgid "Can't found {0},please install {0} first."
+msgstr "未找到{0}，请安装{0}。"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
 #, csharp-format
 msgid "Stop error,reason: {0}"
 msgstr "停止出错，原因：{0}"
 
-#: ..\..\Core\ProxyTypes\SSH.cs:65
+#: ..\..\Core\ProxyTypes\SSH.cs:63
 msgid "Start File Transfer"
 msgstr "开始文件传输"
 
@@ -100,7 +111,7 @@ msgstr "服务端URL"
 msgid "Add Connection"
 msgstr "添加连接"
 
-#: ..\..\Core\ProxyTypes\RDP.cs:23
+#: ..\..\Core\ProxyTypes\RDP.cs:22
 msgid "RDP"
 msgstr "远程桌面"
 
@@ -108,40 +119,40 @@ msgstr "远程桌面"
 msgid "Connection"
 msgstr "连接"
 
-#: ..\..\Core\ProxyTypes\Web.cs:24
+#: ..\..\Core\ProxyTypes\Web.cs:23
 msgid "Schema"
 msgstr "架构"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:17
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:18
 #: ..\..\ViewModels\EditRuleDialogViewModel.cs:13
 msgid "Listen"
 msgstr "监听"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:183
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:187
 msgid "Edit Rule"
 msgstr "编辑规则"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:20
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:21
 msgid "Are you sure to delete selected rule?"
 msgstr "确定要删除选中的规则？"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:82
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:239
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:243
 msgid "Logs"
 msgstr "日志"
 
-#: ..\..\Core\ProxyTypes\Web.cs:26
+#: ..\..\Core\ProxyTypes\Web.cs:25
 msgid "Path"
 msgstr "路径"
 
-#: ..\..\Core\ProxyTypes\RDP.cs:28 ..\..\Core\ProxyTypes\SSH.cs:28
-#: ..\..\Core\ProxyTypes\Database.cs:33
+#: ..\..\Core\ProxyTypes\SSH.cs:27 ..\..\Core\ProxyTypes\RDP.cs:27
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
+#: ..\..\Core\ProxyTypes\Database.cs:33
 msgid "Password"
 msgstr "密码"
 
 #: ..\..\ViewModels\MainWindowViewModel.cs:14
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:20
 msgid "Delete Confirm"
 msgstr "删除确认"
 
@@ -153,7 +164,7 @@ msgstr "已连接"
 msgid "Current not connected."
 msgstr "当前未连接。"
 
-#: ..\..\Core\ProxyTypes\Web.cs:39
+#: ..\..\Core\ProxyTypes\Web.cs:38
 msgid "Visit"
 msgstr "访问"
 
@@ -173,12 +184,13 @@ msgstr "停止中..."
 msgid "Connection Name"
 msgstr "连接名称"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:134
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:138
 msgid "Add Rule"
 msgstr "添加规则"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:54
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:254
 msgid "Error"
 msgstr "错误"
 
