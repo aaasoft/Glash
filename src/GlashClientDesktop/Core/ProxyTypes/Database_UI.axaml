@@ -12,7 +12,8 @@
   </Design.DataContext>
   <u:Form LabelPosition="Top" LabelWidth="*" MinWidth="400" HorizontalAlignment="Stretch">
     <ComboBox u:FormItem.Label="{Binding Text_NetType}" SelectedValueBinding="{Binding Key}" DisplayMemberBinding="{Binding Value}" SelectedValue="{Binding NetType}" ItemsSource="{Binding NetTypes}" HorizontalAlignment="Stretch" u:FormItem.IsRequired="True" />
+    <ComboBox u:FormItem.Label="{Binding Text_Library}" SelectedValue="{Binding Library}" ItemsSource="{Binding Libraries}" HorizontalAlignment="Stretch" u:FormItem.IsRequired="True" />
     <TextBox u:FormItem.Label="{Binding Text_User}" Text="{Binding User}" u:FormItem.IsRequired="True" />
-    <TextBox u:FormItem.Label="{Binding Text_Password}" Text="{Binding Password}" u:FormItem.IsRequired="True" />    
+    <TextBox u:FormItem.Label="{Binding Text_Password}" Text="{Binding Password}" u:FormItem.IsRequired="True" />
   </u:Form>
 </UserControl>

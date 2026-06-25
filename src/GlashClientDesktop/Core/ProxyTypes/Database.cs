@@ -23,7 +23,10 @@ namespace GlashClientDesktop.Core.ProxyTypes
         public override string GetName() => Locale.GetString("Database");
 
         [JsonIgnore]
-        public string Text_NetType => Locale.GetString("Database Type");
+        public string Text_NetType => Locale.GetString("Network protocol type");
+        [JsonIgnore]
+        public string Text_Library => Locale.GetString("Library");
+        
         [JsonIgnore]
         public string Text_User => Locale.GetString("User");
         [JsonIgnore]
@@ -38,6 +41,12 @@ namespace GlashClientDesktop.Core.ProxyTypes
             ["12"] = "Interbase",
             ["14"] = "Firebird",
         };
+        private string[] _Libraries;
+        public string[] Libraries
+        {
+            get => _Libraries;
+            set => this.RaiseAndSetIfChanged(ref _Libraries, value);
+        }
         /*
 Network protocol type:
 0 = MariaDB/MySQL (TCP/IP)
@@ -57,8 +66,38 @@ Network protocol type:
 14 = Firebird (TCP/IP)
 15 = Firebird (local)
          */
+
+        private string _NetType;
         [Required]
-        public string NetType { get; set; }
+        public string NetType
+        {
+            get=>_NetType;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NetType, value);
+                if (value == null)
+                    return;
+                switch (value)
+                {
+                    case "0":
+                        Libraries=["libmariadb.dll","libmysql.dll","libmysql-6.1.dll"];
+                        break;
+                    case "4":
+                        Libraries=["SQLOLEDB"];
+                        break;
+                    case "8":
+                        Libraries=["libpq.dll","libpq-12.dll"];
+                        break;
+                    case "12":
+                        Libraries=["ibclient64-14.1.dll","gds32-14.1.dll"];
+                        break;
+                    case "14":
+                        Libraries=["fbclient-4.0.dll"];
+                        break;
+                }
+                Library = Libraries?.FirstOrDefault();
+            }
+        }
         /*
 Library or provider (added in v11.1):
 MySQL/MariaDB:
@@ -79,8 +118,14 @@ Interbase:
 Firebird:
     fbclient-4.0.dll
          */
+
+        private string _Library;
         [Required]
-        public string Library { get; set; }
+        public string Library
+        {
+            get => _Library;
+            set => this.RaiseAndSetIfChanged(ref _Library, value);
+        }
         [Required]
         public string User { get; set; }
         [Required]
@@ -89,10 +134,10 @@ Firebird:
         [SupportedOSPlatform("windows")]
         public override ProxyTypeButton[] GetButtons(ProxyRuleContext t)
         {
-            return new ProxyTypeButton[]
-            {
+            return
+            [
                 new ProxyTypeButton(
-                    Locale.GetString("Start View"),
+                    Locale.GetString("View"),
                     Avalonia.Application.Current.FindResource("SemiIconGridSquare"),
                     ReactiveCommand.Create(
                      ()=>
@@ -114,7 +159,7 @@ Firebird:
                      }
                     )
                 )
-            };
+            ];
         }
     }
 }

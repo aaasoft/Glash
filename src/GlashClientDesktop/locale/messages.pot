@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-06-24 21:21:23+0800\n"
-"PO-Revision-Date: 2026-06-24 21:21:23+0800\n"
+"POT-Creation-Date: 2026-06-25 09:12:32+0800\n"
+"PO-Revision-Date: 2026-06-25 09:12:32+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,8 +39,21 @@ msgstr ""
 msgid "Proxy"
 msgstr ""
 
+#: ..\..\Core\ProxyTypes\Database.cs:26
+msgid "Network protocol type"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\Database.cs:140
+msgid "View"
+msgstr ""
+
 #: ..\..\ViewModels\EditRuleDialogViewModel.cs:15
 msgid "Basic"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\SSH.cs:30
+#: ..\..\Core\ProxyTypes\SSH.cs:47
+msgid "Terminal"
 msgstr ""
 
 #: ..\..\Core\ProxyTypes\Web.cs:21
@@ -48,6 +61,8 @@ msgid "Web"
 msgstr ""
 
 #: ..\..\Core\ProxyTypes\RDP.cs:26
+#: ..\..\Core\ProxyTypes\SSH.cs:26
+#: ..\..\Core\ProxyTypes\Database.cs:31
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
 msgid "User"
 msgstr ""
@@ -65,9 +80,17 @@ msgstr ""
 msgid "Start error,reason: {0}"
 msgstr ""
 
+#: ..\..\Core\ProxyTypes\SSH.cs:23
+msgid "SSH"
+msgstr ""
+
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
 #, csharp-format
 msgid "Stop error,reason: {0}"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\SSH.cs:65
+msgid "Start File Transfer"
 msgstr ""
 
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
@@ -112,8 +135,10 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
 #: ..\..\Core\ProxyTypes\RDP.cs:28
+#: ..\..\Core\ProxyTypes\SSH.cs:28
+#: ..\..\Core\ProxyTypes\Database.cs:33
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
 msgid "Password"
 msgstr ""
 
@@ -132,6 +157,14 @@ msgstr ""
 
 #: ..\..\Core\ProxyTypes\Web.cs:39
 msgid "Visit"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\Database.cs:23
+msgid "Database"
+msgstr ""
+
+#: ..\..\Core\ProxyTypes\Database.cs:28
+msgid "Library"
 msgstr ""
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:66

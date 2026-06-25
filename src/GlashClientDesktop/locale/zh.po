@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-06-24 21:21:23+0800\n"
-"PO-Revision-Date: 2026-06-24 21:22+0800\n"
+"POT-Creation-Date: 2026-06-25 09:12:32+0800\n"
+"PO-Revision-Date: 2026-06-25 09:13+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -40,15 +40,28 @@ msgstr "启动中..."
 msgid "Proxy"
 msgstr "代理"
 
+#: ..\..\Core\ProxyTypes\Database.cs:26
+msgid "Network protocol type"
+msgstr "网络协议类型"
+
+#: ..\..\Core\ProxyTypes\Database.cs:140
+msgid "View"
+msgstr "查看"
+
 #: ..\..\ViewModels\EditRuleDialogViewModel.cs:15
 msgid "Basic"
 msgstr "基本"
+
+#: ..\..\Core\ProxyTypes\SSH.cs:30 ..\..\Core\ProxyTypes\SSH.cs:47
+msgid "Terminal"
+msgstr "终端"
 
 #: ..\..\Core\ProxyTypes\Web.cs:21
 msgid "Web"
 msgstr "网页"
 
-#: ..\..\Core\ProxyTypes\RDP.cs:26
+#: ..\..\Core\ProxyTypes\RDP.cs:26 ..\..\Core\ProxyTypes\SSH.cs:26
+#: ..\..\Core\ProxyTypes\Database.cs:31
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
 msgid "User"
 msgstr "用户名"
@@ -66,10 +79,18 @@ msgstr "启动远程桌面"
 msgid "Start error,reason: {0}"
 msgstr "启动出错，原因：{0}"
 
+#: ..\..\Core\ProxyTypes\SSH.cs:23
+msgid "SSH"
+msgstr "SSH"
+
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:72
 #, csharp-format
 msgid "Stop error,reason: {0}"
 msgstr "停止出错，原因：{0}"
+
+#: ..\..\Core\ProxyTypes\SSH.cs:65
+msgid "Start File Transfer"
+msgstr "开始文件传输"
 
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
 msgid "Server Url"
@@ -113,8 +134,9 @@ msgstr "日志"
 msgid "Path"
 msgstr "路径"
 
+#: ..\..\Core\ProxyTypes\RDP.cs:28 ..\..\Core\ProxyTypes\SSH.cs:28
+#: ..\..\Core\ProxyTypes\Database.cs:33
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
-#: ..\..\Core\ProxyTypes\RDP.cs:28
 msgid "Password"
 msgstr "密码"
 
@@ -134,6 +156,14 @@ msgstr "当前未连接。"
 #: ..\..\Core\ProxyTypes\Web.cs:39
 msgid "Visit"
 msgstr "访问"
+
+#: ..\..\Core\ProxyTypes\Database.cs:23
+msgid "Database"
+msgstr "数据库"
+
+#: ..\..\Core\ProxyTypes\Database.cs:28
+msgid "Library"
+msgstr "程序库"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:66
 msgid "Stoping..."
