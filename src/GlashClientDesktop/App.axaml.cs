@@ -33,7 +33,7 @@ namespace GlashClientDesktop
 
                     ConfigDbContext.Init(dbFile, modelBuilder =>
                     {
-                        Global.Instance.OnModelCreating(modelBuilder);
+                        modelBuilder.Entity<Model.Connection>();
                     });
                     ConfigDbContext.CacheContext.LoadCache();
 
