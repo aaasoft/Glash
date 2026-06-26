@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-06-25 09:46:34+0800\n"
-"PO-Revision-Date: 2026-06-25 09:46:34+0800\n"
+"POT-Creation-Date: 2026-06-26 12:01:05+0800\n"
+"PO-Revision-Date: 2026-06-26 12:01:05+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,11 +14,11 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:15
+#: ..\..\ViewModels\MainWindowViewModel.cs:17
 msgid "Are you sure to delete selected connection?"
 msgstr ""
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:95
+#: ..\..\ViewModels\MainWindowViewModel.cs:99
 msgid "Edit Connection"
 msgstr ""
 
@@ -67,7 +67,7 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:13
+#: ..\..\ViewModels\MainWindowViewModel.cs:15
 msgid "Connections"
 msgstr ""
 
@@ -109,7 +109,7 @@ msgstr ""
 msgid "Server Url"
 msgstr ""
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:76
+#: ..\..\ViewModels\MainWindowViewModel.cs:80
 msgid "Add Connection"
 msgstr ""
 
@@ -154,7 +154,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:14
+#: ..\..\ViewModels\MainWindowViewModel.cs:16
 #: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:20
 msgid "Delete Confirm"
 msgstr ""
@@ -169,6 +169,10 @@ msgstr ""
 
 #: ..\..\Core\ProxyTypes\Web.cs:38
 msgid "Visit"
+msgstr ""
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:14
+msgid "GlashClientDesktop"
 msgstr ""
 
 #: ..\..\Core\ProxyTypes\Database.cs:23

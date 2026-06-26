@@ -11,7 +11,7 @@
               d:DesignHeight="600"
               WindowStartupLocation="CenterScreen"
               Icon="/Assets/logo.ico"
-              Title="Glash桌面客户端"
+              Title="{Binding Title}"
               ExtendClientAreaToDecorationsHint="False"
               >
     <Design.DataContext>

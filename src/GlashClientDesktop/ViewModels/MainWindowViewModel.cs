@@ -1,4 +1,5 @@
 ﻿using System.Reactive;
+using System.Reflection;
 using Avalonia.Threading;
 using GlashClientDesktop.Core;
 using GlashClientDesktop.Views;
@@ -10,9 +11,12 @@ namespace GlashClientDesktop.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        public string Text_Title =>Locale<MainWindowViewModel>.GetString("GlashClientDesktop");
         public string Text_Connections => Locale<MainWindowViewModel>.GetString("Connections");
         public string Text_DeleteConfirm => Locale<MainWindowViewModel>.GetString("Delete Confirm");
         public string Text_DeleteConnectionConfirm => Locale<MainWindowViewModel>.GetString("Are you sure to delete selected connection?");
+
+        public string Title => $"{Text_Title} v{Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}";
 
         private ConnectionConsoleViewModel _ConnectionConsoleViewModel;
         public ConnectionConsoleViewModel ConnectionConsoleViewModel

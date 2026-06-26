@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-06-25 09:46:34+0800\n"
-"PO-Revision-Date: 2026-06-25 09:47+0800\n"
+"POT-Creation-Date: 2026-06-26 12:01:05+0800\n"
+"PO-Revision-Date: 2026-06-26 12:03+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -15,11 +15,11 @@ msgstr ""
 msgid "Type"
 msgstr "类型"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:15
+#: ..\..\ViewModels\MainWindowViewModel.cs:17
 msgid "Are you sure to delete selected connection?"
 msgstr "确定要删除选中的连接？"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:95
+#: ..\..\ViewModels\MainWindowViewModel.cs:99
 msgid "Edit Connection"
 msgstr "编辑连接"
 
@@ -66,7 +66,7 @@ msgstr "网页"
 msgid "User"
 msgstr "用户名"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:13
+#: ..\..\ViewModels\MainWindowViewModel.cs:15
 msgid "Connections"
 msgstr "连接"
 
@@ -107,7 +107,7 @@ msgstr "开始文件传输"
 msgid "Server Url"
 msgstr "服务端URL"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:76
+#: ..\..\ViewModels\MainWindowViewModel.cs:80
 msgid "Add Connection"
 msgstr "添加连接"
 
@@ -151,7 +151,7 @@ msgstr "路径"
 msgid "Password"
 msgstr "密码"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:14
+#: ..\..\ViewModels\MainWindowViewModel.cs:16
 #: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:20
 msgid "Delete Confirm"
 msgstr "删除确认"
@@ -167,6 +167,10 @@ msgstr "当前未连接。"
 #: ..\..\Core\ProxyTypes\Web.cs:38
 msgid "Visit"
 msgstr "访问"
+
+#: ..\..\ViewModels\MainWindowViewModel.cs:14
+msgid "GlashClientDesktop"
+msgstr "Glash客户端"
 
 #: ..\..\Core\ProxyTypes\Database.cs:23
 msgid "Database"
@@ -276,9 +280,6 @@ msgstr "错误"
 
 #~ msgid "Operate"
 #~ msgstr "操作"
-
-#~ msgid "Glash Client"
-#~ msgstr "Glash客户端"
 
 #~ msgid "Choose Profile"
 #~ msgstr "选择配置"
