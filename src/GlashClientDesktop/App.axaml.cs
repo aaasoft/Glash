@@ -33,10 +33,15 @@ namespace GlashClientDesktop
 
                     ConfigDbContext.Init(dbFile, modelBuilder =>
                     {
-                        modelBuilder.Entity<Model.Connection>();
+                        modelBuilder.Entity<Model.Connection>(c=>
+                            c.Include(t=>t.Id).
+                            Include(t=>t.Name).
+                            Include(t=>t.ServerUrl).
+                            Include(t=>t.User).
+                            Include(t=>t.Password)
+                        );
                     });
                     ConfigDbContext.CacheContext.LoadCache();
-
                 }
                 catch (Exception ex)
                 {
