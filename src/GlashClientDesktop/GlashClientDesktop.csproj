@@ -8,6 +8,7 @@
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 		<PublishAot>true</PublishAot>
+		<IsPackable>false</IsPackable>
 		<Version>2026.12.626</Version>
 	</PropertyGroup>
 
