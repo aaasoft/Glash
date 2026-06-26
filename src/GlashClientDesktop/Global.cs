@@ -8,7 +8,6 @@ namespace GlashClientDesktop
 
         public void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Model.Config>();
             modelBuilder.Entity<Model.Connection>();
         }
     }

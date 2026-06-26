@@ -17,7 +17,7 @@
 		<PackageReference Include="Avalonia.Desktop" Version="12.0.4" />
 		<PackageReference Include="Irihi.Ursa.Themes.Semi" Version="2.0.1" />
 		<PackageReference Include="Quick.Localize" Version="2.0.6" />
-		<PackageReference Include="Quick.LiteDB.Plus" Version="1.0.3" />
+		<PackageReference Include="Quick.LiteDB.Plus" Version="1.0.4" />
 		<PackageReference Include="Quick.Protocol.Http.Client" Version="2.6.12" />
 	  	<PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.6.12" />
 	  	<PackageReference Include="ReactiveUI.Avalonia" Version="12.0.3" />

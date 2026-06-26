@@ -5,7 +5,8 @@ using GlashClientDesktop.Core.ProxyTypes;
 using GlashClientDesktop.ViewModels;
 using GlashClientDesktop.Views;
 using Quick.LiteDB.Plus;
-using System.Globalization;
+using Quick.Utils;
+using Ursa.Controls;
 
 namespace GlashClientDesktop
 {
@@ -13,21 +14,6 @@ namespace GlashClientDesktop
     {
         public override void Initialize()
         {
-            Quick.Protocol.WebSocket.Client.QpWebSocketClientOptions.RegisterUriSchema();
-            Quick.Protocol.Http.Client.QpHttpClientOptions.RegisterUriSchema();
-            ProxyTypeManager.Instance.Init();
-
-            // Read dbFile path from environment variable, default to "Config.litedb" if not set
-            var dbFile = Environment.GetEnvironmentVariable("GLASH_DB_FILE_PATH") ?? "Config.litedb";
-            #if DEBUG
-            dbFile = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), dbFile);
-            #endif
-            ConfigDbContext.Init(dbFile, modelBuilder =>
-            {
-                Global.Instance.OnModelCreating(modelBuilder);
-            });
-            ConfigDbContext.CacheContext.LoadCache();
-
             AvaloniaXamlLoader.Load(this);
         }
 
@@ -35,6 +21,28 @@ namespace GlashClientDesktop
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                try
+                {
+                    Quick.Protocol.WebSocket.Client.QpWebSocketClientOptions.RegisterUriSchema();
+                    Quick.Protocol.Http.Client.QpHttpClientOptions.RegisterUriSchema();
+                    ProxyTypeManager.Instance.Init();
+                    var configFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(GlashClientDesktop));
+                    if (!Directory.Exists(configFolder))
+                        Directory.CreateDirectory(configFolder);
+                    var dbFile = Path.Combine(configFolder, "Config.litedb");
+
+                    ConfigDbContext.Init(dbFile, modelBuilder =>
+                    {
+                        Global.Instance.OnModelCreating(modelBuilder);
+                    });
+                    ConfigDbContext.CacheContext.LoadCache();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.ShowAsync(ExceptionUtils.GetExceptionMessage(ex), "Error", MessageBoxIcon.Error);
+                    return;
+                }
                 desktop.MainWindow = new MainWindow
                 {
                     DataContext = new MainWindowViewModel(),
