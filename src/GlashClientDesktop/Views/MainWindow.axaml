@@ -64,7 +64,7 @@
                                       PopupContent="{Binding Text_DeleteConnectionConfirm}"
                                       ConfirmCommand="{Binding DeleteCommand}">
                             <u:IconButton Command="{Binding FakeDeleteCommand}" Icon="{StaticResource SemiIconDelete}" Classes="Danger" />
-                        </u:PopConfirm>
+                        </u:PopConfirm>                        
                     </StackPanel>
                     <TextBlock
                         VerticalAlignment="Center"
@@ -79,9 +79,16 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                <u:Form Grid.Row="2" LabelPosition="Left" LabelWidth="*" HorizontalAlignment="Stretch">
+                    <ComboBox Margin="0 0 8 0" SelectedValue="{Binding CurrentLanguage}" ItemsSource="{Binding LanguageDict}" SelectedValueBinding="{Binding Key}" DisplayMemberBinding="{Binding Value}" HorizontalAlignment="Stretch">
+                        <u:FormItem.Label>
+                            <PathIcon Margin="8 4 0 4" Data="{StaticResource SemiIconGlobeStroke}"/>
+                        </u:FormItem.Label>
+                    </ComboBox>
+                </u:Form>
             </Grid>
         </SplitView.Pane>
-        <Panel Margin="4 0 4 4" IsVisible="{Binding ConnectionConsoleViewModel, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <Panel Margin="4 0" IsVisible="{Binding ConnectionConsoleViewModel, Converter={x:Static ObjectConverters.IsNotNull}}">
             <local:ConnectionConsole DataContext="{Binding ConnectionConsoleViewModel}" />
         </Panel>
     </SplitView>

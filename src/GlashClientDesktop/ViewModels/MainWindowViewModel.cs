@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using System.Globalization;
+using System.Reactive;
 using System.Reflection;
 using Avalonia.Threading;
 using GlashClientDesktop.Core;
@@ -17,6 +18,21 @@ namespace GlashClientDesktop.ViewModels
         public string Text_DeleteConnectionConfirm => Locale<MainWindowViewModel>.GetString("Are you sure to delete selected connection?");
 
         public string Title => $"{Text_Title} v{Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}";
+
+        public Dictionary<string, string> LanguageDict { get; set; }
+
+        private string _CurrentLanguage = CultureInfo.CurrentCulture.IetfLanguageTag;
+        public string CurrentLanguage
+        {
+            get=>_CurrentLanguage;
+            set
+            {
+                if (value == null)
+                    return;
+                this.RaiseAndSetIfChanged(ref _CurrentLanguage, value);
+                GettextResourceManager.ChangeCurrentCulture(CultureInfo.GetCultureInfo(value));
+            }
+        }
 
         private ConnectionConsoleViewModel _ConnectionConsoleViewModel;
         public ConnectionConsoleViewModel ConnectionConsoleViewModel
@@ -53,6 +69,9 @@ namespace GlashClientDesktop.ViewModels
 
         public MainWindowViewModel()
         {
+            string[] languages = ["zh-CN", "en-US"];
+            LanguageDict = languages.Select(t => CultureInfo.GetCultureInfo(t)).ToDictionary(t => t.IetfLanguageTag, t => t.NativeName);
+
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Add);
             EditCommand = ReactiveCommand.CreateFromTask(ExecuteCommand_Edit, this.WhenAnyValue(
                 x => x.CurrentConnectionContext,
@@ -63,10 +82,9 @@ namespace GlashClientDesktop.ViewModels
             FakeDeleteCommand = ReactiveCommand.Create(() => { }, this.WhenAnyValue(
                 x => x.CurrentConnectionContext,
                 new Func<ConnectionContext, bool>(x => x != null)));
-            refreshConnectionContexts();
         }
 
-        private void refreshConnectionContexts()
+        public void RefreshConnectionContexts()
         {
             ConnectionContexts = ConnectionContextManager.Instance.GetConnectionContexts();
         }
@@ -86,7 +104,7 @@ namespace GlashClientDesktop.ViewModels
             if (ret == DialogResult.OK)
             {
                 ConnectionContextManager.Instance.Add(model);
-                refreshConnectionContexts();
+                RefreshConnectionContexts();
             }
         }
 
@@ -113,7 +131,7 @@ namespace GlashClientDesktop.ViewModels
             if (ret == DialogResult.OK)
             {
                 ConnectionContextManager.Instance.Update(editModel);
-                refreshConnectionContexts();
+                RefreshConnectionContexts();
             }
         }
 
@@ -126,7 +144,7 @@ namespace GlashClientDesktop.ViewModels
                 {
                     ConnectionContextManager.Instance.Remove(CurrentConnectionContext.Connection);
                     CurrentConnectionContext = null;
-                    refreshConnectionContexts();
+                    RefreshConnectionContexts();
                 });
             });
         }
