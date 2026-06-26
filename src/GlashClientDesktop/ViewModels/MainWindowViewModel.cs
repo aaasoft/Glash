@@ -1,12 +1,16 @@
 ﻿using System.Globalization;
 using System.Reactive;
 using System.Reflection;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using GlashClientDesktop.Core;
 using GlashClientDesktop.Views;
 using Quick.Localize;
 using ReactiveUI;
+using Semi.Avalonia;
 using Ursa.Controls;
+using Ursa.Themes.Semi;
 
 namespace GlashClientDesktop.ViewModels
 {
@@ -29,8 +33,11 @@ namespace GlashClientDesktop.ViewModels
             {
                 if (value == null)
                     return;
+                var culture = CultureInfo.GetCultureInfo(value);
+                GettextResourceManager.ChangeCurrentCulture(culture);
+                SemiTheme.OverrideLocaleResources(Application.Current, culture);
+                UrsaSemiTheme.OverrideLocaleResources(Application.Current, culture);
                 this.RaiseAndSetIfChanged(ref _CurrentLanguage, value);
-                GettextResourceManager.ChangeCurrentCulture(CultureInfo.GetCultureInfo(value));
             }
         }
 

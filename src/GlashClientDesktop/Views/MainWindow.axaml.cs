@@ -20,13 +20,13 @@ namespace GlashClientDesktop.Views
             {
                 if (e.PropertyName == nameof(viewModel.CurrentLanguage))
                 {
-                    Task.Delay(100).ContinueWith(t =>
+                    Task.Run(() =>
                     {
-                        Dispatcher.Invoke(()=>
+                        Dispatcher.Invoke(() =>
                         {
                             DataContext = null;
                             DataContext = viewModel;
-                        });                        
+                        });
                     });
                 }
             };
