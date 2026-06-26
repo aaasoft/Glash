@@ -1,6 +1,5 @@
 ﻿using Avalonia;
-using ReactiveUI.Avalonia;
-using System;
+using Avalonia.ReactiveUI;
 
 namespace GlashClientDesktop
 {
@@ -18,6 +17,6 @@ namespace GlashClientDesktop
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
-                .UseReactiveUI(t => { });
+                .UseReactiveUI();
     }
 }
