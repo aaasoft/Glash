@@ -16,19 +16,16 @@ namespace GlashClientDesktop.Views
             base.OnLoaded(e);
             var viewModel = (MainWindowViewModel)DataContext;
             viewModel.RefreshConnectionContexts();
-            viewModel.PropertyChanged += (sender, e) =>
+            Quick.Localize.GettextResourceManager.CurrentCultureChanged += (sender, e) =>
             {
-                if (e.PropertyName == nameof(viewModel.CurrentLanguage))
+                Task.Run(() =>
                 {
-                    Task.Run(() =>
+                    Dispatcher.Invoke(() =>
                     {
-                        Dispatcher.Invoke(() =>
-                        {
-                            DataContext = null;
-                            DataContext = viewModel;
-                        });
+                        DataContext = null;
+                        DataContext = viewModel;
                     });
-                }
+                });
             };
         }
     }
