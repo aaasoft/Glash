@@ -25,7 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Quick.Protocol" Version="2.6.12" />
+		<PackageReference Include="Quick.Protocol" Version="2.6.13" />
 		<PackageReference Include="Quick.Utils" Version="2026.3.609" />
 	</ItemGroup>
 	
