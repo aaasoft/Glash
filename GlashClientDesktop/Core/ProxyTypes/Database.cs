@@ -43,6 +43,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
             ["14"] = "Firebird",
         };
         private string[] _Libraries;
+        [JsonIgnore]
         public string[] Libraries
         {
             get => _Libraries;
@@ -96,7 +97,8 @@ Network protocol type:
                         Libraries = ["fbclient-4.0.dll"];
                         break;
                 }
-                Library = Libraries?.FirstOrDefault();
+                if (string.IsNullOrEmpty(Library) || !Libraries.Contains(Library))
+                    Library = Libraries?.FirstOrDefault();
             }
         }
         /*
