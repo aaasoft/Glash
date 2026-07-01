@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using Quick.Localize;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
@@ -37,7 +38,6 @@ namespace GlashClientDesktop.Core.ProxyTypes
         [Required]
         public string Terminal { get; set; }
 
-        [SupportedOSPlatform("windows")]
         public override ProxyTypeButton[] GetButtons(ProxyRuleContext t)
         {
             return
@@ -49,14 +49,17 @@ namespace GlashClientDesktop.Core.ProxyTypes
                     {
                         if(string.IsNullOrEmpty(Terminal))
                             Terminal="putty";
-                        try
+                        if(OperatingSystem.IsWindows())
                         {
-                            var process = Process.Start(Terminal,$"-ssh -l {User} -pw {Password} -P {t.LocalPort} {GetLocalIPAddress(t.Config.LocalIPAddress)}");
-                            WaitForProcessMainWindow(process);
-                        }
-                        catch (System.ComponentModel.Win32Exception)
-                        {
-                            throw new IOException(Locale<SSH>.GetString("Can't found {0},please install {0} first.","PuTTY"));
+                            try
+                            {
+                                var process = Process.Start(Terminal,$"-ssh -l {User} -pw {Password} -P {t.LocalPort} {GetLocalIPAddress(t.Config.LocalIPAddress)}");
+                                WaitForProcessMainWindow(process);
+                            }
+                            catch (System.ComponentModel.Win32Exception)
+                            {
+                                throw new IOException(Locale<SSH>.GetString("Can't found {0},please install {0} first.","PuTTY"));
+                            }
                         }
                     }),
                 new ProxyTypeButton(
@@ -64,18 +67,28 @@ namespace GlashClientDesktop.Core.ProxyTypes
                     Avalonia.Application.Current.FindResource("SemiIconFolder"),
                     ()=>
                     {
-#pragma warning disable CA1416 // 验证平台兼容性
-                        //从注册表中读取NSIS的安装目录
-                        var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\winscp3_is1", false);
-                        if (regKey == null)
+                        if(OperatingSystem.IsWindows())
                         {
-                            throw new IOException(Locale<SSH>.GetString("Can't found {0},please install {0} first.","WinSCP"));
+                            //从注册表中读取NSIS的安装目录
+                            RegistryView view;
+                            // 如果当前是x86进程，强制打开64位注册表视图
+                            if (RuntimeInformation.ProcessArchitecture == Architecture.X86
+                                && Environment.Is64BitOperatingSystem)
+                                view = RegistryView.Registry64;
+                            else
+                                view = RegistryView.Default;
+                            var localMachineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                            //从注册表中读取NSIS的安装目录
+                            var regKey = localMachineKey.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\winscp3_is1", false);
+                            if (regKey == null)
+                            {
+                                throw new IOException(Locale<SSH>.GetString("Can't found {0},please install {0} first.","WinSCP"));
+                            }
+                            var installLocation = regKey.GetValue("InstallLocation").ToString();
+                            var exeFile = Path.Combine(installLocation, "WinSCP.exe");
+                            var process = Process.Start(exeFile, $"/ini=nul sftp://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/ -username={User} -password={Password}");
+                            WaitForProcessMainWindow(process);
                         }
-                        var installLocation = regKey.GetValue("InstallLocation").ToString();
-                        var exeFile = Path.Combine(installLocation, "WinSCP.exe");
-#pragma warning restore CA1416 // 验证平台兼容性
-                        var process = Process.Start(exeFile, $"/ini=nul sftp://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/ -username={User} -password={Password}");
-                        WaitForProcessMainWindow(process);
                     })
             ];
         }

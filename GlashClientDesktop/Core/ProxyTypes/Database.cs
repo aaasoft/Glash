@@ -5,6 +5,7 @@ using Quick.Localize;
 using ReactiveUI;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
@@ -26,7 +27,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
         public string Text_NetType => Locale<Database>.GetString("Network protocol type");
         [JsonIgnore]
         public string Text_Library => Locale<Database>.GetString("Library");
-        
+
         [JsonIgnore]
         public string Text_User => Locale<Database>.GetString("User");
         [JsonIgnore]
@@ -71,7 +72,7 @@ Network protocol type:
         [Required]
         public string NetType
         {
-            get=>_NetType;
+            get => _NetType;
             set
             {
                 this.RaiseAndSetIfChanged(ref _NetType, value);
@@ -80,19 +81,19 @@ Network protocol type:
                 switch (value)
                 {
                     case "0":
-                        Libraries=["libmariadb.dll","libmysql.dll","libmysql-6.1.dll"];
+                        Libraries = ["libmariadb.dll", "libmysql.dll", "libmysql-6.1.dll"];
                         break;
                     case "4":
-                        Libraries=["SQLOLEDB"];
+                        Libraries = ["SQLOLEDB"];
                         break;
                     case "8":
-                        Libraries=["libpq.dll","libpq-12.dll"];
+                        Libraries = ["libpq.dll", "libpq-12.dll"];
                         break;
                     case "12":
-                        Libraries=["ibclient64-14.1.dll","gds32-14.1.dll"];
+                        Libraries = ["ibclient64-14.1.dll", "gds32-14.1.dll"];
                         break;
                     case "14":
-                        Libraries=["fbclient-4.0.dll"];
+                        Libraries = ["fbclient-4.0.dll"];
                         break;
                 }
                 Library = Libraries?.FirstOrDefault();
@@ -131,7 +132,6 @@ Firebird:
         [Required]
         public string Password { get; set; }
 
-        [SupportedOSPlatform("windows")]
         public override ProxyTypeButton[] GetButtons(ProxyRuleContext t)
         {
             return
@@ -141,19 +141,28 @@ Firebird:
                     Avalonia.Application.Current.FindResource("SemiIconGridSquare"),
                     ()=>
                     {
-                        #pragma warning disable CA1416 // 验证平台兼容性
-                    //从注册表中读取NSIS的安装目录
-                    var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\HeidiSQL_is1", false);
-                    if (regKey == null)
-                    {
-                        throw new IOException(Locale<Database>.GetString("Can't found {0},please install {0} first.","HeidiSQL"));
-                    }
-                    var installLocation = regKey.GetValue("InstallLocation").ToString();
-                    var exeFile = Path.Combine(installLocation, "heidisql.exe");
-#pragma warning restore CA1416 // 验证平台兼容性
+                        if(OperatingSystem.IsWindows())
+                        {
+                            RegistryView view;
+                            // 如果当前是x86进程，强制打开64位注册表视图
+                            if (RuntimeInformation.ProcessArchitecture == Architecture.X86
+                                && Environment.Is64BitOperatingSystem)
+                                view = RegistryView.Registry64;
+                            else
+                                view = RegistryView.Default;
+                            var localMachineKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                            //从注册表中读取NSIS的安装目录
+                            var regKey = localMachineKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\HeidiSQL_is1", false);
+                            if (regKey == null)
+                            {
+                                throw new IOException(Locale<Database>.GetString("Can't found {0},please install {0} first.","HeidiSQL"));
+                            }
+                            var installLocation = regKey.GetValue("InstallLocation").ToString();
+                            var exeFile = Path.Combine(installLocation, "heidisql.exe");
 
-                        var process = Process.Start(exeFile,$"--nettype={NetType} --library={Library} --host={GetLocalIPAddress(t.Config.LocalIPAddress)} --port={t.LocalPort} --user={User} --password={Password}");
-                        WaitForProcessMainWindow(process);
+                            var process = Process.Start(exeFile,$"--nettype={NetType} --library={Library} --host={GetLocalIPAddress(t.Config.LocalIPAddress)} --port={t.LocalPort} --user={User} --password={Password}");
+                            WaitForProcessMainWindow(process);
+                        }
                     }
                 )
             ];
