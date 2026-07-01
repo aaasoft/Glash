@@ -1,2 +1,2 @@
 #/bin/sh
-dotnet publish -r win-x86
+dotnet publish -r win-x64
