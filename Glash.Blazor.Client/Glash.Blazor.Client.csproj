@@ -38,19 +38,4 @@
 		<ProjectReference Include="..\Glash\Glash.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Content Update="Controls\EditProfile.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Update="Controls\EditProxyRule.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Update="Main.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Update="_Imports.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	</ItemGroup>
-
 </Project>

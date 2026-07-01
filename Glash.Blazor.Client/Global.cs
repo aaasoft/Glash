@@ -10,7 +10,7 @@ namespace Glash.Blazor.Client
         public void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Model.Config>();
-            modelBuilder.Entity<Model.Profile>();
+            modelBuilder.Entity<Model.Connection>();
         }
     }
 }

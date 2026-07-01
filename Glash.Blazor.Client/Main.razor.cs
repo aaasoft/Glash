@@ -9,7 +9,7 @@ namespace Glash.Blazor.Client
 {
     public partial class Main : ComponentBase_WithGettextSupport
     {
-        private static string TextProfile => Locale<Main>.GetString("Profile");
+        private static string TextConnection => Locale<Main>.GetString("Connection");
         private static string TextAdd => Locale<Main>.GetString("Add");
         private static string TextLogs => Locale<Main>.GetString("Logs");
         private static string TextEdit => Locale<Main>.GetString("Edit");
@@ -29,29 +29,29 @@ namespace Glash.Blazor.Client
         private ModalWindow modalWindow;
         private ModalLoading modalLoading;
         private ModalPrompt modalPrompt;
-        private ProfileContext[] ProfileContexts => ProfileContextManager.Instance.GetProfileContexts();
+        private ConnectionContext[] ConnectionContexts => ConnectionContextManager.Instance.GetConnectionContexts();
         //当前配置上下文
-        private ProfileContext CurrentProfileContext;
+        private ConnectionContext CurrentConnectionContext;
         private AgentInfo CurrentAgent;
 
-        private string _CurrentProfileId;
-        public string CurrentProfileId
+        private string _CurrentConnectionId;
+        public string CurrentConnectionId
         {
-            get { return _CurrentProfileId; }
+            get { return _CurrentConnectionId; }
             set
             {
-                _CurrentProfileId = value;
-                if (CurrentProfileContext != null)
+                _CurrentConnectionId = value;
+                if (CurrentConnectionContext != null)
                 {
-                    CurrentProfileContext.ConnectedChanged -= profileContext_ConnectedChanged;
+                    CurrentConnectionContext.ConnectedChanged -= connectionContext_ConnectedChanged;
                 }
-                CurrentProfileContext = null;
+                CurrentConnectionContext = null;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    CurrentProfileContext = ProfileContextManager.Instance.Get(value);
-                    CurrentProfileContext.ConnectedChanged += profileContext_ConnectedChanged;
+                    CurrentConnectionContext = ConnectionContextManager.Instance.Get(value);
+                    CurrentConnectionContext.ConnectedChanged += connectionContext_ConnectedChanged;
                 }
-                CurrentAgentName = CurrentProfileContext?.Agents?.FirstOrDefault()?.AgentName;
+                CurrentAgentName = CurrentConnectionContext?.Agents?.FirstOrDefault()?.AgentName;
             }
         }
 
@@ -65,7 +65,7 @@ namespace Glash.Blazor.Client
                 if (string.IsNullOrEmpty(value))
                     CurrentAgent = null;
                 else
-                    CurrentAgent = CurrentProfileContext?.Agents?.FirstOrDefault(t => t.AgentName == value);
+                    CurrentAgent = CurrentConnectionContext?.Agents?.FirstOrDefault(t => t.AgentName == value);
             }
         }
 
@@ -79,22 +79,22 @@ namespace Glash.Blazor.Client
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            CurrentProfileId = ProfileContextManager.Instance.GetProfileContexts()?.FirstOrDefault()?.Profile?.Id;
+            CurrentConnectionId = ConnectionContextManager.Instance.GetConnectionContexts()?.FirstOrDefault()?.Connection?.Id;
             autoRefreshTimer = new Timer(autoRefresh, null, 1000, 1000);
         }
 
-        private void AddProfile()
+        private void AddConnection()
         {
             modalWindow.Show(TextAdd,
-                new DialogParameters<Controls.EditProfile>()
+                new DialogParameters<Controls.EditConnection>()
                 {
-                    {x=>x.Model,new Model.Profile(Guid.NewGuid().ToString("N"))},
+                    {x=>x.Model,new Model.Connection(Guid.NewGuid().ToString("N"))},
                     {x=>x.OkAction, model =>
                         {
                             try
                             {
-                                ProfileContextManager.Instance.Add(model);
-                                CurrentProfileId = model.Id;
+                                ConnectionContextManager.Instance.Add(model);
+                                CurrentConnectionId = model.Id;
                                 InvokeAsync(StateHasChanged);
                                 modalWindow.Close();
                             }
@@ -107,10 +107,10 @@ namespace Glash.Blazor.Client
                 });
         }
 
-        private void profileContext_ConnectedChanged(object sender, bool e)
+        private void connectionContext_ConnectedChanged(object sender, bool e)
         {
             if (e)
-                CurrentAgentName = CurrentProfileContext?.Agents?.FirstOrDefault()?.AgentName;
+                CurrentAgentName = CurrentConnectionContext?.Agents?.FirstOrDefault()?.AgentName;
             else
                 CurrentAgentName = null;
             InvokeAsync(StateHasChanged);
@@ -118,8 +118,8 @@ namespace Glash.Blazor.Client
 
         private void ShowLogs()
         {
-            var model = CurrentProfileContext.Profile;
-            var context = ProfileContextManager.Instance.GetContext(model);
+            var model = CurrentConnectionContext.Connection;
+            var context = ConnectionContextManager.Instance.GetContext(model);
             if (context == null)
             {
                 modalAlert.Show(TextError, $"未找到{model}的上下文！");
@@ -133,24 +133,24 @@ namespace Glash.Blazor.Client
             modalAlert.Show(TextLogs, string.Join(Environment.NewLine, proxyRuleContext.Logs), new() { UsePreTag = true });
         }
 
-        private void EditProfile()
+        private void EditConnection()
         {
-            var model = CurrentProfileContext.Profile;
+            var model = CurrentConnectionContext.Connection;
             modalWindow.Show(TextEdit,
-                new DialogParameters<Controls.EditProfile>()
+                new DialogParameters<Controls.EditConnection>()
                 {
-                    { x=>x.Model,JsonSerializer.Deserialize<Model.Profile>(JsonSerializer.Serialize(model))},
+                    { x=>x.Model,JsonSerializer.Deserialize<Model.Connection>(JsonSerializer.Serialize(model))},
                     {x=>x.OkAction,editModel =>
                         {
                             try
                             {
-                                CurrentProfileId = null;
+                                CurrentConnectionId = null;
                                 model.Name = editModel.Name;
                                 model.ServerUrl = editModel.ServerUrl;
-                                model.ClientName = editModel.ClientName;
-                                model.ClientPassword = editModel.ClientPassword;
-                                ProfileContextManager.Instance.Update(model);
-                                CurrentProfileId=model.Id;
+                                model.User = editModel.User;
+                                model.Password = editModel.Password;
+                                ConnectionContextManager.Instance.Update(model);
+                                CurrentConnectionId=model.Id;
                                 InvokeAsync(StateHasChanged);
                                 modalWindow.Close();
                             }
@@ -163,17 +163,17 @@ namespace Glash.Blazor.Client
                 });
         }
 
-        private void DeleteProfile()
+        private void DeleteConnection()
         {
-            var model = CurrentProfileContext.Profile;
-            modalAlert.Show(TextDelete, Locale<Main>.GetString("Are you sure to delete Profile[{0}]?", model.Name), new()
+            var model = CurrentConnectionContext.Connection;
+            modalAlert.Show(TextDelete, Locale<Main>.GetString("Are you sure to delete Connection[{0}]?", model.Name), new()
             {
                 OkCallback = () =>
                 {
                     try
                     {
-                        ProfileContextManager.Instance.Remove(model);
-                        CurrentProfileId = ProfileContextManager.Instance.GetProfileContexts()?.FirstOrDefault()?.Profile.Id;
+                        ConnectionContextManager.Instance.Remove(model);
+                        CurrentConnectionId = ConnectionContextManager.Instance.GetConnectionContexts()?.FirstOrDefault()?.Connection.Id;
                         InvokeAsync(StateHasChanged);
                     }
                     catch (Exception ex)
@@ -206,7 +206,7 @@ namespace Glash.Blazor.Client
                             modalLoading.Show(TextAddProxyRule, null, true);
                             try
                             {
-                                await CurrentProfileContext.AddProxyRule(model);
+                                await CurrentConnectionContext.AddProxyRule(model);
                                 _ = InvokeAsync(StateHasChanged);
                                 modalWindow.Close();
                             }
@@ -238,7 +238,7 @@ namespace Glash.Blazor.Client
                 modalLoading.Show(TextDuplicateProxyRule, null, true);
                 try
                 {
-                    await CurrentProfileContext.DuplicateProxyRule(newModel);
+                    await CurrentConnectionContext.DuplicateProxyRule(newModel);
                     _ = InvokeAsync(StateHasChanged);
                     modalWindow.Close();
                 }
@@ -269,7 +269,7 @@ namespace Glash.Blazor.Client
                             model.ProxyType = editModel.ProxyType;
                             model.ProxyTypeConfig = editModel.ProxyTypeConfig;
 
-                            await CurrentProfileContext.EditProxyRule(model);
+                            await CurrentConnectionContext.EditProxyRule(model);
                             _ = InvokeAsync(StateHasChanged);
                             modalWindow.Close();
                         }
@@ -294,7 +294,7 @@ namespace Glash.Blazor.Client
                         modalLoading.Show(TextDeleteProxyRule, null, true);
                         try
                         {
-                            await CurrentProfileContext.DeleteProxyRule(model);
+                            await CurrentConnectionContext.DeleteProxyRule(model);
                             _ = InvokeAsync(StateHasChanged);
                         }
                         catch (Exception ex)
@@ -312,15 +312,15 @@ namespace Glash.Blazor.Client
         private async Task onProxyRuleEnableChanged(ProxyRuleContext proxyRuleContext)
         {
             if(proxyRuleContext.Config.Enable)
-                await CurrentProfileContext.GlashClient.DisableProxyRule(proxyRuleContext.Config.Id);
+                await CurrentConnectionContext.GlashClient.DisableProxyRule(proxyRuleContext.Config.Id);
             else
-                await CurrentProfileContext.GlashClient.EnableProxyRule(proxyRuleContext.Config.Id);
+                await CurrentConnectionContext.GlashClient.EnableProxyRule(proxyRuleContext.Config.Id);
             await InvokeAsync(StateHasChanged);
         }
 
         private ProxyRuleContext[] GetProxyRuleContexts(string agent)
         {
-            var ret = CurrentProfileContext?.GlashClient?.ProxyRuleContexts?
+            var ret = CurrentConnectionContext?.GlashClient?.ProxyRuleContexts?
                 .Where(t => t.Config.Agent == agent)?
                 .OrderBy(t => t.Config.Name)?
                 .ToArray();
@@ -332,12 +332,12 @@ namespace Glash.Blazor.Client
         public override void Dispose()
         {
             autoRefreshTimer.Dispose();
-            foreach (var profileContext in ProfileContextManager.Instance.GetProfileContexts())
+            foreach (var connectionContext in ConnectionContextManager.Instance.GetConnectionContexts())
             {
-                profileContext.ConnectedChanged -= profileContext_ConnectedChanged;
+                connectionContext.ConnectedChanged -= connectionContext_ConnectedChanged;
             }
             CurrentAgentName = null;
-            CurrentProfileId = null;
+            CurrentConnectionId = null;
             base.Dispose();
         }
     }

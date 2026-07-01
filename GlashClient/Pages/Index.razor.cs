@@ -10,7 +10,7 @@ namespace GlashClient.Pages
     {
         private static string TextTitle => Locale<Index>.GetString("Glash Client");
         private static string TextLoginPasswordManage => Locale<Index>.GetString("Login Password Manage");
-        private static string TextProfileManage => Locale<Index>.GetString("Profile Manage");
+        private static string TextProfileManage => Locale<Index>.GetString("Connection Manage");
         private static string TextPleaseInputPassword => Locale<Index>.GetString("Please input password");
         private static string TextLogin => Locale<Index>.GetString("Login");
         

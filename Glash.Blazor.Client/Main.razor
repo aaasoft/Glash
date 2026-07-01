@@ -6,20 +6,20 @@
             <div class="btn-group mr-2 mt-1">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">@TextProfile</span>
+                        <span class="input-group-text">@TextConnection</span>
                     </div>
                     <div class="input-group-prepend">
-                        <button class="btn btn-secondary" type="button" @onclick="AddProfile" title="@TextAdd">
+                        <button class="btn btn-secondary" type="button" @onclick="AddConnection" title="@TextAdd">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </button>
                     </div>
-                    <InputSelect @bind-Value="@CurrentProfileId" class="form-control">
-                        @foreach (var t in ProfileContexts)
+                    <InputSelect @bind-Value="@CurrentConnectionId" class="form-control">
+                        @foreach (var t in ConnectionContexts)
                         {
-                            <option value="@t.Profile.Id">@t.Profile.Name</option>
+                            <option value="@t.Connection.Id">@t.Connection.Name</option>
                         }
                     </InputSelect>
-                    @if (CurrentProfileContext != null)
+                    @if (CurrentConnectionContext != null)
                     {
                         <div class="input-group-append">
                             <button class="btn btn-secondary" type="button" @onclick="ShowLogs" title="@TextLogs">
@@ -27,29 +27,29 @@
                             </button>
                         </div>
                         <div class="input-group-append">
-                            <button class="btn btn-secondary" type="button" @onclick="EditProfile" title="@TextEdit">
+                            <button class="btn btn-secondary" type="button" @onclick="EditConnection" title="@TextEdit">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </button>
-                            <button class="btn btn-secondary" type="button" @onclick="DeleteProfile" title="@TextDelete">
+                            <button class="btn btn-secondary" type="button" @onclick="DeleteConnection" title="@TextDelete">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </div>
                     }
                 </div>
             </div>
-            @if (CurrentProfileContext != null)
+            @if (CurrentConnectionContext != null)
             {
                 <div class="btn-group mr-2 mt-1">
-                    @if (CurrentProfileContext.Connected)
+                    @if (CurrentConnectionContext.Connected)
                     {
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">@TextAgent</span>
                             </div>
                             <InputSelect @bind-Value="@CurrentAgentName" class="form-control">
-                                @if (CurrentProfileContext.Agents != null)
+                                @if (CurrentConnectionContext.Agents != null)
                                 {
-                                    @foreach (var t in CurrentProfileContext.Agents)
+                                    @foreach (var t in CurrentConnectionContext.Agents)
                                     {
                                         <option value="@t.AgentName">@t.AgentName</option>
                                     }

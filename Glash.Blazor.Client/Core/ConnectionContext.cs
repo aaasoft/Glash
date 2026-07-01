@@ -5,10 +5,10 @@ using Quick.Utils;
 
 namespace Glash.Blazor.Client.Core;
 
-public class ProfileContext : IDisposable
+public class ConnectionContext : IDisposable
 {
 
-    public Model.Profile Profile { get; private set; }
+    public Model.Connection Connection { get; private set; }
     public GlashClient GlashClient { get; private set; }
     public AgentInfo[] Agents { get; private set; }
     public ProxyRuleInfo[] ProxyRules { get; private set; }
@@ -22,17 +22,21 @@ public class ProfileContext : IDisposable
 
     private CancellationTokenSource cts;
 
-    public ProfileContext(Model.Profile profile)
+    public ConnectionContext(Model.Connection connection)
     {
-        Profile = profile;
+        Connection = connection;
         cts = new CancellationTokenSource();
 
-        GlashClient = new GlashClient(Profile.ServerUrl);
-        GlashClient.AgentLoginStatusChanged += GlashClient_AgentLoginStatusChanged;
-        GlashClient.LogPushed += GlashClient_LogPushed;
-        GlashClient.Disconnected += GlashClient_Disconnected;
+        try
+        {
+            GlashClient = new GlashClient(Connection.ServerUrl);
+            GlashClient.AgentLoginStatusChanged += GlashClient_AgentLoginStatusChanged;
+            GlashClient.LogPushed += GlashClient_LogPushed;
+            GlashClient.Disconnected += GlashClient_Disconnected;
 
-        _ = beginConnect(cts.Token);
+            _ = beginConnect(cts.Token);
+        }
+        catch { }
     }
 
 
@@ -50,7 +54,7 @@ public class ProfileContext : IDisposable
     {
         try
         {
-            await GlashClient.ConnectAsync(Profile.ClientName, Profile.ClientPassword);
+            await GlashClient.ConnectAsync(Connection.User, Connection.Password);
             var agentList = await GlashClient.GetAgentListAsync();
             Agents = agentList
                 .OrderBy(t => t.AgentName)
@@ -65,7 +69,7 @@ public class ProfileContext : IDisposable
             GlashClient.LoadProxyRules(ProxyRules);
 
             Connected = true;
-            pushLog(Locale<ProfileContext>.GetString("Connected"));
+            pushLog(Locale<ConnectionContext>.GetString("Connected"));
             ConnectedChanged?.Invoke(this, Connected);
         }
         catch (Exception ex)
@@ -129,7 +133,7 @@ public class ProfileContext : IDisposable
         foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
             GlashClient.UnloadProxyRule(proxyRuleContext);
         Connected = false;
-        pushLog(Locale<ProfileContext>.GetString("Disconnected"));
+        pushLog(Locale<ConnectionContext>.GetString("Disconnected"));
         ConnectedChanged?.Invoke(this, Connected);
 
         var currentCts = cts;
