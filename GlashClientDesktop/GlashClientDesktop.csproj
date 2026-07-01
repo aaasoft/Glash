@@ -9,7 +9,7 @@
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 		<PublishAot>true</PublishAot>
 		<IsPackable>false</IsPackable>
-		<Version>2026.13.701</Version>
+		<Version>2026.14.701</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
