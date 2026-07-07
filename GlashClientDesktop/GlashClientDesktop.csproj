@@ -21,8 +21,8 @@
 		<PackageReference Include="Irihi.Ursa.Themes.Semi" Version="2.1.0" />
 		<PackageReference Include="Quick.Localize" Version="2.0.6" />
 		<PackageReference Include="Quick.LiteDB.Plus" Version="1.0.4" />
-		<PackageReference Include="Quick.Protocol.Http.Client" Version="2.6.13" />
-	  	<PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.6.13" />
+		<PackageReference Include="Quick.Protocol.Http.Client" Version="2.7.0" />
+	  	<PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.7.0" />
 	  	<PackageReference Include="ReactiveUI.Avalonia" Version="14.7.1" />
 		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.9" />
 	</ItemGroup>

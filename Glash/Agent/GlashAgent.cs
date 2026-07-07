@@ -64,7 +64,7 @@ namespace Glash.Agent
             if (client != null)
             {
                 client.Disconnected -= QpClient_Disconnected;
-                client.Close();
+                client.Dispose();
                 qpClient = null;
             }
         }
