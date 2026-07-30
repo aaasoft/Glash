@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Builder
                 ServerProgram = "Glash.Server"
             };
             Global.Instance.Init(serverOptions, maxTunnelCount);
-            app.UseQuickProtocol(serverOptions, out qpServer);
+            app.UseQuickProtocolWebSocketServer(serverOptions, out qpServer);
             qpServer.Start();
             return app;
         }
