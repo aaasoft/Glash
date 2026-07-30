@@ -73,8 +73,7 @@ namespace Glash.Client
             foreach (var proxyContext in proxyRuleContextDict.Values)
                 proxyContext.Dispose();
             proxyRuleContextDict.Clear();
-            qpClient.Dispose();
-            QpClient_Disconnected(this, EventArgs.Empty);
+            qpClient.Disconnect();
         }
 
         public async Task EnableProxyRule(string proxyRuleId)
