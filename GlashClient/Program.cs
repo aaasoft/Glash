@@ -14,6 +14,7 @@ ConfigDbContext.Init(dbFile, modelBuilder =>
     Global.Instance.OnModelCreating(modelBuilder);
 });
 ConfigDbContext.CacheContext.LoadCache();
+Glash.Blazor.Client.Core.ConnectionContextManager.Instance.Init();
 GlashClient.Core.LoginPasswordManager.Instance.Init();
 
 var builder = WebApplication.CreateBuilder(args);

@@ -7,7 +7,8 @@ public class ConnectionContextManager
 {
     private Dictionary<string, ConnectionContext> connectionDict;
     public static ConnectionContextManager Instance { get; } = new ConnectionContextManager();
-    private ConnectionContextManager()
+
+    public void Init()
     {
         connectionDict = new Dictionary<string, ConnectionContext>();
 
