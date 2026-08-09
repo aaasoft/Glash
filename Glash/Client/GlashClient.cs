@@ -74,6 +74,7 @@ namespace Glash.Client
                 proxyContext.Dispose();
             proxyRuleContextDict.Clear();
             qpClient.Disconnect();
+            qpClient.Dispose();
         }
 
         public async Task EnableProxyRule(string proxyRuleId)

@@ -24,7 +24,8 @@ namespace Glash.Server
         {
             try
             {
-                Channel.Disconnect();
+                Channel?.Disconnect();
+                Channel?.Dispose();
             }
             catch { }
         }
