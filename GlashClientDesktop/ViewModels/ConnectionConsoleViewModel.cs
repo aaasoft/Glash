@@ -1,8 +1,8 @@
-using System.Reactive;
 using GlashClientDesktop.Core;
 using Quick.Localize;
 using Quick.Utils;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using Ursa.Controls;
 
 namespace GlashClientDesktop.ViewModels;
@@ -17,9 +17,9 @@ public class ConnectionConsoleViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _Model, value);
     }
 
-    public ReactiveCommand<Unit, Unit> StartCommand { get; }
-    public ReactiveCommand<Unit, Unit> StopCommand { get; }
-    public ReactiveCommand<Unit, Unit> LogCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> StartCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> StopCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> LogCommand { get; }
 
     private string _LoadingMessage;
     public string LoadingMessage

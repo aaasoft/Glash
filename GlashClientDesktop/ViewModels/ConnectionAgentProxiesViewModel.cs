@@ -1,5 +1,3 @@
-using System.Reactive;
-using Avalonia.Controls;
 using Avalonia.Threading;
 using Glash.Client;
 using Glash.Client.Protocol.QpModel;
@@ -9,6 +7,7 @@ using GlashClientDesktop.Views;
 using Quick.Localize;
 using Quick.Utils;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using Ursa.Controls;
 
 namespace GlashClientDesktop.ViewModels;
@@ -84,16 +83,16 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         }
     }
 
-    public ReactiveCommand<Unit, Unit> AddCommand { get; }
-    public ReactiveCommand<Unit, Unit> EditCommand { get; }
-    public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
-    public ReactiveCommand<Unit, Unit> FakeDeleteCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> EditCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> DeleteCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> FakeDeleteCommand { get; }
 
-    public ReactiveCommand<Unit, Unit> CopyCommand { get; }
-    public ReactiveCommand<Unit, Unit> StartCommand { get; }
-    public ReactiveCommand<Unit, Unit> StopCommand { get; }
-    public ReactiveCommand<Unit, Unit> LogCommand { get; }
-    public ReactiveCommand<ProxyTypeButton, Unit> RuleButtonCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> CopyCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> StartCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> StopCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> LogCommand { get; }
+    public ReactiveCommand<ProxyTypeButton, RxVoid> RuleButtonCommand { get; }
 
 
 

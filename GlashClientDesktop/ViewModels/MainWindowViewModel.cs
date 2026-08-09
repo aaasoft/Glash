@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Reactive;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -8,6 +7,7 @@ using GlashClientDesktop.Core;
 using GlashClientDesktop.Views;
 using Quick.Localize;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using Semi.Avalonia;
 using Ursa.Controls;
 using Ursa.Themes.Semi;
@@ -69,10 +69,10 @@ namespace GlashClientDesktop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _ConnectionContexts, value);
         }
 
-        public ReactiveCommand<Unit, Unit> AddCommand { get; }
-        public ReactiveCommand<Unit, Unit> EditCommand { get; }
-        public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
-        public ReactiveCommand<Unit, Unit> FakeDeleteCommand { get; }
+        public ReactiveCommand<RxVoid, RxVoid> AddCommand { get; }
+        public ReactiveCommand<RxVoid, RxVoid> EditCommand { get; }
+        public ReactiveCommand<RxVoid, RxVoid> DeleteCommand { get; }
+        public ReactiveCommand<RxVoid, RxVoid> FakeDeleteCommand { get; }
 
         public MainWindowViewModel()
         {
