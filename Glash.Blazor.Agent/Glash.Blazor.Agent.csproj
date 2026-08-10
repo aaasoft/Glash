@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net8.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>2026.20.809</Version>
+		<Version>2026.21.810</Version>
 		<Description>Glash Agent Blazor controls.</Description>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/aaasoft/Glash</PackageProjectUrl>
@@ -23,8 +23,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.28.809" />
-		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.8.4" />
+		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.30.810" />
+		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.8.5" />
 		<PackageReference Include="Quick.Localize" Version="2.0.6" />
 		<PackageReference Include="Quick.LiteDB.Plus" Version="1.0.4" />
 	</ItemGroup>
