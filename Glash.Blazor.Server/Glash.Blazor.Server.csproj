@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
-		<TargetFrameworks>net8.0</TargetFrameworks>
+		<TargetFrameworks>net10.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>2026.21.810</Version>
+		<Version>2026.22.811</Version>
 		<Description>Glash Server Blazor controls.</Description>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/aaasoft/Glash</PackageProjectUrl>
@@ -31,7 +31,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.8.5" />
+		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.8.6" />
 		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.30.810" />
 		<PackageReference Include="Quick.Localize" Version="2.0.6" />
 		<PackageReference Include="Quick.LiteDB.Plus" Version="1.0.4" />
