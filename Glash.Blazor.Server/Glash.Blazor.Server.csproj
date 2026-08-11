@@ -31,7 +31,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.8.6" />
+		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.8.7" />
 		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.30.810" />
 		<PackageReference Include="Quick.Localize" Version="2.0.6" />
 		<PackageReference Include="Quick.LiteDB.Plus" Version="1.0.4" />
