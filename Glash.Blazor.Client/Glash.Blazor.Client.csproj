@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net10.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>2026.23.811</Version>
+		<Version>2026.24.812</Version>
 		<Description>Glash Client Blazor controls.</Description>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/aaasoft/Glash</PackageProjectUrl>

@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net10.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>2026.23.811</Version>
+		<Version>2026.24.812</Version>
 		<Description>Glash is a reverse proxy that allows you to expose a local server located behind a NAT or firewall to other local server.</Description>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/aaasoft/Glash</PackageProjectUrl>
@@ -25,7 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Quick.Protocol" Version="2.8.7" />
+		<PackageReference Include="Quick.Protocol" Version="2.8.8" />
 	</ItemGroup>
 	
 </Project>
