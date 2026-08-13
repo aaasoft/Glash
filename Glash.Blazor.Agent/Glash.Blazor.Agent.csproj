@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net10.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>2026.24.812</Version>
+		<Version>2026.25.813</Version>
 		<Description>Glash Agent Blazor controls.</Description>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/aaasoft/Glash</PackageProjectUrl>
@@ -24,7 +24,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.30.810" />
-		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.8.8" />
+		<PackageReference Include="Quick.Protocol.WebSocket.Server.AspNetCore" Version="2.8.9" />
 		<PackageReference Include="Quick.Localize" Version="2.0.6" />
 		<PackageReference Include="Quick.LiteDB.Plus" Version="1.0.4" />
 	</ItemGroup>
