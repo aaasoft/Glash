@@ -154,7 +154,8 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         {
             Id = Guid.NewGuid().ToString("N"),
             Agent = Name,
-            Enable = false
+            Enable = false,
+            ProxyType = typeof(DefaultType).FullName
         };
         await innerAdd(model);
     }

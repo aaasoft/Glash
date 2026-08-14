@@ -11,10 +11,10 @@ namespace GlashClientDesktop.Core.ProxyTypes
 
     public class DefaultType : AbstractProxyType
     {
-        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => WebSerializerContext.Default.Web;
-        public override Control GetUI() => null;//new Web_UI() { DataContext = this };
+        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => DefaultTypeSerializerContext.Default.DefaultType;
+        public override Control GetUI() => null;
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconGlobe");
-        public override string GetName() => Locale<Web>.GetString("Web");
+        public override string GetName() => Locale<Web>.GetString("Default");
 
         public override ProxyTypeButton[] GetButtons(ProxyRuleContext t) => [];
     }
