@@ -55,6 +55,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
 
         public void Init()
         {
+            RegisterProxyType(DefaultTypeSerializerContext.Default.DefaultType);
             RegisterProxyType(WebSerializerContext.Default.Web);
             RegisterProxyType(RDPSerializerContext.Default.RDP);
             RegisterProxyType(SSHSerializerContext.Default.SSH);
