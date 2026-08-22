@@ -96,7 +96,7 @@ namespace Glash.Server
         }
 
         //Login as Agent
-        private Agent.Protocol.QpCommands.Login.Response ExecuteCommand_Agent_Login(
+        private async ValueTask<Agent.Protocol.QpCommands.Login.Response> ExecuteCommand_Agent_Login(
             QpChannel channel,
             Agent.Protocol.QpCommands.Login.Request request)
         {
@@ -154,7 +154,7 @@ namespace Glash.Server
         }
 
         //Login as Client
-        private Client.Protocol.QpCommands.Login.Response ExecuteCommand_Client_Login(
+        private async ValueTask<Client.Protocol.QpCommands.Login.Response> ExecuteCommand_Client_Login(
             QpChannel channel,
             Client.Protocol.QpCommands.Login.Request request)
         {
@@ -211,7 +211,7 @@ namespace Glash.Server
             return new Client.Protocol.QpCommands.Login.Response();
         }
 
-        private Client.Protocol.QpCommands.GetAgentList.Response ExecuteCommand_Client_GetAgentList(
+        private async ValueTask<Client.Protocol.QpCommands.GetAgentList.Response> ExecuteCommand_Client_GetAgentList(
             QpChannel channel,
             Client.Protocol.QpCommands.GetAgentList.Request request)
         {
@@ -233,7 +233,7 @@ namespace Glash.Server
             };
         }
 
-        private Glash.Client.Protocol.QpCommands.GetProxyRuleList.Response ExecuteCommand_Client_GetProxyRuleList(
+        private async ValueTask<Glash.Client.Protocol.QpCommands.GetProxyRuleList.Response> ExecuteCommand_Client_GetProxyRuleList(
             QpChannel channel,
             Glash.Client.Protocol.QpCommands.GetProxyRuleList.Request request)
         {
@@ -247,7 +247,7 @@ namespace Glash.Server
             };
         }
 
-        private Glash.Client.Protocol.QpCommands.SaveProxyRule.Response ExecuteCommand_Client_SaveProxyRule(
+        private async ValueTask<Glash.Client.Protocol.QpCommands.SaveProxyRule.Response> ExecuteCommand_Client_SaveProxyRule(
             QpChannel channel,
             Glash.Client.Protocol.QpCommands.SaveProxyRule.Request request)
         {
@@ -261,7 +261,7 @@ namespace Glash.Server
             };
         }
 
-        private Glash.Client.Protocol.QpCommands.DeleteProxyRule.Response ExecuteCommand_Client_DeleteProxyRule(
+        private async ValueTask<Glash.Client.Protocol.QpCommands.DeleteProxyRule.Response> ExecuteCommand_Client_DeleteProxyRule(
             QpChannel channel,
             Glash.Client.Protocol.QpCommands.DeleteProxyRule.Request request)
         {
@@ -272,7 +272,7 @@ namespace Glash.Server
             return new Client.Protocol.QpCommands.DeleteProxyRule.Response();
         }
 
-        private Client.Protocol.QpCommands.CreateTunnel.Response ExecuteCommand_Client_CreateTunnel(
+        private async ValueTask<Client.Protocol.QpCommands.CreateTunnel.Response> ExecuteCommand_Client_CreateTunnel(
             QpChannel channel,
             Client.Protocol.QpCommands.CreateTunnel.Request request)
         {
@@ -350,7 +350,7 @@ namespace Glash.Server
             }
         }
 
-        private Client.Protocol.QpCommands.StartTunnel.Response ExecuteCommand_Client_StartTunnel(
+        private async ValueTask<Client.Protocol.QpCommands.StartTunnel.Response> ExecuteCommand_Client_StartTunnel(
             QpChannel channel,
             Client.Protocol.QpCommands.StartTunnel.Request request)
         {
@@ -364,12 +364,12 @@ namespace Glash.Server
                 throw new ArgumentException($"Tunnel[{tunnelId}] not exist.");
             if (serverTunnelContext.Client != clientContext)
                 throw new ArgumentException($"Tunnel[{tunnelId}] client context not match.");
-            serverTunnelContext.StartAgentTunnel();
+            await serverTunnelContext.StartAgentTunnel();
             LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] started.");
             return new Client.Protocol.QpCommands.StartTunnel.Response();
         }
 
-        private void OnTunnelDataAviliable(QpChannel channel, G.D data)
+        private async ValueTask OnTunnelDataAviliable(QpChannel channel, G.D data)
         {
             if (channel.Tag == null)
                 return;
@@ -381,17 +381,17 @@ namespace Glash.Server
             {
                 if (tunnel.Agent != agentContext)
                     return;
-                tunnel.PushDataToClient(data.Data);
+                await tunnel.PushDataToClient(data.Data);
             }
             else if (channel.Tag is GlashClientContext clientContext)
             {
                 if (tunnel.Client != clientContext)
                     return;
-                tunnel.PushDataToAgent(data.Data);
+                await tunnel.PushDataToAgent(data.Data);
             }
         }
 
-        private void OnTunnelClosed(QpChannel channel, TunnelClosed data)
+        private async ValueTask OnTunnelClosed(QpChannel channel, TunnelClosed data)
         {
             var tunnelId = data.TunnelId;
             LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
@@ -407,13 +407,13 @@ namespace Glash.Server
             {
                 if (tunnel.Agent != agentContext)
                     return;
-                tunnel.SendTunnelClosedNoticeToClient();
+                await tunnel.SendTunnelClosedNoticeToClient();
             }
             else if (channel.Tag is GlashClientContext clientContext)
             {
                 if (tunnel.Client != clientContext)
                     return;
-                tunnel.SendTunnelClosedNoticeToAgent();
+                await tunnel.SendTunnelClosedNoticeToAgent();
             }
         }
     }

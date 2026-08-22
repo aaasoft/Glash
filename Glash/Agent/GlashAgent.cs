@@ -98,7 +98,7 @@ namespace Glash.Agent
             clean();
         }
 
-        private Protocol.QpCommands.CreateTunnel.Response executeCommand_CreateTunnel(
+        private async ValueTask<Protocol.QpCommands.CreateTunnel.Response> executeCommand_CreateTunnel(
             QpChannel channel,
             Protocol.QpCommands.CreateTunnel.Request request)
         {
@@ -107,7 +107,7 @@ namespace Glash.Agent
             try
             {
                 var tcpClient = new TcpClient();
-                tcpClient.Connect(tunnelInfo.Host, tunnelInfo.Port);
+                await tcpClient.ConnectAsync(tunnelInfo.Host, tunnelInfo.Port);
                 var tunnelContext = new GlashTunnelContext(
                     channel, tunnelInfo,
                     tcpClient.GetStream(),
@@ -136,7 +136,7 @@ namespace Glash.Agent
             }
         }
 
-        private Protocol.QpCommands.StartTunnel.Response executeCommand_StartTunnel(
+        private async ValueTask<Protocol.QpCommands.StartTunnel.Response> executeCommand_StartTunnel(
             QpChannel channel,
             Protocol.QpCommands.StartTunnel.Request request)
         {
@@ -148,7 +148,7 @@ namespace Glash.Agent
             return new Protocol.QpCommands.StartTunnel.Response();
         }
 
-        private void OnTunnelDataAviliable(QpChannel channel, G.D data)
+        private async ValueTask OnTunnelDataAviliable(QpChannel channel, G.D data)
         {
             var tunnelId = data.TunnelId;
             if (!tunnelContextDict.ContainsKey(tunnelId))
@@ -157,7 +157,7 @@ namespace Glash.Agent
             tunnelContext.PushData(data.Data);
         }
 
-        private void OnTunnelClosed(QpChannel channel, TunnelClosed data)
+        private async ValueTask OnTunnelClosed(QpChannel channel, TunnelClosed data)
         {
             var tunnelId = data.TunnelId;
             GlashTunnelContext tunnelContext = null;

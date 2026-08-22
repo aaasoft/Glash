@@ -172,7 +172,7 @@ namespace Glash.Client
             }
         }
 
-        private void OnTunnelDataAviliable(QpChannel channel, G.D data)
+        private async ValueTask OnTunnelDataAviliable(QpChannel channel, G.D data)
         {
             var tunnelId = data.TunnelId;
             if (!tunnelContextDict.ContainsKey(tunnelId))
@@ -181,7 +181,7 @@ namespace Glash.Client
             tunnelContext.PushData(data.Data);
         }
 
-        private void OnTunnelClosed(QpChannel channel, TunnelClosed data)
+        private async ValueTask OnTunnelClosed(QpChannel channel, TunnelClosed data)
         {
             var tunnelId = data.TunnelId;
             GlashTunnelContext tunnelContext = null;
@@ -196,7 +196,7 @@ namespace Glash.Client
             LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
         }
 
-        private void OnAgentLoginStatusChanged(QpChannel channel, AgentLoginStatusChanged data)
+        private async ValueTask OnAgentLoginStatusChanged(QpChannel channel, AgentLoginStatusChanged data)
         {
             AgentLoginStatusChanged?.Invoke(this, data);
         }

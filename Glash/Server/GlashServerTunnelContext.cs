@@ -63,11 +63,11 @@ namespace Glash.Server
             errorHandler?.Invoke(ex);
         }
 
-        private void PushData(QpChannel channel, byte[] data)
+        private async Task PushData(QpChannel channel, byte[] data)
         {
             try
             {
-                channel.SendNoticePackage(new G.D()
+                await channel.SendNoticePackage(new G.D()
                 {
                     TunnelId = TunnelInfo.Id,
                     Data = data
@@ -79,37 +79,22 @@ namespace Glash.Server
             }
         }
 
-        public void PushDataToClient(byte[] data)
+        public async Task PushDataToClient(byte[] data)
         {
-            PushData(Client.Channel, data);
+            await PushData(Client.Channel, data);
             DownloadBytes += data.Length;
         }
 
-        public void PushDataToAgent(byte[] data)
+        public async Task PushDataToAgent(byte[] data)
         {
-            PushData(Agent.Channel, data);
+            await PushData(Agent.Channel, data);
             UploadBytes += data.Length;
         }
 
-        public void SendTunnelClosedNotice(QpChannel channel)
-        {
-            channel.SendNoticePackage(new TunnelClosed() { TunnelId = TunnelInfo.Id });
-        }
-
-        public void SendTunnelClosedNoticeToClient()
-        {
-            SendTunnelClosedNotice(Client.Channel);
-        }
-
-        public void SendTunnelClosedNoticeToAgent()
-        {
-            SendTunnelClosedNotice(Agent.Channel);
-        }
-
-        public void StartAgentTunnel()
-        {
-            Agent.StartTunnelAsync(TunnelInfo.Id).Wait();
-        }
+        public Task SendTunnelClosedNotice(QpChannel channel)=>channel.SendNoticePackage(new TunnelClosed() { TunnelId = TunnelInfo.Id });
+        public Task SendTunnelClosedNoticeToClient()=>SendTunnelClosedNotice(Client.Channel);
+        public Task SendTunnelClosedNoticeToAgent()=>SendTunnelClosedNotice(Agent.Channel);
+        public Task StartAgentTunnel() => Agent.StartTunnelAsync(TunnelInfo.Id);
 
         public void Dispose()
         {
