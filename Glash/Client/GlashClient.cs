@@ -8,6 +8,7 @@ namespace Glash.Client
 {
     public class GlashClient : IDisposable
     {
+        private QpClientOptions qpClientOptions;
         private QpClient qpClient;
         private Dictionary<string, ProxyRuleContext> proxyRuleContextDict = new Dictionary<string, ProxyRuleContext>();
 
@@ -19,7 +20,7 @@ namespace Glash.Client
 
         public GlashClient(string url, string password = null)
         {
-            var qpClientOptions = QpClientOptions.Parse(new Uri(url));
+            qpClientOptions = QpClientOptions.Parse(new Uri(url));
             if (!string.IsNullOrEmpty(password))
                 qpClientOptions.Password = password;
             qpClientOptions.InstructionSet = new[]
@@ -31,8 +32,6 @@ namespace Glash.Client
             noticeHandlerManager.Register<TunnelClosed>(OnTunnelClosed);
             noticeHandlerManager.Register<AgentLoginStatusChanged>(OnAgentLoginStatusChanged);
             qpClientOptions.RegisterNoticeHandlerManager(noticeHandlerManager);
-            qpClient = qpClientOptions.CreateClient();
-            qpClient.Disconnected += QpClient_Disconnected;
         }
 
         private void closeAllTunnel()
@@ -56,15 +55,26 @@ namespace Glash.Client
 
         public async Task ConnectAsync(string user, string password)
         {
-            //Connect
-            await qpClient.ConnectAsync();
-            var answer = CryptoUtils.GetAnswer(qpClient.AuthenticateQuestion, password);
-            //Register
-            await qpClient.SendCommand(new Protocol.QpCommands.Login.Request()
+            qpClient = qpClientOptions.CreateClient();
+            try
             {
-                Name = user,
-                Answer = answer
-            });
+                qpClient.Disconnected += QpClient_Disconnected;
+                //Connect
+                await qpClient.ConnectAsync();
+                var answer = CryptoUtils.GetAnswer(qpClient.AuthenticateQuestion, password);
+                //Register
+                await qpClient.SendCommand(new Protocol.QpCommands.Login.Request()
+                {
+                    Name = user,
+                    Answer = answer
+                });
+            }
+            catch
+            {
+                qpClient.Disconnected -= QpClient_Disconnected;
+                qpClient.Dispose();
+                throw;
+            }
         }
 
         public void Dispose()
