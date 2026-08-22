@@ -253,7 +253,7 @@ namespace Glash.Blazor.Server
             };
 
             //Add
-            if (string.IsNullOrEmpty(model.Id))
+            if (string.IsNullOrEmpty(model.Id) || ConfigDbContext.CacheContext.Find(model) == null)
             {
                 model.Id = Guid.NewGuid().ToString("N");
                 ConfigDbContext.CacheContext.Add(model);

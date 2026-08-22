@@ -152,7 +152,6 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     {
         var model = new ProxyRuleInfo()
         {
-            Id = Guid.NewGuid().ToString("N"),
             Agent = Name,
             Enable = false,
             ProxyType = typeof(DefaultType).FullName
