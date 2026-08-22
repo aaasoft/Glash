@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Quick.Protocol.Http.Client" Version="2.9.1" />
-	  <PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.9.1" />
+	  <PackageReference Include="Quick.Protocol.Http.Client" Version="2.9.2" />
+	  <PackageReference Include="Quick.Protocol.WebSocket.Client" Version="2.9.2" />
 	</ItemGroup>
 </Project>
