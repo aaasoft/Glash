@@ -1,16 +1,11 @@
 ﻿using Quick.Protocol;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glash.Core
 {
     public class GlashTunnelContext : IDisposable
     {
         private CancellationTokenSource cts;
-        private byte[] buffer = new byte[1024];
+        private byte[] buffer = new byte[8 * 1024];
         private QpChannel channel;
         private TunnelInfo tunnelInfo;
         private Stream stream;
@@ -28,7 +23,7 @@ namespace Glash.Core
         {
             try
             {
-                var task =stream?.ReadAsync(buffer, 0, buffer.Length, token);
+                var task = stream?.ReadAsync(buffer, 0, buffer.Length, token);
                 if (task == null)
                     return;
                 var ret = await task;
