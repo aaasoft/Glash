@@ -170,6 +170,7 @@ public class ConnectionContext : IDisposable
     public void Dispose()
     {
         cts?.Cancel();
+        cts?.Dispose();
         cts = null;
         if (GlashClient != null)
         {

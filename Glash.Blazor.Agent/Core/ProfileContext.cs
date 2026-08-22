@@ -92,6 +92,7 @@ namespace Glash.Blazor.Agent.Core
         public void Dispose()
         {
             cts?.Cancel();
+            cts?.Dispose();
             cts = null;
             if (glashAgent != null)
             {

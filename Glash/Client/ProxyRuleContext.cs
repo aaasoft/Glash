@@ -62,6 +62,8 @@ namespace Glash.Client
         public void Enable()
         {
             cts?.Cancel();
+            cts?.Dispose();
+
             tcpListener?.Stop();
 
             cts = new CancellationTokenSource();
@@ -73,6 +75,7 @@ namespace Glash.Client
         {
             pushLog("Stoping listen.");
             cts?.Cancel();
+            cts?.Dispose();
 
             tcpListener?.Stop();
             tcpListener = null;

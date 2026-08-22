@@ -91,14 +91,16 @@ namespace Glash.Server
             UploadBytes += data.Length;
         }
 
-        public Task SendTunnelClosedNotice(QpChannel channel)=>channel.SendNoticePackage(new TunnelClosed() { TunnelId = TunnelInfo.Id });
-        public Task SendTunnelClosedNoticeToClient()=>SendTunnelClosedNotice(Client.Channel);
-        public Task SendTunnelClosedNoticeToAgent()=>SendTunnelClosedNotice(Agent.Channel);
+        public Task SendTunnelClosedNotice(QpChannel channel) => channel.SendNoticePackage(new TunnelClosed() { TunnelId = TunnelInfo.Id });
+        public Task SendTunnelClosedNoticeToClient() => SendTunnelClosedNotice(Client.Channel);
+        public Task SendTunnelClosedNoticeToAgent() => SendTunnelClosedNotice(Agent.Channel);
         public Task StartAgentTunnel() => Agent.StartTunnelAsync(TunnelInfo.Id);
 
         public void Dispose()
         {
-            cts.Cancel();
+            cts?.Cancel();
+            cts?.Dispose();
+            cts = null;
         }
     }
 }

@@ -71,6 +71,7 @@ namespace Glash.Core
         public void Start()
         {
             cts?.Cancel();
+            cts?.Dispose();
             cts = new CancellationTokenSource();
             _ = beginRead(cts.Token);
         }
@@ -78,6 +79,7 @@ namespace Glash.Core
         public void Dispose()
         {
             cts?.Cancel();
+            cts?.Dispose();
             cts = null;
             try
             {

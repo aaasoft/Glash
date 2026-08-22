@@ -7,8 +7,7 @@ namespace Glash.Core
     {
         public static string ComputeMD5Hash(string input)
         {
-            var md5 = MD5.Create();
-            var buffer = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
+            var buffer = MD5.HashData(Encoding.UTF8.GetBytes(input));
             return BitConverter.ToString(buffer).Replace("-", "").ToLower();
         }
 

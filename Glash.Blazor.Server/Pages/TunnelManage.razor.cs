@@ -45,7 +45,9 @@ namespace Glash.Blazor.Server.Pages
         public override void Dispose()
         {
             base.Dispose();
-            cts.Cancel();
+            cts?.Cancel();
+            cts?.Dispose();
+            cts = null;
         }
 
         private void CloseTunnel(GlashServerTunnelContext tunnel)
