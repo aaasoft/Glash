@@ -3,6 +3,7 @@ using Glash.Core;
 using Glash.Client.Protocol.QpModel;
 using Glash.Client.Protocol.QpNotices;
 using Quick.Utils;
+using System.Buffers.Text;
 
 namespace Glash.Client
 {

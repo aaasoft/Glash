@@ -13,6 +13,9 @@ namespace G
         protected override JsonTypeInfo<D> GetTypeInfo() => GDSerializerContext.Default.D;
 
         public int TunnelId { get; set; }
-        public byte[] Data { get; set; }
+        /// <summary>
+        /// Base64编码的字节数组
+        /// </summary>
+        public string Data { get; set; }
     }
 }

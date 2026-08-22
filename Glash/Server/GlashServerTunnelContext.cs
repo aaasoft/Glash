@@ -63,7 +63,7 @@ namespace Glash.Server
             errorHandler?.Invoke(ex);
         }
 
-        private async Task PushData(QpChannel channel, byte[] data)
+        private async Task PushData(QpChannel channel, string data)
         {
             try
             {
@@ -79,13 +79,13 @@ namespace Glash.Server
             }
         }
 
-        public async Task PushDataToClient(byte[] data)
+        public async Task PushDataToClient(string data)
         {
             await PushData(Client.Channel, data);
             DownloadBytes += data.Length;
         }
 
-        public async Task PushDataToAgent(byte[] data)
+        public async Task PushDataToAgent(string data)
         {
             await PushData(Agent.Channel, data);
             UploadBytes += data.Length;

@@ -1,11 +1,14 @@
-﻿using Quick.Protocol;
+﻿using System.Buffers.Text;
+using System.Text;
+using Quick.Protocol;
 
 namespace Glash.Core
 {
     public class GlashTunnelContext : IDisposable
     {
         private CancellationTokenSource cts;
-        private byte[] buffer = new byte[8 * 1024];
+        private byte[] readBuffer = new byte[4 * 1024];
+        private byte[] writeBuffer = new byte[8 * 1024];
         private QpChannel channel;
         private TunnelInfo tunnelInfo;
         private Stream stream;
@@ -23,7 +26,7 @@ namespace Glash.Core
         {
             try
             {
-                var task = stream?.ReadAsync(buffer, 0, buffer.Length, token);
+                var task = stream?.ReadAsync(readBuffer, 0, readBuffer.Length, token);
                 if (task == null)
                     return;
                 var ret = await task;
@@ -32,7 +35,7 @@ namespace Glash.Core
                 await channel.SendNoticePackage(new G.D()
                 {
                     TunnelId = tunnelInfo.Id,
-                    Data = buffer.Take(ret).ToArray()
+                    Data = Convert.ToBase64String(readBuffer, 0, ret)
                 });
                 _ = beginRead(token);
             }
@@ -46,11 +49,18 @@ namespace Glash.Core
             }
         }
 
-        public void PushData(byte[] data)
+        public void PushData(string data)
         {
+            var strBytesLength = Encoding.UTF8.GetByteCount(data);
+            if (strBytesLength > writeBuffer.Length)
+                writeBuffer = new byte[strBytesLength];
+            strBytesLength = Encoding.UTF8.GetBytes(data, writeBuffer);
+            var ret = Base64.DecodeFromUtf8InPlace(writeBuffer.AsSpan(0, strBytesLength), out var dataBytesLength);
+            if (ret != System.Buffers.OperationStatus.Done)
+                throw new IOException($"Error when convert base64 string to byte array,reason: {ret}");
             try
             {
-                stream?.Write(data);
+                stream?.Write(writeBuffer, 0, dataBytesLength);
                 stream?.Flush();
             }
             catch (OperationCanceledException)
