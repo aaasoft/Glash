@@ -316,7 +316,7 @@ namespace Glash.Server
                 if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
                     throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not login.");
 
-                agentContext.CreateTunnelAsync(tunnelInfo).Wait();
+                await agentContext.CreateTunnelAsync(tunnelInfo);
                 var tunnel = new GlashServerTunnelContext(
                     tunnelInfo,
                     clientContext,
