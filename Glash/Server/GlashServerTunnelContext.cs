@@ -143,7 +143,20 @@ namespace Glash.Server
 
         public async Task PushDataToClient(string data)
         {
-            await _PushDataToClient(data);
+            if (TunnelInfo.ClientTunnelPackageType > 0)
+            {
+                var bufferLength = Encoding.UTF8.GetByteCount(data);
+                var buffer = ArrayPool<byte>.Shared.Rent(bufferLength);
+                Encoding.UTF8.GetBytes(data, buffer.AsSpan(0, bufferLength));
+                var ret = Base64.DecodeFromUtf8InPlace(buffer.AsSpan(0, bufferLength), out var bytesWritten);
+                if (ret != OperationStatus.Done)
+                    throw new IOException($"Error when convert base64 string to byte array,reason: {ret}");
+                await _PushDataToClient(new ReadOnlySequence<byte>(buffer, 0, bytesWritten));
+            }
+            else
+            {
+                await _PushDataToClient(data);
+            }
         }
 
 
@@ -169,7 +182,20 @@ namespace Glash.Server
 
         public async Task PushDataToAgent(string data)
         {
-            await _PushDataToAgent(data);
+            if (TunnelInfo.AgentTunnelPackageType > 0)
+            {
+                var bufferLength = Encoding.UTF8.GetByteCount(data);
+                var buffer = ArrayPool<byte>.Shared.Rent(bufferLength);
+                Encoding.UTF8.GetBytes(data, buffer.AsSpan(0, bufferLength));
+                var ret = Base64.DecodeFromUtf8InPlace(buffer.AsSpan(0, bufferLength), out var bytesWritten);
+                if (ret != OperationStatus.Done)
+                    throw new IOException($"Error when convert base64 string to byte array,reason: {ret}");
+                await _PushDataToAgent(new ReadOnlySequence<byte>(buffer, 0, bytesWritten));
+            }
+            else
+            {
+                await _PushDataToAgent(data);
+            }
         }
 
         public Task SendTunnelClosedNotice(QpChannel channel) => channel.SendNoticePackage(new TunnelClosed() { TunnelId = TunnelInfo.Id });

@@ -97,16 +97,12 @@ namespace Glash.Core
                 writeBuffer = new byte[strBytesLength];
             strBytesLength = Encoding.UTF8.GetBytes(data, writeBuffer);
             var ret = Base64.DecodeFromUtf8InPlace(writeBuffer.AsSpan(0, strBytesLength), out var dataBytesLength);
-            if (ret != System.Buffers.OperationStatus.Done)
+            if (ret != OperationStatus.Done)
                 throw new IOException($"Error when convert base64 string to byte array,reason: {ret}");
             try
             {
                 stream?.Write(writeBuffer, 0, dataBytesLength);
                 stream?.Flush();
-            }
-            catch (OperationCanceledException)
-            {
-                return;
             }
             catch (Exception ex)
             {
