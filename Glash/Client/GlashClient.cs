@@ -8,6 +8,7 @@ namespace Glash.Client
 {
     public class GlashClient : IDisposable
     {
+        private SemaphoreSlim createTunnelLock = new SemaphoreSlim(1, 1);
         private QpClientOptions qpClientOptions;
         private QpClient qpClient;
         private Dictionary<string, ProxyRuleContext> proxyRuleContextDict = new Dictionary<string, ProxyRuleContext>();
@@ -85,6 +86,7 @@ namespace Glash.Client
             proxyRuleContextDict.Clear();
             qpClient.Disconnect();
             qpClient.Dispose();
+            createTunnelLock.Dispose();
         }
 
         public async Task EnableProxyRule(string proxyRuleId)
@@ -137,6 +139,7 @@ namespace Glash.Client
         {
             try
             {
+                await createTunnelLock.WaitAsync();
                 byte clientTunnelPackageType = 0;
                 try
                 {
@@ -197,6 +200,10 @@ namespace Glash.Client
                 }
                 catch { }
             }
+            finally
+            {
+                createTunnelLock.Release();
+            }
         }
 
         private async ValueTask OnTunnelDataAviliable(QpChannel channel, G.D data)
@@ -213,14 +220,9 @@ namespace Glash.Client
             var tunnelId = data.TunnelId;
             GlashTunnelContext tunnelContext = null;
             lock (tunnelContextDict)
-            {
-                if (!tunnelContextDict.ContainsKey(tunnelId))
+                if (!tunnelContextDict.TryGetValue(tunnelId,out tunnelContext))
                     return;
-                tunnelContext = tunnelContextDict[tunnelId];
-                tunnelContextDict.Remove(tunnelId);
-            }
-            tunnelContext.Dispose();
-            LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
+            tunnelContext.OnError(new ApplicationException("Tunnel closed."));
         }
 
         private async ValueTask OnAgentLoginStatusChanged(QpChannel channel, AgentLoginStatusChanged data)

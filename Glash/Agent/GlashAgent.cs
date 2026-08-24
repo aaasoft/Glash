@@ -120,11 +120,12 @@ namespace Glash.Agent
                         GlashTunnelContext tunnelContext = null;
                         lock (tunnelContextDict)
                         {
-                            if (!tunnelContextDict.ContainsKey(tunnelId))
+                            if (!tunnelContextDict.TryGetValue(tunnelId, out tunnelContext))
                                 return;
-                            tunnelContext = tunnelContextDict[tunnelId];
+                            tunnelContextDict.Remove(tunnelId);
                         }
                         tunnelContext.Dispose();
+                        LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
                     });
                 lock (tunnelContextDict)
                     tunnelContextDict[tunnelId] = tunnelContext;
@@ -167,14 +168,9 @@ namespace Glash.Agent
             var tunnelId = data.TunnelId;
             GlashTunnelContext tunnelContext = null;
             lock (tunnelContextDict)
-            {
-                if (!tunnelContextDict.ContainsKey(tunnelId))
+                if(!tunnelContextDict.TryGetValue(tunnelId,out tunnelContext))
                     return;
-                tunnelContext = tunnelContextDict[tunnelId];
-                tunnelContextDict.Remove(tunnelId);
-            }
-            tunnelContext.Dispose();
-            LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
+            tunnelContext.OnError(new ApplicationException("Tunnel closed."));
         }
     }
 }

@@ -17,7 +17,14 @@ namespace Glash.Server
 
         public GlashAgentContext[] Agents { get; private set; } = new GlashAgentContext[0];
         public GlashClientContext[] Clients { get; private set; } = new GlashClientContext[0];
-        public GlashServerTunnelContext[] Tunnels { get; private set; } = new GlashServerTunnelContext[0];
+        public GlashServerTunnelContext[] Tunnels
+        {
+            get
+            {
+                lock (serverTunnelContextDict)
+                    return serverTunnelContextDict.Values.ToArray();
+            }
+        }
 
         public event EventHandler<string> LogPushed;
 
@@ -337,15 +344,12 @@ namespace Glash.Server
                             if (!serverTunnelContextDict.TryGetValue(tunnelInfo.Id, out serverTunnelContext))
                                 return;
                             serverTunnelContextDict.Remove(tunnelInfo.Id);
-                            Tunnels = serverTunnelContextDict.Values.ToArray();
                         }
                         serverTunnelContext.Dispose();
+                        LogPushed?.Invoke(this, $"Tunnel[{tunnelInfo.Id}] closed.");
                     });
                 lock (serverTunnelContextDict)
-                {
                     serverTunnelContextDict[tunnelInfo.Id] = tunnel;
-                    Tunnels = serverTunnelContextDict.Values.ToArray();
-                }
                 TunnelCreated?.Invoke(this, tunnel);
                 LogPushed?.Invoke(this, $"Tunnel[{tunnelInfo.Id}] created.ProxyRule:[Id:{proxyRule.Id},Name:{proxyRule.Name}]");
                 return new Client.Protocol.QpCommands.CreateTunnel.Response() { Data = tunnelInfo };
@@ -408,8 +412,9 @@ namespace Glash.Server
             LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
 
             GlashServerTunnelContext tunnel;
-            if (!serverTunnelContextDict.TryGetValue(tunnelId, out tunnel))
-                return;
+            lock (serverTunnelContextDict)
+                if (!serverTunnelContextDict.TryGetValue(tunnelId, out tunnel))
+                    return;
             tunnel.OnError(new ApplicationException("Tunnel closed."));
             TunnelClosed?.Invoke(this, tunnel);
             if (channel.Tag == null)

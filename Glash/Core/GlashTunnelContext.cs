@@ -114,7 +114,7 @@ namespace Glash.Core
             }
         }
 
-        private void OnError(Exception ex)
+        public void OnError(Exception ex)
         {
             errorHandler?.Invoke(ex);
         }
