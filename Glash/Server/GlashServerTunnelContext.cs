@@ -133,6 +133,7 @@ namespace Glash.Server
                 var span = writer.GetSpan(ret);
                 data.CopyTo(span);
                 writer.Advance(ret);
+                await writer.FlushAsync();
                 return ret;
             });
             DownloadBytes += data.Length;
@@ -172,6 +173,7 @@ namespace Glash.Server
                 var span = writer.GetSpan(ret);
                 data.CopyTo(span);
                 writer.Advance(ret);
+                await writer.FlushAsync();
                 return ret;
             });
             UploadBytes += data.Length;

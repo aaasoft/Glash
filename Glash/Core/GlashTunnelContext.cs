@@ -65,6 +65,7 @@ namespace Glash.Core
                     {
                         readBuffer.AsSpan(0, ret).CopyTo(writer.GetSpan(ret));
                         writer.Advance(ret);
+                        await writer.FlushAsync();
                         return ret;
                     });
                 }
