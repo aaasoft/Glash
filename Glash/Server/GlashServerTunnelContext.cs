@@ -81,6 +81,7 @@ namespace Glash.Server
             {
                 var ret = Convert.ToInt32(bodyBuffer.Length);
                 var buffer = ArrayPool<byte>.Shared.Rent(ret);
+                bodyBuffer.CopyTo(buffer.AsSpan(0, ret));
                 var base64Str = Convert.ToBase64String(buffer, 0, ret);
                 ArrayPool<byte>.Shared.Return(buffer);
                 await _PushDataToAgent(base64Str);
@@ -97,6 +98,7 @@ namespace Glash.Server
             {
                 var ret = Convert.ToInt32(bodyBuffer.Length);
                 var buffer = ArrayPool<byte>.Shared.Rent(ret);
+                bodyBuffer.CopyTo(buffer.AsSpan(0, ret));
                 var base64Str = Convert.ToBase64String(buffer, 0, ret);
                 ArrayPool<byte>.Shared.Return(buffer);
                 await _PushDataToClient(base64Str);
@@ -141,21 +143,7 @@ namespace Glash.Server
 
         public async Task PushDataToClient(string data)
         {
-            if (TunnelInfo.ClientTunnelPackageType > 0)
-            {
-                var base64Buffer = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetByteCount(data));
-                var base64BytesCount = Encoding.UTF8.GetBytes(data, base64Buffer);
-
-                var buffer = ArrayPool<byte>.Shared.Rent(data.Length);
-                Base64.DecodeFromUtf8(base64Buffer.AsSpan(base64BytesCount), buffer, out _, out var bufferLength);
-                await _PushDataToClient(new ReadOnlySequence<byte>(buffer, 0, bufferLength));
-                ArrayPool<byte>.Shared.Return(base64Buffer);
-                ArrayPool<byte>.Shared.Return(buffer);
-            }
-            else
-            {
-                await _PushDataToClient(data);
-            }
+            await _PushDataToClient(data);
         }
 
 
@@ -181,21 +169,7 @@ namespace Glash.Server
 
         public async Task PushDataToAgent(string data)
         {
-            if (TunnelInfo.AgentTunnelPackageType > 0)
-            {
-                var base64Buffer = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetByteCount(data));
-                var base64BytesCount = Encoding.UTF8.GetBytes(data, base64Buffer);
-
-                var buffer = ArrayPool<byte>.Shared.Rent(data.Length);
-                Base64.DecodeFromUtf8(base64Buffer.AsSpan(base64BytesCount), buffer, out _, out var bufferLength);
-                await _PushDataToAgent(new ReadOnlySequence<byte>(buffer, 0, bufferLength));
-                ArrayPool<byte>.Shared.Return(base64Buffer);
-                ArrayPool<byte>.Shared.Return(buffer);
-            }
-            else
-            {
-                await _PushDataToAgent(data);
-            }
+            await _PushDataToAgent(data);
         }
 
         public Task SendTunnelClosedNotice(QpChannel channel) => channel.SendNoticePackage(new TunnelClosed() { TunnelId = TunnelInfo.Id });
