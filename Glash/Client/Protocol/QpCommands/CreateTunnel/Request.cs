@@ -12,6 +12,6 @@ namespace Glash.Client.Protocol.QpCommands.CreateTunnel
         /// <summary>
         /// 服务器发给客户端的通道包类型
         /// </summary>
-        public byte ServerToClientTunnelPackageType { get; set; }
+        public byte ClientTunnelPackageType { get; set; }
     }
 }

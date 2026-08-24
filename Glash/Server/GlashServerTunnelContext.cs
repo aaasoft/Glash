@@ -34,10 +34,10 @@ namespace Glash.Server
             cts = new CancellationTokenSource();
             beginCalcSpeed(cts.Token);
 
-            if (tunnelInfo.ClientToServerTunnelPackageType > 0)
-                client.Channel.RegisterPackageHandler(tunnelInfo.ClientToServerTunnelPackageType, ClientTunnelPackageHandler);
-            if (tunnelInfo.AgentToServerTunnelPackageType > 0)
-                agent.Channel.RegisterPackageHandler(tunnelInfo.AgentToServerTunnelPackageType, AgentTunnelPackageHandler);
+            if (tunnelInfo.ClientTunnelPackageType > 0)
+                client.Channel.RegisterPackageHandler(tunnelInfo.ClientTunnelPackageType, ClientTunnelPackageHandler);
+            if (tunnelInfo.AgentTunnelPackageType > 0)
+                agent.Channel.RegisterPackageHandler(tunnelInfo.AgentTunnelPackageType, AgentTunnelPackageHandler);
         }
 
         private void beginCalcSpeed(CancellationToken cancellationToken)
@@ -73,7 +73,7 @@ namespace Glash.Server
 
         private async ValueTask ClientTunnelPackageHandler(QpChannel channel, byte packageType, ReadOnlySequence<byte> bodyBuffer)
         {
-            if (TunnelInfo.ServerToAgentTunnelPackageType > 0)
+            if (TunnelInfo.AgentTunnelPackageType > 0)
             {
                 await _PushDataToAgent(bodyBuffer);
             }
@@ -89,7 +89,7 @@ namespace Glash.Server
 
         private async ValueTask AgentTunnelPackageHandler(QpChannel channel, byte packageType, ReadOnlySequence<byte> bodyBuffer)
         {
-            if (TunnelInfo.ServerToClientTunnelPackageType > 0)
+            if (TunnelInfo.ClientTunnelPackageType > 0)
             {
                 await _PushDataToClient(bodyBuffer);
             }
@@ -128,7 +128,7 @@ namespace Glash.Server
         private async Task _PushDataToClient(ReadOnlySequence<byte> data)
         {
             var ret = Convert.ToInt32(data.Length);
-            await Client.Channel.SendPackage(TunnelInfo.ServerToClientTunnelPackageType, async writer =>
+            await Client.Channel.SendPackage(TunnelInfo.ClientTunnelPackageType, async writer =>
             {
                 var span = writer.GetSpan(ret);
                 data.CopyTo(span);
@@ -140,7 +140,7 @@ namespace Glash.Server
 
         public async Task PushDataToClient(string data)
         {
-            if (TunnelInfo.ServerToClientTunnelPackageType > 0)
+            if (TunnelInfo.ClientTunnelPackageType > 0)
             {
                 var base64Buffer = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetByteCount(data));
                 var base64BytesCount = Encoding.UTF8.GetBytes(data, base64Buffer);
@@ -167,7 +167,7 @@ namespace Glash.Server
         private async Task _PushDataToAgent(ReadOnlySequence<byte> data)
         {
             var ret = Convert.ToInt32(data.Length);
-            await Agent.Channel.SendPackage(TunnelInfo.ServerToAgentTunnelPackageType, async writer =>
+            await Agent.Channel.SendPackage(TunnelInfo.AgentTunnelPackageType, async writer =>
             {
                 var span = writer.GetSpan(ret);
                 data.CopyTo(span);
@@ -179,7 +179,7 @@ namespace Glash.Server
 
         public async Task PushDataToAgent(string data)
         {
-            if (TunnelInfo.ServerToAgentTunnelPackageType > 0)
+            if (TunnelInfo.AgentTunnelPackageType > 0)
             {
                 var base64Buffer = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetByteCount(data));
                 var base64BytesCount = Encoding.UTF8.GetBytes(data, base64Buffer);
@@ -203,10 +203,10 @@ namespace Glash.Server
 
         public void Dispose()
         {
-            if (TunnelInfo.ClientToServerTunnelPackageType > 0)
-                Client.Channel.UnregisterPackageHandler(TunnelInfo.ClientToServerTunnelPackageType);
-            if (TunnelInfo.AgentToServerTunnelPackageType > 0)
-                Agent.Channel.UnregisterPackageHandler(TunnelInfo.AgentToServerTunnelPackageType);
+            if (TunnelInfo.ClientTunnelPackageType > 0)
+                Client.Channel.UnregisterPackageHandler(TunnelInfo.ClientTunnelPackageType);
+            if (TunnelInfo.AgentTunnelPackageType > 0)
+                Agent.Channel.UnregisterPackageHandler(TunnelInfo.AgentTunnelPackageType);
             cts?.Cancel();
             cts?.Dispose();
             cts = null;

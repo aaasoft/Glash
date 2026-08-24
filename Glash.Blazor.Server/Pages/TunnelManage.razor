@@ -23,14 +23,14 @@
                     <td>
                         <span>@t.Agent.Name</span>
                         <span>&nbsp;/&nbsp;</span>
-                        <span>@t.TunnelInfo.AgentToServerTunnelPackageType</span>
+                        <span>@t.TunnelInfo.AgentTunnelPackageType</span>
                     </td>
                     <td>
                         <span>@t.Client.Name</span>
                         <span>&nbsp;/&nbsp;</span>
                         <span>@($"{t.TunnelInfo.Host}:{t.TunnelInfo.Port}")</span>
                         <span>&nbsp;/&nbsp;</span>
-                        <span>@t.TunnelInfo.ClientToServerTunnelPackageType</span>
+                        <span>@t.TunnelInfo.ClientTunnelPackageType</span>
                     </td>
                     <td>@t.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td>

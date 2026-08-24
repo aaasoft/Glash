@@ -320,30 +320,11 @@ namespace Glash.Server
                 GlashAgentContext agentContext = null;
                 if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
                     throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not login.");
-
-                try
-                {
-                    tunnelInfo.AgentToServerTunnelPackageType = channel.GetUnusedPackageType();
-                }
-                catch { }
+                    
+                tunnelInfo.ClientTunnelPackageType = request.ClientTunnelPackageType;
+                tunnelInfo.AgentTunnelPackageType = agentContext.Channel.GetUnusedPackageType();
                 await agentContext.CreateTunnelAsync(tunnelInfo);
                 GlashServerTunnelContext tunnel;
-                //如果客户端支持通道包
-                if (request.ServerToClientTunnelPackageType > 0)
-                {
-                    try
-                    {
-                        //如果服务端与代理端不支持通道包，则使用一个未使用的包类型即可
-                        if (tunnelInfo.AgentToServerTunnelPackageType == 0)
-                            tunnelInfo.ClientToServerTunnelPackageType = channel.GetUnusedPackageType();
-                        //否则使用代理端到服务端包类型加1
-                        else
-                            tunnelInfo.ClientToServerTunnelPackageType = (byte)(tunnelInfo.AgentToServerTunnelPackageType + 1);
-                        tunnelInfo.ServerToClientTunnelPackageType = request.ServerToClientTunnelPackageType;
-                    }
-                    catch { }
-                }
-
                 tunnel = new GlashServerTunnelContext(
                     tunnelInfo,
                     clientContext,

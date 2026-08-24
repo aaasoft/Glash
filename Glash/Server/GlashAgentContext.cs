@@ -35,9 +35,10 @@ namespace Glash.Server
             {
                 Data = tunnelInfo
             });
-            tunnelInfo.ServerToAgentTunnelPackageType = data.Data.ServerToAgentTunnelPackageType;
-            if (tunnelInfo.ServerToAgentTunnelPackageType == 0)
-                tunnelInfo.AgentToServerTunnelPackageType = 0;
+            if (data.Data == null)
+                tunnelInfo.AgentTunnelPackageType = 0;
+            else
+                tunnelInfo.AgentTunnelPackageType = data.Data.AgentTunnelPackageType;
         }
 
         public async Task StartTunnelAsync(int tunnelId)

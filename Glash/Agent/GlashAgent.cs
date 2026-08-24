@@ -108,20 +108,10 @@ namespace Glash.Agent
             {
                 var tcpClient = new TcpClient();
                 await tcpClient.ConnectAsync(tunnelInfo.Host, tunnelInfo.Port);
-                try
-                {
-                    if (tunnelInfo.AgentToServerTunnelPackageType > 0)
-                        tunnelInfo.ServerToAgentTunnelPackageType = channel.GetUnusedPackageType();
-                }
-                catch
-                {
-                    tunnelInfo.ServerToAgentTunnelPackageType = 0;
-                }
                 var tunnelContext = new GlashTunnelContext(
                     channel,
                     tunnelId,
-                    tunnelInfo.ServerToAgentTunnelPackageType,
-                    tunnelInfo.AgentToServerTunnelPackageType,
+                    tunnelInfo.AgentTunnelPackageType,
                     tcpClient.GetStream(),
                     ex =>
                     {
@@ -139,7 +129,10 @@ namespace Glash.Agent
                 lock (tunnelContextDict)
                     tunnelContextDict[tunnelId] = tunnelContext;
                 LogPushed?.Invoke(this, $"Create tunnel[{tunnelId}] to {tunnelInfo.Host}:{tunnelInfo.Port} success.");
-                return new Protocol.QpCommands.CreateTunnel.Response();
+                return new Protocol.QpCommands.CreateTunnel.Response()
+                {
+                    Data = tunnelInfo
+                };
             }
             catch (Exception ex)
             {

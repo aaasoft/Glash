@@ -12,22 +12,20 @@ namespace Glash.Core
         private byte[] writeBuffer = new byte[8 * 1024];
         private QpChannel channel;
         private int tunnelId;
-        private byte recvTunnelPackageType;
-        private byte sendTunnelPackageType;
+        private byte tunnelPackageType;
         private Stream stream;
         private Action<Exception> errorHandler;
 
-        public GlashTunnelContext(QpChannel channel, int tunnelId, byte recvTunnelPackageType, byte sendTunnelPackageType, Stream stream, Action<Exception> errorHandler)
+        public GlashTunnelContext(QpChannel channel, int tunnelId, byte tunnelPackageType, Stream stream, Action<Exception> errorHandler)
         {
             this.channel = channel;
             this.tunnelId = tunnelId;
-            this.recvTunnelPackageType = recvTunnelPackageType;
-            this.sendTunnelPackageType = sendTunnelPackageType;
+            this.tunnelPackageType = tunnelPackageType;
 
             this.stream = stream;
             this.errorHandler = errorHandler;
-            if (recvTunnelPackageType > 0)
-                channel.RegisterPackageHandler(recvTunnelPackageType, tunnelPackageHandler);
+            if (tunnelPackageType > 0)
+                channel.RegisterPackageHandler(tunnelPackageType, tunnelPackageHandler);
         }
 
         private async ValueTask tunnelPackageHandler(QpChannel channel, byte packageType, ReadOnlySequence<byte> bodyBuffer)
@@ -60,10 +58,10 @@ namespace Glash.Core
                 var ret = await task;
                 if (ret <= 0)
                     throw new IOException("Read count: " + ret);
-                //如果对方支持通道包类型
-                if (sendTunnelPackageType > 0)
+                //如果支持通道包类型
+                if (tunnelPackageType > 0)
                 {
-                    await channel.SendPackage(sendTunnelPackageType, async writer =>
+                    await channel.SendPackage(tunnelPackageType, async writer =>
                     {
                         readBuffer.AsSpan(0, ret).CopyTo(writer.GetSpan(ret));
                         writer.Advance(ret);
@@ -130,8 +128,8 @@ namespace Glash.Core
 
         public void Dispose()
         {
-            if (recvTunnelPackageType > 0)
-                channel.UnregisterPackageHandler(recvTunnelPackageType);
+            if (tunnelPackageType > 0)
+                channel.UnregisterPackageHandler(tunnelPackageType);
             cts?.Cancel();
             cts?.Dispose();
             cts = null;
