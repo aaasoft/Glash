@@ -108,8 +108,20 @@ namespace Glash.Agent
             {
                 var tcpClient = new TcpClient();
                 await tcpClient.ConnectAsync(tunnelInfo.Host, tunnelInfo.Port);
+                try
+                {
+                    if (tunnelInfo.AgentToServerTunnelPackageType > 0)
+                        tunnelInfo.ServerToAgentTunnelPackageType = channel.GetUnusedPackageType();
+                }
+                catch
+                {
+                    tunnelInfo.ServerToAgentTunnelPackageType = 0;
+                }
                 var tunnelContext = new GlashTunnelContext(
-                    channel, tunnelInfo,
+                    channel,
+                    tunnelId,
+                    tunnelInfo.ServerToAgentTunnelPackageType,
+                    tunnelInfo.AgentToServerTunnelPackageType,
                     tcpClient.GetStream(),
                     ex =>
                     {

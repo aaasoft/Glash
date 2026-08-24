@@ -272,6 +272,8 @@ namespace Glash.Server
             return new Client.Protocol.QpCommands.DeleteProxyRule.Response();
         }
 
+        private SemaphoreSlim createTunnelLock = new SemaphoreSlim(1, 1);
+
         private async ValueTask<Client.Protocol.QpCommands.CreateTunnel.Response> ExecuteCommand_Client_CreateTunnel(
             QpChannel channel,
             Client.Protocol.QpCommands.CreateTunnel.Request request)
@@ -294,6 +296,9 @@ namespace Glash.Server
             };
             try
             {
+                await createTunnelLock.WaitAsync();
+
+                //分配通道号
                 lock (serverTunnelContextDict)
                 {
                     if (serverTunnelContextDict.Count >= options.MaxTunnelCount)
@@ -316,8 +321,30 @@ namespace Glash.Server
                 if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
                     throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not login.");
 
+                try
+                {
+                    tunnelInfo.AgentToServerTunnelPackageType = channel.GetUnusedPackageType();
+                }
+                catch { }
                 await agentContext.CreateTunnelAsync(tunnelInfo);
-                var tunnel = new GlashServerTunnelContext(
+                GlashServerTunnelContext tunnel;
+                //如果客户端支持通道包
+                if (request.ServerToClientTunnelPackageType > 0)
+                {
+                    try
+                    {
+                        //如果服务端与代理端不支持通道包，则使用一个未使用的包类型即可
+                        if (tunnelInfo.AgentToServerTunnelPackageType == 0)
+                            tunnelInfo.ClientToServerTunnelPackageType = channel.GetUnusedPackageType();
+                        //否则使用代理端到服务端包类型加1
+                        else
+                            tunnelInfo.ClientToServerTunnelPackageType = (byte)(tunnelInfo.AgentToServerTunnelPackageType + 1);
+                        tunnelInfo.ServerToClientTunnelPackageType = request.ServerToClientTunnelPackageType;
+                    }
+                    catch { }
+                }
+
+                tunnel = new GlashServerTunnelContext(
                     tunnelInfo,
                     clientContext,
                     agentContext,
@@ -333,7 +360,6 @@ namespace Glash.Server
                         }
                         serverTunnelContext.Dispose();
                     });
-
                 lock (serverTunnelContextDict)
                 {
                     serverTunnelContextDict[tunnelInfo.Id] = tunnel;
@@ -347,6 +373,10 @@ namespace Glash.Server
             {
                 LogPushed?.Invoke(this, $"Tunnel[{tunnelInfo.Id}] create failed.ProxyRule:[Id:{proxyRule.Id},Name:{proxyRule.Name}].Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
                 throw;
+            }
+            finally
+            {
+                createTunnelLock.Release();
             }
         }
 

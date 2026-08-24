@@ -31,10 +31,13 @@ namespace Glash.Server
 
         public async Task CreateTunnelAsync(TunnelInfo tunnelInfo)
         {
-            await Channel.SendCommand(new Glash.Agent.Protocol.QpCommands.CreateTunnel.Request()
+            var data = await Channel.SendCommand(new Glash.Agent.Protocol.QpCommands.CreateTunnel.Request()
             {
                 Data = tunnelInfo
             });
+            tunnelInfo.ServerToAgentTunnelPackageType = data.Data.ServerToAgentTunnelPackageType;
+            if (tunnelInfo.ServerToAgentTunnelPackageType == 0)
+                tunnelInfo.AgentToServerTunnelPackageType = 0;
         }
 
         public async Task StartTunnelAsync(int tunnelId)

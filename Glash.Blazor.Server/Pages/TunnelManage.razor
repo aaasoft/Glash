@@ -5,8 +5,8 @@
     <thead>
         <tr>
             <th scope="col">@TextId</th>
-            <th scope="col">@TextAgent</th>
-            <th scope="col">@TextClient/@TextTarget</th>
+            <th scope="col">@TextAgent/@TextPackageType</th>
+            <th scope="col">@TextClient/@TextTarget/@TextPackageType</th>
             <th scope="col">@TextConnectTime</th>
             <th scope="col">@TextTotalBytes</th>
             <th scope="col">@TextCurrentSpeed</th>
@@ -20,11 +20,17 @@
             {
                 <tr>
                     <th scope="row">@t.TunnelInfo.Id</th>
-                    <td>@t.Agent.Name</td>
+                    <td>
+                        <span>@t.Agent.Name</span>
+                        <span>&nbsp;/&nbsp;</span>
+                        <span>@t.TunnelInfo.AgentToServerTunnelPackageType</span>
+                    </td>
                     <td>
                         <span>@t.Client.Name</span>
                         <span>&nbsp;/&nbsp;</span>
                         <span>@($"{t.TunnelInfo.Host}:{t.TunnelInfo.Port}")</span>
+                        <span>&nbsp;/&nbsp;</span>
+                        <span>@t.TunnelInfo.ClientToServerTunnelPackageType</span>
                     </td>
                     <td>@t.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td>

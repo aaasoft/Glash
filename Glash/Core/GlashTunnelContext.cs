@@ -1,4 +1,5 @@
-﻿using System.Buffers.Text;
+﻿using System.Buffers;
+using System.Buffers.Text;
 using System.Text;
 using Quick.Protocol;
 
@@ -10,16 +11,43 @@ namespace Glash.Core
         private byte[] readBuffer = new byte[4 * 1024];
         private byte[] writeBuffer = new byte[8 * 1024];
         private QpChannel channel;
-        private TunnelInfo tunnelInfo;
+        private int tunnelId;
+        private byte recvTunnelPackageType;
+        private byte sendTunnelPackageType;
         private Stream stream;
         private Action<Exception> errorHandler;
 
-        public GlashTunnelContext(QpChannel channel, TunnelInfo tunnelInfo, Stream stream, Action<Exception> errorHandler)
+        public GlashTunnelContext(QpChannel channel, int tunnelId, byte recvTunnelPackageType, byte sendTunnelPackageType, Stream stream, Action<Exception> errorHandler)
         {
             this.channel = channel;
-            this.tunnelInfo = tunnelInfo;
+            this.tunnelId = tunnelId;
+            this.recvTunnelPackageType = recvTunnelPackageType;
+            this.sendTunnelPackageType = sendTunnelPackageType;
+
             this.stream = stream;
             this.errorHandler = errorHandler;
+            if (recvTunnelPackageType > 0)
+                channel.RegisterPackageHandler(recvTunnelPackageType, tunnelPackageHandler);
+        }
+
+        private async ValueTask tunnelPackageHandler(QpChannel channel, byte packageType, ReadOnlySequence<byte> bodyBuffer)
+        {
+            try
+            {
+                var currentBuffer = bodyBuffer;
+                while (currentBuffer.Length > 0)
+                {
+                    var ret = Math.Min(Convert.ToInt32(currentBuffer.Length), writeBuffer.Length);
+                    currentBuffer.Slice(0, ret).CopyTo(writeBuffer);
+                    currentBuffer = currentBuffer.Slice(ret);
+                    stream?.Write(writeBuffer, 0, ret);
+                }
+                stream?.Flush();
+            }
+            catch (Exception ex)
+            {
+                OnError(ex);
+            }
         }
 
         private async Task beginRead(CancellationToken token)
@@ -32,11 +60,25 @@ namespace Glash.Core
                 var ret = await task;
                 if (ret <= 0)
                     throw new IOException("Read count: " + ret);
-                await channel.SendNoticePackage(new G.D()
+                //如果对方支持通道包类型
+                if (sendTunnelPackageType > 0)
                 {
-                    TunnelId = tunnelInfo.Id,
-                    Data = Convert.ToBase64String(readBuffer, 0, ret)
-                });
+                    await channel.SendPackage(sendTunnelPackageType, async writer =>
+                    {
+                        readBuffer.AsSpan(0, ret).CopyTo(writer.GetSpan(ret));
+                        writer.Advance(ret);
+                        return ret;
+                    });
+                }
+                //否则使用传统模式
+                else
+                {
+                    await channel.SendNoticePackage(new G.D()
+                    {
+                        TunnelId = tunnelId,
+                        Data = Convert.ToBase64String(readBuffer, 0, ret)
+                    });
+                }
                 _ = beginRead(token);
             }
             catch (OperationCanceledException)
@@ -88,6 +130,8 @@ namespace Glash.Core
 
         public void Dispose()
         {
+            if (recvTunnelPackageType > 0)
+                channel.UnregisterPackageHandler(recvTunnelPackageType);
             cts?.Cancel();
             cts?.Dispose();
             cts = null;

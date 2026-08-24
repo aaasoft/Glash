@@ -138,15 +138,32 @@ namespace Glash.Client
         {
             try
             {
+                byte serverToAgentTunnelPackageType = 0;
+                try
+                {
+                    serverToAgentTunnelPackageType = qpClient.GetUnusedPackageType();
+                }
+                catch
+                {
+                    LogPushed?.Invoke(this, $"Get unused package type error,fallback to legacy mode.");
+                }
                 //Create Tunnel
                 var rep = await qpClient.SendCommand(new Protocol.QpCommands.CreateTunnel.Request()
                 {
-                    ProxyRuleId = config.Id
+                    ProxyRuleId = config.Id,
+                    ServerToClientTunnelPackageType = serverToAgentTunnelPackageType
                 });
-                var tunnelId = rep.Data.Id;
+                var tunnelInfo = rep.Data;
+                var tunnelId = tunnelInfo.Id;
+                if (rep.Data.ServerToAgentTunnelPackageType == 0)
+                {
+                    LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] Server not support tunnel package type,fallback to legacy mode.");
+                }
                 var tunnelContext = new GlashTunnelContext(
                     qpClient,
-                    rep.Data,
+                    tunnelId,
+                    tunnelInfo.ServerToClientTunnelPackageType,
+                    tunnelInfo.ClientToServerTunnelPackageType,
                     stream,
                     ex =>
                     {

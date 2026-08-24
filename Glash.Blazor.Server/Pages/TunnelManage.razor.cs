@@ -16,6 +16,7 @@ namespace Glash.Blazor.Server.Pages
         private static string TextAgent => Locale<TunnelManage>.GetString("Agent");
         private static string TextClient => Locale<TunnelManage>.GetString("Client");
         private static string TextTarget => Locale<TunnelManage>.GetString("Target");
+        private static string TextPackageType => Locale<TunnelManage>.GetString("Package Type");
         private static string TextConnectTime => Locale<TunnelManage>.GetString("Connect Time");
         private static string TextTotalBytes => Locale<TunnelManage>.GetString("Total Bytes");
         private static string TextCurrentSpeed => Locale<TunnelManage>.GetString("Current Speed");
