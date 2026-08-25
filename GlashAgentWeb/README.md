@@ -6,9 +6,9 @@ Glash Agent 是 Glash 反向代理系统的代理端组件，部署在内网环�
 
 ```bash
 docker run -d \
-  --name glash-agent \
+  --name glash-agent-web \
   -p 6002:6002 \
-  aaasoft/glash-agent:main
+  aaasoft/glash-agent-web:main
 ```
 
 启动后通过 Web 界面（默认端口 6002）配置 Server URL 和代理信息。
@@ -53,9 +53,9 @@ services:
       - GLASH_CONNECTION_PASSWORD=my_secure_password
     restart: unless-stopped
 
-  glash-agent:
-    image: aaasoft/glash-agent:main
-    container_name: glash-agent
+  glash-agent-web:
+    image: aaasoft/glash-agent-web:main
+    container_name: glash-agent-web
     ports:
       - "6002:6002"
     depends_on:

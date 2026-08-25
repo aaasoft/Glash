@@ -6,11 +6,11 @@ Glash 是一个反向代理服务器，允许你将位于 NAT 或防火墙后面
 
 ```bash
 docker run -d \
-  --name glash-server \
+  --name glash-server-web \
   -p 6000:6000 \
   -e GLASH_CONNECTION_PASSWORD=your_password \
   -e GLASH_ADMIN_PASSWORD=admin_password \
-  aaasoft/glash-server:main
+  aaasoft/glash-server-web:main
 ```
 
 ## 环境变量
@@ -39,9 +39,9 @@ Glash 采用 C/S 架构，包含三个组件：
 version: '3.8'
 
 services:
-  glash-server:
-    image: aaasoft/glash-server:main
-    container_name: glash-server
+  glash-server-web:
+    image: aaasoft/glash-server-web:main
+    container_name: glash-server-web
     ports:
       - "6000:6000"
     environment:

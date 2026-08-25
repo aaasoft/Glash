@@ -8,9 +8,9 @@ Glash 项目提供了三个 Docker 镜像，分别用于部署服务端、客户
 
 | 镜像名称 | 用途 | 默认端口 |
 |---------|------|---------|
-| `glash-server` | Glash 服务端 | 6000 |
-| `glash-client` | Glash 客户端 | 6001 |
-| `glash-agent` | Glash 代理端 | 6002 |
+| `glash-server-web` | Glash 服务端 | 6000 |
+| `glash-client-web` | Glash 客户端 | 6001 |
+| `glash-agent-web` | Glash 代理端 | 6002 |
 
 ## 快速开始
 
@@ -29,13 +29,13 @@ Glash 项目提供了三个 Docker 镜像，分别用于部署服务端、客户
 
 ```bash
 # 拉取服务端镜像
-docker pull aaasoft/glash-server:main
+docker pull aaasoft/glash-server-web:main
 
 # 拉取客户端镜像
-docker pull aaasoft/glash-client:main
+docker pull aaasoft/glash-client-web:main
 
 # 拉取代理端镜像
-docker pull aaasoft/glash-agent:main
+docker pull aaasoft/glash-agent-web:main
 ```
 
 ## 运行容器
@@ -44,20 +44,20 @@ docker pull aaasoft/glash-agent:main
 
 ```bash
 docker run -d \
-  --name glash-server \
+  --name glash-server-web \
   -p 6000:6000 \
   -e GLASH_CONNECTION_PASSWORD=your_password \
   -e GLASH_ADMIN_PASSWORD=admin_password \
-  aaasoft/glash-server:main
+  aaasoft/glash-server-web:main
 ```
 
 ### 客户端
 
 ```bash
 docker run -d \
-  --name glash-client \
+  --name glash-client-web \
   -p 6001:6001 \
-  aaasoft/glash-client:main
+  aaasoft/glash-client-web:main
 ```
 
 启动后通过 Web 界面（默认端口 6001）配置 Server URL。
@@ -66,9 +66,9 @@ docker run -d \
 
 ```bash
 docker run -d \
-  --name glash-agent \
+  --name glash-agent-web \
   -p 6002:6002 \
-  aaasoft/glash-agent:main
+  aaasoft/glash-agent-web:main
 ```
 
 启动后通过 Web 界面（默认端口 6002）配置 Server URL 和代理信息。
@@ -105,9 +105,9 @@ docker run -d \
 version: '3.8'
 
 services:
-  glash-server:
-    image: aaasoft/glash-server:main
-    container_name: glash-server
+  glash-server-web:
+    image: aaasoft/glash-server-web:main
+    container_name: glash-server-web
     ports:
       - "6000:6000"
     environment:
@@ -115,22 +115,22 @@ services:
       - GLASH_ADMIN_PASSWORD=admin_password
     restart: unless-stopped
 
-  glash-client:
-    image: aaasoft/glash-client:main
-    container_name: glash-client
+  glash-client-web:
+    image: aaasoft/glash-client-web:main
+    container_name: glash-client-web
     ports:
       - "6001:6001"
     depends_on:
-      - glash-server
+      - glash-server-web
     restart: unless-stopped
 
-  glash-agent:
-    image: aaasoft/glash-agent:main
-    container_name: glash-agent
+  glash-agent-web:
+    image: aaasoft/glash-agent-web:main
+    container_name: glash-agent-web
     ports:
       - "6002:6002"
     depends_on:
-      - glash-server
+      - glash-server-web
     restart: unless-stopped
 ```
 
@@ -152,17 +152,17 @@ services:
 ### 查看日志
 
 ```bash
-docker logs glash-server
-docker logs glash-client
-docker logs glash-agent
+docker logs glash-server-web
+docker logs glash-client-web
+docker logs glash-agent-web
 ```
 
 ### 进入容器
 
 ```bash
-docker exec -it glash-server /bin/bash
-docker exec -it glash-client /bin/bash
-docker exec -it glash-agent /bin/bash
+docker exec -it glash-server-web /bin/bash
+docker exec -it glash-client-web /bin/bash
+docker exec -it glash-agent-web /bin/bash
 ```
 
 ### 健康检查

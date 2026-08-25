@@ -85,9 +85,9 @@ Glash/
 version: '3.8'
 
 services:
-  glash-server:
-    image: aaasoft/glash-server:main
-    container_name: glash-server
+  glash-server-web:
+    image: aaasoft/glash-server-web:main
+    container_name: glash-server-web
     ports:
       - "6000:6000"
     environment:
@@ -95,22 +95,22 @@ services:
       - GLASH_ADMIN_PASSWORD=admin_password
     restart: unless-stopped
 
-  glash-client:
-    image: aaasoft/glash-client:main
-    container_name: glash-client
+  glash-client-web:
+    image: aaasoft/glash-client-web:main
+    container_name: glash-client-web
     ports:
       - "6001:6001"
     depends_on:
-      - glash-server
+      - glash-server-web
     restart: unless-stopped
 
-  glash-agent:
-    image: aaasoft/glash-agent:main
-    container_name: glash-agent
+  glash-agent-web:
+    image: aaasoft/glash-agent-web:main
+    container_name: glash-agent-web
     ports:
       - "6002:6002"
     depends_on:
-      - glash-server
+      - glash-server-web
     restart: unless-stopped
 ```
 
@@ -207,14 +207,14 @@ GlashClientDesktop 是基于 [Avalonia UI](https://avaloniaui.net/) 的跨平台
 
 | 镜像 | 用途 |
 |------|------|
-| `aaasoft/glash-server` | 服务端 |
-| `aaasoft/glash-client` | 客户端 |
-| `aaasoft/glash-agent` | 代理端 |
+| `aaasoft/glash-server-web` | 服务端 |
+| `aaasoft/glash-client-web` | 客户端 |
+| `aaasoft/glash-agent-web` | 代理端 |
 
 ```bash
-docker pull aaasoft/glash-server:main
-docker pull aaasoft/glash-client:main
-docker pull aaasoft/glash-agent:main
+docker pull aaasoft/glash-server-web:main
+docker pull aaasoft/glash-client-web:main
+docker pull aaasoft/glash-agent-web:main
 ```
 
 ## 相关链接
