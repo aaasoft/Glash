@@ -47,6 +47,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install cross-compilation tools (linux-arm64)
+        if: matrix.rid == 'linux-arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang lld gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
