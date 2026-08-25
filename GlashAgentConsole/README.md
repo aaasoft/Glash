@@ -10,7 +10,7 @@ docker run -d \
   -e GLASH_SERVER_URL=ws://your-server:6000/glash \
   -e GLASH_AGENT_NAME=my_agent \
   -e GLASH_AGENT_PASSWORD=my_password \
-  aaasoft/glash-agent-console:main
+  aaasoft/glash-agent-console:latest
 ```
 
 ## 环境变量
@@ -54,7 +54,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: aaasoft/glash-server-web:main
+    image: aaasoft/glash-server-web:latest
     container_name: glash-server
     ports:
       - "6000:6000"
@@ -63,7 +63,7 @@ services:
     restart: unless-stopped
 
   glash-agent-console:
-    image: aaasoft/glash-agent-console:main
+    image: aaasoft/glash-agent-console:latest
     container_name: glash-agent-console
     environment:
       - GLASH_SERVER_URL=ws://glash-server:6000/glash

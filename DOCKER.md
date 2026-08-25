@@ -30,16 +30,16 @@ Glash 项目提供了四个 Docker 镜像，分别用于部署服务端、客户
 
 ```bash
 # 拉取服务端镜像
-docker pull aaasoft/glash-server-web:main
+docker pull aaasoft/glash-server-web:latest
 
 # 拉取客户端镜像
-docker pull aaasoft/glash-client-web:main
+docker pull aaasoft/glash-client-web:latest
 
 # 拉取代理端镜像
-docker pull aaasoft/glash-agent-web:main
+docker pull aaasoft/glash-agent-web:latest
 
 # 拉取代理端控制台镜像
-docker pull aaasoft/glash-agent-console:main
+docker pull aaasoft/glash-agent-console:latest
 ```
 
 ## 运行容器
@@ -52,7 +52,7 @@ docker run -d \
   -p 6000:6000 \
   -e GLASH_CONNECTION_PASSWORD=your_password \
   -e GLASH_ADMIN_PASSWORD=admin_password \
-  aaasoft/glash-server-web:main
+  aaasoft/glash-server-web:latest
 ```
 
 ### 客户端
@@ -61,7 +61,7 @@ docker run -d \
 docker run -d \
   --name glash-client-web \
   -p 6001:6001 \
-  aaasoft/glash-client-web:main
+  aaasoft/glash-client-web:latest
 ```
 
 启动后通过 Web 界面（默认端口 6001）配置 Server URL。
@@ -72,7 +72,7 @@ docker run -d \
 docker run -d \
   --name glash-agent-web \
   -p 6002:6002 \
-  aaasoft/glash-agent-web:main
+  aaasoft/glash-agent-web:latest
 ```
 
 启动后通过 Web 界面（默认端口 6002）配置 Server URL 和代理信息。
@@ -85,7 +85,7 @@ docker run -d \
   -e GLASH_SERVER_URL=ws://your-server:6000/glash \
   -e GLASH_AGENT_NAME=my_agent \
   -e GLASH_AGENT_PASSWORD=my_password \
-  aaasoft/glash-agent-console:main
+  aaasoft/glash-agent-console:latest
 ```
 
 无 Web UI，通过环境变量配置，适合容器化和自动化部署。
@@ -131,7 +131,7 @@ version: '3.8'
 
 services:
   glash-server-web:
-    image: aaasoft/glash-server-web:main
+    image: aaasoft/glash-server-web:latest
     container_name: glash-server-web
     ports:
       - "6000:6000"
@@ -141,7 +141,7 @@ services:
     restart: unless-stopped
 
   glash-client-web:
-    image: aaasoft/glash-client-web:main
+    image: aaasoft/glash-client-web:latest
     container_name: glash-client-web
     ports:
       - "6001:6001"
@@ -150,7 +150,7 @@ services:
     restart: unless-stopped
 
   glash-agent-web:
-    image: aaasoft/glash-agent-web:main
+    image: aaasoft/glash-agent-web:latest
     container_name: glash-agent-web
     ports:
       - "6002:6002"
@@ -159,7 +159,7 @@ services:
     restart: unless-stopped
 
   glash-agent-console:
-    image: aaasoft/glash-agent-console:main
+    image: aaasoft/glash-agent-console:latest
     container_name: glash-agent-console
     environment:
       - GLASH_SERVER_URL=ws://glash-server-web:6000/glash

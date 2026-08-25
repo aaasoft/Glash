@@ -87,7 +87,7 @@ version: '3.8'
 
 services:
   glash-server-web:
-    image: aaasoft/glash-server-web:main
+    image: aaasoft/glash-server-web:latest
     container_name: glash-server-web
     ports:
       - "6000:6000"
@@ -97,7 +97,7 @@ services:
     restart: unless-stopped
 
   glash-client-web:
-    image: aaasoft/glash-client-web:main
+    image: aaasoft/glash-client-web:latest
     container_name: glash-client-web
     ports:
       - "6001:6001"
@@ -106,7 +106,7 @@ services:
     restart: unless-stopped
 
   glash-agent-web:
-    image: aaasoft/glash-agent-web:main
+    image: aaasoft/glash-agent-web:latest
     container_name: glash-agent-web
     ports:
       - "6002:6002"
@@ -115,7 +115,7 @@ services:
     restart: unless-stopped
 
   glash-agent-console:
-    image: aaasoft/glash-agent-console:main
+    image: aaasoft/glash-agent-console:latest
     container_name: glash-agent-console
     environment:
       - GLASH_SERVER_URL=ws://glash-server-web:6000/glash
@@ -236,10 +236,10 @@ GlashClientDesktop 是基于 [Avalonia UI](https://avaloniaui.net/) 的跨平台
 | `aaasoft/glash-agent-console` | 代理端（控制台版，无 UI） |
 
 ```bash
-docker pull aaasoft/glash-server-web:main
-docker pull aaasoft/glash-client-web:main
-docker pull aaasoft/glash-agent-web:main
-docker pull aaasoft/glash-agent-console:main
+docker pull aaasoft/glash-server-web:latest
+docker pull aaasoft/glash-client-web:latest
+docker pull aaasoft/glash-agent-web:latest
+docker pull aaasoft/glash-agent-console:latest
 ```
 
 ## 相关链接

@@ -8,7 +8,7 @@ Glash Client 是 Glash 反向代理系统的客户端组件，用于管理代理
 docker run -d \
   --name glash-client-web \
   -p 6001:6001 \
-  aaasoft/glash-client-web:main
+  aaasoft/glash-client-web:latest
 ```
 
 启动后通过 Web 界面（默认端口 6001）配置 Server URL。
@@ -44,7 +44,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: aaasoft/glash-server:main
+    image: aaasoft/glash-server:latest
     container_name: glash-server
     ports:
       - "6000:6000"
@@ -53,7 +53,7 @@ services:
     restart: unless-stopped
 
   glash-client-web:
-    image: aaasoft/glash-client-web:main
+    image: aaasoft/glash-client-web:latest
     container_name: glash-client-web
     ports:
       - "6001:6001"
