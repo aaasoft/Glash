@@ -1,21 +1,28 @@
 # Use multi-platform aware base images
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
 WORKDIR /src
 
-# Copy the entire source code into the container
-COPY src/ .
+# Copy project files first for better layer caching
+COPY Glash/Glash.csproj Glash/
+COPY Glash.Blazor.Client/Glash.Blazor.Client.csproj Glash.Blazor.Client/
+COPY GlashClient/GlashClient.csproj GlashClient/
 
 # Restore dependencies first for better caching
-RUN dotnet restore
+RUN dotnet restore GlashClient/GlashClient.csproj
+
+# Copy the entire source code
+COPY Glash/ Glash/
+COPY Glash.Blazor.Client/ Glash.Blazor.Client/
+COPY GlashClient/ GlashClient/
 
 # Build the project for the target platform
 RUN dotnet publish GlashClient/GlashClient.csproj -c Release -o /app --no-restore
 
 # Use multi-platform aware runtime image
-FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
 
