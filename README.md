@@ -65,6 +65,7 @@ Glash/
 ├── GlashServerWeb/              # Server 可执行程序（ASP.NET Core Web）
 ├── GlashClientWeb/              # Client 可执行程序（ASP.NET Core Web）
 ├── GlashAgentWeb/               # Agent 可执行程序（ASP.NET Core Web）
+├── GlashAgentConsole/           # Agent 控制台程序（无 UI，通过环境变量配置）
 │
 ├── Glash.Blazor.Server/      # Server 端 Blazor UI 组件库
 ├── Glash.Blazor.Client/      # Client 端 Blazor UI 组件库
