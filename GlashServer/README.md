@@ -8,7 +8,6 @@ Glash 是一个反向代理服务器，允许你将位于 NAT 或防火墙后面
 docker run -d \
   --name glash-server \
   -p 6000:6000 \
-  -v /path/to/data:/app/data \
   -e GLASH_CONNECTION_PASSWORD=your_password \
   -e GLASH_ADMIN_PASSWORD=admin_password \
   aaasoft/glash-server:main
@@ -45,8 +44,6 @@ services:
     container_name: glash-server
     ports:
       - "6000:6000"
-    volumes:
-      - ./data:/app/data
     environment:
       - GLASH_CONNECTION_PASSWORD=my_secure_password
       - GLASH_ADMIN_PASSWORD=admin_password

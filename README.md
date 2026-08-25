@@ -90,8 +90,6 @@ services:
     container_name: glash-server
     ports:
       - "6000:6000"
-    volumes:
-      - ./server-data:/app/data
     environment:
       - GLASH_CONNECTION_PASSWORD=your_password
       - GLASH_ADMIN_PASSWORD=admin_password
@@ -102,8 +100,6 @@ services:
     container_name: glash-client
     ports:
       - "6001:6001"
-    volumes:
-      - ./client-data:/app/data
     depends_on:
       - glash-server
     restart: unless-stopped
@@ -113,8 +109,6 @@ services:
     container_name: glash-agent
     ports:
       - "6002:6002"
-    volumes:
-      - ./agent-data:/app/data
     depends_on:
       - glash-server
     restart: unless-stopped

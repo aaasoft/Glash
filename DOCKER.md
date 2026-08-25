@@ -46,7 +46,6 @@ docker pull aaasoft/glash-agent:main
 docker run -d \
   --name glash-server \
   -p 6000:6000 \
-  -v /path/to/data:/app/data \
   -e GLASH_CONNECTION_PASSWORD=your_password \
   -e GLASH_ADMIN_PASSWORD=admin_password \
   aaasoft/glash-server:main
@@ -58,7 +57,6 @@ docker run -d \
 docker run -d \
   --name glash-client \
   -p 6001:6001 \
-  -v /path/to/data:/app/data \
   aaasoft/glash-client:main
 ```
 
@@ -70,7 +68,6 @@ docker run -d \
 docker run -d \
   --name glash-agent \
   -p 6002:6002 \
-  -v /path/to/data:/app/data \
   aaasoft/glash-agent:main
 ```
 
@@ -113,8 +110,6 @@ services:
     container_name: glash-server
     ports:
       - "6000:6000"
-    volumes:
-      - ./server-data:/app/data
     environment:
       - GLASH_CONNECTION_PASSWORD=your_password
       - GLASH_ADMIN_PASSWORD=admin_password
@@ -125,8 +120,6 @@ services:
     container_name: glash-client
     ports:
       - "6001:6001"
-    volumes:
-      - ./client-data:/app/data
     depends_on:
       - glash-server
     restart: unless-stopped
@@ -136,8 +129,6 @@ services:
     container_name: glash-agent
     ports:
       - "6002:6002"
-    volumes:
-      - ./agent-data:/app/data
     depends_on:
       - glash-server
     restart: unless-stopped

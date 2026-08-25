@@ -8,7 +8,6 @@ Glash Client 是 Glash 反向代理系统的客户端组件，用于管理代理
 docker run -d \
   --name glash-client \
   -p 6001:6001 \
-  -v /path/to/data:/app/data \
   aaasoft/glash-client:main
 ```
 
@@ -58,8 +57,6 @@ services:
     container_name: glash-client
     ports:
       - "6001:6001"
-    volumes:
-      - ./client-data:/app/data
     depends_on:
       - glash-server
     restart: unless-stopped
