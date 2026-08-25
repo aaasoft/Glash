@@ -41,9 +41,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
-
-app.UseStaticFiles();
-
+app.MapStaticAssets();
 app.UseAntiforgery();
 
 app.MapRazorComponents<GlashAgent.Components.App>()

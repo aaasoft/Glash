@@ -32,8 +32,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-app.UseStaticFiles();
-
+app.MapStaticAssets();
 app.UseAntiforgery();
 
 app.MapRazorComponents<GlashClient.Components.App>()
