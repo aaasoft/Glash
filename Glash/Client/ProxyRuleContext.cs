@@ -61,7 +61,6 @@ namespace Glash.Client
 
         public void Enable()
         {
-            cts?.Cancel();
             cts?.Dispose();
 
             tcpListener?.Stop();
