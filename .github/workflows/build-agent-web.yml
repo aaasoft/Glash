@@ -1,4 +1,4 @@
-name: Build and Publish Agent Docker Image
+name: Build and Publish Agent Web Docker Image
 
 on:
   push:

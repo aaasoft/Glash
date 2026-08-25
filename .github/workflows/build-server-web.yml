@@ -1,4 +1,4 @@
-name: Build and Publish Server Docker Image
+name: Build and Publish Server Web Docker Image
 
 on:
   push:
