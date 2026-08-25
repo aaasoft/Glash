@@ -29,13 +29,13 @@ Glash 项目提供了三个 Docker 镜像，分别用于部署服务端、客户
 
 ```bash
 # 拉取服务端镜像
-docker pull aaasoft/glash-server:latest
+docker pull aaasoft/glash-server:main
 
 # 拉取客户端镜像
-docker pull aaasoft/glash-client:latest
+docker pull aaasoft/glash-client:main
 
 # 拉取代理端镜像
-docker pull aaasoft/glash-agent:latest
+docker pull aaasoft/glash-agent:main
 ```
 
 ## 运行容器
@@ -49,7 +49,7 @@ docker run -d \
   -v /path/to/data:/app/data \
   -e GLASH_CONNECTION_PASSWORD=your_password \
   -e GLASH_ADMIN_PASSWORD=admin_password \
-  aaasoft/glash-server:latest
+  aaasoft/glash-server:main
 ```
 
 ### 客户端
@@ -59,7 +59,7 @@ docker run -d \
   --name glash-client \
   -p 6001:6001 \
   -v /path/to/data:/app/data \
-  aaasoft/glash-client:latest
+  aaasoft/glash-client:main
 ```
 
 启动后通过 Web 界面（默认端口 6001）配置 Server URL。
@@ -71,7 +71,7 @@ docker run -d \
   --name glash-agent \
   -p 6002:6002 \
   -v /path/to/data:/app/data \
-  aaasoft/glash-agent:latest
+  aaasoft/glash-agent:main
 ```
 
 启动后通过 Web 界面（默认端口 6002）配置 Server URL 和代理信息。
@@ -109,7 +109,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: aaasoft/glash-server:latest
+    image: aaasoft/glash-server:main
     container_name: glash-server
     ports:
       - "6000:6000"
@@ -121,7 +121,7 @@ services:
     restart: unless-stopped
 
   glash-client:
-    image: aaasoft/glash-client:latest
+    image: aaasoft/glash-client:main
     container_name: glash-client
     ports:
       - "6001:6001"
@@ -132,7 +132,7 @@ services:
     restart: unless-stopped
 
   glash-agent:
-    image: aaasoft/glash-agent:latest
+    image: aaasoft/glash-agent:main
     container_name: glash-agent
     ports:
       - "6002:6002"

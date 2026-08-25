@@ -11,7 +11,7 @@ docker run -d \
   -v /path/to/data:/app/data \
   -e GLASH_CONNECTION_PASSWORD=your_password \
   -e GLASH_ADMIN_PASSWORD=admin_password \
-  aaasoft/glash-server:latest
+  aaasoft/glash-server:main
 ```
 
 ## 环境变量
@@ -41,7 +41,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: aaasoft/glash-server:latest
+    image: aaasoft/glash-server:main
     container_name: glash-server
     ports:
       - "6000:6000"

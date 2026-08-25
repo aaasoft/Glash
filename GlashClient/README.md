@@ -9,7 +9,7 @@ docker run -d \
   --name glash-client \
   -p 6001:6001 \
   -v /path/to/data:/app/data \
-  aaasoft/glash-client:latest
+  aaasoft/glash-client:main
 ```
 
 启动后通过 Web 界面（默认端口 6001）配置 Server URL。
@@ -45,7 +45,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: aaasoft/glash-server:latest
+    image: aaasoft/glash-server:main
     container_name: glash-server
     ports:
       - "6000:6000"
@@ -54,7 +54,7 @@ services:
     restart: unless-stopped
 
   glash-client:
-    image: aaasoft/glash-client:latest
+    image: aaasoft/glash-client:main
     container_name: glash-client
     ports:
       - "6001:6001"

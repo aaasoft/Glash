@@ -86,7 +86,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: aaasoft/glash-server:latest
+    image: aaasoft/glash-server:main
     container_name: glash-server
     ports:
       - "6000:6000"
@@ -98,7 +98,7 @@ services:
     restart: unless-stopped
 
   glash-client:
-    image: aaasoft/glash-client:latest
+    image: aaasoft/glash-client:main
     container_name: glash-client
     ports:
       - "6001:6001"
@@ -109,7 +109,7 @@ services:
     restart: unless-stopped
 
   glash-agent:
-    image: aaasoft/glash-agent:latest
+    image: aaasoft/glash-agent:main
     container_name: glash-agent
     ports:
       - "6002:6002"
@@ -218,9 +218,9 @@ GlashClientDesktop 是基于 [Avalonia UI](https://avaloniaui.net/) 的跨平台
 | `aaasoft/glash-agent` | 代理端 |
 
 ```bash
-docker pull aaasoft/glash-server:latest
-docker pull aaasoft/glash-client:latest
-docker pull aaasoft/glash-agent:latest
+docker pull aaasoft/glash-server:main
+docker pull aaasoft/glash-client:main
+docker pull aaasoft/glash-agent:main
 ```
 
 ## 相关链接
