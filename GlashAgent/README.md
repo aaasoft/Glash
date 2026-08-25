@@ -9,9 +9,10 @@ docker run -d \
   --name glash-agent \
   -p 6002:6002 \
   -v /path/to/data:/app/data \
-  -e GLASH_CONNECTION_PASSWORD=server_password \
-  yourusername/glash-agent:latest
+  aaasoft/glash-agent:latest
 ```
+
+启动后通过 Web 界面（默认端口 6002）配置 Server URL 和代理信息。
 
 ## 环境变量
 
@@ -45,7 +46,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: yourusername/glash-server:latest
+    image: aaasoft/glash-server:latest
     container_name: glash-server
     ports:
       - "6000:6000"
@@ -54,13 +55,18 @@ services:
     restart: unless-stopped
 
   glash-agent:
-    image: yourusername/glash-agent:latest
+    image: aaasoft/glash-agent:latest
     container_name: glash-agent
-    environment:
-      - GLASH_CONNECTION_PASSWORD=my_secure_password
+    ports:
+      - "6002:6002"
+    volumes:
+      - ./agent-data:/app/data
     depends_on:
       - glash-server
     restart: unless-stopped
+```
+
+启动后通过 Web 界面（默认端口 6002）配置 Server URL 和代理信息。
 ```
 
 ## 更多信息

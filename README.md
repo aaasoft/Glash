@@ -104,8 +104,6 @@ services:
       - "6001:6001"
     volumes:
       - ./client-data:/app/data
-    environment:
-      - GLASH_SERVER_URL=ws://glash-server:6000/glash
     depends_on:
       - glash-server
     restart: unless-stopped
@@ -113,15 +111,18 @@ services:
   glash-agent:
     image: aaasoft/glash-agent:latest
     container_name: glash-agent
+    ports:
+      - "6002:6002"
     volumes:
       - ./agent-data:/app/data
-    environment:
-      - GLASH_SERVER_URL=ws://glash-server:6000/glash
-      - GLASH_AGENT_NAME=my_agent
-      - GLASH_AGENT_PASSWORD=agent_password
     depends_on:
       - glash-server
     restart: unless-stopped
+```
+
+启动后通过各自的 Web 界面配置 Server URL：
+- Client：`http://localhost:6001`
+- Agent：`http://localhost:6002`
 ```
 
 ```bash

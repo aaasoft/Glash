@@ -29,13 +29,13 @@ Glash 项目提供了三个 Docker 镜像，分别用于部署服务端、客户
 
 ```bash
 # 拉取服务端镜像
-docker pull yourusername/glash-server:latest
+docker pull aaasoft/glash-server:latest
 
 # 拉取客户端镜像
-docker pull yourusername/glash-client:latest
+docker pull aaasoft/glash-client:latest
 
 # 拉取代理端镜像
-docker pull yourusername/glash-agent:latest
+docker pull aaasoft/glash-agent:latest
 ```
 
 ## 运行容器
@@ -49,7 +49,7 @@ docker run -d \
   -v /path/to/data:/app/data \
   -e GLASH_CONNECTION_PASSWORD=your_password \
   -e GLASH_ADMIN_PASSWORD=admin_password \
-  yourusername/glash-server:latest
+  aaasoft/glash-server:latest
 ```
 
 ### 客户端
@@ -59,9 +59,10 @@ docker run -d \
   --name glash-client \
   -p 6001:6001 \
   -v /path/to/data:/app/data \
-  -e GLASH_SERVER_URL=ws://your-server:6000/glash \
-  yourusername/glash-client:latest
+  aaasoft/glash-client:latest
 ```
+
+启动后通过 Web 界面（默认端口 6001）配置 Server URL。
 
 ### 代理端
 
@@ -70,11 +71,10 @@ docker run -d \
   --name glash-agent \
   -p 6002:6002 \
   -v /path/to/data:/app/data \
-  -e GLASH_SERVER_URL=ws://your-server:6000/glash \
-  -e GLASH_AGENT_NAME=your_agent_name \
-  -e GLASH_AGENT_PASSWORD=your_agent_password \
-  yourusername/glash-agent:latest
+  aaasoft/glash-agent:latest
 ```
+
+启动后通过 Web 界面（默认端口 6002）配置 Server URL 和代理信息。
 
 ## 环境变量
 
@@ -91,17 +91,16 @@ docker run -d \
 
 | 变量名 | 说明 | 默认值 |
 |-------|------|-------|
-| `GLASH_SERVER_URL` | 服务器地址 | - |
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
+| `HTTP_PORTS` | 监听端口 | `6001` |
 
 ### 代理端环境变量
 
 | 变量名 | 说明 | 默认值 |
 |-------|------|-------|
-| `GLASH_SERVER_URL` | 服务器地址 | - |
-| `GLASH_AGENT_NAME` | 代理名称 | - |
-| `GLASH_AGENT_PASSWORD` | 代理密码 | - |
+| `GLASH_ADMIN_PASSWORD` | 管理员密码 | 空 |
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
+| `HTTP_PORTS` | 监听端口 | `6002` |
 
 ## Docker Compose 示例
 
@@ -110,7 +109,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: yourusername/glash-server:latest
+    image: aaasoft/glash-server:latest
     container_name: glash-server
     ports:
       - "6000:6000"
@@ -122,29 +121,23 @@ services:
     restart: unless-stopped
 
   glash-client:
-    image: yourusername/glash-client:latest
+    image: aaasoft/glash-client:latest
     container_name: glash-client
     ports:
       - "6001:6001"
     volumes:
       - ./client-data:/app/data
-    environment:
-      - GLASH_SERVER_URL=ws://glash-server:6000/glash
     depends_on:
       - glash-server
     restart: unless-stopped
 
   glash-agent:
-    image: yourusername/glash-agent:latest
+    image: aaasoft/glash-agent:latest
     container_name: glash-agent
     ports:
       - "6002:6002"
     volumes:
       - ./agent-data:/app/data
-    environment:
-      - GLASH_SERVER_URL=ws://glash-server:6000/glash
-      - GLASH_AGENT_NAME=your_agent_name
-      - GLASH_AGENT_PASSWORD=your_agent_password
     depends_on:
       - glash-server
     restart: unless-stopped

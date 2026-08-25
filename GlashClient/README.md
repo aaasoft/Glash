@@ -9,9 +9,10 @@ docker run -d \
   --name glash-client \
   -p 6001:6001 \
   -v /path/to/data:/app/data \
-  -e GLASH_CONNECTION_PASSWORD=server_password \
-  yourusername/glash-client:latest
+  aaasoft/glash-client:latest
 ```
+
+启动后通过 Web 界面（默认端口 6001）配置 Server URL。
 
 ## 环境变量
 
@@ -44,7 +45,7 @@ version: '3.8'
 
 services:
   glash-server:
-    image: yourusername/glash-server:latest
+    image: aaasoft/glash-server:latest
     container_name: glash-server
     ports:
       - "6000:6000"
@@ -53,16 +54,18 @@ services:
     restart: unless-stopped
 
   glash-client:
-    image: yourusername/glash-client:latest
+    image: aaasoft/glash-client:latest
     container_name: glash-client
     ports:
       - "6001:6001"
-    environment:
-      - GLASH_CONNECTION_PASSWORD=my_secure_password
+    volumes:
+      - ./client-data:/app/data
     depends_on:
       - glash-server
     restart: unless-stopped
 ```
+
+启动后通过 Web 界面（默认端口 6001）配置 Server URL。
 
 ## 更多信息
 
