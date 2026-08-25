@@ -56,7 +56,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 
-app.UseRouting();
+app.UseAntiforgery();
 
 app.MapRazorComponents<GlashServer.Components.App>()
     .AddInteractiveServerRenderMode();
