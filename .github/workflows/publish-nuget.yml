@@ -12,7 +12,6 @@ on:
         type: string
 
 env:
-  PROJECT_PATH: Glash/Glash.csproj
   DOTNET_VERSION: '10.0.x'
 
 jobs:
@@ -45,11 +44,10 @@ jobs:
           echo "Publishing version: $VERSION (tag: $TAG)"
 
       - name: Pack
-        run: >
-          dotnet pack ${{ env.PROJECT_PATH }}
-          -c Release
-          -p:PackageVersion=${{ steps.version.outputs.version }}
-          -o packages
+        run: |
+          for proj in Glash/Glash.csproj Glash.Blazor.Agent/Glash.Blazor.Agent.csproj Glash.Blazor.Client/Glash.Blazor.Client.csproj Glash.Blazor.Server/Glash.Blazor.Server.csproj; do
+            dotnet pack "$proj" -c Release -p:PackageVersion=${{ steps.version.outputs.version }} -o packages
+          done
 
       - name: List packages
         run: ls -lh packages/
