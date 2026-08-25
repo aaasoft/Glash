@@ -38,7 +38,7 @@ ENV LC_ALL=zh_CN.UTF-8
 # Set default ASP.NET Core environment
 ENV ASPNETCORE_ENVIRONMENT=Production
 # Set default listening port
-ENV HTTP_PORTS=6000
+ENV ASPNETCORE_HTTP_PORTS=6000
 # Set default database file path
 ENV GLASH_DB_FILE_PATH=Config.litedb
 # Set default Glash server path

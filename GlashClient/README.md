@@ -19,7 +19,7 @@ docker run -d \
 | 变量名 | 说明 | 默认值 |
 |-------|------|-------|
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
-| `HTTP_PORTS` | 监听端口 | `6001` |
+| `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6001` |
 
 ## 架构说明
 

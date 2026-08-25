@@ -92,7 +92,7 @@ docker run -d \
 | 变量名 | 说明 | 默认值 |
 |-------|------|-------|
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
-| `HTTP_PORTS` | 监听端口 | `6001` |
+| `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6001` |
 
 ### 代理端环境变量
 
@@ -100,7 +100,7 @@ docker run -d \
 |-------|------|-------|
 | `GLASH_ADMIN_PASSWORD` | 管理员密码 | 空 |
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
-| `HTTP_PORTS` | 监听端口 | `6002` |
+| `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6002` |
 
 ## Docker Compose 示例
 

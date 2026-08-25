@@ -164,14 +164,14 @@ dotnet add package Glash
 | `GLASH_ADMIN_PASSWORD` | 管理员密码 | 空 |
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
 | `GLASH_SERVER_PATH` | WebSocket 服务路径 | `/glash` |
-| `HTTP_PORTS` | 监听端口 | `6000` |
+| `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6000` |
 
 ### Client
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
-| `HTTP_PORTS` | 监听端口 | `6001` |
+| `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6001` |
 
 ### Agent
 
@@ -179,7 +179,7 @@ dotnet add package Glash
 |--------|------|--------|
 | `GLASH_ADMIN_PASSWORD` | 管理员密码 | 空 |
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
-| `HTTP_PORTS` | 监听端口 | `6002` |
+| `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6002` |
 
 ## 桌面客户端
 
