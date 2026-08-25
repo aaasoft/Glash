@@ -1,4 +1,4 @@
-name: Build and Publish Server Web Docker Image
+name: Build and Publish Docker Images
 
 on:
   push:
@@ -8,23 +8,32 @@ on:
       - 'v*'
     paths:
       - 'Glash/**'
+      - 'GlashAgentConsole/**'
+      - 'GlashAgentWeb/**'
+      - 'GlashClientWeb/**'
       - 'GlashServerWeb/**'
+      - 'Glash.Blazor.Agent/**'
+      - 'Glash.Blazor.Client/**'
       - 'Glash.Blazor.Server/**'
-      - '.github/workflows/build-server.yml'
+      - '.github/workflows/publish-docker.yml'
   pull_request:
     branches:
       - main
     paths:
       - 'Glash/**'
+      - 'GlashAgentConsole/**'
+      - 'GlashAgentWeb/**'
+      - 'GlashClientWeb/**'
       - 'GlashServerWeb/**'
+      - 'Glash.Blazor.Agent/**'
+      - 'Glash.Blazor.Client/**'
       - 'Glash.Blazor.Server/**'
-      - '.github/workflows/build-server.yml'
+      - '.github/workflows/publish-docker.yml'
   workflow_dispatch:
 
 env:
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-  IMAGE_NAME: glash-server-web
 
 jobs:
   build:
@@ -32,6 +41,22 @@ jobs:
     permissions:
       contents: read
       packages: write
+
+    strategy:
+      matrix:
+        include:
+          - image: glash-agent-console
+            dockerfile: ./GlashAgentConsole/Dockerfile
+            readme: ./GlashAgentConsole/README.md
+          - image: glash-agent-web
+            dockerfile: ./GlashAgentWeb/Dockerfile
+            readme: ./GlashAgentWeb/README.md
+          - image: glash-client-web
+            dockerfile: ./GlashClientWeb/Dockerfile
+            readme: ./GlashClientWeb/README.md
+          - image: glash-server-web
+            dockerfile: ./GlashServerWeb/Dockerfile
+            readme: ./GlashServerWeb/README.md
 
     steps:
       - name: Checkout repository
@@ -50,7 +75,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.DOCKERHUB_USERNAME }}/${{ matrix.image }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -61,7 +86,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./GlashServerWeb/Dockerfile
+          file: ${{ matrix.dockerfile }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -75,5 +100,5 @@ jobs:
         with:
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ env.DOCKERHUB_TOKEN }}
-          repository: ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
-          readme-filepath: ./GlashServerWeb/README.md
+          repository: ${{ env.DOCKERHUB_USERNAME }}/${{ matrix.image }}
+          readme-filepath: ${{ matrix.readme }}
