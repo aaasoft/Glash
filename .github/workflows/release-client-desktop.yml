@@ -82,6 +82,10 @@ jobs:
           -p:Version=${{ steps.version.outputs.version }}
           -o publish/${{ matrix.rid }}
 
+      - name: Remove PDB files
+        shell: bash
+        run: find publish/${{ matrix.rid }} -name '*.pdb' -delete
+
       - name: Package (zip)
         if: matrix.archive == 'zip'
         shell: pwsh
