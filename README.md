@@ -62,9 +62,9 @@ Glash/
 │   ├── Server/               # Server 端协议与实现
 │   └── Core/                 # 共享核心类（隧道、加密等）
 │
-├── GlashServer/              # Server 可执行程序（ASP.NET Core Web）
-├── GlashClient/              # Client 可执行程序（ASP.NET Core Web）
-├── GlashAgent/               # Agent 可执行程序（ASP.NET Core Web）
+├── GlashServerWeb/              # Server 可执行程序（ASP.NET Core Web）
+├── GlashClientWeb/              # Client 可执行程序（ASP.NET Core Web）
+├── GlashAgentWeb/               # Agent 可执行程序（ASP.NET Core Web）
 │
 ├── Glash.Blazor.Server/      # Server 端 Blazor UI 组件库
 ├── Glash.Blazor.Client/      # Client 端 Blazor UI 组件库
