@@ -52,6 +52,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y clang lld gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+          # Replace default objcopy with cross-version so .NET Native AOT can process ARM64 binaries
+          sudo update-alternatives --install /usr/bin/objcopy objcopy /usr/bin/aarch64-linux-gnu-objcopy 100
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
