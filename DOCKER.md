@@ -2,7 +2,7 @@
 
 ## 概述
 
-Glash 项目提供了三个 Docker 镜像，分别用于部署服务端、客户端和代理端。
+Glash 项目提供了四个 Docker 镜像，分别用于部署服务端、客户端和代理端。
 
 ## 镜像说明
 
@@ -11,6 +11,7 @@ Glash 项目提供了三个 Docker 镜像，分别用于部署服务端、客户
 | `glash-server-web` | Glash 服务端 | 6000 |
 | `glash-client-web` | Glash 客户端 | 6001 |
 | `glash-agent-web` | Glash 代理端 | 6002 |
+| `glash-agent-console` | Glash 代理端（控制台版，无 UI） | - |
 
 ## 快速开始
 
@@ -36,6 +37,9 @@ docker pull aaasoft/glash-client-web:main
 
 # 拉取代理端镜像
 docker pull aaasoft/glash-agent-web:main
+
+# 拉取代理端控制台镜像
+docker pull aaasoft/glash-agent-console:main
 ```
 
 ## 运行容器
@@ -73,6 +77,19 @@ docker run -d \
 
 启动后通过 Web 界面（默认端口 6002）配置 Server URL 和代理信息。
 
+### 代理端（控制台版）
+
+```bash
+docker run -d \
+  --name glash-agent-console \
+  -e GLASH_SERVER_URL=ws://your-server:6000/glash \
+  -e GLASH_AGENT_NAME=my_agent \
+  -e GLASH_AGENT_PASSWORD=my_password \
+  aaasoft/glash-agent-console:main
+```
+
+无 Web UI，通过环境变量配置，适合容器化和自动化部署。
+
 ## 环境变量
 
 ### 服务端环境变量
@@ -98,6 +115,14 @@ docker run -d \
 | `GLASH_ADMIN_PASSWORD` | 管理员密码 | 空 |
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
 | `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6002` |
+
+### 代理端控制台环境变量
+
+| 变量名 | 说明 | 是否必须 |
+|-------|------|---------|
+| `GLASH_SERVER_URL` | 服务端连接 URL（如 `ws://server:6000/glash`） | 是 |
+| `GLASH_AGENT_NAME` | 代理名称 | 是 |
+| `GLASH_AGENT_PASSWORD` | 代理密码 | 是 |
 
 ## Docker Compose 示例
 
@@ -132,6 +157,17 @@ services:
     depends_on:
       - glash-server-web
     restart: unless-stopped
+
+  glash-agent-console:
+    image: aaasoft/glash-agent-console:main
+    container_name: glash-agent-console
+    environment:
+      - GLASH_SERVER_URL=ws://glash-server-web:6000/glash
+      - GLASH_AGENT_NAME=my_agent
+      - GLASH_AGENT_PASSWORD=my_password
+    depends_on:
+      - glash-server-web
+    restart: unless-stopped
 ```
 
 ## 多平台支持
@@ -155,6 +191,7 @@ services:
 docker logs glash-server-web
 docker logs glash-client-web
 docker logs glash-agent-web
+docker logs glash-agent-console
 ```
 
 ### 进入容器
@@ -163,6 +200,7 @@ docker logs glash-agent-web
 docker exec -it glash-server-web /bin/bash
 docker exec -it glash-client-web /bin/bash
 docker exec -it glash-agent-web /bin/bash
+docker exec -it glash-agent-console /bin/bash
 ```
 
 ### 健康检查
