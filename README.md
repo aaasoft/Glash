@@ -113,6 +113,17 @@ services:
     depends_on:
       - glash-server-web
     restart: unless-stopped
+
+  glash-agent-console:
+    image: aaasoft/glash-agent-console:main
+    container_name: glash-agent-console
+    environment:
+      - GLASH_SERVER_URL=ws://glash-server-web:6000/glash
+      - GLASH_AGENT_NAME=my_agent
+      - GLASH_AGENT_PASSWORD=my_password
+    depends_on:
+      - glash-server-web
+    restart: unless-stopped
 ```
 
 启动后通过各自的 Web 界面配置 Server URL：
@@ -137,8 +148,11 @@ dotnet run --project GlashServer
 # 构建并运行 Client
 dotnet run --project GlashClient
 
-# 构建并运行 Agent
-dotnet run --project GlashAgent
+# 构建并运行 Agent（Web 版）
+dotnet run --project GlashAgentWeb
+
+# 构建并运行 Agent（控制台版）
+dotnet run --project GlashAgentConsole
 ```
 
 ### 方式三：NuGet 集成
@@ -176,6 +190,14 @@ dotnet add package Glash
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
 | `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6002` |
 
+### Agent Console
+
+| 变量名 | 说明 | 是否必须 |
+|--------|------|---------|
+| `GLASH_SERVER_URL` | 服务端连接 URL（如 `ws://server:6000/glash`） | 是 |
+| `GLASH_AGENT_NAME` | 代理名称 | 是 |
+| `GLASH_AGENT_PASSWORD` | 代理密码 | 是 |
+
 ## 桌面客户端
 
 GlashClientDesktop 是基于 [Avalonia UI](https://avaloniaui.net/) 的跨平台桌面客户端，提供以下功能：
@@ -211,11 +233,13 @@ GlashClientDesktop 是基于 [Avalonia UI](https://avaloniaui.net/) 的跨平台
 | `aaasoft/glash-server-web` | 服务端 |
 | `aaasoft/glash-client-web` | 客户端 |
 | `aaasoft/glash-agent-web` | 代理端 |
+| `aaasoft/glash-agent-console` | 代理端（控制台版，无 UI） |
 
 ```bash
 docker pull aaasoft/glash-server-web:main
 docker pull aaasoft/glash-client-web:main
 docker pull aaasoft/glash-agent-web:main
+docker pull aaasoft/glash-agent-console:main
 ```
 
 ## 相关链接
