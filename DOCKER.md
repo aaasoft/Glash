@@ -97,7 +97,7 @@ docker run -d \
 | 变量名 | 说明 | 默认值 |
 |-------|------|-------|
 | `GLASH_CONNECTION_PASSWORD` | 连接密码 | 自动生成 |
-| `GLASH_ADMIN_PASSWORD` | 管理员密码 | 空 |
+| `GLASH_ADMIN_PASSWORD` | 管理员密码 | `admin` |
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
 | `GLASH_SERVER_PATH` | 服务器路径 | `/glash` |
 
@@ -112,7 +112,7 @@ docker run -d \
 
 | 变量名 | 说明 | 默认值 |
 |-------|------|-------|
-| `GLASH_ADMIN_PASSWORD` | 管理员密码 | 空 |
+| `GLASH_ADMIN_PASSWORD` | 管理员密码 | `admin` |
 | `GLASH_DB_FILE_PATH` | 数据库文件路径 | `Config.litedb` |
 | `ASPNETCORE_HTTP_PORTS` | 监听端口 | `6002` |
 
