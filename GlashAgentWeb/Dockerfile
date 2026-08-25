@@ -19,21 +19,24 @@ COPY Glash.Blazor.Agent/ Glash.Blazor.Agent/
 COPY GlashAgentWeb/ GlashAgentWeb/
 
 # Build the project for the target platform
-RUN dotnet publish GlashAgentWeb/GlashAgentWeb.csproj -c Release -o /app --no-restore
+RUN dotnet publish GlashAgentWeb/GlashAgentWeb.csproj \
+    -c Release \
+    -o /app \
+    --no-restore \
+    -p:DebugType=None \
+    -p:DebugSymbols=false
 
 # Use multi-platform aware runtime image
 FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
 
-# Set default timezone to Shanghai
-ENV TZ=Asia/Shanghai
+# Set default timezone and language in one layer
+ENV TZ=Asia/Shanghai \
+    LANG=zh_CN.UTF-8 \
+    LANGUAGE=zh_CN:zh \
+    LC_ALL=zh_CN.UTF-8
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Set default language to Chinese
-ENV LANG=zh_CN.UTF-8
-ENV LANGUAGE=zh_CN:zh
-ENV LC_ALL=zh_CN.UTF-8
 
 # Set default ASP.NET Core environment
 ENV ASPNETCORE_ENVIRONMENT=Production
