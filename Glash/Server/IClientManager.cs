@@ -4,7 +4,7 @@
     {
         bool Login(LoginInfo loginInfo);
         Client.Protocol.QpModel.AgentInfo[] GetClientRelateAgents(string clientName);
-        bool IsClientRelateAgent(string clientName, string agnetName);
+        bool IsClientRelateAgent(string clientName, string agentName);
         Client.Protocol.QpModel.ProxyRuleInfo[] GetProxyRuleList(string clientName, string agentName);
         Glash.Client.Protocol.QpModel.ProxyRuleInfo GetProxyRule(string clientName, string proxyRuleId);
         Client.Protocol.QpModel.ProxyRuleInfo SaveProxyRule(string clientName, Client.Protocol.QpModel.ProxyRuleInfo proxyRule);

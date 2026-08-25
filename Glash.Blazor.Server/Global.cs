@@ -212,13 +212,13 @@ namespace Glash.Blazor.Server
                 .ToArray();
         }
 
-        bool IClientManager.IsClientRelateAgent(string clientName, string agnetName)
+        bool IClientManager.IsClientRelateAgent(string clientName, string agentName)
         {
             var model = ConfigDbContext.CacheContext
                 .Find(new Model.ClientAgentRelation()
                 {
                     ClientName = clientName,
-                    AgentName = agnetName
+                    AgentName = agentName
                 });
             return model != null;
         }
