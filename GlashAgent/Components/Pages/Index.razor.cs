@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Quick.Blazor.Bootstrap;
 using Quick.Localize;
 
-namespace GlashAgent.Pages
+namespace GlashAgent.Components.Pages
 {
     public partial class Index : ComponentBase_WithGettextSupport
     {

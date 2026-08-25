@@ -4,16 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using Quick.Blazor.Bootstrap;
 using Quick.Localize;
 
-namespace GlashClient.Pages
+namespace GlashServer.Components.Pages
 {
     public partial class Index : ComponentBase_WithGettextSupport
     {
-        private static string TextTitle => Locale<Index>.GetString("Glash Client");
+        private static string TextTitle => Locale<Index>.GetString("Glash Server");
+        private static string TextBasic => Locale<Index>.GetString("Basic");
+        private static string TextAgentManage => Locale<Index>.GetString("Agent Manage");
+        private static string TextClientManage => Locale<Index>.GetString("Client Manage");
+        private static string TextTunnelManage => Locale<Index>.GetString("Tunnel Manage");
         private static string TextLoginPasswordManage => Locale<Index>.GetString("Login Password Manage");
-        private static string TextProfileManage => Locale<Index>.GetString("Connection Manage");
         private static string TextPleaseInputPassword => Locale<Index>.GetString("Please input password");
         private static string TextLogin => Locale<Index>.GetString("Login");
-        
         public bool IsLogin { get; private set; } = false;
         public string Message { get; private set; }
         private string CorrectPassword => Core.LoginPasswordManager.Instance.LoginPassword;
@@ -29,7 +31,6 @@ namespace GlashClient.Pages
             Body = Quick.Blazor.Bootstrap.Utils.BlazorUtils.GetRenderFragment<T>();
         }
 
-
 #if DEBUG
         protected override void OnInitialized()
         {
@@ -42,7 +43,7 @@ namespace GlashClient.Pages
         {
             if (!IsLogin && CorrectPassword != Password)
             {
-                Message = Locale<Index>.GetString("Password is wrong");
+                Message = Locale<Index>.GetString("Password is wrong.");
                 return;
             }
             IsLogin = true;

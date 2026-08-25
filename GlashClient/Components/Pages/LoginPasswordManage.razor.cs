@@ -2,7 +2,7 @@
 using Quick.Utils;
 using System.ComponentModel.DataAnnotations;
 
-namespace GlashClient.Pages;
+namespace GlashClient.Components.Pages;
 
 public partial class LoginPasswordManage
 {
