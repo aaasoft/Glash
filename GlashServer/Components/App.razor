@@ -3,9 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark">
     <base href="./" />
-    <link href="css/site.css" rel="stylesheet" />
-    <link href="GlashServer.styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["GlashServer.styles.css"]" />
+    <ImportMap />
     <HeadOutlet @rendermode="@RenderMode.InteractiveServer" />
 </head>
 <body>
