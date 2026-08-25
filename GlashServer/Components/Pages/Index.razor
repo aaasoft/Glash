@@ -10,12 +10,6 @@
             @TextTitle
         </Title>
         <ChildContent>
-            <NavMenuItem Key="LoginPasswordManage" OnClick="@(() => Show<LoginPasswordManage>())">
-                <Tab>
-                    <i class="fa fa-key" aria-hidden="true"></i>
-                    @TextLoginPasswordManage
-                </Tab>
-            </NavMenuItem>
             <NavMenuItem Key="Basic" OnClick="@(() => Show<Basic>())">
                 <Tab>
                     <i class="fa fa-tachometer" aria-hidden="true"></i>
@@ -38,6 +32,12 @@
                 <Tab>
                     <i class="fa fa-plug" aria-hidden="true"></i>
                     @TextTunnelManage
+                </Tab>
+            </NavMenuItem>
+            <NavMenuItem Key="LoginPasswordManage" OnClick="@(() => Show<LoginPasswordManage>())">
+                <Tab>
+                    <i class="fa fa-key" aria-hidden="true"></i>
+                    @TextLoginPasswordManage
                 </Tab>
             </NavMenuItem>
         </ChildContent>

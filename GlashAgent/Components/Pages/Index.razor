@@ -8,18 +8,18 @@
                 @TextTitle
             </Title>
             <ChildContent>
-                <NavMenuItem Key="LoginPasswordManage" OnClick="@(() => Show<LoginPasswordManage>())">
-                    <Tab>
-                        <i class="fa fa-key" aria-hidden="true"></i>
-                        @TextLoginPasswordManage
-                    </Tab>
-                </NavMenuItem>
                 <NavMenuItem Key="ProfileManage" OnClick="@(() => Show<ProfileManage>())">
                     <Tab>
                         <i class="fa fa-address-book" aria-hidden="true"></i>
                         @TextProfileManage
                     </Tab>
                 </NavMenuItem>
+                <NavMenuItem Key="LoginPasswordManage" OnClick="@(() => Show<LoginPasswordManage>())">
+                    <Tab>
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                        @TextLoginPasswordManage
+                    </Tab>
+                </NavMenuItem>                
             </ChildContent>
         </NavMenu>
     </div>
