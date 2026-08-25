@@ -1,6 +1,7 @@
 using Glash.Blazor.Client;
 using Quick.LiteDB.Plus;
 
+Quick.Protocol.Tcp.QpTcpClientOptions.RegisterUriSchema();
 Quick.Protocol.WebSocket.Client.QpWebSocketClientOptions.RegisterUriSchema();
 Quick.Protocol.Http.Client.QpHttpClientOptions.RegisterUriSchema();
 

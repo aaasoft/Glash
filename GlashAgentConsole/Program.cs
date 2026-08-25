@@ -1,5 +1,9 @@
 using Glash.Agent;
 
+Quick.Protocol.Tcp.QpTcpClientOptions.RegisterUriSchema();
+Quick.Protocol.WebSocket.Client.QpWebSocketClientOptions.RegisterUriSchema();
+Quick.Protocol.Http.Client.QpHttpClientOptions.RegisterUriSchema();
+
 // Read environment variables
 var serverUrl = Environment.GetEnvironmentVariable("GLASH_SERVER_URL");
 var agentName = Environment.GetEnvironmentVariable("GLASH_AGENT_NAME");

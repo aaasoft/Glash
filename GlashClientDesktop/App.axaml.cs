@@ -23,8 +23,10 @@ namespace GlashClientDesktop
             {
                 try
                 {
+                    Quick.Protocol.Tcp.QpTcpClientOptions.RegisterUriSchema();
                     Quick.Protocol.WebSocket.Client.QpWebSocketClientOptions.RegisterUriSchema();
                     Quick.Protocol.Http.Client.QpHttpClientOptions.RegisterUriSchema();
+
                     ProxyTypeManager.Instance.Init();
                     ConfigDbContext.Init("Config.litedb", modelBuilder =>
                     {
