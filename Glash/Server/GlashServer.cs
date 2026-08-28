@@ -334,6 +334,9 @@ namespace Glash.Server
                     tunnelInfo.AgentTunnelPackageType = agentContext.Channel.GetUnusedPackageType();
                 }
                 await agentContext.CreateTunnelAsync(tunnelInfo);
+                //如果Agent不支持包类型，则客户端也不用包类型
+                if (tunnelInfo.AgentTunnelPackageType == 0)
+                    tunnelInfo.ClientTunnelPackageType = 0;
                 tunnel = new GlashServerTunnelContext(
                     tunnelInfo,
                     clientContext,
