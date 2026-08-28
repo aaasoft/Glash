@@ -301,6 +301,7 @@ namespace Glash.Server
                 Host = proxyRule.RemoteHost,
                 Port = proxyRule.RemotePort
             };
+            GlashServerTunnelContext tunnel = null;
             try
             {
                 await createTunnelLock.WaitAsync();
@@ -327,11 +328,12 @@ namespace Glash.Server
                 GlashAgentContext agentContext = null;
                 if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
                     throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not login.");
-                    
-                tunnelInfo.ClientTunnelPackageType = request.ClientTunnelPackageType;
-                tunnelInfo.AgentTunnelPackageType = agentContext.Channel.GetUnusedPackageType();
+                if (request.ClientTunnelPackageType > 0)
+                {
+                    tunnelInfo.ClientTunnelPackageType = request.ClientTunnelPackageType;
+                    tunnelInfo.AgentTunnelPackageType = agentContext.Channel.GetUnusedPackageType();
+                }
                 await agentContext.CreateTunnelAsync(tunnelInfo);
-                GlashServerTunnelContext tunnel;
                 tunnel = new GlashServerTunnelContext(
                     tunnelInfo,
                     clientContext,
@@ -357,6 +359,7 @@ namespace Glash.Server
             catch (Exception ex)
             {
                 LogPushed?.Invoke(this, $"Tunnel[{tunnelInfo.Id}] create failed.ProxyRule:[Id:{proxyRule.Id},Name:{proxyRule.Name}].Reason:{ExceptionUtils.GetExceptionMessage(ex)}");
+                tunnel?.SendTunnelClosedNoticeToAgent();
                 throw;
             }
             finally
