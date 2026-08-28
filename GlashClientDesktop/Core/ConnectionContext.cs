@@ -44,7 +44,10 @@ public class ConnectionContext : ReactiveObject, IDisposable
         Connection = connection;
         try
         {
-            GlashClient = new GlashClient(Connection.ServerUrl);
+            GlashClient = new GlashClient(Connection.ServerUrl)
+            {
+                UsePackageType = Connection.UsePackageType
+            };
             GlashClient.AgentLoginStatusChanged += GlashClient_AgentLoginStatusChanged;
             GlashClient.LogPushed += GlashClient_LogPushed;
             GlashClient.Disconnected += GlashClient_Disconnected;

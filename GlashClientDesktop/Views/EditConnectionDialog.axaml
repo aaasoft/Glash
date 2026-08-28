@@ -20,5 +20,6 @@
     <TextBox u:FormItem.Label="{Binding Text_ServerUrl}" Text="{Binding Model.ServerUrl}" u:FormItem.IsRequired="True" />
     <TextBox u:FormItem.Label="{Binding Text_User}" Text="{Binding Model.User}" u:FormItem.IsRequired="True" />
     <TextBox u:FormItem.Label="{Binding Text_Password}" Text="{Binding Model.Password}" u:FormItem.IsRequired="True" PasswordChar="•" />
+    <ToggleSwitch u:FormItem.Label="{Binding Text_UsePackageType}" IsChecked="{Binding Model.UsePackageType}" OnContent="{x:Null}" OffContent="{x:Null}" />
 </u:Form>
 </UserControl>

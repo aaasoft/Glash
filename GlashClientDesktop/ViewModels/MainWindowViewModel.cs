@@ -131,7 +131,8 @@ namespace GlashClientDesktop.ViewModels
                 Name = model.Name,
                 ServerUrl = model.ServerUrl,
                 User = model.User,
-                Password = model.Password
+                Password = model.Password,
+                UsePackageType = model.UsePackageType
             };
             var vm = new EditConnectionDialogViewModel() { Model = editModel };
             var ret = await OverlayDialog.ShowStandardAsync<EditConnectionDialog, EditConnectionDialogViewModel>(vm, null, options);

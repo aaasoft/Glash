@@ -30,12 +30,13 @@ namespace GlashClientDesktop
                     ProxyTypeManager.Instance.Init();
                     ConfigDbContext.Init("Config.litedb", modelBuilder =>
                     {
-                        modelBuilder.Entity<Model.Connection>(c=>
-                            c.Include(t=>t.Id).
-                            Include(t=>t.Name).
-                            Include(t=>t.ServerUrl).
-                            Include(t=>t.User).
-                            Include(t=>t.Password)
+                        modelBuilder.Entity<Model.Connection>(c =>
+                            c.Include(t => t.Id).
+                            Include(t => t.Name).
+                            Include(t => t.ServerUrl).
+                            Include(t => t.User).
+                            Include(t => t.Password).
+                            Include(t => t.UsePackageType)
                         );
                     });
                     ConfigDbContext.CacheContext.LoadCache();

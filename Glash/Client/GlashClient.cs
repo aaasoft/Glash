@@ -16,6 +16,7 @@ namespace Glash.Client
         public event EventHandler<AgentLoginStatusChanged> AgentLoginStatusChanged;
         public event EventHandler Disconnected;
         public event EventHandler<string> LogPushed;
+        public bool UsePackageType { get; set; } = false;
 
         public ProxyRuleContext[] ProxyRuleContexts => proxyRuleContextDict.Values.ToArray();
 
@@ -84,8 +85,8 @@ namespace Glash.Client
             foreach (var proxyContext in proxyRuleContextDict.Values)
                 proxyContext.Dispose();
             proxyRuleContextDict.Clear();
-            qpClient.Disconnect();
-            qpClient.Dispose();
+            qpClient?.Disconnect();
+            qpClient?.Dispose();
             createTunnelLock.Dispose();
         }
 
@@ -141,13 +142,16 @@ namespace Glash.Client
             {
                 await createTunnelLock.WaitAsync();
                 byte clientTunnelPackageType = 0;
-                try
+                if (UsePackageType)
                 {
-                    clientTunnelPackageType = qpClient.GetUnusedPackageType();
-                }
-                catch
-                {
-                    LogPushed?.Invoke(this, $"Get unused package type error,fallback to legacy mode.");
+                    try
+                    {
+                        clientTunnelPackageType = qpClient.GetUnusedPackageType();
+                    }
+                    catch
+                    {
+                        LogPushed?.Invoke(this, $"Get unused package type error,fallback to legacy mode.");
+                    }
                 }
                 //Create Tunnel
                 var rep = await qpClient.SendCommand(new Protocol.QpCommands.CreateTunnel.Request()
@@ -157,9 +161,12 @@ namespace Glash.Client
                 });
                 var tunnelInfo = rep.Data;
                 var tunnelId = tunnelInfo.Id;
-                if (tunnelInfo.ClientTunnelPackageType == 0)
+                if (UsePackageType)
                 {
-                    LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] Server not support tunnel package type,fallback to legacy mode.");
+                    if (tunnelInfo.ClientTunnelPackageType == 0)
+                    {
+                        LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] Server not support tunnel package type,fallback to legacy mode.");
+                    }
                 }
                 var tunnelContext = new GlashTunnelContext(
                     qpClient,

@@ -8,6 +8,7 @@ public class EditConnectionDialogViewModel : ViewModelBase
     public string Text_ServerUrl { get; } = Locale<EditConnectionDialogViewModel>.GetString("Server Url");
     public string Text_User { get; } = Locale<EditConnectionDialogViewModel>.GetString("User");
     public string Text_Password { get; } = Locale<EditConnectionDialogViewModel>.GetString("Password");
+    public string Text_UsePackageType { get; } = Locale<EditConnectionDialogViewModel>.GetString("Use Package Type");
 
     public Model.Connection Model { get; set; }
 }

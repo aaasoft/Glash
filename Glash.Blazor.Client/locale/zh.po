@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-07-01 14:24:37+0800\n"
-"PO-Revision-Date: 2026-07-01 14:25+0800\n"
+"POT-Creation-Date: 2026-08-28 19:59:04+0800\n"
+"PO-Revision-Date: 2026-08-28 19:59+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -11,89 +11,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
-#: ..\..\Core\ConnectionContext.cs:68
-msgid "Connected"
-msgstr "已连接"
-
-#: ..\..\Main.razor.cs:15
-msgid "Edit"
-msgstr "编辑"
-
-#: ..\..\Model\Connection.cs:25 ..\..\Main.razor.cs:12
-msgid "Connection"
-msgstr "连接"
-
-#: ..\..\Controls\EditConnection.razor.cs:18
-#: ..\..\Controls\EditProxyRule.razor.cs:20
-msgid "OK"
-msgstr "确定"
-
-#: ..\..\Main.razor.cs:17
-msgid "Delete"
-msgstr "删除"
-
-#: ..\..\Main.razor.cs:20
-msgid "Add Proxy Rule"
-msgstr "添加代理规则"
-
-#: ..\..\Controls\EditConnection.razor.cs:14
 #: ..\..\Controls\EditProxyRule.razor.cs:16
+#: ..\..\Controls\EditConnection.razor.cs:14
 msgid "Name"
 msgstr "名称"
-
-#: ..\..\Main.razor.cs:23
-msgid "Delete Proxy Rule"
-msgstr "删除代理规则"
 
 #: ..\..\Main.razor.cs:16
 msgid "Duplicate"
 msgstr "复制"
 
+#: ..\..\Core\ConnectionContext.cs:139
+msgid "Disconnected"
+msgstr "已断开"
+
 #: ..\..\Controls\EditProxyRule.razor.cs:19 ..\..\Main.razor.cs:25
 msgid "Proxy"
 msgstr "代理"
-
-#: ..\..\Controls\EditConnection.razor.cs:17
-msgid "Password"
-msgstr "密码"
 
 #: ..\..\Controls\EditConnection.razor.cs:16
 msgid "User"
 msgstr "用户名"
 
-#: ..\..\Main.razor.cs:290
+#: ..\..\Main.razor.cs:291
 #, csharp-format
 msgid "Are you sure to delete ProxyRule[{0}]?"
 msgstr "确定要删除代理规则[{0}]？"
 
-#: ..\..\Main.razor.cs:19
-msgid "Error"
-msgstr "错误"
-
-#: ..\..\Main.razor.cs:22
-msgid "Edit Proxy Rule"
-msgstr "编辑代理规则"
-
-#: ..\..\Main.razor.cs:26
-msgid "Agent not login"
-msgstr "代理端未登录"
+#: ..\..\Controls\EditProxyRule.razor.cs:17 ..\..\Main.razor.cs:18
+msgid "Agent"
+msgstr "代理端"
 
 #: ..\..\Main.razor.cs:21
 msgid "Duplicate Proxy Rule"
 msgstr "复制代理规则"
 
-#: ..\..\Core\ConnectionContext.cs:132
-msgid "Disconnected"
-msgstr "已断开"
-
-#: ..\..\Main.razor.cs:169
-#, csharp-format
-msgid "Are you sure to delete Connection[{0}]?"
-msgstr "确定要删除连接[{0}]？"
+#: ..\..\Controls\EditConnection.razor.cs:18
+msgid "Use Package Type"
+msgstr "使用包类型"
 
 #: ..\..\Controls\EditConnection.razor.cs:15
 msgid "Server Url"
 msgstr "服务端URL"
+
+#: ..\..\Model\Connection.cs:26 ..\..\Main.razor.cs:12
+msgid "Connection"
+msgstr "连接"
+
+#: ..\..\Main.razor.cs:20
+msgid "Add Proxy Rule"
+msgstr "添加代理规则"
+
+#: ..\..\Controls\EditProxyRule.razor.cs:18 ..\..\Main.razor.cs:24
+msgid "Listen"
+msgstr "监听"
 
 #: ..\..\Main.razor.cs:13
 msgid "Add"
@@ -103,13 +73,47 @@ msgstr "添加"
 msgid "Logs"
 msgstr "日志"
 
-#: ..\..\Controls\EditProxyRule.razor.cs:18 ..\..\Main.razor.cs:24
-msgid "Listen"
-msgstr "监听"
+#: ..\..\Main.razor.cs:15
+msgid "Edit"
+msgstr "编辑"
 
-#: ..\..\Controls\EditProxyRule.razor.cs:17 ..\..\Main.razor.cs:18
-msgid "Agent"
-msgstr "代理端"
+#: ..\..\Main.razor.cs:17
+msgid "Delete"
+msgstr "删除"
+
+#: ..\..\Controls\EditConnection.razor.cs:17
+msgid "Password"
+msgstr "密码"
+
+#: ..\..\Core\ConnectionContext.cs:75
+msgid "Connected"
+msgstr "已连接"
+
+#: ..\..\Main.razor.cs:26
+msgid "Agent not login"
+msgstr "代理端未登录"
+
+#: ..\..\Controls\EditProxyRule.razor.cs:20
+#: ..\..\Controls\EditConnection.razor.cs:19
+msgid "OK"
+msgstr "确定"
+
+#: ..\..\Main.razor.cs:170
+#, csharp-format
+msgid "Are you sure to delete Connection[{0}]?"
+msgstr "确定要删除连接[{0}]？"
+
+#: ..\..\Main.razor.cs:22
+msgid "Edit Proxy Rule"
+msgstr "编辑代理规则"
+
+#: ..\..\Main.razor.cs:23
+msgid "Delete Proxy Rule"
+msgstr "删除代理规则"
+
+#: ..\..\Main.razor.cs:19
+msgid "Error"
+msgstr "错误"
 
 #~ msgid "Profile"
 #~ msgstr "配置"

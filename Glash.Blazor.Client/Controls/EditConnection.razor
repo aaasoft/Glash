@@ -24,6 +24,11 @@
                 <InputText type="password" class="form-control" @bind-Value="Model.Password" />
                 <ValidationMessage For="@(() => Model.Password)" />
             </div>
+            <div class="form-group">
+                <label>@TextUsePackageType</label>
+                <InputCheckbox type="password" class="form-control" @bind-Value="Model.UsePackageType" />
+                <ValidationMessage For="@(() => Model.UsePackageType)" />
+            </div>
             <button type="submit" class="btn btn-primary col-sm-5 col-md-4 col-lg-2">@TextOk</button>
         </EditForm>
     </div>
