@@ -31,7 +31,7 @@ public class ConnectionContext : IDisposable
         {
             GlashClient = new GlashClient(Connection.ServerUrl)
             {
-                UsePackageType = Connection.UsePackageType
+                PreferHighSpeedMode = Connection.PreferHighSpeedMode
             };
             GlashClient.AgentLoginStatusChanged += GlashClient_AgentLoginStatusChanged;
             GlashClient.LogPushed += GlashClient_LogPushed;
@@ -117,6 +117,8 @@ public class ConnectionContext : IDisposable
         Task.Run(() =>
         {
             var data = e.Data;
+            if (agentDict == null)
+                return;
             if (!agentDict.ContainsKey(data.AgentName))
                 return;
             var agentInfo = agentDict[data.AgentName];

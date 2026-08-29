@@ -132,7 +132,7 @@ namespace GlashClientDesktop.ViewModels
                 ServerUrl = model.ServerUrl,
                 User = model.User,
                 Password = model.Password,
-                UsePackageType = model.UsePackageType
+                PreferHighSpeedMode = model.PreferHighSpeedMode
             };
             var vm = new EditConnectionDialogViewModel() { Model = editModel };
             var ret = await OverlayDialog.ShowStandardAsync<EditConnectionDialog, EditConnectionDialogViewModel>(vm, null, options);

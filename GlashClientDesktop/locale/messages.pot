@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-08-28 19:55:29+0800\n"
-"PO-Revision-Date: 2026-08-28 19:55:29+0800\n"
+"POT-Creation-Date: 2026-08-29 14:02:49+0800\n"
+"PO-Revision-Date: 2026-08-29 14:02:49+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -47,6 +47,10 @@ msgstr ""
 msgid "View"
 msgstr ""
 
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:11
+msgid "Prefer HighSpeed Mode"
+msgstr ""
+
 #: ..\..\ViewModels\EditRuleDialogViewModel.cs:15
 msgid "Basic"
 msgstr ""
@@ -61,9 +65,9 @@ msgid "Web"
 msgstr ""
 
 #: ..\..\Core\ProxyTypes\SSH.cs:26
+#: ..\..\Core\ProxyTypes\RDP.cs:25
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
 #: ..\..\Core\ProxyTypes\Database.cs:32
-#: ..\..\Core\ProxyTypes\RDP.cs:25
 msgid "User"
 msgstr ""
 
@@ -103,10 +107,6 @@ msgstr ""
 
 #: ..\..\Core\ProxyTypes\SSH.cs:66
 msgid "Start File Transfer"
-msgstr ""
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:11
-msgid "Use Package Type"
 msgstr ""
 
 #: ..\..\Core\ProxyTypes\DefaultType.cs:17
@@ -156,14 +156,14 @@ msgid "Path"
 msgstr ""
 
 #: ..\..\Core\ProxyTypes\SSH.cs:28
+#: ..\..\Core\ProxyTypes\RDP.cs:27
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
 #: ..\..\Core\ProxyTypes\Database.cs:34
-#: ..\..\Core\ProxyTypes\RDP.cs:27
 msgid "Password"
 msgstr ""
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
 #: ..\..\ViewModels\MainWindowViewModel.cs:21
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
 msgid "Delete Confirm"
 msgstr ""
 

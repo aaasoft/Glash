@@ -149,7 +149,7 @@ namespace Glash.Blazor.Client
                                 model.ServerUrl = editModel.ServerUrl;
                                 model.User = editModel.User;
                                 model.Password = editModel.Password;
-                                model.UsePackageType = editModel.UsePackageType;
+                                model.PreferHighSpeedMode = editModel.PreferHighSpeedMode;
                                 ConnectionContextManager.Instance.Update(model);
                                 CurrentConnectionId=model.Id;
                                 InvokeAsync(StateHasChanged);

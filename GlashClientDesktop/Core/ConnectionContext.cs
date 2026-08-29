@@ -46,7 +46,7 @@ public class ConnectionContext : ReactiveObject, IDisposable
         {
             GlashClient = new GlashClient(Connection.ServerUrl)
             {
-                UsePackageType = Connection.UsePackageType
+                PreferHighSpeedMode = Connection.PreferHighSpeedMode
             };
             GlashClient.AgentLoginStatusChanged += GlashClient_AgentLoginStatusChanged;
             GlashClient.LogPushed += GlashClient_LogPushed;

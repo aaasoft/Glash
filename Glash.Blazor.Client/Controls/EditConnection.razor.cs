@@ -15,7 +15,7 @@ namespace Glash.Blazor.Client.Controls
         private static string TextServerUrl=>Locale<EditConnection>.GetString("Server Url");
         private static string TextUser=>Locale<EditConnection>.GetString("User");
         private static string TextPassword=>Locale<EditConnection>.GetString("Password");
-        private static string TextUsePackageType=>Locale<EditConnection>.GetString("Use Package Type");
+        private static string TextPreferHighSpeedMode=>Locale<EditConnection>.GetString("Prefer HighSpeed Mode");
         private static string TextOk=>Locale<EditConnection>.GetString("OK");
 
         private void Ok()

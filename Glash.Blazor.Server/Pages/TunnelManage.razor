@@ -5,8 +5,10 @@
     <thead>
         <tr>
             <th scope="col">@TextId</th>
-            <th scope="col">@TextAgent/@TextPackageType</th>
-            <th scope="col">@TextClient/@TextTarget/@TextPackageType</th>
+            <th scope="col"></th>
+            <th scope="col">@TextClient</th>
+            <th scope="col">@TextAgent</th>            
+            <th scope="col">@TextTarget</th>
             <th scope="col">@TextConnectTime</th>
             <th scope="col">@TextTotalBytes</th>
             <th scope="col">@TextCurrentSpeed</th>
@@ -19,18 +21,27 @@
             @if (t != null && t.TunnelInfo != null)
             {
                 <tr>
-                    <th scope="row">@t.TunnelInfo.Id</th>
+                    <th scope="row">
+                        <span>@t.TunnelInfo.Id</span>
+                    </th>
                     <td>
-                        <span>@t.Agent.Name</span>
-                        <span>&nbsp;/&nbsp;</span>
-                        <span>@t.TunnelInfo.AgentTunnelPackageType</span>
+                        @if (t.TunnelInfo.ClientTunnelPackageType > 0)
+                        {
+                            <span class="badge badge-pill badge-success">HighSpeed</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-pill badge-info">Base64</span>
+                        }
                     </td>
                     <td>
                         <span>@t.Client.Name</span>
-                        <span>&nbsp;/&nbsp;</span>
+                    </td>
+                    <td>
+                        <span>@t.Agent.Name</span>
+                    </td>
+                    <td>
                         <span>@($"{t.TunnelInfo.Host}:{t.TunnelInfo.Port}")</span>
-                        <span>&nbsp;/&nbsp;</span>
-                        <span>@t.TunnelInfo.ClientTunnelPackageType</span>
                     </td>
                     <td>@t.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td>

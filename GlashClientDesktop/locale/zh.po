@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-08-28 19:55:29+0800\n"
-"PO-Revision-Date: 2026-08-28 19:55+0800\n"
+"POT-Creation-Date: 2026-08-29 14:02:49+0800\n"
+"PO-Revision-Date: 2026-08-29 14:04+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -48,6 +48,10 @@ msgstr "网络协议类型"
 msgid "View"
 msgstr "查看"
 
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:11
+msgid "Prefer HighSpeed Mode"
+msgstr "首选高速模式"
+
 #: ..\..\ViewModels\EditRuleDialogViewModel.cs:15
 msgid "Basic"
 msgstr "基本"
@@ -60,9 +64,9 @@ msgstr "终端"
 msgid "Web"
 msgstr "网页"
 
-#: ..\..\Core\ProxyTypes\SSH.cs:26
+#: ..\..\Core\ProxyTypes\SSH.cs:26 ..\..\Core\ProxyTypes\RDP.cs:25
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
-#: ..\..\Core\ProxyTypes\Database.cs:32 ..\..\Core\ProxyTypes\RDP.cs:25
+#: ..\..\Core\ProxyTypes\Database.cs:32
 msgid "User"
 msgstr "用户名"
 
@@ -102,10 +106,6 @@ msgstr "停止出错，原因：{0}"
 #: ..\..\Core\ProxyTypes\SSH.cs:66
 msgid "Start File Transfer"
 msgstr "开始文件传输"
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:11
-msgid "Use Package Type"
-msgstr "使用包类型"
 
 #: ..\..\Core\ProxyTypes\DefaultType.cs:17
 msgid "Default"
@@ -153,14 +153,14 @@ msgstr "日志"
 msgid "Path"
 msgstr "路径"
 
-#: ..\..\Core\ProxyTypes\SSH.cs:28
+#: ..\..\Core\ProxyTypes\SSH.cs:28 ..\..\Core\ProxyTypes\RDP.cs:27
 #: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
-#: ..\..\Core\ProxyTypes\Database.cs:34 ..\..\Core\ProxyTypes\RDP.cs:27
+#: ..\..\Core\ProxyTypes\Database.cs:34
 msgid "Password"
 msgstr "密码"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
 #: ..\..\ViewModels\MainWindowViewModel.cs:21
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
 msgid "Delete Confirm"
 msgstr "删除确认"
 
@@ -205,6 +205,9 @@ msgstr "添加规则"
 #: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:254
 msgid "Error"
 msgstr "错误"
+
+#~ msgid "Use Package Type"
+#~ msgstr "使用包类型"
 
 #~ msgid "Duplicate"
 #~ msgstr "复制"

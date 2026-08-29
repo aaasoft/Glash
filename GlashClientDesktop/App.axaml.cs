@@ -36,7 +36,7 @@ namespace GlashClientDesktop
                             Include(t => t.ServerUrl).
                             Include(t => t.User).
                             Include(t => t.Password).
-                            Include(t => t.UsePackageType)
+                            Include(t => t.PreferHighSpeedMode)
                         );
                     });
                     ConfigDbContext.CacheContext.LoadCache();
