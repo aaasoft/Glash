@@ -150,7 +150,7 @@ namespace Glash.Client
                     }
                     catch
                     {
-                        LogPushed?.Invoke(this, $"Get unused package type error,fallback to legacy mode.");
+                        LogPushed?.Invoke(this, $"Get unused package type error,fallback to Base64 mode.");
                     }
                 }
                 //Create Tunnel
@@ -165,7 +165,7 @@ namespace Glash.Client
                 {
                     if (tunnelInfo.ClientTunnelPackageType == 0)
                     {
-                        LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] Server not support tunnel package type,fallback to legacy mode.");
+                        LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] Server or Agent not support HighSpeed mode,fallback to Base64 mode.");
                     }
                 }
                 var tunnelContext = new GlashTunnelContext(
