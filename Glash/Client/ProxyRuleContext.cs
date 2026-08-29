@@ -75,6 +75,7 @@ namespace Glash.Client
             pushLog("Stoping listen.");
             cts?.Cancel();
             cts?.Dispose();
+            cts = null;
 
             tcpListener?.Stop();
             tcpListener = null;
