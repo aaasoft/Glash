@@ -202,8 +202,8 @@ namespace Glash.Server
                     context.Dispose();
                     foreach (var tunnel in Tunnels)
                     {
-                        if (tunnel.Client.Name == key)
-                            tunnel.OnError(new ApplicationException($"Agent[{key}] disconnected."));
+                    if (tunnel.Client.Name == key)
+                        tunnel.OnError(new ApplicationException($"Client[{key}] disconnected."));
                     }
                 }
                 catch (Exception ex)
