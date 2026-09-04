@@ -30,7 +30,7 @@ namespace Glash.Agent
                 executeCommand_StartTunnel);
 
             var noticeHandlerManager = new NoticeHandlerManager();
-            noticeHandlerManager.Register<G.D>(OnTunnelDataAviliable);
+            noticeHandlerManager.Register<G.D>(OnTunnelDataAvailable);
             noticeHandlerManager.Register<TunnelClosed>(OnTunnelClosed);
 
             qpClientOptions = QpClientOptions.Parse(new Uri(url));
@@ -154,7 +154,7 @@ namespace Glash.Agent
             return new Protocol.QpCommands.StartTunnel.Response();
         }
 
-        private async ValueTask OnTunnelDataAviliable(QpChannel channel, G.D data)
+        private async ValueTask OnTunnelDataAvailable(QpChannel channel, G.D data)
         {
             var tunnelId = data.TunnelId;
             if (!tunnelContextDict.ContainsKey(tunnelId))

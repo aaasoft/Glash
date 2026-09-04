@@ -30,7 +30,7 @@ namespace Glash.Client
                 Client.Protocol.Instruction.Instance
             };
             var noticeHandlerManager = new NoticeHandlerManager();
-            noticeHandlerManager.Register<G.D>(OnTunnelDataAviliable);
+            noticeHandlerManager.Register<G.D>(OnTunnelDataAvailable);
             noticeHandlerManager.Register<TunnelClosed>(OnTunnelClosed);
             noticeHandlerManager.Register<AgentLoginStatusChanged>(OnAgentLoginStatusChanged);
             qpClientOptions.RegisterNoticeHandlerManager(noticeHandlerManager);
@@ -220,7 +220,7 @@ namespace Glash.Client
             }
         }
 
-        private async ValueTask OnTunnelDataAviliable(QpChannel channel, G.D data)
+        private async ValueTask OnTunnelDataAvailable(QpChannel channel, G.D data)
         {
             var tunnelId = data.TunnelId;
             if (!tunnelContextDict.ContainsKey(tunnelId))

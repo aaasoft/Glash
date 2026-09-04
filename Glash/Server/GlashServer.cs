@@ -64,7 +64,7 @@ namespace Glash.Server
                 new Glash.Client.Protocol.QpCommands.StartTunnel.Request(),
                 ExecuteCommand_Client_StartTunnel);
 
-            noticeHandlerManager.Register<G.D>(OnTunnelDataAviliable);
+            noticeHandlerManager.Register<G.D>(OnTunnelDataAvailable);
             noticeHandlerManager.Register<TunnelClosed>(OnTunnelClosed);
         }
 
@@ -382,7 +382,7 @@ namespace Glash.Server
             return new Client.Protocol.QpCommands.StartTunnel.Response();
         }
 
-        private async ValueTask OnTunnelDataAviliable(QpChannel channel, G.D data)
+        private async ValueTask OnTunnelDataAvailable(QpChannel channel, G.D data)
         {
             if (channel.Tag == null)
                 return;
