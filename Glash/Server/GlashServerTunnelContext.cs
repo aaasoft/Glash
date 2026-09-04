@@ -95,10 +95,24 @@ namespace Glash.Server
             }
         }
 
+        // 计算 Base64 字符串解码后的真实字节数（O(1)，零分配）
+        private static long GetBase64DecodedLength(string base64)
+        {
+            var n = base64.Length;
+            if (n == 0)
+                return 0;
+            var padding = 0;
+            if (base64[n - 1] == '=')
+                padding++;
+            if (n > 1 && base64[n - 2] == '=')
+                padding++;
+            return (n * 3L) / 4 - padding;
+        }
+
         private async Task _PushDataToClient(string data)
         {
             await PushBase64Data(Client.Channel, data);
-            DownloadBytes += data.Length;
+            DownloadBytes += GetBase64DecodedLength(data);
         }
 
         private async Task _PushDataToClient(ReadOnlySequence<byte> data)
@@ -124,7 +138,7 @@ namespace Glash.Server
         private async Task _PushDataToAgent(string data)
         {
             await PushBase64Data(Agent.Channel, data);
-            UploadBytes += data.Length;
+            UploadBytes += GetBase64DecodedLength(data);
         }
 
         private async Task _PushDataToAgent(ReadOnlySequence<byte> data)
