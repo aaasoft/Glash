@@ -407,9 +407,8 @@ namespace Glash.Server
             LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
 
             GlashServerTunnelContext tunnel;
-            lock (serverTunnelContextDict)
-                if (!serverTunnelContextDict.TryGetValue(tunnelId, out tunnel))
-                    return;
+            if (!serverTunnelContextDict.TryGetValue(tunnelId, out tunnel))
+                return;
             tunnel.OnError(new ApplicationException("Tunnel closed."));
             TunnelClosed?.Invoke(this, tunnel);
             if (channel.Tag == null)
