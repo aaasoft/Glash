@@ -1,6 +1,7 @@
 ﻿using Glash.Core;
 using Quick.Protocol;
 using Quick.Utils;
+using System.Collections.Concurrent;
 
 namespace Glash.Server
 {
@@ -12,18 +13,14 @@ namespace Glash.Server
         private NoticeHandlerManager noticeHandlerManager = new NoticeHandlerManager();
         private Dictionary<string, GlashAgentContext> agentDict = new Dictionary<string, GlashAgentContext>();
         private Dictionary<string, GlashClientContext> clientDict = new Dictionary<string, GlashClientContext>();
-        private Dictionary<int, GlashServerTunnelContext> serverTunnelContextDict = new Dictionary<int, GlashServerTunnelContext>();
+        private ConcurrentDictionary<int, GlashServerTunnelContext> serverTunnelContextDict = new ConcurrentDictionary<int, GlashServerTunnelContext>();
         private int nextTunnelId = 0;
 
         public GlashAgentContext[] Agents { get; private set; } = new GlashAgentContext[0];
         public GlashClientContext[] Clients { get; private set; } = new GlashClientContext[0];
         public GlashServerTunnelContext[] Tunnels
         {
-            get
-            {
-                lock (serverTunnelContextDict)
-                    return serverTunnelContextDict.Values.ToArray();
-            }
+            get => serverTunnelContextDict.Values.ToArray();
         }
 
         public event EventHandler<string> LogPushed;
@@ -343,18 +340,13 @@ namespace Glash.Server
                     agentContext,
                     ex =>
                     {
-                        GlashServerTunnelContext serverTunnelContext;
-                        lock (serverTunnelContextDict)
+                        if (serverTunnelContextDict.TryRemove(tunnelInfo.Id, out var serverTunnelContext))
                         {
-                            if (!serverTunnelContextDict.TryGetValue(tunnelInfo.Id, out serverTunnelContext))
-                                return;
-                            serverTunnelContextDict.Remove(tunnelInfo.Id);
+                            serverTunnelContext.Dispose();
+                            LogPushed?.Invoke(this, $"Tunnel[{tunnelInfo.Id}] closed.");
                         }
-                        serverTunnelContext.Dispose();
-                        LogPushed?.Invoke(this, $"Tunnel[{tunnelInfo.Id}] closed.");
                     });
-                lock (serverTunnelContextDict)
-                    serverTunnelContextDict[tunnelInfo.Id] = tunnel;
+                serverTunnelContextDict[tunnelInfo.Id] = tunnel;
                 TunnelCreated?.Invoke(this, tunnel);
                 LogPushed?.Invoke(this, $"Tunnel[{tunnelInfo.Id}] created.ProxyRule:[Id:{proxyRule.Id},Name:{proxyRule.Name}]");
                 return new Client.Protocol.QpCommands.CreateTunnel.Response() { Data = tunnelInfo };
