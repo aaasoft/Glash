@@ -57,6 +57,13 @@ namespace Glash.Client
 
         public async Task ConnectAsync(string user, string password)
         {
+            // 重复调用或重连前，先释放旧的 QpClient（取消订阅 + Dispose），避免旧实例泄漏
+            if (qpClient != null)
+            {
+                qpClient.Disconnected -= QpClient_Disconnected;
+                qpClient.Dispose();
+                qpClient = null;
+            }
             qpClient = qpClientOptions.CreateClient();
             try
             {
