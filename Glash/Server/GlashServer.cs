@@ -147,7 +147,7 @@ namespace Glash.Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("ExecuteCommand_Agent_Login->channel.Disconnected->context.Dispose or tunnel.OnError:" + ex.ToString());
+                    LogPushed?.Invoke(this, "ExecuteCommand_Agent_Login->channel.Disconnected->context.Dispose or tunnel.OnError:" + ex.ToString());
                 }
                 LogPushed?.Invoke(this, $"Agent[{agent.Name}] disconnected.Reason:{ExceptionUtils.GetExceptionMessage(channel.LastException)}");
                 AgentDisconnected?.Invoke(this, context);
@@ -205,7 +205,7 @@ namespace Glash.Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("ExecuteCommand_Client_Login->channel.Disconnected->context.Dispose or tunnel.OnError:" + ex.ToString());
+                    LogPushed?.Invoke(this, "ExecuteCommand_Client_Login->channel.Disconnected->context.Dispose or tunnel.OnError:" + ex.ToString());
                 }
                 LogPushed?.Invoke(this, $"Client[{client.Name}] disconnected.Reason:{ExceptionUtils.GetExceptionMessage(channel.LastException)}");
                 ClientDisconnected?.Invoke(this, context);
