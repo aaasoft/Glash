@@ -304,24 +304,21 @@ namespace Glash.Server
                 await createTunnelLock.WaitAsync();
 
                 //分配通道号
-                lock (serverTunnelContextDict)
+                if (serverTunnelContextDict.Count >= options.MaxTunnelCount)
+                    throw new ApplicationException($"Current tunnel count({serverTunnelContextDict.Count}) reach max tunnel count({options.MaxTunnelCount}).");
+                var tunnelId = nextTunnelId;
+                while (true)
                 {
-                    if (serverTunnelContextDict.Count >= options.MaxTunnelCount)
-                        throw new ApplicationException($"Current tunnel count({serverTunnelContextDict.Count}) reach max tunnel count({options.MaxTunnelCount}).");
-                    var tunnelId = nextTunnelId;
-                    while (true)
-                    {
-                        if (!serverTunnelContextDict.ContainsKey(tunnelId))
-                            break;
-                        tunnelId++;
-                        if (tunnelId >= options.MaxTunnelCount)
-                            tunnelId = 0;
-                    }
-                    nextTunnelId = tunnelId + 1;
-                    if (nextTunnelId >= options.MaxTunnelCount)
-                        nextTunnelId = 0;
-                    tunnelInfo.Id = tunnelId;
+                    if (!serverTunnelContextDict.ContainsKey(tunnelId))
+                        break;
+                    tunnelId++;
+                    if (tunnelId >= options.MaxTunnelCount)
+                        tunnelId = 0;
                 }
+                nextTunnelId = tunnelId + 1;
+                if (nextTunnelId >= options.MaxTunnelCount)
+                    nextTunnelId = 0;
+                tunnelInfo.Id = tunnelId;
                 GlashAgentContext agentContext = null;
                 if (!agentDict.TryGetValue(tunnelInfo.Agent, out agentContext))
                     throw new ArgumentException($"Agent[{tunnelInfo.Agent}] not login.");
