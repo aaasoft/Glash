@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Buffers.Text;
 using System.Text;
+using System.Threading;
 using Quick.Protocol;
 
 namespace Glash.Core
@@ -15,6 +16,7 @@ namespace Glash.Core
         private byte tunnelPackageType;
         private Stream stream;
         private Action<Exception> errorHandler;
+        private int readLoopRunning; // 0=未运行 1=读泵运行中，防止 Start() 重入产生并发读泵
 
         public GlashTunnelContext(QpChannel channel, int tunnelId, byte tunnelPackageType, Stream stream, Action<Exception> errorHandler)
         {
@@ -88,6 +90,10 @@ namespace Glash.Core
             {
                 OnError(ex);
             }
+            finally
+            {
+                Interlocked.Exchange(ref readLoopRunning, 0);
+            }
         }
 
         public void PushData(string data)
@@ -117,10 +123,14 @@ namespace Glash.Core
 
         public void Start()
         {
-            cts?.Cancel();
-            cts?.Dispose();
-            cts = new CancellationTokenSource();
-            _ = beginRead(cts.Token);
+            // 已有读泵在跑则忽略重复调用（如 StartTunnel 重发），避免两个循环共用
+            // readBuffer/stream 与同一 channel 导致数据错乱
+            if (Interlocked.CompareExchange(ref readLoopRunning, 1, 0) == 0)
+            {
+                cts?.Dispose();
+                cts = new CancellationTokenSource();
+                _ = beginRead(cts.Token);
+            }
         }
 
         public void Dispose()
