@@ -71,14 +71,15 @@ namespace GlashClientDesktop.Core.ProxyTypes
         {
             if (OperatingSystem.IsWindows())
             {
-                var sb = new StringBuilder();
-                sb.AppendLine($"full address:s:{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}");
-                sb.AppendLine($"username:s:{User}");
-                sb.AppendLine($"password 51:b:{GetRdpPassWord(Password)}");
+                var content = $@"
+full address:s:{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}
+username:s:{User}
+password 51:b:{GetRdpPassWord(Password)}
+";
                 var tmpFile = Path.Combine(Path.GetTempPath(), getRdpFileName(t));
                 try
                 {
-                    File.WriteAllText(tmpFile, sb.ToString());
+                    File.WriteAllText(tmpFile, content);
                     var process = Process.Start("mstsc.exe", tmpFile);
                     WaitForProcessMainWindow(process);
                     if (File.Exists(tmpFile))
@@ -90,21 +91,22 @@ namespace GlashClientDesktop.Core.ProxyTypes
                     throw;
                 }
             }
-            if(OperatingSystem.IsLinux())
+            if (OperatingSystem.IsLinux())
             {
-                var sb = new StringBuilder();
-                sb.AppendLine("[remmina]");
-                sb.AppendLine($"password={Password}");
-                sb.AppendLine($"username={User}");
-                sb.AppendLine($"name={t.Config.Name}");
-                sb.AppendLine($"protocol=RDP");
-                sb.AppendLine($"server={GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}");
-                sb.AppendLine($"resolution_mode=1");
-                sb.AppendLine($"viewmode=4");                
-                var tmpFile = Path.Combine(Path.GetTempPath(), getRdpFileName(t)+".remmina");
+                var content = $@"
+[remmina]
+password={Password}
+username={User}
+name={t.Config.Name}
+protocol=RDP
+server={GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}
+resolution_mode=1
+viewmode=4
+keyboard_grab=1";
+                var tmpFile = Path.GetTempFileName() + ".remmina";
                 try
                 {
-                    File.WriteAllText(tmpFile, sb.ToString());
+                    File.WriteAllText(tmpFile, content);
                     var process = Process.Start("remmina", [tmpFile]);
                     WaitForProcessMainWindow(process);
                     if (File.Exists(tmpFile))
