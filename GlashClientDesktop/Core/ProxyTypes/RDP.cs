@@ -90,6 +90,32 @@ namespace GlashClientDesktop.Core.ProxyTypes
                     throw;
                 }
             }
+            if(OperatingSystem.IsLinux())
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine("[remmina]");
+                sb.AppendLine($"password={Password}");
+                sb.AppendLine($"username={User}");
+                sb.AppendLine($"name={t.Config.Name}");
+                sb.AppendLine($"protocol=RDP");
+                sb.AppendLine($"server={GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}");
+                sb.AppendLine($"resolution_mode=1");
+                sb.AppendLine($"viewmode=4");                
+                var tmpFile = Path.Combine(Path.GetTempPath(), getRdpFileName(t)+".remmina");
+                try
+                {
+                    File.WriteAllText(tmpFile, sb.ToString());
+                    var process = Process.Start("remmina", [tmpFile]);
+                    WaitForProcessMainWindow(process);
+                    if (File.Exists(tmpFile))
+                        File.Delete(tmpFile);
+                }
+                catch
+                {
+                    File.Delete(tmpFile);
+                    throw;
+                }
+            }
             else
             {
                 throw new NotImplementedException();
