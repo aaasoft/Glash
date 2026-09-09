@@ -147,6 +147,11 @@ jobs:
           </plist>
           PLIST
 
+          # 中文系统显示名：Glash客户端（仅中文 macOS 生效，其它语言回退到 CFBundleDisplayName）
+          mkdir -p "${APP_DIR}/Contents/Resources/zh-Hans.lproj"
+          printf '"CFBundleDisplayName" = "Glash客户端";\n"CFBundleName" = "Glash客户端";\n' \
+            > "${APP_DIR}/Contents/Resources/zh-Hans.lproj/InfoPlist.strings"
+
       - name: Package (tar.gz - macOS)
         if: startsWith(matrix.rid, 'osx-')
         run: tar -czf GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.tar.gz -C . GlashClientDesktop.app
