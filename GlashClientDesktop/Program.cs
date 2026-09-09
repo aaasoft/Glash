@@ -16,7 +16,7 @@ namespace GlashClientDesktop
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .WithFont_SourceHanSansCN()
+                .WithInterFont()
                 .LogToTrace()
                 .UseReactiveUI(t=>{});
     }
