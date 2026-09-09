@@ -92,8 +92,67 @@ jobs:
         run: |
           Compress-Archive -Path publish/${{ matrix.rid }}/* -DestinationPath GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.zip
 
-      - name: Package (tar.gz)
-        if: matrix.archive == 'tar.gz'
+      - name: Assemble .app bundle (macOS)
+        if: startsWith(matrix.rid, 'osx-')
+        run: |
+          APP_DIR="GlashClientDesktop.app"
+          mkdir -p "${APP_DIR}/Contents/MacOS" "${APP_DIR}/Contents/Resources"
+          shopt -s dotglob
+          mv publish/${{ matrix.rid }}/* "${APP_DIR}/Contents/MacOS/"
+          shopt -u dotglob
+
+          # 使用仓库自带 Resource/logo.png 生成 macOS 图标 .icns（失败则退化为无自定义图标）
+          mkdir -p AppIcon.iconset
+          cp "Resource/logo.png" "AppIcon.iconset/icon_512x512.png"
+          for s in 512 256 128 32 16; do
+            sips -z "$s" "$s" "AppIcon.iconset/icon_512x512.png" \
+              --out "AppIcon.iconset/icon_${s}x${s}.png" || true
+          done
+          iconutil --convert icns -o AppIcon.icns AppIcon.iconset || true
+          if [ -f AppIcon.icns ]; then
+            mv AppIcon.icns "${APP_DIR}/Contents/Resources/"
+          fi
+
+          # 写 Info.plist（CFBundleExecutable 必须与可执行文件名一致）
+          cat > "${APP_DIR}/Contents/Info.plist" <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>CFBundleName</key>
+              <string>GlashClientDesktop</string>
+              <key>CFBundleDisplayName</key>
+              <string>Glash Client</string>
+              <key>CFBundleExecutable</key>
+              <string>GlashClientDesktop</string>
+              <key>CFBundleIdentifier</key>
+              <string>com.aaasoft.glash.client</string>
+              <key>CFBundleVersion</key>
+              <string>${{ steps.version.outputs.version }}</string>
+              <key>CFBundleShortVersionString</key>
+              <string>${{ steps.version.outputs.version }}</string>
+              <key>CFBundlePackageType</key>
+              <string>APPL</string>
+              <key>CFBundleInfoDictionaryVersion</key>
+              <string>6.0</string>
+              <key>CFBundleIconFile</key>
+              <string>AppIcon.icns</string>
+              <key>CFBundleDevelopmentRegion</key>
+              <string>en</string>
+              <key>LSMinimumSystemVersion</key>
+              <string>10.15</string>
+              <key>NSHighResolutionCapable</key>
+              <true/>
+          </dict>
+          </plist>
+          PLIST
+
+      - name: Package (tar.gz - macOS)
+        if: startsWith(matrix.rid, 'osx-')
+        run: tar -czf GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.tar.gz -C . GlashClientDesktop.app
+
+      - name: Package (tar.gz - linux)
+        if: matrix.archive == 'tar.gz' && !startsWith(matrix.rid, 'osx-')
         run: tar -czf GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.tar.gz -C publish/${{ matrix.rid }} .
 
       - name: Upload artifact
