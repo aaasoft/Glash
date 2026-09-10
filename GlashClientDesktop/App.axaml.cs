@@ -28,7 +28,18 @@ namespace GlashClientDesktop
                     Quick.Protocol.Http.Client.QpHttpClientOptions.RegisterUriSchema();
 
                     ProxyTypeManager.Instance.Init();
-                    ConfigDbContext.Init("Config.litedb", modelBuilder =>
+
+                    var dbFile = "Config.litedb";
+                    //如果是在非Windows操作系统上
+                    if (!OperatingSystem.IsWindows())
+                    {
+                        var configFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(GlashClientDesktop));
+                        if (!Directory.Exists(configFolder))
+                            Directory.CreateDirectory(configFolder);
+                        dbFile = Path.Combine(configFolder, dbFile);
+                    }
+
+                    ConfigDbContext.Init(dbFile, modelBuilder =>
                     {
                         modelBuilder.Entity<Model.Connection>(c =>
                             c.Include(t => t.Id).
