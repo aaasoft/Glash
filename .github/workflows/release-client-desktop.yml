@@ -122,7 +122,9 @@ jobs:
               <key>CFBundleName</key>
               <string>GlashClientDesktop</string>
               <key>CFBundleDisplayName</key>
-              <string>Glash Client</string>
+              <string>GlashClientDesktop</string>
+              <key>LSHasLocalizedDisplayName</key>
+              <true/>
               <key>CFBundleExecutable</key>
               <string>GlashClientDesktop</string>
               <key>CFBundleIdentifier</key>
@@ -139,6 +141,11 @@ jobs:
               <string>AppIcon.icns</string>
               <key>CFBundleDevelopmentRegion</key>
               <string>en</string>
+              <key>CFBundleLocalizations</key>
+              <array>
+                  <string>en</string>
+                  <string>zh-Hans</string>
+              </array>
               <key>LSMinimumSystemVersion</key>
               <string>12.0</string>
               <key>NSHighResolutionCapable</key>
