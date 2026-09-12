@@ -91,7 +91,7 @@ password 51:b:{GetRdpPassWord(Password)}
                     throw;
                 }
             }
-            if (OperatingSystem.IsLinux())
+            else if (OperatingSystem.IsLinux())
             {
                 var content = $@"
 [remmina]
