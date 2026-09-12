@@ -46,7 +46,7 @@ jobs:
       - name: Pack
         run: |
           for proj in Glash/Glash.csproj Glash.Blazor.Agent/Glash.Blazor.Agent.csproj Glash.Blazor.Client/Glash.Blazor.Client.csproj Glash.Blazor.Server/Glash.Blazor.Server.csproj; do
-            dotnet pack "$proj" -c Release -p:PackageVersion=${{ steps.version.outputs.version }} -o packages
+            dotnet pack "$proj" -c Release -p:Version=${{ steps.version.outputs.version }} -p:PackageVersion=${{ steps.version.outputs.version }} -o packages
           done
 
       - name: List packages
