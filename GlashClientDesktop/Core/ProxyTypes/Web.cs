@@ -42,24 +42,11 @@ namespace GlashClientDesktop.Core.ProxyTypes
                         if(string.IsNullOrEmpty(Schema))
                             Schema="http";
                         var url = $"{Schema}://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/{Path}";
-                        try
-                        {
-                            //先尝试使用Chrome浏览器打开
-                            var psi = new ProcessStartInfo("chrome");
-                            psi.ArgumentList.Add("-incognito");
-                            psi.ArgumentList.Add(url);
-                            psi.UseShellExecute = true;
-                            var process = Process.Start(psi);
-                            WaitForProcessMainWindow(process);
-                        }
-                        catch
-                        {
-                            //使用系统默认浏览器打开
-                            var psi = new ProcessStartInfo(url);
-                            psi.UseShellExecute = true;
-                            var process = Process.Start(psi);;
-                            WaitForProcessMainWindow(process);
-                        }
+                        //使用系统默认浏览器打开
+                        var psi = new ProcessStartInfo(url);
+                        psi.UseShellExecute = true;
+                        var process = Process.Start(psi);
+                        WaitForProcessMainWindow(process);
                     }
                 )
             ];
