@@ -32,10 +32,12 @@ jobs:
             archive: zip
           - os: ubuntu-latest
             rid: linux-x64
-            archive: tar.gz
+            archive: deb
+            deb_arch: amd64
           - os: ubuntu-latest
             rid: linux-arm64
-            archive: tar.gz
+            archive: deb
+            deb_arch: arm64
           - os: macos-latest
             rid: osx-x64
             archive: tar.gz
@@ -87,31 +89,75 @@ jobs:
         shell: bash
         run: find publish/${{ matrix.rid }} -name '*.pdb' -delete
 
-      - name: Add .desktop launcher and icon (Linux)
-        if: matrix.archive == 'tar.gz' && !startsWith(matrix.rid, 'osx-')
+      - name: Prepare deb payload (Linux)
+        if: startsWith(matrix.rid, 'linux-')
         shell: bash
         run: |
-          DEST="publish/${{ matrix.rid }}"
-          # 图标安装到 hicolor 主题目录（512x512 为原生尺寸；256x256 复制一份供桌面环境按需缩放）
-          mkdir -p "${DEST}/share/icons/hicolor/256x256/apps" "${DEST}/share/icons/hicolor/512x512/apps"
-          cp "Resource/logo.png" "${DEST}/share/icons/hicolor/256x256/apps/glash-client.png"
-          cp "Resource/logo.png" "${DEST}/share/icons/hicolor/512x512/apps/glash-client.png"
-          # .desktop 启动器：Exec 用 %k 技巧，无论从哪个目录解压都能定位同目录下的可执行文件
-          cat > "${DEST}/GlashClientDesktop.desktop" <<'DESKTOP'
+          RID="${{ matrix.rid }}"
+          STAGE="debstage"
+          APP_DIR="${STAGE}/opt/glash-client"
+          # 复制 self-contained 发布产物到 /opt/glash-client
+          mkdir -p "${APP_DIR}"
+          cp -a "publish/${RID}/." "${APP_DIR}/"
+          chmod +x "${APP_DIR}/GlashClientDesktop"
+          # 命令行启动器：/usr/bin/glash-client -> /opt/glash-client/GlashClientDesktop
+          mkdir -p "${STAGE}/usr/bin"
+          ln -s "/opt/glash-client/GlashClientDesktop" "${STAGE}/usr/bin/glash-client"
+          # 图标（hicolor 主题，512x512 原生尺寸，256x256 复制一份供缩放）
+          mkdir -p "${STAGE}/usr/share/icons/hicolor/256x256/apps" "${STAGE}/usr/share/icons/hicolor/512x512/apps"
+          cp "Resource/logo.png" "${STAGE}/usr/share/icons/hicolor/256x256/apps/glash-client.png"
+          cp "Resource/logo.png" "${STAGE}/usr/share/icons/hicolor/512x512/apps/glash-client.png"
+          # .desktop 启动器（系统安装路径，绝对 Exec）
+          mkdir -p "${STAGE}/usr/share/applications"
+          cat > "${STAGE}/usr/share/applications/GlashClientDesktop.desktop" <<'DESKTOP'
           [Desktop Entry]
           Type=Application
           Name=GlashClientDesktop
-          Name[zh_CN]=Glash 客户端
+          Name[zh_CN]=Glash客户端
           Comment=Glash reverse proxy client
-          Comment[zh_CN]=Glash 反向代理客户端
-          Exec=sh -c 'DIR=$(dirname "%k"); DIR=${DIR#file://}; [ -d "$DIR" ] || DIR=.; cd "$DIR" && exec ./GlashClientDesktop' %k
+          Comment[zh_CN]=Glash反向代理客户端
+          Exec=/opt/glash-client/GlashClientDesktop
           Icon=glash-client
           Terminal=false
           Categories=Network;
           StartupWMClass=GlashClientDesktop
           StartupNotify=true
           DESKTOP
-          chmod +x "${DEST}/GlashClientDesktop.desktop"
+          # 控制信息 + 安装后刷新桌面数据库/图标缓存
+          mkdir -p "${STAGE}/DEBIAN"
+          cat > "${STAGE}/DEBIAN/control" <<'CONTROL'
+          Package: glash-client
+          Version: ${{ steps.version.outputs.version }}
+          Section: net
+          Priority: optional
+          Architecture: ${{ matrix.deb_arch }}
+          Maintainer: 张鹏 <scbeta@qq.com>
+          Description: Glash reverse proxy client
+           A lightweight reverse proxy client (Glash) that exposes internal
+           services through a relay server.
+          CONTROL
+          cat > "${STAGE}/DEBIAN/postinst" <<'POSTINST'
+          #!/bin/sh
+          set -e
+          if command -v update-desktop-database >/dev/null 2>&1; then
+            update-desktop-database /usr/share/applications || true
+          fi
+          if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+            gtk-update-icon-cache -f -t /usr/share/icons/hicolor || true
+          fi
+          POSTINST
+          chmod 0755 "${STAGE}/DEBIAN/postinst"
+          cat > "${STAGE}/DEBIAN/postrm" <<'POSTRM'
+          #!/bin/sh
+          set -e
+          if command -v update-desktop-database >/dev/null 2>&1; then
+            update-desktop-database /usr/share/applications || true
+          fi
+          if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+            gtk-update-icon-cache -f -t /usr/share/icons/hicolor || true
+          fi
+          POSTRM
+          chmod 0755 "${STAGE}/DEBIAN/postrm"
 
       - name: Package (zip)
         if: matrix.archive == 'zip'
@@ -190,9 +236,10 @@ jobs:
         if: startsWith(matrix.rid, 'osx-')
         run: tar -czf GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.tar.gz -C . GlashClientDesktop.app
 
-      - name: Package (tar.gz - linux)
-        if: matrix.archive == 'tar.gz' && !startsWith(matrix.rid, 'osx-')
-        run: tar -czf GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.tar.gz -C publish/${{ matrix.rid }} .
+      - name: Build deb (Linux)
+        if: startsWith(matrix.rid, 'linux-')
+        shell: bash
+        run: dpkg-deb --build --root-owner-group debstage "GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.deb"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
