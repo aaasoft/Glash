@@ -252,8 +252,9 @@ namespace Glash.Blazor.Server
                 ProxyTypeConfig = proxyRule.ProxyTypeConfig
             };
 
+            var existingRule = ConfigDbContext.CacheContext.Find(model);
             //Add
-            if (string.IsNullOrEmpty(model.Id) || ConfigDbContext.CacheContext.Find(model) == null)
+            if (string.IsNullOrEmpty(model.Id) || existingRule == null)
             {
                 model.Id = Guid.NewGuid().ToString("N");
                 ConfigDbContext.CacheContext.Add(model);
@@ -261,6 +262,8 @@ namespace Glash.Blazor.Server
             //Update
             else
             {
+                if (existingRule.ClientName != clientName)
+                    throw new ApplicationException(Locale<Global>.GetString("ProxyRule[{0}] not belong to Client[{1}].", model.Id, clientName));
                 ConfigDbContext.CacheContext.Update(model);
             }
             return model;
