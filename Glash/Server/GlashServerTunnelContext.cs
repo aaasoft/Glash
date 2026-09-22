@@ -30,7 +30,7 @@ namespace Glash.Server
             this.errorHandler = errorHandler;
             CreateTime = DateTime.Now;
             cts = new CancellationTokenSource();
-            beginCalcSpeed(cts.Token);
+            _ = beginCalcSpeed(cts.Token);
 
             if (tunnelInfo.ClientTunnelPackageType > 0)
                 client.Channel.RegisterPackageHandler(tunnelInfo.ClientTunnelPackageType, ClientTunnelPackageHandler);
@@ -38,12 +38,18 @@ namespace Glash.Server
                 agent.Channel.RegisterPackageHandler(tunnelInfo.AgentTunnelPackageType, AgentTunnelPackageHandler);
         }
 
-        private void beginCalcSpeed(CancellationToken cancellationToken)
+        private async Task beginCalcSpeed(CancellationToken cancellationToken)
         {
-            Task.Delay(1000, cancellationToken).ContinueWith(t =>
+            while (!cancellationToken.IsCancellationRequested)
             {
-                if (t.IsCanceled)
-                    return;
+                try
+                {
+                    await Task.Delay(1000, cancellationToken).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
                 try
                 {
                     var currentUploadBytes = UploadBytes;
@@ -60,8 +66,7 @@ namespace Glash.Server
                     preDownloadBytes = currentDownloadBytes;
                 }
                 catch { }
-                beginCalcSpeed(cancellationToken);
-            });
+            }
         }
 
         public void OnError(Exception ex)
