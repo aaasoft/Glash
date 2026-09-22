@@ -80,6 +80,7 @@ jobs:
           -c Release
           -r ${{ matrix.rid }}
           -p:Version=${{ steps.version.outputs.version }}
+          -p:DebugType=none
           -o publish/${{ matrix.rid }}
 
       - name: Remove PDB files
