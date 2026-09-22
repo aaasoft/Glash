@@ -87,6 +87,32 @@ jobs:
         shell: bash
         run: find publish/${{ matrix.rid }} -name '*.pdb' -delete
 
+      - name: Add .desktop launcher and icon (Linux)
+        if: matrix.archive == 'tar.gz' && !startsWith(matrix.rid, 'osx-')
+        shell: bash
+        run: |
+          DEST="publish/${{ matrix.rid }}"
+          # 图标安装到 hicolor 主题目录（512x512 为原生尺寸；256x256 复制一份供桌面环境按需缩放）
+          mkdir -p "${DEST}/share/icons/hicolor/256x256/apps" "${DEST}/share/icons/hicolor/512x512/apps"
+          cp "Resource/logo.png" "${DEST}/share/icons/hicolor/256x256/apps/glash-client.png"
+          cp "Resource/logo.png" "${DEST}/share/icons/hicolor/512x512/apps/glash-client.png"
+          # .desktop 启动器：Exec 用 %k 技巧，无论从哪个目录解压都能定位同目录下的可执行文件
+          cat > "${DEST}/GlashClientDesktop.desktop" <<'DESKTOP'
+          [Desktop Entry]
+          Type=Application
+          Name=GlashClientDesktop
+          Name[zh_CN]=Glash 客户端
+          Comment=Glash reverse proxy client
+          Comment[zh_CN]=Glash 反向代理客户端
+          Exec=sh -c 'DIR=$(dirname "%k"); DIR=${DIR#file://}; [ -d "$DIR" ] || DIR=.; cd "$DIR" && exec ./GlashClientDesktop' %k
+          Icon=glash-client
+          Terminal=false
+          Categories=Network;
+          StartupWMClass=GlashClientDesktop
+          StartupNotify=true
+          DESKTOP
+          chmod +x "${DEST}/GlashClientDesktop.desktop"
+
       - name: Package (zip)
         if: matrix.archive == 'zip'
         shell: pwsh
