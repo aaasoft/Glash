@@ -3,6 +3,7 @@ using Glash.Core;
 using Glash.Client.Protocol.QpModel;
 using Glash.Client.Protocol.QpNotices;
 using Quick.Utils;
+using System.Collections.Concurrent;
 
 namespace Glash.Client
 {
@@ -38,12 +39,8 @@ namespace Glash.Client
 
         private void closeAllTunnel()
         {
-            GlashTunnelContext[] tunnels = null;
-            lock (tunnelContextDict)
-            {
-                tunnels = tunnelContextDict.Values.ToArray();
-                tunnelContextDict.Clear();
-            }
+            var tunnels = tunnelContextDict.Values.ToArray();
+            tunnelContextDict.Clear();
             foreach (var tunnel in tunnels)
                 tunnel.Dispose();
         }
@@ -141,7 +138,7 @@ namespace Glash.Client
             UnloadProxyRule(proxyRuleContextDict[proxyRuleId]);
         }
 
-        private Dictionary<int, GlashTunnelContext> tunnelContextDict = new Dictionary<int, GlashTunnelContext>();
+        private ConcurrentDictionary<int, GlashTunnelContext> tunnelContextDict = new ConcurrentDictionary<int, GlashTunnelContext>();
 
         internal async Task CreateAndStartTunnelAsync(ProxyRuleInfo config, string connectionName, Stream stream)
         {
@@ -186,17 +183,12 @@ namespace Glash.Client
                         qpClient.SendNoticePackage(new TunnelClosed() { TunnelId = tunnelId });
 
                         GlashTunnelContext tunnelContext = null;
-                        lock (tunnelContextDict)
-                        {
-                            if (!tunnelContextDict.ContainsKey(tunnelId))
-                                return;
-                            tunnelContext = tunnelContextDict[tunnelId];
-                        }
+                        if (!tunnelContextDict.TryGetValue(tunnelId, out tunnelContext))
+                            return;
                         tunnelContext.Dispose();
                         LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
                     });
-                lock (tunnelContextDict)
-                    tunnelContextDict[tunnelId] = tunnelContext;
+                tunnelContextDict[tunnelId] = tunnelContext;
 
                 //Start Tunnel
                 await qpClient.SendCommand(new Protocol.QpCommands.StartTunnel.Request() { TunnelId = tunnelId });
@@ -223,19 +215,16 @@ namespace Glash.Client
         private async ValueTask OnTunnelDataAvailable(QpChannel channel, G.D data)
         {
             var tunnelId = data.TunnelId;
-            if (!tunnelContextDict.ContainsKey(tunnelId))
+            if (!tunnelContextDict.TryGetValue(tunnelId, out var tunnelContext))
                 return;
-            var tunnelContext = tunnelContextDict[tunnelId];
             tunnelContext.PushData(data.Data);
         }
 
         private async ValueTask OnTunnelClosed(QpChannel channel, TunnelClosed data)
         {
             var tunnelId = data.TunnelId;
-            GlashTunnelContext tunnelContext = null;
-            lock (tunnelContextDict)
-                if (!tunnelContextDict.TryGetValue(tunnelId,out tunnelContext))
-                    return;
+            if (!tunnelContextDict.TryGetValue(tunnelId, out var tunnelContext))
+                return;
             tunnelContext.OnError(new ApplicationException("Tunnel closed."));
         }
 

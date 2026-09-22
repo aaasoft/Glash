@@ -1,6 +1,7 @@
 ﻿using Glash.Core;
 using Quick.Protocol;
 using Quick.Utils;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 
 namespace Glash.Agent
@@ -11,7 +12,7 @@ namespace Glash.Agent
         private QpClient qpClient;
         private string agentName;
         private string password;
-        private Dictionary<int, GlashTunnelContext> tunnelContextDict = new Dictionary<int, GlashTunnelContext>();
+        private ConcurrentDictionary<int, GlashTunnelContext> tunnelContextDict = new ConcurrentDictionary<int, GlashTunnelContext>();
 
         public event EventHandler Disconnected;
         public event EventHandler<string> LogPushed;
@@ -42,17 +43,13 @@ namespace Glash.Agent
         private void QpClient_Disconnected(object sender, EventArgs e)
         {
             LogPushed?.Invoke(this, $"Disconnected.Message:{ExceptionUtils.GetExceptionMessage(qpClient?.LastException)}");
-            GlashTunnelContext[] tunnels = null;
-            lock (tunnelContextDict)
-            {
-                tunnels = tunnelContextDict.Values.ToArray();
-                tunnelContextDict.Clear();
+            GlashTunnelContext[] tunnels = tunnelContextDict.Values.ToArray();
+            tunnelContextDict.Clear();
 
-                if (qpClient != null)
-                {
-                    Disconnected?.Invoke(this, EventArgs.Empty);
-                    clean();
-                }
+            if (qpClient != null)
+            {
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                clean();
             }
             foreach (var tunnel in tunnels)
                 tunnel.Dispose();
@@ -118,17 +115,12 @@ namespace Glash.Agent
                         LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] error.Message:{ExceptionUtils.GetExceptionMessage(ex)}");
                         channel.SendNoticePackage(new Core.TunnelClosed() { TunnelId = tunnelId });
                         GlashTunnelContext tunnelContext = null;
-                        lock (tunnelContextDict)
-                        {
-                            if (!tunnelContextDict.TryGetValue(tunnelId, out tunnelContext))
-                                return;
-                            tunnelContextDict.Remove(tunnelId);
-                        }
+                        if (!tunnelContextDict.TryRemove(tunnelId, out tunnelContext))
+                            return;
                         tunnelContext.Dispose();
                         LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
                     });
-                lock (tunnelContextDict)
-                    tunnelContextDict[tunnelId] = tunnelContext;
+                tunnelContextDict[tunnelId] = tunnelContext;
                 LogPushed?.Invoke(this, $"Create tunnel[{tunnelId}] to {tunnelInfo.Host}:{tunnelInfo.Port} success.");
                 return new Protocol.QpCommands.CreateTunnel.Response()
                 {
@@ -147,8 +139,7 @@ namespace Glash.Agent
             Protocol.QpCommands.StartTunnel.Request request)
         {
             var tunnelId = request.TunnelId;
-            GlashTunnelContext tunnelContext;
-            if (!tunnelContextDict.TryGetValue(tunnelId, out tunnelContext))
+            if (!tunnelContextDict.TryGetValue(tunnelId, out var tunnelContext))
                 throw new ApplicationException($"Tunnel[{tunnelId}] not exist.");
             tunnelContext.Start();
             return new Protocol.QpCommands.StartTunnel.Response();
@@ -157,19 +148,16 @@ namespace Glash.Agent
         private async ValueTask OnTunnelDataAvailable(QpChannel channel, G.D data)
         {
             var tunnelId = data.TunnelId;
-            if (!tunnelContextDict.ContainsKey(tunnelId))
+            if (!tunnelContextDict.TryGetValue(tunnelId, out var tunnelContext))
                 return;
-            var tunnelContext = tunnelContextDict[tunnelId];
             tunnelContext.PushData(data.Data);
         }
 
         private async ValueTask OnTunnelClosed(QpChannel channel, TunnelClosed data)
         {
             var tunnelId = data.TunnelId;
-            GlashTunnelContext tunnelContext = null;
-            lock (tunnelContextDict)
-                if(!tunnelContextDict.TryGetValue(tunnelId,out tunnelContext))
-                    return;
+            if (!tunnelContextDict.TryGetValue(tunnelId, out var tunnelContext))
+                return;
             tunnelContext.OnError(new ApplicationException("Tunnel closed."));
         }
     }
