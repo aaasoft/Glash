@@ -272,7 +272,7 @@ namespace Glash.Blazor.Server
             if (model == null)
                 throw new ApplicationException(Locale<Global>.GetString("Can't found ProxyRule with Id[{0}].", proxyRuleId));
 
-            if (model.ClientName != model.ClientName)
+            if (model.ClientName != clientName)
                 throw new ApplicationException(Locale<Global>.GetString("ProxyRule[{0}] not belong to Client[{1}].", proxyRuleId, clientName));
 
             ConfigDbContext.CacheContext.Remove(model);
