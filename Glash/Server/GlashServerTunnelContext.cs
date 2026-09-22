@@ -111,6 +111,8 @@ namespace Glash.Server
 
         private async Task _PushDataToClient(string data)
         {
+            if (data == null)
+                return;
             await PushBase64Data(Client.Channel, data).ConfigureAwait(false);
             DownloadBytes += GetBase64DecodedLength(data);
         }
@@ -137,6 +139,8 @@ namespace Glash.Server
 
         private async Task _PushDataToAgent(string data)
         {
+            if (data == null)
+                return;
             await PushBase64Data(Agent.Channel, data).ConfigureAwait(false);
             UploadBytes += GetBase64DecodedLength(data);
         }

@@ -17,7 +17,7 @@ namespace Glash.Client
         public event EventHandler<AgentLoginStatusChanged> AgentLoginStatusChanged;
         public event EventHandler Disconnected;
         public event EventHandler<string> LogPushed;
-        public bool PreferHighSpeedMode { get; set; } = false;
+        public bool PreferHighSpeedMode { get; set; } = true;
 
         public ProxyRuleContext[] ProxyRuleContexts => proxyRuleContextDict.Values.ToArray();
 
