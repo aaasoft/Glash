@@ -66,14 +66,14 @@ namespace Glash.Client
             {
                 qpClient.Disconnected += QpClient_Disconnected;
                 //Connect
-                await qpClient.ConnectAsync();
+                await qpClient.ConnectAsync().ConfigureAwait(false);
                 var answer = CryptoUtils.GetAnswer(qpClient.AuthenticateQuestion, password);
                 //Register
                 await qpClient.SendCommand(new Protocol.QpCommands.Login.Request()
                 {
                     Name = user,
                     Answer = answer
-                });
+                }).ConfigureAwait(false);
             }
             catch
             {
@@ -99,7 +99,7 @@ namespace Glash.Client
             if (!proxyRuleContextDict.TryGetValue(proxyRuleId, out var context))
                 return;
             context.Config.Enable = true;
-            await SaveProxyRule(context.Config);
+            await SaveProxyRule(context.Config).ConfigureAwait(false);
             context.Enable();
         }
 
@@ -108,7 +108,7 @@ namespace Glash.Client
             if (!proxyRuleContextDict.TryGetValue(proxyRuleId, out var context))
                 return;
             context.Config.Enable = false;
-            await SaveProxyRule(context.Config);
+            await SaveProxyRule(context.Config).ConfigureAwait(false);
             context.Disable();
         }
 
@@ -144,7 +144,7 @@ namespace Glash.Client
         {
             try
             {
-                await createTunnelLock.WaitAsync();
+                await createTunnelLock.WaitAsync().ConfigureAwait(false);
                 byte clientTunnelPackageType = 0;
                 if (PreferHighSpeedMode)
                 {
@@ -162,7 +162,7 @@ namespace Glash.Client
                 {
                     ProxyRuleId = config.Id,
                     ClientTunnelPackageType = clientTunnelPackageType
-                });
+                }).ConfigureAwait(false);
                 var tunnelInfo = rep.Data;
                 var tunnelId = tunnelInfo.Id;
                 if (PreferHighSpeedMode)
@@ -191,7 +191,7 @@ namespace Glash.Client
                 tunnelContextDict[tunnelId] = tunnelContext;
 
                 //Start Tunnel
-                await qpClient.SendCommand(new Protocol.QpCommands.StartTunnel.Request() { TunnelId = tunnelId });
+                await qpClient.SendCommand(new Protocol.QpCommands.StartTunnel.Request() { TunnelId = tunnelId }).ConfigureAwait(false);
                 tunnelContext.Start();
 
                 LogPushed?.Invoke(this, $"[{connectionName}]: Create tunnel[{tunnelId}] to [{config.Agent}]{config.RemoteHost}:{config.RemotePort} success.");
@@ -235,13 +235,13 @@ namespace Glash.Client
 
         public async Task<AgentInfo[]> GetAgentListAsync()
         {
-            var rep = await qpClient.SendCommand(new Protocol.QpCommands.GetAgentList.Request());
+            var rep = await qpClient.SendCommand(new Protocol.QpCommands.GetAgentList.Request()).ConfigureAwait(false);
             return rep.Data;
         }
 
         public async Task<ProxyRuleInfo[]> GetProxyRuleListAsync()
         {
-            var rep = await qpClient.SendCommand(new Protocol.QpCommands.GetProxyRuleList.Request());
+            var rep = await qpClient.SendCommand(new Protocol.QpCommands.GetProxyRuleList.Request()).ConfigureAwait(false);
             return rep.Data;
         }
 
@@ -250,7 +250,7 @@ namespace Glash.Client
             var rep = await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.SaveProxyRule.Request()
             {
                 Data = model
-            });
+            }).ConfigureAwait(false);
             return rep.Data;
         }
 
@@ -259,7 +259,7 @@ namespace Glash.Client
             await qpClient.SendCommand(new Glash.Client.Protocol.QpCommands.DeleteProxyRule.Request()
             {
                 ProxyRuleId = proxyRuleId
-            });
+            }).ConfigureAwait(false);
         }
     }
 }

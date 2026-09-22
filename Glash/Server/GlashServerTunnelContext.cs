@@ -71,12 +71,12 @@ namespace Glash.Server
 
         private async ValueTask ClientTunnelPackageHandler(QpChannel channel, byte packageType, ReadOnlySequence<byte> bodyBuffer)
         {
-            await _PushDataToAgent(bodyBuffer);
+            await _PushDataToAgent(bodyBuffer).ConfigureAwait(false);
         }
 
         private async ValueTask AgentTunnelPackageHandler(QpChannel channel, byte packageType, ReadOnlySequence<byte> bodyBuffer)
         {
-            await _PushDataToClient(bodyBuffer);
+            await _PushDataToClient(bodyBuffer).ConfigureAwait(false);
         }
 
         private async Task PushBase64Data(QpChannel channel, string data)
@@ -87,7 +87,7 @@ namespace Glash.Server
                 {
                     TunnelId = TunnelInfo.Id,
                     Data = data
-                });
+                }).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -111,7 +111,7 @@ namespace Glash.Server
 
         private async Task _PushDataToClient(string data)
         {
-            await PushBase64Data(Client.Channel, data);
+            await PushBase64Data(Client.Channel, data).ConfigureAwait(false);
             DownloadBytes += GetBase64DecodedLength(data);
         }
 
@@ -123,21 +123,21 @@ namespace Glash.Server
                 var span = writer.GetSpan(ret);
                 data.CopyTo(span);
                 writer.Advance(ret);
-                await writer.FlushAsync();
+                await writer.FlushAsync().ConfigureAwait(false);
                 return ret;
-            });
+            }).ConfigureAwait(false);
             DownloadBytes += data.Length;
         }
 
         public async Task PushDataToClient(string data)
         {
-            await _PushDataToClient(data);
+            await _PushDataToClient(data).ConfigureAwait(false);
         }
 
 
         private async Task _PushDataToAgent(string data)
         {
-            await PushBase64Data(Agent.Channel, data);
+            await PushBase64Data(Agent.Channel, data).ConfigureAwait(false);
             UploadBytes += GetBase64DecodedLength(data);
         }
 
@@ -149,15 +149,15 @@ namespace Glash.Server
                 var span = writer.GetSpan(ret);
                 data.CopyTo(span);
                 writer.Advance(ret);
-                await writer.FlushAsync();
+                await writer.FlushAsync().ConfigureAwait(false);
                 return ret;
-            });
+            }).ConfigureAwait(false);
             UploadBytes += data.Length;
         }
 
         public async Task PushDataToAgent(string data)
         {
-            await _PushDataToAgent(data);
+            await _PushDataToAgent(data).ConfigureAwait(false);
         }
 
         public Task SendTunnelClosedNotice(QpChannel channel) => channel.SendNoticePackage(new TunnelClosed() { TunnelId = TunnelInfo.Id });

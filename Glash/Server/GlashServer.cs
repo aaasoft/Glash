@@ -301,7 +301,7 @@ namespace Glash.Server
             GlashServerTunnelContext tunnel = null;
             try
             {
-                await createTunnelLock.WaitAsync();
+                await createTunnelLock.WaitAsync().ConfigureAwait(false);
 
                 //分配通道号
                 if (serverTunnelContextDict.Count >= options.MaxTunnelCount)
@@ -327,7 +327,7 @@ namespace Glash.Server
                     tunnelInfo.ClientTunnelPackageType = request.ClientTunnelPackageType;
                     tunnelInfo.AgentTunnelPackageType = agentContext.Channel.GetUnusedPackageType();
                 }
-                await agentContext.CreateTunnelAsync(tunnelInfo);
+                await agentContext.CreateTunnelAsync(tunnelInfo).ConfigureAwait(false);
                 //如果Agent不支持包类型，则客户端也不用包类型
                 if (tunnelInfo.AgentTunnelPackageType == 0)
                     tunnelInfo.ClientTunnelPackageType = 0;
@@ -374,7 +374,7 @@ namespace Glash.Server
                 throw new ArgumentException($"Tunnel[{tunnelId}] not exist.");
             if (serverTunnelContext.Client != clientContext)
                 throw new ArgumentException($"Tunnel[{tunnelId}] client context not match.");
-            await serverTunnelContext.StartAgentTunnel();
+            await serverTunnelContext.StartAgentTunnel().ConfigureAwait(false);
             LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] started.");
             return new Client.Protocol.QpCommands.StartTunnel.Response();
         }
@@ -391,13 +391,13 @@ namespace Glash.Server
             {
                 if (tunnel.Agent != agentContext)
                     return;
-                await tunnel.PushDataToClient(data.Data);
+                await tunnel.PushDataToClient(data.Data).ConfigureAwait(false);
             }
             else if (channel.Tag is GlashClientContext clientContext)
             {
                 if (tunnel.Client != clientContext)
                     return;
-                await tunnel.PushDataToAgent(data.Data);
+                await tunnel.PushDataToAgent(data.Data).ConfigureAwait(false);
             }
         }
 
@@ -417,13 +417,13 @@ namespace Glash.Server
             {
                 if (tunnel.Agent != agentContext)
                     return;
-                await tunnel.SendTunnelClosedNoticeToClient();
+                await tunnel.SendTunnelClosedNoticeToClient().ConfigureAwait(false);
             }
             else if (channel.Tag is GlashClientContext clientContext)
             {
                 if (tunnel.Client != clientContext)
                     return;
-                await tunnel.SendTunnelClosedNoticeToAgent();
+                await tunnel.SendTunnelClosedNoticeToAgent().ConfigureAwait(false);
             }
         }
     }

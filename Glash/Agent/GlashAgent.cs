@@ -74,14 +74,14 @@ namespace Glash.Agent
                 qpClient = qpClientOptions.CreateClient();
                 qpClient.Disconnected += QpClient_Disconnected;
                 //Connect
-                await qpClient.ConnectAsync();
+                await qpClient.ConnectAsync().ConfigureAwait(false);
                 //Register
                 var answer = CryptoUtils.GetAnswer(qpClient.AuthenticateQuestion, password);
                 await qpClient.SendCommand(new Protocol.QpCommands.Login.Request()
                 {
                     Name = agentName,
                     Answer = answer
-                });
+                }).ConfigureAwait(false);
             }
             catch
             {
@@ -104,7 +104,7 @@ namespace Glash.Agent
             try
             {
                 var tcpClient = new TcpClient();
-                await tcpClient.ConnectAsync(tunnelInfo.Host, tunnelInfo.Port);
+                await tcpClient.ConnectAsync(tunnelInfo.Host, tunnelInfo.Port).ConfigureAwait(false);
                 var tunnelContext = new GlashTunnelContext(
                     channel,
                     tunnelId,

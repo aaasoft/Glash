@@ -88,7 +88,7 @@ namespace Glash.Client
         {
             try
             {
-                await Task.Delay(5000, token);
+                await Task.Delay(5000, token).ConfigureAwait(false);
                 _ = beginStart(token);
             }
             catch { }
@@ -118,7 +118,7 @@ namespace Glash.Client
             {
                 try
                 {
-                    var tcpClient = await tcpListener.AcceptTcpClientAsync(token);
+                    var tcpClient = await tcpListener.AcceptTcpClientAsync(token).ConfigureAwait(false);
                     var connectionName = $"TCP:{tcpClient.Client.RemoteEndPoint}";
                     //Create and Start Tunnel
                     _ = glashClient.CreateAndStartTunnelAsync(Config, connectionName, tcpClient.GetStream());

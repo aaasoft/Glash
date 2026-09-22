@@ -57,7 +57,7 @@ namespace Glash.Core
                 var task = stream?.ReadAsync(readBuffer, 0, readBuffer.Length, token);
                 if (task == null)
                     return;
-                var ret = await task;
+                var ret = await task.ConfigureAwait(false);
                 if (ret <= 0)
                     throw new IOException("Read count: " + ret);
                 //如果支持通道包类型
@@ -67,9 +67,9 @@ namespace Glash.Core
                     {
                         readBuffer.AsSpan(0, ret).CopyTo(writer.GetSpan(ret));
                         writer.Advance(ret);
-                        await writer.FlushAsync();
+                        await writer.FlushAsync().ConfigureAwait(false);
                         return ret;
-                    });
+                    }).ConfigureAwait(false);
                 }
                 //否则使用传统模式
                 else
@@ -78,7 +78,7 @@ namespace Glash.Core
                     {
                         TunnelId = tunnelId,
                         Data = Convert.ToBase64String(readBuffer, 0, ret)
-                    });
+                    }).ConfigureAwait(false);
                 }
                 _ = beginRead(token);
             }

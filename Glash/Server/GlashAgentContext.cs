@@ -34,7 +34,7 @@ namespace Glash.Server
             var data = await Channel.SendCommand(new Glash.Agent.Protocol.QpCommands.CreateTunnel.Request()
             {
                 Data = tunnelInfo
-            });
+            }).ConfigureAwait(false);
             if (data.Data == null)
                 tunnelInfo.AgentTunnelPackageType = 0;
             else
@@ -46,7 +46,7 @@ namespace Glash.Server
             await Channel.SendCommand(new Glash.Agent.Protocol.QpCommands.StartTunnel.Request()
             {
                 TunnelId = tunnelId
-            });
+            }).ConfigureAwait(false);
         }
     }
 }
