@@ -19,7 +19,7 @@ COPY Glash.Blazor.Client/ Glash.Blazor.Client/
 COPY GlashClientWeb/ GlashClientWeb/
 
 # Build the project for the target platform
-RUN dotnet publish GlashClientWeb/GlashClientWeb.csproj -c Release -o /app --no-restore
+RUN dotnet publish GlashClientWeb/GlashClientWeb.csproj -c Release -p:DebugType=none -o /app --no-restore
 
 # Use multi-platform aware runtime image
 FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime

@@ -17,7 +17,7 @@ COPY Glash/ Glash/
 COPY GlashAgentConsole/ GlashAgentConsole/
 
 # Build the project for the target platform
-RUN dotnet publish GlashAgentConsole/GlashAgentConsole.csproj -c Release -o /app --no-restore
+RUN dotnet publish GlashAgentConsole/GlashAgentConsole.csproj -c Release -p:DebugType=none -o /app --no-restore
 
 # Use multi-platform aware runtime image
 FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime:10.0 AS runtime

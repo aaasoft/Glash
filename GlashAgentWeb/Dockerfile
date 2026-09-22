@@ -19,7 +19,7 @@ COPY Glash.Blazor.Agent/ Glash.Blazor.Agent/
 COPY GlashAgentWeb/ GlashAgentWeb/
 
 # Build the project for the target platform
-RUN dotnet publish GlashAgentWeb/GlashAgentWeb.csproj -c Release -o /app --no-restore
+RUN dotnet publish GlashAgentWeb/GlashAgentWeb.csproj -c Release -p:DebugType=none -o /app --no-restore
 
 # Use multi-platform aware runtime image
 FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
