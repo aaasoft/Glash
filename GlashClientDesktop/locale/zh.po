@@ -153,6 +153,10 @@ msgstr "断开"
 msgid "Are you sure to delete selected rule?"
 msgstr "确定要删除选中的规则？"
 
+#: ../../Converters/ProxyRuleConverters.cs
+msgid "Auto assign"
+msgstr "自动分配"
+
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:86
 #: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:243
 msgid "Logs"

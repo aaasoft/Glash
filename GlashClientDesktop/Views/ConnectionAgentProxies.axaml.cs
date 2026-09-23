@@ -12,13 +12,13 @@ public partial class ConnectionAgentProxies : UserControl
         InitializeComponent();
     }
 
-    private async void CopyLocalEndPoint_Tapped(object? sender, TappedEventArgs e)
+    private async void CopyLocalEndPoint_Tapped(object sender, TappedEventArgs e)
     {
         if (sender is Control control && control.DataContext is ProxyRuleContext rule)
             await CopyToClipboardAsync(rule.LocalEndPoint);
     }
 
-    private async void CopyRemoteEndPoint_Tapped(object? sender, TappedEventArgs e)
+    private async void CopyRemoteEndPoint_Tapped(object sender, TappedEventArgs e)
     {
         if (sender is Control control && control.DataContext is ProxyRuleContext rule)
             await CopyToClipboardAsync(rule.RemoteEndPoint);

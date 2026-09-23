@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-09-23 11:28:11+0800\n"
-"PO-Revision-Date: 2026-09-23 11:28:11+0800\n"
+"POT-Creation-Date: 2026-09-23 15:38:44+0800\n"
+"PO-Revision-Date: 2026-09-23 15:38:44+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -181,6 +181,10 @@ msgstr ""
 msgid "Connected"
 msgstr ""
 
+#: ../../Converters/ProxyRuleConverters.cs:41
+msgid "Auto assign"
+msgstr ""
+
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:12
 msgid "Current not connected."
 msgstr ""
@@ -193,12 +197,12 @@ msgstr ""
 msgid "GlashClientDesktop"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Database.cs:24
-msgid "Database"
-msgstr ""
-
 #: ../../Core/ProxyTypes/Database.cs:29
 msgid "Library"
+msgstr ""
+
+#: ../../Core/ProxyTypes/Database.cs:24
+msgid "Database"
 msgstr ""
 
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:70

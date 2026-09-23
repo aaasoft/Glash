@@ -1,6 +1,8 @@
 using System.Globalization;
 using Avalonia.Data.Converters;
 using GlashClientDesktop.Core.ProxyTypes;
+using GlashClientDesktop.ViewModels;
+using Quick.Localize;
 
 namespace GlashClientDesktop.Converters;
 
@@ -9,7 +11,7 @@ namespace GlashClientDesktop.Converters;
 /// </summary>
 public class ProxyTypeNameConverter : IValueConverter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is string id)
         {
@@ -20,27 +22,27 @@ public class ProxyTypeNameConverter : IValueConverter
         return value?.ToString() ?? string.Empty;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotSupportedException();
 }
 
 /// <summary>
-/// 端点展示：端口为 0 表示自动分配且尚未分配（未启用/未绑定），渲染为 "host:自动分配"；
+/// 端点展示：端口为 0 表示自动分配且尚未分配（未启用/未绑定），渲染为 "host:自动分配"（"自动分配" 走 Locale 多语言）；
 /// 已分配实际端口（启用并绑定成功）时原样返回 "host:port"。
 /// </summary>
 public class EndPointDisplayConverter : IValueConverter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is string ep && !string.IsNullOrEmpty(ep))
         {
             var idx = ep.LastIndexOf(':');
             if (idx > 0 && idx < ep.Length - 1 && ep.Substring(idx + 1) == "0")
-                return ep.Substring(0, idx) + ":自动分配";
+                return ep.Substring(0, idx) + ":" + Locale<ConnectionAgentProxiesViewModel>.GetString("Auto assign");
         }
         return value ?? string.Empty;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotSupportedException();
 }
