@@ -10,6 +10,10 @@ namespace GlashClientDesktop.ViewModels;
 public class ConnectionConsoleViewModel : ViewModelBase
 {
     public string Text_CurrentNotConntected =>Locale<ConnectionConsoleViewModel>.GetString("Current not connected.");
+    public string Text_Connect => Locale<ConnectionConsoleViewModel>.GetString("Connect");
+    public string Text_Disconnect => Locale<ConnectionConsoleViewModel>.GetString("Disconnect");
+    public string Text_Connected => Locale<ConnectionConsoleViewModel>.GetString("Connected");
+    public string Text_Disconnected => Locale<ConnectionConsoleViewModel>.GetString("Disconnected");
     private ConnectionContext _Model;
     public ConnectionContext Model
     {

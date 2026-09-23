@@ -12,18 +12,26 @@
     <vm:ConnectionConsoleViewModel />
   </Design.DataContext>
   <Grid RowDefinitions="Auto,*,Auto">
-    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
-      <TextBlock
-        VerticalAlignment="Center"
-        Margin="8 0"
-        FontWeight="Bold"
-        Text="{Binding Model.Connection.Name}" />
-      <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 0 0">
-        <u:IconButton Command="{Binding StartCommand}" IsVisible="{Binding !Model.Connected}" Icon="{StaticResource SemiIconLink}"></u:IconButton>
-        <u:IconButton Command="{Binding StopCommand}" IsVisible="{Binding Model.Connected}" Icon="{StaticResource SemiIconUnlink}" Classes="Danger"></u:IconButton>
-        <u:IconButton Command="{Binding LogCommand}" Icon="{StaticResource SemiIconFile}"></u:IconButton>
+    <DockPanel Grid.Row="0" Margin="8 12" LastChildFill="False">
+      <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Spacing="10" VerticalAlignment="Center">
+        <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Model.Connection.Name}" VerticalAlignment="Center" />
+        <Border CornerRadius="4" Padding="8 2" IsVisible="{Binding Model.Connected}" Background="#00b42a">
+          <TextBlock FontSize="12" Foreground="White" Text="{Binding Text_Connected}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Border>
+        <Border CornerRadius="4" Padding="8 2" IsVisible="{Binding !Model.Connected}" Background="#c9cdd4">
+          <TextBlock FontSize="12" Foreground="White" Text="{Binding Text_Disconnected}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Border>
       </StackPanel>
-    </StackPanel>
+      <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Spacing="8" VerticalAlignment="Center">
+        <Button Command="{Binding StartCommand}" IsVisible="{Binding !Model.Connected}"
+                Background="{DynamicResource SemiColorPrimary}" Foreground="White"
+                Content="{Binding Text_Connect}" />
+        <Button Command="{Binding StopCommand}" IsVisible="{Binding Model.Connected}"
+                Background="{DynamicResource SemiColorDanger}" Foreground="White"
+                Content="{Binding Text_Disconnect}" />
+        <u:IconButton Command="{Binding LogCommand}" Icon="{StaticResource SemiIconFile}" />
+      </StackPanel>
+    </DockPanel>
     <Panel Grid.Row="1">
       <u:LoadingContainer
       IsLoading="{Binding IsLoading}"
