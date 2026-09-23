@@ -232,16 +232,81 @@ jobs:
           printf '"CFBundleDisplayName" = "Glash客户端";\n"CFBundleName" = "Glash客户端";\n' \
             > "${APP_DIR}/Contents/Resources/zh-Hans.lproj/InfoPlist.strings"
 
-      - name: Build dmg (macOS)
+      - name: Build styled dmg (macOS)
         if: startsWith(matrix.rid, 'osx-')
         run: |
+          set -e
+          APP_NAME="GlashClientDesktop"
+          VOL_NAME="${APP_NAME}"
           DMG_STAGE="dmgstage"
-          rm -rf "${DMG_STAGE}"
-          mkdir -p "${DMG_STAGE}"
-          # 把 .app 与 Applications 快捷方式放入 dmg 根，形成“拖到 Applications 安装”的体验
+          DMG_TEMP="${APP_NAME}-temp.dmg"
+          DMG_FINAL="GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.dmg"
+          rm -rf "${DMG_STAGE}" "${DMG_TEMP}" "${DMG_FINAL}"
+          mkdir -p "${DMG_STAGE}/.background"
+          # .app 放入 dmg 根
           cp -a "GlashClientDesktop.app" "${DMG_STAGE}/"
-          ln -s /Applications "${DMG_STAGE}/Applications"
-          hdiutil create -volname "GlashClientDesktop" -srcfolder "${DMG_STAGE}" -ov -format UDZO "GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.dmg"
+
+          # 用 Swift/AppKit 画一张背景图（自包含，无需第三方依赖）：品牌渐变 + 标题 + 拖拽箭头
+          swift - <<'SWIFT'
+          import AppKit
+          let w = 660, h = 400
+          let size = NSSize(width: w, height: h)
+          let img = NSImage(size: size)
+          img.lockFocus()
+          let ctx = NSGraphicsContext.current!.cgContext
+          let colors = [NSColor(srgbRed: 0.13, green: 0.20, blue: 0.33, alpha: 1.0).cgColor,
+                        NSColor(srgbRed: 0.07, green: 0.11, blue: 0.19, alpha: 1.0).cgColor]
+          let grad = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                                colors: colors as CFArray, locations: [0, 1])!
+          ctx.drawLinearGradient(grad, start: CGPoint(x: 0, y: h), end: CGPoint(x: 0, y: 0), options: [])
+          let titleAttrs: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 28, weight: .semibold),
+            .foregroundColor: NSColor.white
+          ]
+          let title = "Glash客户端"
+          let tsize = (title as NSString).size(withAttributes: titleAttrs)
+          (title as NSString).draw(at: NSPoint(x: (CGFloat(w) - tsize.width) / 2, y: CGFloat(h) - 72),
+                                   withAttributes: titleAttrs)
+          ctx.setStrokeColor(NSColor.white.cgColor)
+          ctx.setLineWidth(3)
+          ctx.move(to: CGPoint(x: 250, y: 190)); ctx.addLine(to: CGPoint(x: 410, y: 190))
+          ctx.move(to: CGPoint(x: 400, y: 180)); ctx.addLine(to: CGPoint(x: 410, y: 190))
+          ctx.move(to: CGPoint(x: 400, y: 200)); ctx.addLine(to: CGPoint(x: 410, y: 190))
+          ctx.strokePath()
+          img.unlockFocus()
+          let rep = img.representations[0] as! NSBitmapImageRep
+          let data = rep.representation(using: .png, properties: [:])!
+          try! data.write(to: URL(fileURLWithPath: "dmgstage/.background/background.png"))
+          SWIFT
+
+          # 先建可写 dmg，挂载后用 Finder AppleScript 设定窗口布局/背景/图标定位，再压成只读 dmg
+          hdiutil create -volname "${VOL_NAME}" -srcfolder "${DMG_STAGE}" -ov -format UDRW "${DMG_TEMP}"
+          MOUNT=$(hdiutil attach -nobrowse -noautoopen "${DMG_TEMP}" | tail -n1 | awk '{print $NF}')
+          osascript <<EOF
+            tell application "Finder"
+              tell disk "${VOL_NAME}"
+                open
+                set current view of container window to icon view
+                set toolbar visible of container window to false
+                set statusbar visible of container window to false
+                set the bounds of container window to {400, 200, 1060, 600}
+                set theViewOptions to the icon view options of container window
+                set icon size of theViewOptions to 128
+                set arrangement of theViewOptions to not arranged
+                set background picture of theViewOptions to file "background.png" of folder ".background" of disk "${VOL_NAME}"
+                make new alias file at container window to POSIX file "/Applications" with properties {name: "Applications"}
+                set position of item "${APP_NAME}.app" of container window to {180, 230}
+                set position of item "Applications" of container window to {480, 230}
+                close
+                open
+                update without registering applications
+                delay 3
+              end tell
+            end tell
+          EOF
+          hdiutil detach "${MOUNT}" -force
+          hdiutil convert "${DMG_TEMP}" -format UDZO -o "${DMG_FINAL}"
+          rm -rf "${DMG_STAGE}" "${DMG_TEMP}"
 
       - name: Build deb (Linux)
         if: startsWith(matrix.rid, 'linux-')
