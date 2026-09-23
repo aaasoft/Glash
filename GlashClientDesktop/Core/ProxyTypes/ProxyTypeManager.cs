@@ -35,7 +35,6 @@ namespace GlashClientDesktop.Core.ProxyTypes
             var model = new T();
             var type = typeof(T);
             var id = type.Namespace.Split('.').Last();
-            var name = model.GetName();
 
             var formerIds = model.GetFormerIds();
             if (formerIds != null)
@@ -44,7 +43,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
 
             proxyTypeDict[id] = new ProxyTypeInfo(
                 id,
-                name,
+                model.GetName,
                 config =>
                 {
                     if (string.IsNullOrEmpty(config))

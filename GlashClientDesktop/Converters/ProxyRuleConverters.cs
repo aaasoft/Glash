@@ -18,7 +18,7 @@ public class ProxyTypeNameConverter : IValueConverter
         {
             var info = ProxyTypeManager.Instance.GetProxyTypeInfo(id);
             if (info != null)
-                return info.Name;
+                return info.GetName();
         }
         return value?.ToString() ?? string.Empty;
     }
