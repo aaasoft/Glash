@@ -12,9 +12,21 @@ namespace Glash.Client
         private TcpListener tcpListener;
         private CancellationTokenSource cts;
         public ProxyRuleInfo Config { get; private set; }
-        public string LocalEndPoint => $"{Config.LocalIPAddress}:{Config.LocalPort}";
+        public string LocalEndPoint => $"{Config.LocalIPAddress}:{LocalPort}";
         public string RemoteEndPoint => $"{Config.RemoteHost}:{Config.RemotePort}";
-        public int LocalPort { get; private set; }
+        private int _LocalPort;
+        public int LocalPort
+        {
+            get => _LocalPort;
+            private set
+            {
+                if (EqualityComparer<int>.Default.Equals(_LocalPort, value))
+                    return;
+                _LocalPort = value;
+                RaisePropertyChanged(nameof(LocalPort));
+                RaisePropertyChanged(nameof(LocalEndPoint));
+            }
+        }
 
         private bool _Working;
         public bool Working

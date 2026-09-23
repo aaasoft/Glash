@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:proxytypes="using:GlashClientDesktop.Core.ProxyTypes"
+             xmlns:conv="using:GlashClientDesktop.Converters"
              xmlns:u="https://irihi.tech/ursa"
              xmlns:vm="using:GlashClientDesktop.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -12,6 +13,10 @@
   <Design.DataContext>
     <vm:ConnectionAgentProxiesViewModel />
   </Design.DataContext>
+  <UserControl.Resources>
+    <conv:ProxyTypeNameConverter x:Key="ProxyTypeNameConverter" />
+    <conv:EndPointDisplayConverter x:Key="EndPointDisplayConverter" />
+  </UserControl.Resources>
   <Grid RowDefinitions="Auto,*,Auto">
     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
       <StackPanel Orientation="Horizontal">
@@ -58,37 +63,46 @@
         </ListBox.ItemsPanel>
         <ListBox.ItemTemplate>
           <DataTemplate DataType="client:ProxyRuleContext">
-            <Border
-              Margin="4"
-              Padding="12"
-              CornerRadius="8"
-              MinWidth="240"
-              BorderBrush="{StaticResource SemiColorBorder}"
-              BorderThickness="1"
-              BoxShadow="0 2 10 #00000020">
-              <StackPanel Spacing="6">
-                <StackPanel Orientation="Horizontal" IsVisible="{Binding Config.Enable}">
-                  <PathIcon Width="16" Height="16" IsVisible="{Binding Working}" Data="{StaticResource SemiIconConnectionPoint1}" Foreground="{StaticResource SemiColorPrimary}" />
-                  <PathIcon Width="16" Height="16" IsVisible="{Binding !Working}" Data="{StaticResource SemiIconConnectionPoint1}" Foreground="{StaticResource SemiColorDanger}" />
-                  <TextBlock Margin="4 0" Text="{Binding Config.Name}" FontSize="16"/>
+            <Border Margin="4" CornerRadius="8" MinWidth="240"
+                    BorderBrush="{StaticResource SemiColorBorder}" BorderThickness="1"
+                    BoxShadow="0 2 10 #00000020">
+              <Grid ColumnDefinitions="4,*">
+                <!-- 状态色条：禁用=灰 / 启用且Working=绿 / 启用未Working=红 -->
+                <Grid Grid.Column="0">
+                  <Border Background="#c9cdd4" IsVisible="{Binding !Config.Enable}" CornerRadius="2" />
+                  <Grid IsVisible="{Binding Config.Enable}">
+                    <Border Background="#00b42a" IsVisible="{Binding Working}" CornerRadius="2" />
+                    <Border Background="#f53f3f" IsVisible="{Binding !Working}" CornerRadius="2" />
+                  </Grid>
+                </Grid>
+                <StackPanel Grid.Column="1" Margin="12" Spacing="6">
+                  <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Border CornerRadius="4" Padding="6 1"
+                            Background="{DynamicResource SemiColorPrimary}"
+                            IsVisible="{Binding Config.Enable}">
+                      <TextBlock FontSize="11" Foreground="White"
+                                 Text="{Binding Config.ProxyType, Converter={StaticResource ProxyTypeNameConverter}}" />
+                    </Border>
+                    <TextBlock Text="{Binding Config.Name}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="{Binding $parent[ListBox].DataContext.Text_Listen}"
+                               Foreground="{StaticResource SemiColorText3}" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding LocalEndPoint, Converter={StaticResource EndPointDisplayConverter}}"
+                               Foreground="{StaticResource SemiColorText1}"
+                               Cursor="Hand" ToolTip.Tip="点击复制"
+                               Tapped="CopyLocalEndPoint_Tapped" VerticalAlignment="Center" />
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="{Binding $parent[ListBox].DataContext.Text_Proxy}"
+                               Foreground="{StaticResource SemiColorText3}" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding RemoteEndPoint, Converter={StaticResource EndPointDisplayConverter}}"
+                               Foreground="{StaticResource SemiColorText1}"
+                               Cursor="Hand" ToolTip.Tip="点击复制"
+                               Tapped="CopyRemoteEndPoint_Tapped" VerticalAlignment="Center" />
+                  </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" IsVisible="{Binding !Config.Enable}">
-                  <PathIcon Width="16" Height="16" Data="{StaticResource SemiIconConnectionPoint1}" />
-                  <TextBlock Margin="4 0" Text="{Binding Config.Name}" FontSize="16"/>
-                </StackPanel>
-                <TextBlock>
-                  <TextBlock.Inlines>
-                    <Run Text="{Binding $parent[ListBox].DataContext.Text_Listen}" />
-                    <Run Text="{Binding LocalEndPoint}" Foreground="{StaticResource SemiColorText3}"/>
-                  </TextBlock.Inlines>
-                </TextBlock>
-                <TextBlock>
-                  <TextBlock.Inlines>
-                    <Run Text="{Binding $parent[ListBox].DataContext.Text_Proxy}" />
-                    <Run Text="{Binding RemoteEndPoint}" Foreground="{StaticResource SemiColorText3}"/>
-                  </TextBlock.Inlines>
-                </TextBlock>
-              </StackPanel>
+              </Grid>
             </Border>
           </DataTemplate>
         </ListBox.ItemTemplate>
