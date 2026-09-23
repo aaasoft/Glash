@@ -125,6 +125,8 @@ jobs:
           DESKTOP
           # 控制信息 + 安装后刷新桌面数据库/图标缓存
           mkdir -p "${STAGE}/DEBIAN"
+          # 安装内容占用大小（KB，dpkg 的 Installed-Size 单位是 KiB），供软件中心"大小"一栏显示
+          INSTALLED_SIZE_KB=$(du -sk --apparent-size "${STAGE}/opt" "${STAGE}/usr" | awk '{sum+=$1} END {print sum}')
           cat > "${STAGE}/DEBIAN/control" <<'CONTROL'
           Package: glash-client
           Version: ${{ steps.version.outputs.version }}
@@ -136,6 +138,8 @@ jobs:
            A lightweight reverse proxy client (Glash) that exposes internal
            services through a relay server.
           CONTROL
+          # Installed-Size 由脚本计算，追加在 control 末尾（quoted heredoc 内变量不展开）
+          echo "Installed-Size: ${INSTALLED_SIZE_KB}" >> "${STAGE}/DEBIAN/control"
           cat > "${STAGE}/DEBIAN/postinst" <<'POSTINST'
           #!/bin/sh
           set -e
