@@ -18,6 +18,14 @@ namespace Glash.Core
         private Action<Exception> errorHandler;
         private int readLoopRunning; // 0=未运行 1=读泵运行中，防止 Start() 重入产生并发读泵
 
+        // 流量统计：上行=从本地流读出发往远端（upload），下行=从远端收到写入本地流（download）
+        private long _uploadBytes;
+        private long _downloadBytes;
+        public long UploadBytes => Interlocked.Read(ref _uploadBytes);
+        public long DownloadBytes => Interlocked.Read(ref _downloadBytes);
+        // 所属代理规则 Id（由调用方在创建时赋值；Agent 侧可不设置）
+        public string RuleId { get; set; }
+
         public GlashTunnelContext(QpChannel channel, int tunnelId, byte tunnelPackageType, Stream stream, Action<Exception> errorHandler)
         {
             this.channel = channel;
@@ -34,6 +42,8 @@ namespace Glash.Core
         {
             try
             {
+                // 下行：从远端收到的字节（写入本地流前先累计）
+                Interlocked.Add(ref _downloadBytes, bodyBuffer.Length);
                 var currentBuffer = bodyBuffer;
                 while (currentBuffer.Length > 0)
                 {
@@ -60,6 +70,8 @@ namespace Glash.Core
                 var ret = await task.ConfigureAwait(false);
                 if (ret <= 0)
                     throw new IOException("Read count: " + ret);
+                // 上行：本地流读出的字节即发往远端的数据量
+                Interlocked.Add(ref _uploadBytes, ret);
                 //如果支持通道包类型
                 if (tunnelPackageType > 0)
                 {
@@ -109,6 +121,8 @@ namespace Glash.Core
             {
                 stream?.Write(writeBuffer, 0, dataBytesLength);
                 stream?.Flush();
+                // 下行：Base64 模式写入本地流的字节
+                Interlocked.Add(ref _downloadBytes, dataBytesLength);
             }
             catch (Exception ex)
             {

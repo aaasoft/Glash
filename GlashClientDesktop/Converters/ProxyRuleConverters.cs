@@ -61,3 +61,36 @@ public class EnumerableIsEmptyConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotSupportedException();
 }
+
+/// <summary>
+/// 把字节/秒转换成人类可读速率（如 "800 B/s" / "1.2 MB/s"）。
+/// </summary>
+public class SpeedDisplayConverter : IValueConverter
+{
+    public static readonly SpeedDisplayConverter Instance = new();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is long bps)
+            return Format(bps);
+        return value?.ToString() ?? string.Empty;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => throw new NotSupportedException();
+
+    private static string Format(long bps)
+    {
+        if (bps < 1024)
+            return $"{bps} B/s";
+        double v = bps / 1024.0;
+        string[] units = { "KB/s", "MB/s", "GB/s", "TB/s" };
+        var i = 0;
+        while (v >= 1024 && i < units.Length - 1)
+        {
+            v /= 1024;
+            i++;
+        }
+        return $"{v:F1} {units[i]}";
+    }
+}

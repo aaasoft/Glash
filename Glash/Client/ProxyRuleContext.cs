@@ -35,6 +35,23 @@ namespace Glash.Client
             set => RaiseAndSetIfChanged(ref _Working, value);
         }
 
+        private long _UploadSpeed;
+        public long UploadSpeed
+        {
+            get => _UploadSpeed;
+            private set => RaiseAndSetIfChanged(ref _UploadSpeed, value);
+        }
+
+        private long _DownloadSpeed;
+        public long DownloadSpeed
+        {
+            get => _DownloadSpeed;
+            private set => RaiseAndSetIfChanged(ref _DownloadSpeed, value);
+        }
+
+        private CancellationTokenSource _speedCts;
+        private long _preUploadBytes, _preDownloadBytes;
+
         public static int MaxLogLines = 100;
         private Queue<string> logQueue = new();
         public string[] Logs
@@ -66,6 +83,9 @@ namespace Glash.Client
             this.glashClient = glashClient;
             Config = config;
             LocalPort = config.LocalPort;
+
+            _speedCts = new CancellationTokenSource();
+            _ = beginCalcSpeed(_speedCts.Token);
 
             if (config.Enable)
                 Enable();
@@ -144,7 +164,40 @@ namespace Glash.Client
 
         public void Dispose()
         {
+            _speedCts?.Cancel();
+            _speedCts?.Dispose();
             Disable();
+        }
+
+        /// <summary>
+        /// 每秒采样该规则下所有隧道的累计流量，计算上行/下行实时速率（字节/秒）。
+        /// </summary>
+        private async Task beginCalcSpeed(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(1000, token).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+                try
+                {
+                    var (up, down) = glashClient.GetProxyRuleTraffic(Config.Id);
+                    var upSpeed = up - _preUploadBytes;
+                    if (upSpeed < 0) upSpeed = 0;
+                    var downSpeed = down - _preDownloadBytes;
+                    if (downSpeed < 0) downSpeed = 0;
+                    _preUploadBytes = up;
+                    _preDownloadBytes = down;
+                    UploadSpeed = upSpeed;
+                    DownloadSpeed = downSpeed;
+                }
+                catch { }
+            }
         }
     }
 }

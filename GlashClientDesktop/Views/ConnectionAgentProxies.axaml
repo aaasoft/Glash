@@ -16,6 +16,7 @@
   <UserControl.Resources>
     <conv:ProxyTypeNameConverter x:Key="ProxyTypeNameConverter" />
     <conv:EndPointDisplayConverter x:Key="EndPointDisplayConverter" />
+    <conv:SpeedDisplayConverter x:Key="SpeedDisplayConverter" />
   </UserControl.Resources>
   <Grid RowDefinitions="Auto,*,Auto">
     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
@@ -100,6 +101,19 @@
                                Foreground="{StaticResource SemiColorText1}"
                                Cursor="Hand" ToolTip.Tip="{Binding $parent[ListBox].DataContext.Text_ClickToCopy}"
                                Tapped="CopyRemoteEndPoint_Tapped" VerticalAlignment="Center" />
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Spacing="12" Margin="0 4 0 0"
+                              IsVisible="{Binding Working}">
+                    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
+                      <TextBlock Text="&#8593;" Foreground="#00b42a" FontWeight="Bold" VerticalAlignment="Center" />
+                      <TextBlock Text="{Binding UploadSpeed, Converter={StaticResource SpeedDisplayConverter}}"
+                                 Foreground="{StaticResource SemiColorText2}" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
+                      <TextBlock Text="&#8595;" Foreground="#165dff" FontWeight="Bold" VerticalAlignment="Center" />
+                      <TextBlock Text="{Binding DownloadSpeed, Converter={StaticResource SpeedDisplayConverter}}"
+                                 Foreground="{StaticResource SemiColorText2}" VerticalAlignment="Center" />
+                    </StackPanel>
                   </StackPanel>
                 </StackPanel>
               </Grid>

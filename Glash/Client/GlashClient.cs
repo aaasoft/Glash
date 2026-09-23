@@ -189,6 +189,7 @@ namespace Glash.Client
                         LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
                     });
                 tunnelContextDict[tunnelId] = tunnelContext;
+                tunnelContext.RuleId = config.Id;
 
                 //Start Tunnel
                 await qpClient.SendCommand(new Protocol.QpCommands.StartTunnel.Request() { TunnelId = tunnelId }).ConfigureAwait(false);
@@ -210,6 +211,23 @@ namespace Glash.Client
             {
                 createTunnelLock.Release();
             }
+        }
+
+        /// <summary>
+        /// 汇总某条代理规则下所有隧道的累计流量（上行/下行字节数），供 UI 计算实时速率。
+        /// </summary>
+        public (long UploadBytes, long DownloadBytes) GetProxyRuleTraffic(string ruleId)
+        {
+            long upload = 0, download = 0;
+            foreach (var tunnelContext in tunnelContextDict.Values)
+            {
+                if (tunnelContext.RuleId == ruleId)
+                {
+                    upload += tunnelContext.UploadBytes;
+                    download += tunnelContext.DownloadBytes;
+                }
+            }
+            return (upload, download);
         }
 
         private async ValueTask OnTunnelDataAvailable(QpChannel channel, G.D data)
