@@ -107,6 +107,19 @@
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
+      <StackPanel IsVisible="{Binding Rules, Converter={x:Static conv:EnumerableIsEmptyConverter.Instance}}"
+                  HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
+        <Border Background="{StaticResource SemiColorFill2}" CornerRadius="999"
+                Width="72" Height="72" HorizontalAlignment="Center">
+          <u:IconButton Command="{Binding AddCommand}" Icon="{StaticResource SemiIconPlus}"
+                        Width="56" Height="56" FontSize="28" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+        </Border>
+        <TextBlock Text="{Binding Text_NoRules}" FontSize="16" FontWeight="Bold"
+                   Foreground="{StaticResource SemiColorText2}" HorizontalAlignment="Center" />
+        <TextBlock Text="{Binding Text_AddRuleHint}" FontSize="13"
+                   Foreground="{StaticResource SemiColorText3}" HorizontalAlignment="Center" />
+      </StackPanel>
     </Panel>
   </Grid>
 </UserControl>

@@ -161,6 +161,14 @@ msgstr "自动分配"
 msgid "Click to copy"
 msgstr "点击复制"
 
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:20
+msgid "No proxy rules"
+msgstr "暂无代理规则"
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:21
+msgid "Click + on the toolbar to add a rule"
+msgstr "点击工具栏的 + 按钮添加一条规则"
+
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:86
 #: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:243
 msgid "Logs"

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using GlashClientDesktop.Core.ProxyTypes;
@@ -42,6 +43,20 @@ public class EndPointDisplayConverter : IValueConverter
         }
         return value ?? string.Empty;
     }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => throw new NotSupportedException();
+}
+
+/// <summary>
+/// 集合为空（或 null）时返回 true，用于规则列表空态引导的可见性绑定。
+/// </summary>
+public class EnumerableIsEmptyConverter : IValueConverter
+{
+    public static readonly EnumerableIsEmptyConverter Instance = new();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => !(value is ICollection c && c.Count > 0);
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotSupportedException();

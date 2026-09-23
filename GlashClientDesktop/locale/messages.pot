@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-09-23 15:48:52+0800\n"
-"PO-Revision-Date: 2026-09-23 15:48:52+0800\n"
+"POT-Creation-Date: 2026-09-23 15:56:36+0800\n"
+"PO-Revision-Date: 2026-09-23 15:56:36+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,17 +14,50 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ../../Core/ConnectionContext.cs:90
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:15
-msgid "Connected"
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:20
+msgid "No proxy rules"
 msgstr ""
 
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:138
-msgid "Add Rule"
+#: ../../ViewModels/MainWindowViewModel.cs:22
+msgid "Are you sure to delete selected connection?"
+msgstr ""
+
+#: ../../ViewModels/MainWindowViewModel.cs:124
+msgid "Edit Connection"
+msgstr ""
+
+#: ../../ViewModels/EditRuleDialogViewModel.cs:12
+msgid "Name"
+msgstr ""
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:16
+#: ../../Core/ConnectionContext.cs:163
+msgid "Disconnected"
 msgstr ""
 
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:52
 msgid "Starting..."
+msgstr ""
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:18
+#: ../../ViewModels/EditRuleDialogViewModel.cs:14
+msgid "Proxy"
+msgstr ""
+
+#: ../../Core/ProxyTypes/Database.cs:27
+msgid "Network protocol type"
+msgstr ""
+
+#: ../../Core/ProxyTypes/Database.cs:142
+msgid "View"
+msgstr ""
+
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:11
+msgid "Prefer HighSpeed Mode"
+msgstr ""
+
+#: ../../ViewModels/EditRuleDialogViewModel.cs:15
+msgid "Basic"
 msgstr ""
 
 #: ../../Core/ProxyTypes/SSH.cs:30
@@ -32,24 +65,37 @@ msgstr ""
 msgid "Terminal"
 msgstr ""
 
-#: ../../Converters/ProxyRuleConverters.cs:41
-msgid "Auto assign"
+#: ../../Core/ProxyTypes/Web.cs:20
+msgid "Web"
 msgstr ""
 
-#: ../../Model/Connection.cs:27
-msgid "Connection"
-msgstr ""
-
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:70
-msgid "Stoping..."
-msgstr ""
-
-#: ../../Core/ProxyTypes/Web.cs:23
-msgid "Schema"
+#: ../../Core/ProxyTypes/SSH.cs:26
+#: ../../Core/ProxyTypes/RDP.cs:25
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:9
+#: ../../Core/ProxyTypes/Database.cs:32
+msgid "User"
 msgstr ""
 
 #: ../../ViewModels/MainWindowViewModel.cs:20
 msgid "Connections"
+msgstr ""
+
+#: ../../Core/ProxyTypes/RDP.cs:39
+msgid "Start RDP"
+msgstr ""
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:58
+#, csharp-format
+msgid "Start error,reason: {0}"
+msgstr ""
+
+#: ../../Core/ProxyTypes/SSH.cs:23
+msgid "SSH"
+msgstr ""
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:257
+#, csharp-format
+msgid "Execute {0} error,reason:{1}"
 msgstr ""
 
 #: ../../Core/ProxyTypes/SSH.cs:61
@@ -64,158 +110,40 @@ msgstr ""
 msgid "Stop error,reason: {0}"
 msgstr ""
 
-#: ../../Core/ProxyTypes/RDP.cs:39
-msgid "Start RDP"
-msgstr ""
-
-#: ../../Core/ProxyTypes/Database.cs:142
-msgid "View"
+#: ../../Core/ProxyTypes/SSH.cs:66
+msgid "Start File Transfer"
 msgstr ""
 
 #: ../../Core/ProxyTypes/DefaultType.cs:17
 msgid "Default"
 msgstr ""
 
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:12
-msgid "Current not connected."
-msgstr ""
-
-#: ../../ViewModels/EditRuleDialogViewModel.cs:12
-msgid "Name"
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:8
+msgid "Server Url"
 msgstr ""
 
 #: ../../ViewModels/MainWindowViewModel.cs:105
 msgid "Add Connection"
 msgstr ""
 
-#: ../../ViewModels/MainWindowViewModel.cs:21
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:20
-msgid "Delete Confirm"
+#: ../../Core/ProxyTypes/RDP.cs:22
+msgid "RDP"
 msgstr ""
 
-#: ../../ViewModels/MainWindowViewModel.cs:124
-msgid "Edit Connection"
+#: ../../Model/Connection.cs:27
+msgid "Connection"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Database.cs:27
-msgid "Network protocol type"
-msgstr ""
-
-#: ../../ViewModels/EditRuleDialogViewModel.cs:14
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:18
-msgid "Proxy"
-msgstr ""
-
-#: ../../ViewModels/EditConnectionDialogViewModel.cs:10
-#: ../../Core/ProxyTypes/SSH.cs:28
-#: ../../Core/ProxyTypes/RDP.cs:27
-#: ../../Core/ProxyTypes/Database.cs:34
-msgid "Password"
-msgstr ""
-
-#: ../../Core/ProxyTypes/Web.cs:25
-msgid "Path"
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:21
+msgid "Click + on the toolbar to add a rule"
 msgstr ""
 
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:13
 msgid "Connect"
 msgstr ""
 
-#: ../../ViewModels/EditConnectionDialogViewModel.cs:9
-#: ../../Core/ProxyTypes/SSH.cs:26
-#: ../../Core/ProxyTypes/RDP.cs:25
-#: ../../Core/ProxyTypes/Database.cs:32
-msgid "User"
-msgstr ""
-
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:58
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:76
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:255
-msgid "Error"
-msgstr ""
-
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:19
-msgid "Click to copy"
-msgstr ""
-
-#: ../../ViewModels/EditConnectionDialogViewModel.cs:11
-msgid "Prefer HighSpeed Mode"
-msgstr ""
-
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:188
-msgid "Edit Rule"
-msgstr ""
-
-#: ../../Core/ProxyTypes/Web.cs:38
-msgid "Visit"
-msgstr ""
-
-#: ../../ViewModels/MainWindowViewModel.cs:22
-msgid "Are you sure to delete selected connection?"
-msgstr ""
-
-#: ../../Core/ProxyTypes/RDP.cs:22
-msgid "RDP"
-msgstr ""
-
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:255
-#, csharp-format
-msgid "Execute {0} error,reason:{1}"
-msgstr ""
-
-#: ../../Core/ProxyTypes/SSH.cs:66
-msgid "Start File Transfer"
-msgstr ""
-
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:21
-msgid "Are you sure to delete selected rule?"
-msgstr ""
-
-#: ../../ViewModels/EditConnectionDialogViewModel.cs:7
-msgid "Connection Name"
-msgstr ""
-
-#: ../../Core/ProxyTypes/Database.cs:29
-msgid "Library"
-msgstr ""
-
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:16
-#: ../../Core/ConnectionContext.cs:163
-msgid "Disconnected"
-msgstr ""
-
-#: ../../ViewModels/EditConnectionDialogViewModel.cs:8
-msgid "Server Url"
-msgstr ""
-
-#: ../../Core/ProxyTypes/Web.cs:20
-msgid "Web"
-msgstr ""
-
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:58
-#, csharp-format
-msgid "Start error,reason: {0}"
-msgstr ""
-
-#: ../../ViewModels/EditRuleDialogViewModel.cs:15
-msgid "Basic"
-msgstr ""
-
-#: ../../ViewModels/MainWindowViewModel.cs:19
-msgid "GlashClientDesktop"
-msgstr ""
-
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:14
-msgid "Disconnect"
-msgstr ""
-
-#: ../../Core/ProxyTypes/SSH.cs:23
-msgid "SSH"
-msgstr ""
-
-#: ../../ViewModels/ConnectionConsoleViewModel.cs:86
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:244
-msgid "Logs"
+#: ../../Core/ProxyTypes/Web.cs:23
+msgid "Schema"
 msgstr ""
 
 #: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:17
@@ -223,7 +151,87 @@ msgstr ""
 msgid "Listen"
 msgstr ""
 
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:190
+msgid "Edit Rule"
+msgstr ""
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:14
+msgid "Disconnect"
+msgstr ""
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:19
+msgid "Click to copy"
+msgstr ""
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:23
+msgid "Are you sure to delete selected rule?"
+msgstr ""
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:86
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:246
+msgid "Logs"
+msgstr ""
+
+#: ../../Core/ProxyTypes/Web.cs:25
+msgid "Path"
+msgstr ""
+
+#: ../../Core/ProxyTypes/SSH.cs:28
+#: ../../Core/ProxyTypes/RDP.cs:27
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:10
+#: ../../Core/ProxyTypes/Database.cs:34
+msgid "Password"
+msgstr ""
+
+#: ../../ViewModels/MainWindowViewModel.cs:21
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:22
+msgid "Delete Confirm"
+msgstr ""
+
+#: ../../Core/ConnectionContext.cs:90
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:15
+msgid "Connected"
+msgstr ""
+
+#: ../../Converters/ProxyRuleConverters.cs:42
+msgid "Auto assign"
+msgstr ""
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:12
+msgid "Current not connected."
+msgstr ""
+
+#: ../../Core/ProxyTypes/Web.cs:38
+msgid "Visit"
+msgstr ""
+
+#: ../../ViewModels/MainWindowViewModel.cs:19
+msgid "GlashClientDesktop"
+msgstr ""
+
+#: ../../Core/ProxyTypes/Database.cs:29
+msgid "Library"
+msgstr ""
+
 #: ../../Core/ProxyTypes/Database.cs:24
 msgid "Database"
+msgstr ""
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:70
+msgid "Stoping..."
+msgstr ""
+
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:7
+msgid "Connection Name"
+msgstr ""
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:140
+msgid "Add Rule"
+msgstr ""
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:58
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:76
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:257
+msgid "Error"
 msgstr ""
 
