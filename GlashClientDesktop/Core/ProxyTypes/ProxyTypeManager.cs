@@ -22,10 +22,10 @@ namespace GlashClientDesktop.Core.ProxyTypes
 
         public string FixProxyTypeId(string id)
         {
-            if (string.IsNullOrEmpty(id))
-                return id;
-            if (formerIdDict.TryGetValue(id, out var newId))
+            if (id != null && formerIdDict.TryGetValue(id, out var newId))
                 return newId;
+            if (id == null || !proxyTypeDict.ContainsKey(id))
+                return proxyTypeDict.Keys.FirstOrDefault();
             return id;
         }
 
@@ -34,7 +34,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
         {
             var model = new T();
             var type = typeof(T);
-            var id = type.FullName;
+            var id = type.Name;
             var name = model.GetName();
 
             var formerIds = model.GetFormerIds();

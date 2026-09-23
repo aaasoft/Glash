@@ -6,7 +6,6 @@ using ReactiveUI;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
@@ -19,7 +18,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
     {
         protected override JsonTypeInfo ProxyTypeJsonTypeInfo => DatabaseSerializerContext.Default.Database;
         public override Control GetUI() => new Database_UI() { DataContext = this };
-        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Database"];
+        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Database", "GlashClientDesktop.Core.ProxyTypes.Database"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconGridSquare");
         public override string GetName() => Locale<Database>.GetString("Database");
 

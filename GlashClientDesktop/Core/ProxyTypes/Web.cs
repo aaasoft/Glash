@@ -15,7 +15,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
     {
         protected override JsonTypeInfo ProxyTypeJsonTypeInfo => WebSerializerContext.Default.Web;
         public override Control GetUI() => new Web_UI() { DataContext = this };
-        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Web"];
+        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Web", "GlashClientDesktop.Core.ProxyTypes.Web"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconGlobe");
         public override string GetName() => Locale<Web>.GetString("Web");
 

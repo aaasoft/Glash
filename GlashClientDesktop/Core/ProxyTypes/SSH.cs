@@ -18,7 +18,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
     {
         protected override JsonTypeInfo ProxyTypeJsonTypeInfo => SSHSerializerContext.Default.SSH;
         public override Control GetUI() => new SSH_UI() { DataContext = this };
-        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.SSH"];
+        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.SSH", "GlashClientDesktop.Core.ProxyTypes..SSH"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconTerminal");
         public override string GetName() => Locale<SSH>.GetString("SSH");
 

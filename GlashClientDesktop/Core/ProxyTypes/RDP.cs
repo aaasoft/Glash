@@ -18,7 +18,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
     {
         protected override JsonTypeInfo ProxyTypeJsonTypeInfo => RDPSerializerContext.Default.RDP;
         public override Control GetUI() => new RDP_UI() { DataContext = this };
-        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.RDP"];
+        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.RDP", "GlashClientDesktop.Core.ProxyTypes.RDP"];
         public override string GetName() => Locale<RDP>.GetString("RDP");
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconDesktop");
         [JsonIgnore]
