@@ -40,10 +40,10 @@ jobs:
             deb_arch: arm64
           - os: macos-latest
             rid: osx-x64
-            archive: tar.gz
+            archive: dmg
           - os: macos-latest
             rid: osx-arm64
-            archive: tar.gz
+            archive: dmg
 
     steps:
       - name: Checkout repository
@@ -232,9 +232,16 @@ jobs:
           printf '"CFBundleDisplayName" = "Glash客户端";\n"CFBundleName" = "Glash客户端";\n' \
             > "${APP_DIR}/Contents/Resources/zh-Hans.lproj/InfoPlist.strings"
 
-      - name: Package (tar.gz - macOS)
+      - name: Build dmg (macOS)
         if: startsWith(matrix.rid, 'osx-')
-        run: tar -czf GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.tar.gz -C . GlashClientDesktop.app
+        run: |
+          DMG_STAGE="dmgstage"
+          rm -rf "${DMG_STAGE}"
+          mkdir -p "${DMG_STAGE}"
+          # 把 .app 与 Applications 快捷方式放入 dmg 根，形成“拖到 Applications 安装”的体验
+          cp -a "GlashClientDesktop.app" "${DMG_STAGE}/"
+          ln -s /Applications "${DMG_STAGE}/Applications"
+          hdiutil create -volname "GlashClientDesktop" -srcfolder "${DMG_STAGE}" -ov -format UDZO "GlashClientDesktop-${{ steps.version.outputs.tag }}-${{ matrix.rid }}.dmg"
 
       - name: Build deb (Linux)
         if: startsWith(matrix.rid, 'linux-')
