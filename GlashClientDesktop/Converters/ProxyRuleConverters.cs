@@ -63,6 +63,28 @@ public class EnumerableIsEmptyConverter : IValueConverter
 }
 
 /// <summary>
+/// bool → Opacity：true=1.0（正常），false=弱化（默认 0.45，可用 parameter 覆盖，如 "0.3"）。
+/// 用于速率行常驻占位时对未启用规则做视觉弱化。
+/// </summary>
+public class BoolToOpacityConverter : IValueConverter
+{
+    public static readonly BoolToOpacityConverter Instance = new();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        var enabled = value is true;
+        if (enabled)
+            return 1.0;
+        if (parameter is string s && double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out var custom))
+            return custom;
+        return 0.45;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => throw new NotSupportedException();
+}
+
+/// <summary>
 /// 把字节/秒转换成人类可读速率（如 "800 B/s" / "1.2 MB/s"）。
 /// </summary>
 public class SpeedDisplayConverter : IValueConverter

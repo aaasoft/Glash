@@ -17,6 +17,7 @@
     <conv:ProxyTypeNameConverter x:Key="ProxyTypeNameConverter" />
     <conv:EndPointDisplayConverter x:Key="EndPointDisplayConverter" />
     <conv:SpeedDisplayConverter x:Key="SpeedDisplayConverter" />
+    <conv:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
   </UserControl.Resources>
   <Grid RowDefinitions="Auto,*,Auto">
     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8 12">
@@ -103,8 +104,10 @@
                                Cursor="Hand" ToolTip.Tip="{Binding $parent[ListBox].DataContext.Text_ClickToCopy}"
                                Tapped="CopyRemoteEndPoint_Tapped" VerticalAlignment="Center" />
                   </StackPanel>
+                  <!-- 速率行常驻占位：保证卡片高度一致，避免启用/连接时高度跳动；
+                       未启用时半透明弱化，减少 0 B/s 的视觉噪音 -->
                   <StackPanel Orientation="Horizontal" Spacing="12" Margin="0 4 0 0"
-                              IsVisible="{Binding Working}">
+                              Opacity="{Binding Config.Enable, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0'}">
                     <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
                       <TextBlock Text="&#8593;" Foreground="#00b42a" FontWeight="Bold" VerticalAlignment="Center" />
                       <TextBlock Text="{Binding UploadSpeed, Converter={StaticResource SpeedDisplayConverter}}"
