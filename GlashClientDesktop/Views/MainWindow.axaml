@@ -75,7 +75,11 @@
                 <ListBox Grid.Row="1" ItemsSource="{Binding ConnectionContexts}" SelectedItem="{Binding CurrentConnectionContext}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="core:ConnectionContext">
-                            <TextBlock Text="{Binding Connection.Name}"></TextBlock>
+                            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                <Ellipse Width="8" Height="8" Fill="#00b42a" IsVisible="{Binding Connected}" VerticalAlignment="Center" />
+                                <Ellipse Width="8" Height="8" Fill="#c9cdd4" IsVisible="{Binding !Connected}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding Connection.Name}" VerticalAlignment="Center" />
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
