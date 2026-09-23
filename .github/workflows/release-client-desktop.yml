@@ -258,8 +258,8 @@ jobs:
                                      bytesPerRow: 0, bitsPerPixel: 0)!
           let gctx = NSGraphicsContext(bitmapImageRep: rep)!
           let ctx = gctx.cgContext
-          let colors = [NSColor(srgbRed: 0.13, green: 0.20, blue: 0.33, alpha: 1.0).cgColor,
-                        NSColor(srgbRed: 0.07, green: 0.11, blue: 0.19, alpha: 1.0).cgColor]
+          let colors = [NSColor(srgbRed: 0.97, green: 0.98, blue: 0.99, alpha: 1.0).cgColor,
+                        NSColor(srgbRed: 0.87, green: 0.91, blue: 0.96, alpha: 1.0).cgColor]
           let grad = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
                                 colors: colors as CFArray, locations: [0, 1])!
           ctx.drawLinearGradient(grad, start: CGPoint(x: 0, y: h), end: CGPoint(x: 0, y: 0), options: [])
@@ -268,7 +268,7 @@ jobs:
           NSGraphicsContext.current = gctx
           let titleAttrs: [NSAttributedString.Key: Any] = [
             .font: NSFont.systemFont(ofSize: 28, weight: .semibold),
-            .foregroundColor: NSColor.white
+            .foregroundColor: NSColor(srgbRed: 0.10, green: 0.17, blue: 0.25, alpha: 1.0)
           ]
           let title = "Glash客户端"
           let tsize = (title as NSString).size(withAttributes: titleAttrs)
@@ -276,7 +276,7 @@ jobs:
                                    withAttributes: titleAttrs)
           NSGraphicsContext.restoreGraphicsState()
           // 拖拽箭头
-          ctx.setStrokeColor(NSColor.white.cgColor)
+          ctx.setStrokeColor(NSColor(srgbRed: 0.10, green: 0.17, blue: 0.25, alpha: 1.0).cgColor)
           ctx.setLineWidth(3)
           ctx.move(to: CGPoint(x: 250, y: 190)); ctx.addLine(to: CGPoint(x: 410, y: 190))
           ctx.move(to: CGPoint(x: 400, y: 180)); ctx.addLine(to: CGPoint(x: 410, y: 190))
