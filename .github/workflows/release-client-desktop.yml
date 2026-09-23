@@ -300,7 +300,7 @@ jobs:
                 set theViewOptions to the icon view options of container window
                 set icon size of theViewOptions to 128
                 set arrangement of theViewOptions to not arranged
-                set background picture of theViewOptions to file "background.png" of folder ".background" of disk "${VOL_NAME}"
+                set background picture of theViewOptions to file ".background:background.png"
                 make new alias file at container window to POSIX file "/Applications" with properties {name: "Applications"}
                 set position of item "${APP_NAME}.app" of container window to {180, 230}
                 set position of item "Applications" of container window to {480, 230}
