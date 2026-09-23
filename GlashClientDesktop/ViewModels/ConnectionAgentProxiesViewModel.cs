@@ -157,7 +157,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         {
             Agent = Name,
             Enable = false,
-            ProxyType = typeof(DefaultType).FullName
+            ProxyType = nameof(Core.ProxyTypes.DefaultType)
         };
         await innerAdd(model);
     }

@@ -6,23 +6,23 @@ using System.Runtime.Versioning;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-namespace GlashClientDesktop.Core.ProxyTypes
+namespace GlashClientDesktop.Core.ProxyTypes.WebType
 {
-    [JsonSerializable(typeof(Web))]
+    [JsonSerializable(typeof(ProxyType))]
     internal partial class WebSerializerContext : JsonSerializerContext { }
 
-    public class Web : AbstractProxyType
+    public class ProxyType : AbstractProxyType
     {
-        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => WebSerializerContext.Default.Web;
-        public override Control GetUI() => new Web_UI() { DataContext = this };
+        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => WebSerializerContext.Default.ProxyType;
+        public override Control GetUI() => new UI() { DataContext = this };
         public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Web", "GlashClientDesktop.Core.ProxyTypes.Web"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconGlobe");
-        public override string GetName() => Locale<Web>.GetString("Web");
+        public override string GetName() => Locale<ProxyType>.GetString("Web");
 
         [JsonIgnore]
-        public string Text_Schema => Locale<Web>.GetString("Schema");
+        public string Text_Schema => Locale<ProxyType>.GetString("Schema");
         [JsonIgnore]
-        public string Text_Path => Locale<Web>.GetString("Path");
+        public string Text_Path => Locale<ProxyType>.GetString("Path");
 
         public string Schema { get; set; }
         public string Path { get; set; }
@@ -35,7 +35,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
             return
             [
                 new ProxyTypeButton(
-                    Locale<Web>.GetString("Visit"),
+                    Locale<ProxyType>.GetString("Visit"),
                     Avalonia.Application.Current.FindResource("SemiIconGlobe"),
                     ()=>
                     {

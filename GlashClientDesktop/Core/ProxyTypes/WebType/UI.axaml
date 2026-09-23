@@ -4,11 +4,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="GlashClientDesktop.Core.ProxyTypes.Web_UI"
-             xmlns:vm="using:GlashClientDesktop.Core.ProxyTypes"
-             x:DataType="vm:Web">
+             x:Class="GlashClientDesktop.Core.ProxyTypes.WebType.UI"
+             xmlns:vm="using:GlashClientDesktop.Core.ProxyTypes.WebType"
+             x:DataType="vm:ProxyType">
   <Design.DataContext>
-    <vm:Web />
+    <vm:ProxyType />
   </Design.DataContext>
   <u:Form LabelPosition="Top" LabelWidth="*" MinWidth="400" HorizontalAlignment="Stretch">
     <ComboBox u:FormItem.Label="{Binding Text_Schema}" SelectedValue="{Binding Schema}" ItemsSource="{Binding Schemas}" HorizontalAlignment="Stretch" u:FormItem.IsRequired="True" />

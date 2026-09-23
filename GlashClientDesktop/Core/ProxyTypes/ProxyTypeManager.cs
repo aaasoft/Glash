@@ -34,7 +34,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
         {
             var model = new T();
             var type = typeof(T);
-            var id = type.Name;
+            var id = type.Namespace.Split('.').Last();
             var name = model.GetName();
 
             var formerIds = model.GetFormerIds();
@@ -55,11 +55,11 @@ namespace GlashClientDesktop.Core.ProxyTypes
 
         public void Init()
         {
-            RegisterProxyType(DefaultTypeSerializerContext.Default.DefaultType);
-            RegisterProxyType(WebSerializerContext.Default.Web);
-            RegisterProxyType(RDPSerializerContext.Default.RDP);
-            RegisterProxyType(SSHSerializerContext.Default.SSH);
-            RegisterProxyType(DatabaseSerializerContext.Default.Database);
+            RegisterProxyType(DefaultType.DefaultTypeSerializerContext.Default.ProxyType);
+            RegisterProxyType(WebType.WebSerializerContext.Default.ProxyType);
+            RegisterProxyType(RdpType.RDPSerializerContext.Default.ProxyType);
+            RegisterProxyType(SshType.SSHSerializerContext.Default.ProxyType);
+            RegisterProxyType(DatabaseType.DatabaseSerializerContext.Default.ProxyType);
         }
     }
 }

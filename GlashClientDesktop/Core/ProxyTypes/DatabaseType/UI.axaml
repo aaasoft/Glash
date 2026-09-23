@@ -4,11 +4,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="GlashClientDesktop.Core.ProxyTypes.Database_UI"
-             xmlns:vm="using:GlashClientDesktop.Core.ProxyTypes"
-             x:DataType="vm:Database">
+             x:Class="GlashClientDesktop.Core.ProxyTypes.DatabaseType.UI"
+             xmlns:vm="using:GlashClientDesktop.Core.ProxyTypes.DatabaseType"
+             x:DataType="vm:ProxyType">
   <Design.DataContext>
-    <vm:Database />
+    <vm:ProxyType />
   </Design.DataContext>
   <u:Form LabelPosition="Top" LabelWidth="*" MinWidth="400" HorizontalAlignment="Stretch">
     <ComboBox u:FormItem.Label="{Binding Text_NetType}" SelectedValueBinding="{Binding Key}" DisplayMemberBinding="{Binding Value}" SelectedValue="{Binding NetType}" ItemsSource="{Binding NetTypes}" HorizontalAlignment="Stretch" u:FormItem.IsRequired="True" />

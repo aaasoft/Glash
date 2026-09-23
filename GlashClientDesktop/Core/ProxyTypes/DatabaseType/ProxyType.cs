@@ -9,28 +9,28 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-namespace GlashClientDesktop.Core.ProxyTypes
+namespace GlashClientDesktop.Core.ProxyTypes.DatabaseType
 {
-    [JsonSerializable(typeof(Database))]
+    [JsonSerializable(typeof(ProxyType))]
     internal partial class DatabaseSerializerContext : JsonSerializerContext { }
 
-    public class Database : AbstractProxyType
+    public class ProxyType : AbstractProxyType
     {
-        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => DatabaseSerializerContext.Default.Database;
-        public override Control GetUI() => new Database_UI() { DataContext = this };
+        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => DatabaseSerializerContext.Default.ProxyType;
+        public override Control GetUI() => new UI() { DataContext = this };
         public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.Database", "GlashClientDesktop.Core.ProxyTypes.Database"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconGridSquare");
-        public override string GetName() => Locale<Database>.GetString("Database");
+        public override string GetName() => Locale<ProxyType>.GetString("Database");
 
         [JsonIgnore]
-        public string Text_NetType => Locale<Database>.GetString("Network protocol type");
+        public string Text_NetType => Locale<ProxyType>.GetString("Network protocol type");
         [JsonIgnore]
-        public string Text_Library => Locale<Database>.GetString("Library");
+        public string Text_Library => Locale<ProxyType>.GetString("Library");
 
         [JsonIgnore]
-        public string Text_User => Locale<Database>.GetString("User");
+        public string Text_User => Locale<ProxyType>.GetString("User");
         [JsonIgnore]
-        public string Text_Password => Locale<Database>.GetString("Password");
+        public string Text_Password => Locale<ProxyType>.GetString("Password");
 
         [JsonIgnore]
         public Dictionary<string, string> NetTypes { get; set; } = new()
@@ -138,7 +138,7 @@ Firebird:
             return
             [
                 new ProxyTypeButton(
-                    Locale<Database>.GetString("View"),
+                    Locale<ProxyType>.GetString("View"),
                     Avalonia.Application.Current.FindResource("SemiIconGridSquare"),
                     ()=>
                     {
@@ -156,7 +156,7 @@ Firebird:
                             var regKey = localMachineKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\HeidiSQL_is1", false);
                             if (regKey == null)
                             {
-                                throw new IOException(Locale<Database>.GetString("Can't found {0},please install {0} first.","HeidiSQL"));
+                                throw new IOException(Locale<ProxyType>.GetString("Can't found {0},please install {0} first.","HeidiSQL"));
                             }
                             var installLocation = regKey.GetValue("InstallLocation").ToString();
                             var exeFile = Path.Combine(installLocation, "heidisql.exe");

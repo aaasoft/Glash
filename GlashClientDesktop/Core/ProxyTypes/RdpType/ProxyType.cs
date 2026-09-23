@@ -9,22 +9,22 @@ using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using Avalonia.Controls;
 
-namespace GlashClientDesktop.Core.ProxyTypes
+namespace GlashClientDesktop.Core.ProxyTypes.RdpType
 {
-    [JsonSerializable(typeof(RDP))]
+    [JsonSerializable(typeof(ProxyType))]
     internal partial class RDPSerializerContext : JsonSerializerContext { }
 
-    public class RDP : AbstractProxyType
+    public class ProxyType : AbstractProxyType
     {
-        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => RDPSerializerContext.Default.RDP;
-        public override Control GetUI() => new RDP_UI() { DataContext = this };
+        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => RDPSerializerContext.Default.ProxyType;
+        public override Control GetUI() => new UI() { DataContext = this };
         public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.RDP", "GlashClientDesktop.Core.ProxyTypes.RDP"];
-        public override string GetName() => Locale<RDP>.GetString("RDP");
+        public override string GetName() => Locale<ProxyType>.GetString("RDP");
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconDesktop");
         [JsonIgnore]
-        public string Text_User => Locale<RDP>.GetString("User");
+        public string Text_User => Locale<ProxyType>.GetString("User");
         [JsonIgnore]
-        public string Text_Password => Locale<RDP>.GetString("Password");
+        public string Text_Password => Locale<ProxyType>.GetString("Password");
 
         [Required]
         public string User { get; set; }
@@ -36,7 +36,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
             return
             [
                 new ProxyTypeButton(
-                    Locale<RDP>.GetString("Start RDP"),
+                    Locale<ProxyType>.GetString("Start RDP"),
                     Avalonia.Application.Current.FindResource("SemiIconDesktop"),
                     ()=>StartRDP(t)
                     )

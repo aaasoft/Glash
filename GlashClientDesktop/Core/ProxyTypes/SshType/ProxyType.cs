@@ -5,29 +5,28 @@ using Quick.Localize;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-namespace GlashClientDesktop.Core.ProxyTypes
+namespace GlashClientDesktop.Core.ProxyTypes.SshType
 {
-    [JsonSerializable(typeof(SSH))]
+    [JsonSerializable(typeof(ProxyType))]
     internal partial class SSHSerializerContext : JsonSerializerContext { }
 
-    public class SSH : AbstractProxyType
+    public class ProxyType : AbstractProxyType
     {
-        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => SSHSerializerContext.Default.SSH;
-        public override Control GetUI() => new SSH_UI() { DataContext = this };
-        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.SSH", "GlashClientDesktop.Core.ProxyTypes..SSH"];
+        protected override JsonTypeInfo ProxyTypeJsonTypeInfo => SSHSerializerContext.Default.ProxyType;
+        public override Control GetUI() => new UI() { DataContext = this };
+        public override string[] GetFormerIds() => ["Glash.Blazor.Client.ProxyTypes.SSH", "GlashClientDesktop.Core.ProxyTypes.SSH"];
         public override object GetIcon() => Avalonia.Application.Current.FindResource("SemiIconTerminal");
-        public override string GetName() => Locale<SSH>.GetString("SSH");
+        public override string GetName() => Locale<ProxyType>.GetString("SSH");
 
         [JsonIgnore]
-        public string Text_User => Locale<SSH>.GetString("User");
+        public string Text_User => Locale<ProxyType>.GetString("User");
         [JsonIgnore]
-        public string Text_Password => Locale<SSH>.GetString("Password");
+        public string Text_Password => Locale<ProxyType>.GetString("Password");
         [JsonIgnore]
-        public string Text_Terminal => Locale<SSH>.GetString("Terminal");
+        public string Text_Terminal => Locale<ProxyType>.GetString("Terminal");
         [JsonIgnore]
         public string[] Terminals { get; set; } = ["putty", "plink"];
 
@@ -43,7 +42,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
             return
             [
                 new ProxyTypeButton(
-                    Locale<SSH>.GetString("Terminal"),
+                    Locale<ProxyType>.GetString("Terminal"),
                     Avalonia.Application.Current.FindResource("SemiIconTerminal"),
                     ()=>
                     {
@@ -58,12 +57,12 @@ namespace GlashClientDesktop.Core.ProxyTypes
                             }
                             catch (System.ComponentModel.Win32Exception)
                             {
-                                throw new IOException(Locale<SSH>.GetString("Can't found {0},please install {0} first.","PuTTY"));
+                                throw new IOException(Locale<ProxyType>.GetString("Can't found {0},please install {0} first.","PuTTY"));
                             }
                         }
                     }),
                 new ProxyTypeButton(
-                    Locale<SSH>.GetString("Start File Transfer"),
+                    Locale<ProxyType>.GetString("Start File Transfer"),
                     Avalonia.Application.Current.FindResource("SemiIconFolder"),
                     ()=>
                     {
@@ -82,7 +81,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
                             var regKey = localMachineKey.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\winscp3_is1", false);
                             if (regKey == null)
                             {
-                                throw new IOException(Locale<SSH>.GetString("Can't found {0},please install {0} first.","WinSCP"));
+                                throw new IOException(Locale<ProxyType>.GetString("Can't found {0},please install {0} first.","WinSCP"));
                             }
                             var installLocation = regKey.GetValue("InstallLocation").ToString();
                             var exeFile = Path.Combine(installLocation, "WinSCP.exe");
