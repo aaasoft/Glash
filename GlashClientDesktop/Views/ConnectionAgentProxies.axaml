@@ -90,7 +90,7 @@
                                Foreground="{StaticResource SemiColorText3}" VerticalAlignment="Center" />
                     <TextBlock Text="{Binding LocalEndPoint, Converter={StaticResource EndPointDisplayConverter}}"
                                Foreground="{StaticResource SemiColorText1}"
-                               Cursor="Hand" ToolTip.Tip="点击复制"
+                               Cursor="Hand" ToolTip.Tip="{Binding $parent[ListBox].DataContext.Text_ClickToCopy}"
                                Tapped="CopyLocalEndPoint_Tapped" VerticalAlignment="Center" />
                   </StackPanel>
                   <StackPanel Orientation="Horizontal" Spacing="6">
@@ -98,7 +98,7 @@
                                Foreground="{StaticResource SemiColorText3}" VerticalAlignment="Center" />
                     <TextBlock Text="{Binding RemoteEndPoint, Converter={StaticResource EndPointDisplayConverter}}"
                                Foreground="{StaticResource SemiColorText1}"
-                               Cursor="Hand" ToolTip.Tip="点击复制"
+                               Cursor="Hand" ToolTip.Tip="{Binding $parent[ListBox].DataContext.Text_ClickToCopy}"
                                Tapped="CopyRemoteEndPoint_Tapped" VerticalAlignment="Center" />
                   </StackPanel>
                 </StackPanel>

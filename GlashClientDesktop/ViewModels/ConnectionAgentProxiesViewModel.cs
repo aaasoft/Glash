@@ -16,6 +16,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
 {
     public string Text_Listen => Locale<ConnectionAgentProxiesViewModel>.GetString("Listen");
     public string Text_Proxy => Locale<ConnectionAgentProxiesViewModel>.GetString("Proxy");
+    public string Text_ClickToCopy => Locale<ConnectionAgentProxiesViewModel>.GetString("Click to copy");
     public string Text_DeleteConfirm => Locale<ConnectionAgentProxiesViewModel>.GetString("Delete Confirm");
     public string Text_DeleteRuleConfirm => Locale<ConnectionAgentProxiesViewModel>.GetString("Are you sure to delete selected rule?");
 

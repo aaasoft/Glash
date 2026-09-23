@@ -157,6 +157,10 @@ msgstr "确定要删除选中的规则？"
 msgid "Auto assign"
 msgstr "自动分配"
 
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:19
+msgid "Click to copy"
+msgstr "点击复制"
+
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:86
 #: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:243
 msgid "Logs"
