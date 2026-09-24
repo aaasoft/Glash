@@ -80,11 +80,13 @@
                 <StackPanel Grid.Column="1" Margin="12" Spacing="6">
                   <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                     <!-- 类型徽标：始终显示类型；启用=主题蓝 / 未启用=灰（启用状态由左侧色条表达） -->
-                    <Grid VerticalAlignment="Center">
+                    <Grid VerticalAlignment="Center" Height="18">
                       <Border Background="#c9cdd4" IsVisible="{Binding !Config.Enable}" CornerRadius="4" />
                       <Border Background="{DynamicResource SemiColorPrimary}" IsVisible="{Binding Config.Enable}" CornerRadius="4" />
-                      <TextBlock FontSize="11" Foreground="White" Margin="6 1"
-                                 Text="{Binding Config.ProxyType, Converter={StaticResource ProxyTypeNameConverter}}" />
+                      <TextBlock FontSize="11" Foreground="White" Margin="6 0 6 2"
+                                 VerticalAlignment="Center"
+                                 Text="{Binding Config.ProxyType, Converter={StaticResource ProxyTypeNameConverter}}">
+                      </TextBlock>
                     </Grid>
                     <TextBlock Text="{Binding Config.Name}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
                   </StackPanel>
