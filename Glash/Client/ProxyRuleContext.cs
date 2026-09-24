@@ -49,6 +49,13 @@ namespace Glash.Client
             private set => RaiseAndSetIfChanged(ref _DownloadSpeed, value);
         }
 
+        private int _ConnectionCount;
+        public int ConnectionCount
+        {
+            get => _ConnectionCount;
+            private set => RaiseAndSetIfChanged(ref _ConnectionCount, value);
+        }
+
         private CancellationTokenSource _speedCts;
         private long _preUploadBytes, _preDownloadBytes;
 
@@ -195,6 +202,7 @@ namespace Glash.Client
                     _preDownloadBytes = down;
                     UploadSpeed = upSpeed;
                     DownloadSpeed = downSpeed;
+                    ConnectionCount = glashClient.GetProxyRuleConnectionCount(Config.Id);
                 }
                 catch { }
             }

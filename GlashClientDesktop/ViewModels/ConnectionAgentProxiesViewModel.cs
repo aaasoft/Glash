@@ -23,6 +23,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     public string Text_DeleteRuleConfirm => Locale<ConnectionAgentProxiesViewModel>.GetString("Are you sure to delete selected rule?");
     public string Text_Online => Locale<ConnectionAgentProxiesViewModel>.GetString("Online");
     public string Text_Offline => Locale<ConnectionAgentProxiesViewModel>.GetString("Offline");
+    public string Text_Connections => Locale<ConnectionAgentProxiesViewModel>.GetString("Connections");
 
     public ConnectionContext ConnectionContext { get; set; }
 

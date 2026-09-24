@@ -118,6 +118,13 @@
                       <TextBlock Text="{Binding DownloadSpeed, Converter={StaticResource SpeedDisplayConverter}}"
                                  Foreground="{StaticResource SemiColorText2}" VerticalAlignment="Center" />
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center"
+                                ToolTip.Tip="{Binding $parent[ListBox].DataContext.Text_Connections}">
+                      <PathIcon Data="{StaticResource SemiIconLink}" Width="14" Height="14"
+                                Foreground="{StaticResource SemiColorText2}" />
+                      <TextBlock Text="{Binding ConnectionCount}"
+                                 Foreground="{StaticResource SemiColorText2}" VerticalAlignment="Center" />
+                    </StackPanel>
                   </StackPanel>
                 </StackPanel>
               </Grid>

@@ -232,6 +232,21 @@ namespace Glash.Client
             return (upload, download);
         }
 
+        /// <summary>
+        /// 统计某条代理规则当前的活跃连接（隧道）数量。
+        /// 隧道关闭时会从 tunnelContextDict 移除，因此字典中匹配 RuleId 的项即为活跃连接数。
+        /// </summary>
+        public int GetProxyRuleConnectionCount(string ruleId)
+        {
+            int count = 0;
+            foreach (var tunnelContext in tunnelContextDict.Values)
+            {
+                if (tunnelContext.RuleId == ruleId)
+                    count++;
+            }
+            return count;
+        }
+
         private async ValueTask OnTunnelDataAvailable(QpChannel channel, G.D data)
         {
             var tunnelId = data.TunnelId;
