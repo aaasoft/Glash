@@ -109,12 +109,14 @@
                   <StackPanel Orientation="Horizontal" Spacing="12" Margin="0 4 0 0"
                               Opacity="{Binding Config.Enable, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter='0'}">
                     <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-                      <TextBlock Text="&#8593;" Foreground="#00b42a" FontWeight="Bold" VerticalAlignment="Center" />
+                      <PathIcon Data="{StaticResource SemiIconArrowUp}" Width="13" Height="13"
+                                Foreground="#00b42a" VerticalAlignment="Center" />
                       <TextBlock Text="{Binding UploadSpeed, Converter={StaticResource SpeedDisplayConverter}}"
                                  Foreground="{StaticResource SemiColorText2}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-                      <TextBlock Text="&#8595;" Foreground="#165dff" FontWeight="Bold" VerticalAlignment="Center" />
+                      <PathIcon Data="{StaticResource SemiIconArrowDown}" Width="13" Height="13"
+                                Foreground="#165dff" VerticalAlignment="Center" />
                       <TextBlock Text="{Binding DownloadSpeed, Converter={StaticResource SpeedDisplayConverter}}"
                                  Foreground="{StaticResource SemiColorText2}" VerticalAlignment="Center" />
                     </StackPanel>
@@ -123,7 +125,7 @@
                       <PathIcon Data="{StaticResource SemiIconLink}" Width="14" Height="14"
                                 Foreground="#14c9c9" />
                       <TextBlock Text="{Binding ConnectionCount}"
-                                 Foreground="#14c9c9" VerticalAlignment="Center" />
+                                 Foreground="{StaticResource SemiColorText2}" VerticalAlignment="Center" />
                     </StackPanel>
                   </StackPanel>
                 </StackPanel>
