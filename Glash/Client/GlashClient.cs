@@ -180,13 +180,15 @@ namespace Glash.Client
                     ex =>
                     {
                         LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] error.Message:{ExceptionUtils.GetExceptionMessage(ex)}");
-                        qpClient.SendNoticePackage(new TunnelClosed() { TunnelId = tunnelId });
+                        try { qpClient.SendNoticePackage(new TunnelClosed() { TunnelId = tunnelId }); } catch { }
 
-                        GlashTunnelContext tunnelContext = null;
-                        if (!tunnelContextDict.TryGetValue(tunnelId, out tunnelContext))
-                            return;
-                        tunnelContext.Dispose();
-                        LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
+                        // 通道关闭时从字典移除，避免字典无限增长、连接数/流量统计失真
+                        if (tunnelContextDict.TryGetValue(tunnelId, out var ctx))
+                        {
+                            tunnelContextDict.TryRemove(tunnelId, out _);
+                            ctx.Dispose();
+                            LogPushed?.Invoke(this, $"Tunnel[{tunnelId}] closed.");
+                        }
                     });
                 tunnelContextDict[tunnelId] = tunnelContext;
                 tunnelContext.RuleId = config.Id;
