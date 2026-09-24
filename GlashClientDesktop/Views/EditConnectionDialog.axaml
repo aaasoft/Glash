@@ -10,7 +10,8 @@
   <Design.DataContext>
     <vm:EditConnectionDialogViewModel />
   </Design.DataContext>
-  <u:Form LabelPosition="Top" LabelWidth="*">
+  <!-- MaxWidth 封顶：防止超长 URL 等输入把对话框撑出窗口 -->
+  <u:Form LabelPosition="Top" LabelWidth="*" MaxWidth="480">
     <u:Form.Styles>
       <Style Selector="TextBox">
         <Setter Property="MinWidth" Value="400" />
