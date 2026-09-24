@@ -153,6 +153,14 @@ msgstr "断开"
 msgid "Are you sure to delete selected rule?"
 msgstr "确定要删除选中的规则？"
 
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:25
+msgid "Online"
+msgstr "在线"
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:26
+msgid "Offline"
+msgstr "离线"
+
 #: ../../Converters/ProxyRuleConverters.cs
 msgid "Auto assign"
 msgstr "自动分配"

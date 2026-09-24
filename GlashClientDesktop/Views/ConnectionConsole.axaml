@@ -46,8 +46,14 @@
         <TabControl IsVisible="{Binding Model.Connected}" ItemsSource="{Binding Model.Agents}">
           <TabControl.ItemTemplate>
             <DataTemplate DataType="vm:ConnectionAgentProxiesViewModel">
-              <TextBlock Text="{Binding Name}" />
-              </DataTemplate>
+              <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                <!-- 在线状态点：在线=绿 / 离线=灰 -->
+                <Ellipse Width="8" Height="8" Fill="#00b42a" IsVisible="{Binding Connected}" />
+                <Ellipse Width="8" Height="8" Fill="#c9cdd4" IsVisible="{Binding !Connected}" />
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"
+                           ToolTip.Tip="{Binding StatusText}" />
+              </StackPanel>
+            </DataTemplate>
           </TabControl.ItemTemplate>
           <TabControl.ContentTemplate>
             <DataTemplate DataType="vm:ConnectionAgentProxiesViewModel">

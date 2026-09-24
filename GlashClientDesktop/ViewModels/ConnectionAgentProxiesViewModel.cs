@@ -21,6 +21,8 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     public string Text_AddRuleHint => Locale<ConnectionAgentProxiesViewModel>.GetString("Click + on the toolbar to add a rule");
     public string Text_DeleteConfirm => Locale<ConnectionAgentProxiesViewModel>.GetString("Delete Confirm");
     public string Text_DeleteRuleConfirm => Locale<ConnectionAgentProxiesViewModel>.GetString("Are you sure to delete selected rule?");
+    public string Text_Online => Locale<ConnectionAgentProxiesViewModel>.GetString("Online");
+    public string Text_Offline => Locale<ConnectionAgentProxiesViewModel>.GetString("Offline");
 
     public ConnectionContext ConnectionContext { get; set; }
 
@@ -35,8 +37,15 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
     public bool Connected
     {
         get => _Connected;
-        set => this.RaiseAndSetIfChanged(ref _Connected, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _Connected, value);
+            this.RaisePropertyChanged(nameof(StatusText));
+        }
     }
+
+    // Agent 在线/离线状态文案（tooltip 用），随 Connected 变化刷新
+    public string StatusText => Connected ? Text_Online : Text_Offline;
 
     private ProxyRuleContext[] _Rules;
     public ProxyRuleContext[] Rules

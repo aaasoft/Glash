@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GlashClientDesktop\n"
-"POT-Creation-Date: 2026-09-23 16:24:33+0800\n"
-"PO-Revision-Date: 2026-09-23 16:24:33+0800\n"
+"POT-Creation-Date: 2026-09-24 09:39:24+0800\n"
+"PO-Revision-Date: 2026-09-24 09:39:25+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -44,11 +44,11 @@ msgstr ""
 msgid "Proxy"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Database.cs:27
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:26
 msgid "Network protocol type"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Database.cs:142
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:141
 msgid "View"
 msgstr ""
 
@@ -60,19 +60,19 @@ msgstr ""
 msgid "Basic"
 msgstr ""
 
-#: ../../Core/ProxyTypes/SSH.cs:30
-#: ../../Core/ProxyTypes/SSH.cs:46
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:29
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:45
 msgid "Terminal"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Web.cs:20
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:20
 msgid "Web"
 msgstr ""
 
-#: ../../Core/ProxyTypes/RDP.cs:25
-#: ../../Core/ProxyTypes/SSH.cs:26
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:25
+#: ../../Core/ProxyTypes/RdpType/ProxyType.cs:25
 #: ../../ViewModels/EditConnectionDialogViewModel.cs:9
-#: ../../Core/ProxyTypes/Database.cs:32
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:31
 msgid "User"
 msgstr ""
 
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Connections"
 msgstr ""
 
-#: ../../Core/ProxyTypes/RDP.cs:39
+#: ../../Core/ProxyTypes/RdpType/ProxyType.cs:39
 msgid "Start RDP"
 msgstr ""
 
@@ -89,18 +89,22 @@ msgstr ""
 msgid "Start error,reason: {0}"
 msgstr ""
 
-#: ../../Core/ProxyTypes/SSH.cs:23
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:22
 msgid "SSH"
 msgstr ""
 
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:257
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:25
+msgid "Offline"
+msgstr ""
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:266
 #, csharp-format
 msgid "Execute {0} error,reason:{1}"
 msgstr ""
 
-#: ../../Core/ProxyTypes/SSH.cs:61
-#: ../../Core/ProxyTypes/SSH.cs:85
-#: ../../Core/ProxyTypes/Database.cs:160
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:60
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:84
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:159
 #, csharp-format
 msgid "Can't found {0},please install {0} first."
 msgstr ""
@@ -110,11 +114,11 @@ msgstr ""
 msgid "Stop error,reason: {0}"
 msgstr ""
 
-#: ../../Core/ProxyTypes/SSH.cs:66
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:65
 msgid "Start File Transfer"
 msgstr ""
 
-#: ../../Core/ProxyTypes/DefaultType.cs:17
+#: ../../Core/ProxyTypes/DefaultType/ProxyType.cs:17
 msgid "Default"
 msgstr ""
 
@@ -126,7 +130,7 @@ msgstr ""
 msgid "Add Connection"
 msgstr ""
 
-#: ../../Core/ProxyTypes/RDP.cs:22
+#: ../../Core/ProxyTypes/RdpType/ProxyType.cs:22
 msgid "RDP"
 msgstr ""
 
@@ -142,7 +146,7 @@ msgstr ""
 msgid "Connect"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Web.cs:23
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:23
 msgid "Schema"
 msgstr ""
 
@@ -151,7 +155,7 @@ msgstr ""
 msgid "Listen"
 msgstr ""
 
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:190
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:199
 msgid "Edit Rule"
 msgstr ""
 
@@ -168,18 +172,22 @@ msgid "Are you sure to delete selected rule?"
 msgstr ""
 
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:86
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:246
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:255
 msgid "Logs"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Web.cs:25
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:25
 msgid "Path"
 msgstr ""
 
-#: ../../Core/ProxyTypes/RDP.cs:27
-#: ../../Core/ProxyTypes/SSH.cs:28
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:24
+msgid "Online"
+msgstr ""
+
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:27
+#: ../../Core/ProxyTypes/RdpType/ProxyType.cs:27
 #: ../../ViewModels/EditConnectionDialogViewModel.cs:10
-#: ../../Core/ProxyTypes/Database.cs:34
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:33
 msgid "Password"
 msgstr ""
 
@@ -201,7 +209,7 @@ msgstr ""
 msgid "Current not connected."
 msgstr ""
 
-#: ../../Core/ProxyTypes/Web.cs:38
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:38
 msgid "Visit"
 msgstr ""
 
@@ -209,11 +217,11 @@ msgstr ""
 msgid "GlashClientDesktop"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Database.cs:29
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:28
 msgid "Library"
 msgstr ""
 
-#: ../../Core/ProxyTypes/Database.cs:24
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:23
 msgid "Database"
 msgstr ""
 
@@ -225,13 +233,13 @@ msgstr ""
 msgid "Connection Name"
 msgstr ""
 
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:140
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:149
 msgid "Add Rule"
 msgstr ""
 
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:58
 #: ../../ViewModels/ConnectionConsoleViewModel.cs:76
-#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:257
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:266
 msgid "Error"
 msgstr ""
 
