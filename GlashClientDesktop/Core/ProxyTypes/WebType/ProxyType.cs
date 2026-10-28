@@ -23,9 +23,12 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
         public string Text_Schema => Locale<ProxyType>.GetString("Schema");
         [JsonIgnore]
         public string Text_Path => Locale<ProxyType>.GetString("Path");
+        [JsonIgnore]
+        public string Text_DomainName => Locale<ProxyType>.GetString("Domain Name");
 
         public string Schema { get; set; }
         public string Path { get; set; }
+        public string DomainName { get; set; }
 
         [SupportedOSPlatform("windows")]
         [SupportedOSPlatform("linux")]
