@@ -1,13 +1,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Yarp.ReverseProxy.Configuration;
-using Yarp.ReverseProxy.Transforms;
 
 namespace GlashClientDesktop.Core;
 
 public class ReverseProxyManager : IProxyConfigProvider
 {
     public static ReverseProxyManager Instance { get; } = new ReverseProxyManager();
+    public int ListenPort { get; set; } = 80;
+
     public event EventHandler<string> RuleAdded;
     public event EventHandler<string> RuleRemoved;
 

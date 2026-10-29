@@ -48,12 +48,17 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
                     {
                         string url = null;
                         if(string.IsNullOrEmpty(DomainName))
+                        {
                             url = GetUrl(t);
+                        }
                         else
+                        {
                             url = $"http://{GetFullDomainName()}";
+                            if(ReverseProxyManager.Instance.ListenPort != 80)
+                                url+=$":{ReverseProxyManager.Instance.ListenPort}";
+                        }
                         //使用系统默认浏览器打开
-                        var psi = new ProcessStartInfo(url);
-                        psi.UseShellExecute = true;
+                        var psi = new ProcessStartInfo(url) { UseShellExecute = true };
                         var process = Process.Start(psi);
                         WaitForProcessMainWindow(process);
                     }

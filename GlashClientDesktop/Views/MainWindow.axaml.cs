@@ -1,4 +1,5 @@
 using Avalonia.Interactivity;
+using GlashClientDesktop.Core;
 using GlashClientDesktop.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +47,7 @@ namespace GlashClientDesktop.Views
                     app = builder.Build();
                     app.MapReverseProxy();
                     app.Start();
+                    ReverseProxyManager.Instance.ListenPort = i;
                     break;
                 }
                 catch { }
