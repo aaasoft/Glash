@@ -57,7 +57,7 @@ public class ConnectionContext : ReactiveObject, IDisposable
 
     private void refreshRules()
     {
-        ProxyRules = GlashClient.ProxyRuleContexts;
+        ProxyRules = GlashClient.ProxyRuleContexts.OrderBy(t => t.Config.Name).ToArray();
     }
 
     public async Task Start()
