@@ -95,16 +95,14 @@
                                Foreground="{StaticResource SemiColorText3}" VerticalAlignment="Center" />
                     <TextBlock Text="{Binding LocalEndPoint, Converter={StaticResource EndPointDisplayConverter}}"
                                Foreground="{StaticResource SemiColorText1}"
-                               Cursor="Hand" ToolTip.Tip="{Binding $parent[ListBox].DataContext.Text_ClickToCopy}"
-                               Tapped="CopyLocalEndPoint_Tapped" VerticalAlignment="Center" />
+                               VerticalAlignment="Center" />
                   </StackPanel>
                   <StackPanel Orientation="Horizontal" Spacing="6">
                     <TextBlock Text="{Binding $parent[ListBox].DataContext.Text_Proxy}"
                                Foreground="{StaticResource SemiColorText3}" VerticalAlignment="Center" />
                     <TextBlock Text="{Binding RemoteEndPoint, Converter={StaticResource EndPointDisplayConverter}}"
                                Foreground="{StaticResource SemiColorText1}"
-                               Cursor="Hand" ToolTip.Tip="{Binding $parent[ListBox].DataContext.Text_ClickToCopy}"
-                               Tapped="CopyRemoteEndPoint_Tapped" VerticalAlignment="Center" />
+                               VerticalAlignment="Center" />
                   </StackPanel>
                   <!-- 速率行常驻占位：保证卡片高度一致，避免启用/连接时高度跳动；
                        未启用时半透明弱化，减少 0 B/s 的视觉噪音 -->
