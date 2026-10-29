@@ -247,6 +247,7 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
+            await ConnectionContext.GlashClient.DisableProxyRule(CurrentRule.Config.Id);
             await MessageBox.ShowAsync(ExceptionUtils.GetExceptionMessage(ex), Locale<ConnectionAgentProxiesViewModel>.GetString("Error"), icon: MessageBoxIcon.Warning);
         }
     }

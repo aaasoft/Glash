@@ -207,9 +207,8 @@ public class ConnectionContext : ReactiveObject, IDisposable
 
     public async Task EnableProxyRule(string id)
     {
-        var context = ProxyRules.FirstOrDefault(t=>t.Config.Id == id);
+        var context = await GlashClient.EnableProxyRule(id);
         ProxyTypeManager.Instance.OnProxyRuleEnabled(context);
-        await GlashClient.EnableProxyRule(id);
     }
 
     public async Task DisableProxyRule(string id)
