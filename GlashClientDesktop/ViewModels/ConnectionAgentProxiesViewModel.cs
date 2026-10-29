@@ -240,8 +240,15 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
 
     public async Task ExecuteCommand_Start()
     {
-        await ConnectionContext.EnableProxyRule(CurrentRule.Config.Id);
-        CurrentRuleEnable = true;
+        try
+        {
+            await ConnectionContext.EnableProxyRule(CurrentRule.Config.Id);
+            CurrentRuleEnable = true;
+        }
+        catch (Exception ex)
+        {
+            await MessageBox.ShowAsync(ExceptionUtils.GetExceptionMessage(ex), Locale<ConnectionAgentProxiesViewModel>.GetString("Error"), icon: MessageBoxIcon.Warning);
+        }
     }
 
     public async Task ExecuteCommand_Stop()

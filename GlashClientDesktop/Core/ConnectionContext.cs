@@ -72,7 +72,8 @@ public class ConnectionContext : ReactiveObject, IDisposable
             GlashClient.LoadProxyRules(proxyRuleList.ToArray());
             refreshRules();
             foreach (var context in ProxyRules.Where(t => t.Config.Enable))
-                ProxyTypeManager.Instance.OnProxyRuleEnabled(context);
+                try { ProxyTypeManager.Instance.OnProxyRuleEnabled(context); }
+                catch { }
 
             //读取代理端
             var agentList = await GlashClient.GetAgentListAsync();
@@ -206,8 +207,9 @@ public class ConnectionContext : ReactiveObject, IDisposable
 
     public async Task EnableProxyRule(string id)
     {
-        var context = await GlashClient.EnableProxyRule(id);
+        var context = ProxyRules.FirstOrDefault(t=>t.Config.Id == id);
         ProxyTypeManager.Instance.OnProxyRuleEnabled(context);
+        await GlashClient.EnableProxyRule(id);
     }
 
     public async Task DisableProxyRule(string id)

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-10-29 07:39:48+0800\n"
-"PO-Revision-Date: 2026-10-29 07:40+0800\n"
+"POT-Creation-Date: 2026-10-29 13:53:26+0800\n"
+"PO-Revision-Date: 2026-10-29 13:53+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -15,15 +15,15 @@ msgstr ""
 msgid "Type"
 msgstr "类型"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:20
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
 msgid "No proxy rules"
 msgstr "暂无代理规则"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:22
+#: ..\..\ViewModels\MainWindowViewModel.cs:21
 msgid "Are you sure to delete selected connection?"
 msgstr "确定要删除选中的连接？"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:124
+#: ..\..\ViewModels\MainWindowViewModel.cs:122
 msgid "Edit Connection"
 msgstr "编辑连接"
 
@@ -32,7 +32,7 @@ msgid "Name"
 msgstr "名称"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:16
-#: ..\..\Core\ConnectionContext.cs:163
+#: ..\..\Core\ConnectionContext.cs:170
 msgid "Disconnected"
 msgstr "已断开"
 
@@ -77,8 +77,8 @@ msgstr "网页"
 msgid "User"
 msgstr "用户名"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:20
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:26
+#: ..\..\ViewModels\MainWindowViewModel.cs:19
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:25
 msgid "Connections"
 msgstr "连接"
 
@@ -99,11 +99,11 @@ msgstr "域名"
 msgid "SSH"
 msgstr "SSH"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:25
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:24
 msgid "Offline"
 msgstr "离线"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:267
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:273
 #, csharp-format
 msgid "Execute {0} error,reason:{1}"
 msgstr "执行{0}时出错，原因：{1}"
@@ -124,6 +124,11 @@ msgstr "停止出错，原因：{0}"
 msgid "Start File Transfer"
 msgstr "开始文件传输"
 
+#: ..\..\Core\ReverseProxyManager.cs:73
+#, csharp-format
+msgid "Domain[{0}] already exist."
+msgstr "域名[{0}]已经存在。"
+
 #: ..\..\Core\ProxyTypes\DefaultType\ProxyType.cs:17
 msgid "Default"
 msgstr "默认"
@@ -132,7 +137,7 @@ msgstr "默认"
 msgid "Server Url"
 msgstr "服务端URL"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:105
+#: ..\..\ViewModels\MainWindowViewModel.cs:103
 msgid "Add Connection"
 msgstr "添加连接"
 
@@ -144,7 +149,7 @@ msgstr "远程桌面"
 msgid "Connection"
 msgstr "连接"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:21
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:20
 msgid "Click + on the toolbar to add a rule"
 msgstr "点击工具栏的 + 按钮添加一条规则"
 
@@ -161,7 +166,7 @@ msgstr "架构"
 msgid "Listen"
 msgstr "监听"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:200
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:199
 msgid "Edit Rule"
 msgstr "编辑规则"
 
@@ -169,16 +174,12 @@ msgstr "编辑规则"
 msgid "Disconnect"
 msgstr "断开"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
-msgid "Click to copy"
-msgstr "点击复制"
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:23
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:22
 msgid "Are you sure to delete selected rule?"
 msgstr "确定要删除选中的规则？"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:86
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:256
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:262
 msgid "Logs"
 msgstr "日志"
 
@@ -186,23 +187,23 @@ msgstr "日志"
 msgid "Path"
 msgstr "路径"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:24
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:23
 msgid "Online"
 msgstr "在线"
 
 #: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:27
 #: ..\..\Core\ProxyTypes\RdpType\ProxyType.cs:27
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
 #: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:33
+#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
 msgid "Password"
 msgstr "密码"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:21
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:22
+#: ..\..\ViewModels\MainWindowViewModel.cs:20
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:21
 msgid "Delete Confirm"
 msgstr "删除确认"
 
-#: ..\..\Core\ConnectionContext.cs:90
+#: ..\..\Core\ConnectionContext.cs:93
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:15
 msgid "Connected"
 msgstr "已连接"
@@ -215,21 +216,21 @@ msgstr "自动分配"
 msgid "Current not connected."
 msgstr "当前未连接。"
 
-#: ..\..\Core\ProxyTypes\WebType\ProxyType.cs:41
+#: ..\..\Core\ProxyTypes\WebType\ProxyType.cs:45
 msgid "Visit"
 msgstr "访问"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:19
+#: ..\..\ViewModels\MainWindowViewModel.cs:18
 msgid "GlashClientDesktop"
 msgstr "Glash客户端"
-
-#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:28
-msgid "Library"
-msgstr "程序库"
 
 #: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:23
 msgid "Database"
 msgstr "数据库"
+
+#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:28
+msgid "Library"
+msgstr "程序库"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:70
 msgid "Stoping..."
@@ -239,15 +240,19 @@ msgstr "停止中..."
 msgid "Connection Name"
 msgstr "连接名称"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:150
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:149
 msgid "Add Rule"
 msgstr "添加规则"
 
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:58
 #: ..\..\ViewModels\ConnectionConsoleViewModel.cs:76
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:267
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:250
+#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:273
 msgid "Error"
 msgstr "错误"
+
+#~ msgid "Click to copy"
+#~ msgstr "点击复制"
 
 #~ msgid "Use Package Type"
 #~ msgstr "使用包类型"

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
+using Quick.Localize;
 using Yarp.ReverseProxy.Configuration;
 
 namespace GlashClientDesktop.Core;
@@ -68,6 +69,8 @@ public class ReverseProxyManager : IProxyConfigProvider
     {
         lock (routeDict)
         {
+            if (routeDict.ContainsKey(domain))
+                throw new IOException(Locale<ReverseProxyManager>.GetString("Domain[{0}] already exist.", domain));
             routeDict[domain] = new RouteConfig()
             {
                 RouteId = "route" + domain,
