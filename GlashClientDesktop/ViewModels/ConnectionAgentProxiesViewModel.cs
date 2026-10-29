@@ -241,13 +241,13 @@ public class ConnectionAgentProxiesViewModel : ViewModelBase
 
     public async Task ExecuteCommand_Start()
     {
-        await ConnectionContext.GlashClient.EnableProxyRule(CurrentRule.Config.Id);
+        await ConnectionContext.EnableProxyRule(CurrentRule.Config.Id);
         CurrentRuleEnable = true;
     }
 
     public async Task ExecuteCommand_Stop()
     {
-        await ConnectionContext.GlashClient.DisableProxyRule(CurrentRule.Config.Id);
+        await ConnectionContext.DisableProxyRule(CurrentRule.Config.Id);
         CurrentRuleEnable = false;
     }
 

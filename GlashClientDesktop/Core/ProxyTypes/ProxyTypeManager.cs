@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
+using Glash.Client;
 
 namespace GlashClientDesktop.Core.ProxyTypes
 {
@@ -59,6 +60,24 @@ namespace GlashClientDesktop.Core.ProxyTypes
             RegisterProxyType(RdpType.RDPSerializerContext.Default.ProxyType);
             RegisterProxyType(SshType.SSHSerializerContext.Default.ProxyType);
             RegisterProxyType(DatabaseType.DatabaseSerializerContext.Default.ProxyType);
+        }
+
+        private IProxyType GetProxyType(ProxyRuleContext context)
+        {
+            var proxyTypeInfo = GetProxyTypeInfo(context.Config.ProxyType);
+            return proxyTypeInfo.CreateInstance(context.Config.ProxyTypeConfig);
+        }
+
+        public void OnProxyRuleEnabled(ProxyRuleContext context)
+        {
+            var proxyType = GetProxyType(context);
+            proxyType.Start(context);
+        }
+
+        public void OnProxyRuleDisabled(ProxyRuleContext context)
+        {
+            var proxyType = GetProxyType(context);
+            proxyType.Stop();
         }
     }
 }

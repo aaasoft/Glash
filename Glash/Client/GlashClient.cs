@@ -95,22 +95,24 @@ namespace Glash.Client
             createTunnelLock.Dispose();
         }
 
-        public async Task EnableProxyRule(string proxyRuleId)
+        public async Task<ProxyRuleContext> EnableProxyRule(string proxyRuleId)
         {
             if (!proxyRuleContextDict.TryGetValue(proxyRuleId, out var context))
-                return;
+                return null;
             context.Config.Enable = true;
             await SaveProxyRule(context.Config).ConfigureAwait(false);
             context.Enable();
+            return context;
         }
 
-        public async Task DisableProxyRule(string proxyRuleId)
+        public async Task<ProxyRuleContext> DisableProxyRule(string proxyRuleId)
         {
             if (!proxyRuleContextDict.TryGetValue(proxyRuleId, out var context))
-                return;
+                return null;
             context.Config.Enable = false;
             await SaveProxyRule(context.Config).ConfigureAwait(false);
             context.Disable();
+            return context;
         }
 
         public ProxyRuleContext LoadProxyRule(ProxyRuleInfo config)
