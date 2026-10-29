@@ -4,6 +4,7 @@ using Glash.Client.Protocol.QpModel;
 using Glash.Client.Protocol.QpNotices;
 using Quick.Utils;
 using System.Collections.Concurrent;
+using Microsoft.VisualBasic;
 
 namespace Glash.Client
 {
@@ -112,10 +113,11 @@ namespace Glash.Client
             context.Disable();
         }
 
-        public void LoadProxyRule(ProxyRuleInfo config)
+        public ProxyRuleContext LoadProxyRule(ProxyRuleInfo config)
         {
             var context = new ProxyRuleContext(this, config);
             proxyRuleContextDict[config.Id] = context;
+            return context;
         }
 
         public void LoadProxyRules(ProxyRuleInfo[] items)
@@ -131,11 +133,12 @@ namespace Glash.Client
             proxyRuleContext.Dispose();
         }
 
-        public void UnloadProxyRule(string proxyRuleId)
+        public ProxyRuleContext UnloadProxyRule(string proxyRuleId)
         {
-            if (!proxyRuleContextDict.ContainsKey(proxyRuleId))
-                return;
-            UnloadProxyRule(proxyRuleContextDict[proxyRuleId]);
+            if(!proxyRuleContextDict.TryGetValue(proxyRuleId,out var context))
+                return null;
+            UnloadProxyRule(context);
+            return context;
         }
 
         private ConcurrentDictionary<int, GlashTunnelContext> tunnelContextDict = new ConcurrentDictionary<int, GlashTunnelContext>();

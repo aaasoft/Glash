@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using GlashClientDesktop.Core;
 using GlashClientDesktop.Views;
@@ -73,7 +72,6 @@ namespace GlashClientDesktop.ViewModels
         public ReactiveCommand<RxVoid, RxVoid> EditCommand { get; }
         public ReactiveCommand<RxVoid, RxVoid> DeleteCommand { get; }
         public ReactiveCommand<RxVoid, RxVoid> FakeDeleteCommand { get; }
-
         public MainWindowViewModel()
         {
             string[] languages = ["zh-CN", "en-US"];

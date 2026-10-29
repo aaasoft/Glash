@@ -30,6 +30,10 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
         public string Path { get; set; }
         public string DomainName { get; set; }
 
+        private string GetFullDomainName()=>$"{DomainName}.localhost";
+
+        private string GetUrl(ProxyRuleContext t)=>$"{Schema}://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/{Path}";
+
         [SupportedOSPlatform("windows")]
         [SupportedOSPlatform("linux")]
         [SupportedOSPlatform("macos")]
@@ -42,9 +46,11 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
                     Avalonia.Application.Current.FindResource("SemiIconGlobe"),
                     ()=>
                     {
-                        if(string.IsNullOrEmpty(Schema))
-                            Schema="http";
-                        var url = $"{Schema}://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/{Path}";
+                        string url = null;
+                        if(string.IsNullOrEmpty(DomainName))
+                            url = GetUrl(t);
+                        else
+                            url = $"http://{GetFullDomainName()}";
                         //使用系统默认浏览器打开
                         var psi = new ProcessStartInfo(url);
                         psi.UseShellExecute = true;
@@ -57,5 +63,23 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
 
         [JsonIgnore]
         public string[] Schemas { get; set; } = ["http", "https"];
+
+        public override void Start(ProxyRuleContext t)
+        {
+            base.Start(t);
+            if (!string.IsNullOrEmpty(DomainName))
+            {
+                var url = GetUrl(t);
+                ReverseProxyManager.Instance.AddRule(GetFullDomainName(), url);
+            }
+        }
+
+        public override void Stop()
+        {
+            base.Stop();
+            if (!string.IsNullOrEmpty(DomainName))
+                ReverseProxyManager.Instance.RemoveRule(GetFullDomainName());
+        }
+
     }
 }

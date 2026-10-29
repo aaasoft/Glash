@@ -28,8 +28,8 @@ public class ConnectionContext : ReactiveObject, IDisposable
         set => this.RaiseAndSetIfChanged(ref _Agents, value);
     }
 
-    private ProxyRuleContext[] _ProxyRules;
-    public ProxyRuleContext[] ProxyRules
+    private List<ProxyRuleContext> _ProxyRules = new();
+    public List<ProxyRuleContext> ProxyRules
     {
         get => _ProxyRules;
         set => this.RaiseAndSetIfChanged(ref _ProxyRules, value);
@@ -55,9 +55,27 @@ public class ConnectionContext : ReactiveObject, IDisposable
         catch { }
     }
 
-    private void refreshRules()
+    private void onRuleAdded(ProxyRuleContext rule, int? index = null)
     {
-        ProxyRules = GlashClient.ProxyRuleContexts;   
+        if (index == null)
+            ProxyRules.Add(rule);
+        else
+            ProxyRules.Insert(index.Value, rule);
+
+        var proxyTypeInfo = ProxyTypeManager.Instance.GetProxyTypeInfo(rule.Config.ProxyType);
+        var proxyType = proxyTypeInfo.CreateInstance(rule.Config.ProxyTypeConfig);
+        proxyType.Start(rule);
+    }
+
+    private int onRuleDeleted(ProxyRuleContext rule)
+    {
+        var proxyTypeInfo = ProxyTypeManager.Instance.GetProxyTypeInfo(rule.Config.ProxyType);
+        var proxyType = proxyTypeInfo.CreateInstance(rule.Config.ProxyTypeConfig);
+        proxyType.Stop();
+
+        var index = ProxyRules.IndexOf(rule);
+        ProxyRules.Remove(rule);
+        return index;
     }
 
     public async Task Start()
@@ -70,7 +88,8 @@ public class ConnectionContext : ReactiveObject, IDisposable
             foreach (var proxyRule in proxyRuleList)
                 proxyRule.ProxyType = ProxyTypeManager.Instance.FixProxyTypeId(proxyRule.ProxyType);
             GlashClient.LoadProxyRules(proxyRuleList.ToArray());
-            refreshRules();
+            foreach (var rule in GlashClient.ProxyRuleContexts)
+                onRuleAdded(rule);
 
             //读取代理端
             var agentList = await GlashClient.GetAgentListAsync();
@@ -101,8 +120,11 @@ public class ConnectionContext : ReactiveObject, IDisposable
     {
         if (GlashClient != null)
         {
-            foreach (var proxyRuleContext in GlashClient.ProxyRuleContexts)
+            foreach (var proxyRuleContext in ProxyRules.ToArray())
+            {
                 GlashClient.UnloadProxyRule(proxyRuleContext);
+                onRuleDeleted(proxyRuleContext);
+            }
             GlashClient.Dispose();
         }
     }
@@ -167,23 +189,25 @@ public class ConnectionContext : ReactiveObject, IDisposable
     public async Task AddProxyRule(ProxyRuleInfo model)
     {
         model = await GlashClient.SaveProxyRule(model);
-        GlashClient.LoadProxyRule(model);
-        refreshRules();
+        var context = GlashClient.LoadProxyRule(model);
+        onRuleAdded(context);
     }
 
     public async Task EditProxyRule(ProxyRuleInfo model)
     {
-        GlashClient.UnloadProxyRule(model.Id);
+        var context = GlashClient.UnloadProxyRule(model.Id);
+        var index = onRuleDeleted(context);
+
         model = await GlashClient.SaveProxyRule(model);
-        GlashClient.LoadProxyRule(model);
-        refreshRules();
+        context = GlashClient.LoadProxyRule(model);
+        onRuleAdded(context, index);
     }
 
     public async Task DeleteProxyRule(ProxyRuleInfo model)
     {
-        GlashClient.UnloadProxyRule(model.Id);
+        var context = GlashClient.UnloadProxyRule(model.Id);
         await GlashClient.DeleteProxyRule(model.Id);
-        refreshRules();
+        onRuleDeleted(context);
     }
 
     public void Dispose()
