@@ -8,7 +8,7 @@ namespace GlashClientDesktop.Core;
 public class ReverseProxyManager : IProxyConfigProvider
 {
     public static ReverseProxyManager Instance { get; } = new ReverseProxyManager();
-    public int ListenPort { get; set; } = 80;
+    public int ListenPort { get; set; } = -1;
 
     public event EventHandler<string> RuleAdded;
     public event EventHandler<string> RuleRemoved;

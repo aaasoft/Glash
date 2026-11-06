@@ -47,7 +47,8 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
                     ()=>
                     {
                         string url = null;
-                        if(string.IsNullOrEmpty(DomainName))
+                        if(string.IsNullOrEmpty(DomainName)
+                            || ReverseProxyManager.Instance.ListenPort < 0)
                         {
                             url = GetUrl(t);
                         }

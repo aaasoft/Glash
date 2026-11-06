@@ -1,255 +1,267 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Glash.Blazor.Client\n"
-"POT-Creation-Date: 2026-10-29 13:53:26+0800\n"
-"PO-Revision-Date: 2026-10-29 13:53+0800\n"
+"POT-Creation-Date: 2026-11-06 21:00:30+0800\n"
+"PO-Revision-Date: 2026-11-06 21:01+0800\n"
 "Last-Translator: 张鹏 <scbeta@qq.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.10\n"
+"X-Generator: Poedit 3.9\n"
 
-#: ..\..\ViewModels\EditRuleDialogViewModel.cs:16
-msgid "Type"
-msgstr "类型"
+#: ../../Core/ConnectionContext.cs:93
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:15
+msgid "Connected"
+msgstr "已连接"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:19
-msgid "No proxy rules"
-msgstr "暂无代理规则"
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:21
-msgid "Are you sure to delete selected connection?"
-msgstr "确定要删除选中的连接？"
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:122
-msgid "Edit Connection"
-msgstr "编辑连接"
-
-#: ..\..\ViewModels\EditRuleDialogViewModel.cs:12
-msgid "Name"
-msgstr "名称"
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:16
-#: ..\..\Core\ConnectionContext.cs:170
-msgid "Disconnected"
-msgstr "已断开"
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:52
-msgid "Starting..."
-msgstr "启动中..."
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:18
-#: ..\..\ViewModels\EditRuleDialogViewModel.cs:14
-msgid "Proxy"
-msgstr "代理"
-
-#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:26
-msgid "Network protocol type"
-msgstr "网络协议类型"
-
-#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:141
-msgid "View"
-msgstr "查看"
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:11
-msgid "Prefer HighSpeed Mode"
-msgstr "首选高速模式"
-
-#: ..\..\ViewModels\EditRuleDialogViewModel.cs:15
-msgid "Basic"
-msgstr "基本"
-
-#: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:29
-#: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:45
-msgid "Terminal"
-msgstr "终端"
-
-#: ..\..\Core\ProxyTypes\WebType\ProxyType.cs:20
-msgid "Web"
-msgstr "网页"
-
-#: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:25
-#: ..\..\Core\ProxyTypes\RdpType\ProxyType.cs:25
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:9
-#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:31
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:25
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:9
+#: ../../Core/ProxyTypes/RdpType/ProxyType.cs:25
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:31
 msgid "User"
 msgstr "用户名"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:19
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:25
-msgid "Connections"
-msgstr "连接"
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:11
+msgid "Prefer HighSpeed Mode"
+msgstr "首选高速模式"
 
-#: ..\..\Core\ProxyTypes\RdpType\ProxyType.cs:39
-msgid "Start RDP"
-msgstr "启动远程桌面"
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:23
+msgid "Schema"
+msgstr "架构"
 
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:58
-#, csharp-format
-msgid "Start error,reason: {0}"
-msgstr "启动出错，原因：{0}"
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:20
+msgid "Web"
+msgstr "网页"
 
-#: ..\..\Core\ProxyTypes\WebType\ProxyType.cs:27
-msgid "Domain Name"
-msgstr "域名"
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:23
+msgid "Online"
+msgstr "在线"
 
-#: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:22
-msgid "SSH"
-msgstr "SSH"
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:24
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:24
 msgid "Offline"
 msgstr "离线"
 
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:273
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:26
+msgid "Network protocol type"
+msgstr "网络协议类型"
+
+#: ../../ViewModels/MainWindowViewModel.cs:19
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:25
+msgid "Connections"
+msgstr "连接"
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:16
+#: ../../Core/ConnectionContext.cs:170
+msgid "Disconnected"
+msgstr "已断开"
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:86
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:263
+msgid "Logs"
+msgstr "日志"
+
+#: ../../ViewModels/EditRuleDialogViewModel.cs:15
+msgid "Basic"
+msgstr "基本"
+
+#: ../../Converters/ProxyRuleConverters.cs:42
+msgid "Auto assign"
+msgstr "自动分配"
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:58
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:76
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:251
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:274
+msgid "Error"
+msgstr "错误"
+
+#: ../../Model/Connection.cs:27
+msgid "Connection"
+msgstr "连接"
+
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:22
+msgid "SSH"
+msgstr "SSH"
+
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:25
+msgid "Path"
+msgstr "路径"
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:19
+msgid "No proxy rules"
+msgstr "暂无代理规则"
+
+#: ../../Core/ProxyTypes/DefaultType/ProxyType.cs:17
+msgid "Default"
+msgstr "默认"
+
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:7
+msgid "Connection Name"
+msgstr "连接名称"
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:13
+msgid "Connect"
+msgstr "连接"
+
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:65
+msgid "Start File Transfer"
+msgstr "开始文件传输"
+
+#: ../../ViewModels/MainWindowViewModel.cs:122
+msgid "Edit Connection"
+msgstr "编辑连接"
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:20
+msgid "Click + on the toolbar to add a rule"
+msgstr "点击工具栏的 + 按钮添加一条规则"
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:18
+#: ../../ViewModels/EditRuleDialogViewModel.cs:14
+msgid "Proxy"
+msgstr "代理"
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:22
+msgid "Are you sure to delete selected rule?"
+msgstr "确定要删除选中的规则？"
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:14
+msgid "Disconnect"
+msgstr "断开"
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:70
+msgid "Stoping..."
+msgstr "停止中..."
+
+#: ../../Core/ProxyTypes/RdpType/ProxyType.cs:22
+msgid "RDP"
+msgstr "远程桌面"
+
+#: ../../ViewModels/MainWindowViewModel.cs:18
+msgid "GlashClientDesktop"
+msgstr "Glash客户端"
+
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:29
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:45
+msgid "Terminal"
+msgstr "终端"
+
+#: ../../ViewModels/MainWindowViewModel.cs:103
+msgid "Add Connection"
+msgstr "添加连接"
+
+#: ../../ViewModels/EditRuleDialogViewModel.cs:16
+msgid "Type"
+msgstr "类型"
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:149
+msgid "Add Rule"
+msgstr "添加规则"
+
+#: ../../Views/MainWindow.axaml.cs:59
+msgid "All web proxy ports not avaliable, Web proxy domain will not avaliable."
+msgstr "所有Web代理端口都不可用，Web代理域名也将不可用。"
+
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:27
+msgid "Domain Name"
+msgstr "域名"
+
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:141
+msgid "View"
+msgstr "查看"
+
+#: ../../ViewModels/MainWindowViewModel.cs:20
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:21
+msgid "Delete Confirm"
+msgstr "删除确认"
+
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:28
+msgid "Library"
+msgstr "程序库"
+
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:274
 #, csharp-format
 msgid "Execute {0} error,reason:{1}"
 msgstr "执行{0}时出错，原因：{1}"
 
-#: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:60
-#: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:84
-#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:159
-#, csharp-format
-msgid "Can't found {0},please install {0} first."
-msgstr "未找到{0}，请安装{0}。"
+#: ../../ViewModels/MainWindowViewModel.cs:21
+msgid "Are you sure to delete selected connection?"
+msgstr "确定要删除选中的连接？"
 
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:76
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:8
+msgid "Server Url"
+msgstr "服务端URL"
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:52
+msgid "Starting..."
+msgstr "启动中..."
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:76
 #, csharp-format
 msgid "Stop error,reason: {0}"
 msgstr "停止出错，原因：{0}"
 
-#: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:65
-msgid "Start File Transfer"
-msgstr "开始文件传输"
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:60
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:84
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:159
+#, csharp-format
+msgid "Can't found {0},please install {0} first."
+msgstr "未找到{0}，请安装{0}。"
 
-#: ..\..\Core\ReverseProxyManager.cs:73
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:199
+msgid "Edit Rule"
+msgstr "编辑规则"
+
+#: ../../Core/ProxyTypes/WebType/ProxyType.cs:45
+msgid "Visit"
+msgstr "访问"
+
+#: ../../Core/ProxyTypes/RdpType/ProxyType.cs:39
+msgid "Start RDP"
+msgstr "启动远程桌面"
+
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:58
+#, csharp-format
+msgid "Start error,reason: {0}"
+msgstr "启动出错，原因：{0}"
+
+#: ../../Views/MainWindow.axaml.cs:61
+msgid "Web proxy listen port 80 error, will use other port for web proxy."
+msgstr "Web代理监听80端口错误，将为Web代理使用其他的端口。"
+
+#: ../../Views/MainWindow.axaml.cs:59 ../../Views/MainWindow.axaml.cs:61
+msgid "Warn"
+msgstr "警告"
+
+#: ../../Core/ReverseProxyManager.cs:73
 #, csharp-format
 msgid "Domain[{0}] already exist."
 msgstr "域名[{0}]已经存在。"
 
-#: ..\..\Core\ProxyTypes\DefaultType\ProxyType.cs:17
-msgid "Default"
-msgstr "默认"
+#: ../../ViewModels/EditRuleDialogViewModel.cs:12
+msgid "Name"
+msgstr "名称"
 
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:8
-msgid "Server Url"
-msgstr "服务端URL"
-
-#: ..\..\ViewModels\MainWindowViewModel.cs:103
-msgid "Add Connection"
-msgstr "添加连接"
-
-#: ..\..\Core\ProxyTypes\RdpType\ProxyType.cs:22
-msgid "RDP"
-msgstr "远程桌面"
-
-#: ..\..\Model\Connection.cs:27
-msgid "Connection"
-msgstr "连接"
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:20
-msgid "Click + on the toolbar to add a rule"
-msgstr "点击工具栏的 + 按钮添加一条规则"
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:13
-msgid "Connect"
-msgstr "连接"
-
-#: ..\..\Core\ProxyTypes\WebType\ProxyType.cs:23
-msgid "Schema"
-msgstr "架构"
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:17
-#: ..\..\ViewModels\EditRuleDialogViewModel.cs:13
-msgid "Listen"
-msgstr "监听"
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:199
-msgid "Edit Rule"
-msgstr "编辑规则"
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:14
-msgid "Disconnect"
-msgstr "断开"
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:22
-msgid "Are you sure to delete selected rule?"
-msgstr "确定要删除选中的规则？"
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:86
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:262
-msgid "Logs"
-msgstr "日志"
-
-#: ..\..\Core\ProxyTypes\WebType\ProxyType.cs:25
-msgid "Path"
-msgstr "路径"
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:23
-msgid "Online"
-msgstr "在线"
-
-#: ..\..\Core\ProxyTypes\SshType\ProxyType.cs:27
-#: ..\..\Core\ProxyTypes\RdpType\ProxyType.cs:27
-#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:33
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:10
+#: ../../Core/ProxyTypes/SshType/ProxyType.cs:27
+#: ../../ViewModels/EditConnectionDialogViewModel.cs:10
+#: ../../Core/ProxyTypes/RdpType/ProxyType.cs:27
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:33
 msgid "Password"
 msgstr "密码"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:20
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:21
-msgid "Delete Confirm"
-msgstr "删除确认"
-
-#: ..\..\Core\ConnectionContext.cs:93
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:15
-msgid "Connected"
-msgstr "已连接"
-
-#: ..\..\Converters\ProxyRuleConverters.cs:42
-msgid "Auto assign"
-msgstr "自动分配"
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:12
+#: ../../ViewModels/ConnectionConsoleViewModel.cs:12
 msgid "Current not connected."
 msgstr "当前未连接。"
 
-#: ..\..\Core\ProxyTypes\WebType\ProxyType.cs:45
-msgid "Visit"
-msgstr "访问"
+#: ../../ViewModels/ConnectionAgentProxiesViewModel.cs:17
+#: ../../ViewModels/EditRuleDialogViewModel.cs:13
+msgid "Listen"
+msgstr "监听"
 
-#: ..\..\ViewModels\MainWindowViewModel.cs:18
-msgid "GlashClientDesktop"
-msgstr "Glash客户端"
-
-#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:23
+#: ../../Core/ProxyTypes/DatabaseType/ProxyType.cs:23
 msgid "Database"
 msgstr "数据库"
-
-#: ..\..\Core\ProxyTypes\DatabaseType\ProxyType.cs:28
-msgid "Library"
-msgstr "程序库"
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:70
-msgid "Stoping..."
-msgstr "停止中..."
-
-#: ..\..\ViewModels\EditConnectionDialogViewModel.cs:7
-msgid "Connection Name"
-msgstr "连接名称"
-
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:149
-msgid "Add Rule"
-msgstr "添加规则"
-
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:58
-#: ..\..\ViewModels\ConnectionConsoleViewModel.cs:76
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:250
-#: ..\..\ViewModels\ConnectionAgentProxiesViewModel.cs:273
-msgid "Error"
-msgstr "错误"
 
 #~ msgid "Click to copy"
 #~ msgstr "点击复制"
