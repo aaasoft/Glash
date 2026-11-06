@@ -127,12 +127,14 @@ jobs:
           mkdir -p "${STAGE}/DEBIAN"
           # 安装内容占用大小（KB，dpkg 的 Installed-Size 单位是 KiB），供软件中心"大小"一栏显示
           INSTALLED_SIZE_KB=$(du -sk --apparent-size "${STAGE}/opt" "${STAGE}/usr" | awk '{sum+=$1} END {print sum}')
+          # Depends 中的 libcap2-bin 提供 setcap，供 postinst 授予绑定 80 端口的能力
           cat > "${STAGE}/DEBIAN/control" <<'CONTROL'
           Package: glash-client
           Version: ${{ steps.version.outputs.version }}
           Section: net
           Priority: optional
           Architecture: ${{ matrix.deb_arch }}
+          Depends: libcap2-bin
           Maintainer: 张鹏 <scbeta@qq.com>
           Description: Glash reverse proxy client
            A lightweight reverse proxy client (Glash) that exposes internal
@@ -148,6 +150,18 @@ jobs:
           fi
           if command -v gtk-update-icon-cache >/dev/null 2>&1; then
             gtk-update-icon-cache -f -t /usr/share/icons/hicolor || true
+          fi
+          # 授予可执行文件 cap_net_bind_service 能力，使其无需 root 即可绑定 127.0.0.1:80
+          # （程序启动时优先监听 80，失败则降级到 8000/60080）
+          APP_BIN=/opt/glash-client/GlashClientDesktop
+          if command -v setcap >/dev/null 2>&1; then
+            if ! setcap 'cap_net_bind_service=+ep' "$APP_BIN" 2>/dev/null; then
+              echo "glash-client: warning: cannot set cap_net_bind_service on $APP_BIN." >&2
+              echo "glash-client: warning: web proxy will fall back to port 8000 or 60080." >&2
+            fi
+          else
+            echo "glash-client: warning: setcap not found (package libcap2-bin is missing)." >&2
+            echo "glash-client: warning: web proxy will fall back to port 8000 or 60080." >&2
           fi
           POSTINST
           chmod 0755 "${STAGE}/DEBIAN/postinst"
