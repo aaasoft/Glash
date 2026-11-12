@@ -12,6 +12,6 @@ namespace GlashClientDesktop.Core.ProxyTypes
         public ProxyTypeButton[] GetButtons(ProxyRuleContext t);
         string ToJson();
         void Start(ProxyRuleContext t);
-        void Stop();
+        void Stop(ProxyRuleContext t);
     }
 }

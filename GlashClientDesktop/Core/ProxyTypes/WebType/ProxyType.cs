@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Glash.Client;
+using Microsoft.Win32;
 using Quick.Localize;
 using System.Diagnostics;
 using System.Runtime.Versioning;
@@ -30,9 +31,14 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
         public string Path { get; set; }
         public string DomainName { get; set; }
 
-        private string GetFullDomainName()=>$"{DomainName}.localhost";
+        private string GetFullDomainName(ProxyRuleContext t)
+        {
+            if (!string.IsNullOrEmpty(DomainName))
+                return $"{DomainName}.localhost";
+            return $"{t.Config.Name}.{t.Config.Agent}.localhost";
+        }
 
-        private string GetUrl(ProxyRuleContext t)=>$"{Schema}://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/{Path}";
+        private string GetUrl(ProxyRuleContext t) => $"{Schema}://{GetLocalIPAddress(t.Config.LocalIPAddress)}:{t.LocalPort}/{Path}";
 
         [SupportedOSPlatform("windows")]
         [SupportedOSPlatform("linux")]
@@ -47,24 +53,63 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
                     ()=>
                     {
                         string url = null;
-                        if(string.IsNullOrEmpty(DomainName)
-                            || ReverseProxyManager.Instance.ListenPort < 0)
+                        if(ReverseProxyManager.Instance.ListenPort < 0)
                         {
                             url = GetUrl(t);
                         }
                         else
                         {
-                            url = $"http://{GetFullDomainName()}";
+                            url = $"http://{GetFullDomainName(t)}";
                             if(ReverseProxyManager.Instance.ListenPort != 80)
                                 url+=$":{ReverseProxyManager.Instance.ListenPort}";
                         }
                         //使用系统默认浏览器打开
-                        var psi = new ProcessStartInfo(url) { UseShellExecute = true };
-                        var process = Process.Start(psi);
-                        WaitForProcessMainWindow(process);
+                        WaitForProcessMainWindow(OpenUrlByDefaultBrowser(url));
                     }
                 )
             ];
+        }
+
+        public static Process OpenUrlByDefaultBrowser(string url)
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                // 读取注册表默认浏览器
+                string browserPath = null;
+                using var reg = Registry.ClassesRoot.OpenSubKey(@"http\shell\open\command");
+                if (reg?.GetValue("") is string cmd && !string.IsNullOrEmpty(cmd))
+                {
+                    // 去掉末尾的 "%1"
+                    browserPath = cmd.Replace("\"%1\"", "").Trim();
+                    if (browserPath.StartsWith("\""))
+                    {
+                        browserPath = browserPath.Substring(1, browserPath.LastIndexOf('"') - 1);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(browserPath))
+                {
+                    return Process.Start(new ProcessStartInfo
+                    {
+                        FileName = browserPath,
+                        Arguments = url,
+                        UseShellExecute = false
+                    });
+                }
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                return Process.Start("xdg-open", url);
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                return Process.Start("open", url);
+            }
+            return Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
         }
 
         [JsonIgnore]
@@ -73,19 +118,18 @@ namespace GlashClientDesktop.Core.ProxyTypes.WebType
         public override void Start(ProxyRuleContext t)
         {
             base.Start(t);
-            if (!string.IsNullOrEmpty(DomainName))
-            {
-                var url = GetUrl(t);
-                ReverseProxyManager.Instance.AddRule(GetFullDomainName(), url);
-            }
+            if (ReverseProxyManager.Instance.ListenPort < 0)
+                return;
+            var url = GetUrl(t);
+            ReverseProxyManager.Instance.AddRule(GetFullDomainName(t), url);
         }
 
-        public override void Stop()
+        public override void Stop(ProxyRuleContext t)
         {
-            base.Stop();
-            if (!string.IsNullOrEmpty(DomainName))
-                ReverseProxyManager.Instance.RemoveRule(GetFullDomainName());
+            base.Stop(t);
+            if (ReverseProxyManager.Instance.ListenPort < 0)
+                return;
+            ReverseProxyManager.Instance.RemoveRule(GetFullDomainName(t));
         }
-
     }
 }

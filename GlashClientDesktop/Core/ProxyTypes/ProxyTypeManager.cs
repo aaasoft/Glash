@@ -77,7 +77,7 @@ namespace GlashClientDesktop.Core.ProxyTypes
         public void OnProxyRuleDisabled(ProxyRuleContext context)
         {
             var proxyType = GetProxyType(context);
-            proxyType.Stop();
+            proxyType.Stop(context);
         }
     }
 }

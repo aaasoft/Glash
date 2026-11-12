@@ -47,6 +47,6 @@ namespace GlashClientDesktop.Core.ProxyTypes
             }
         }
         public virtual void Start(ProxyRuleContext t) { }
-        public virtual void Stop() { }
+        public virtual void Stop(ProxyRuleContext t) { }
     }
 }
